@@ -6,5 +6,7 @@ import java.util.Map;
 
 public interface MemberService {
 
+    public void memberSignUp(MemberRequest signupInfo);
+
     public boolean checkEmail(String email);
 }

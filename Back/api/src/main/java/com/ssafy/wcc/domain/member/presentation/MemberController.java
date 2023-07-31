@@ -2,6 +2,7 @@ package com.ssafy.wcc.domain.member.presentation;
 
 
 import com.ssafy.wcc.domain.member.application.dto.request.EmailVerifyRequest;
+import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
 import com.ssafy.wcc.domain.member.application.service.EmailService;
 import com.ssafy.wcc.domain.member.application.service.MemberService;
 import io.swagger.annotations.*;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +26,22 @@ public class MemberController {
 
     private final MemberService memberService;
     private final EmailService emailService;
+
+    @PostMapping("/join")
+    @ApiOperation(value = "회원 가입")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "회원가입 성공"),
+            @ApiResponse(code = 404, message = "회원가입 실패"),
+    })
+    public ResponseEntity<?> signUp(
+            @RequestBody @ApiParam(value = "회원가입 정보", required = true) MemberRequest signupInfo
+    ) {
+        Map<String, Object> resultMap = new HashMap<>();
+        memberService.memberSignUp(signupInfo);
+        resultMap.put("isSuccess", true);
+
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
+    }
 
     @PostMapping("/{email}")
     @ApiOperation(value = "email 인증 중복 검사 및 인증번호 전송")

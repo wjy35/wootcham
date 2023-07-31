@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +20,17 @@ public class MemberServiceImpl implements MemberService {
 
     private final PasswordEncoder passwordEncoder;
     private final MemberMapper memberMapper;
+
+    @Override
+    public void memberSignUp(MemberRequest signupInfo) {
+        // 비밀번호에 암호 적용
+//        String encodePassword = passwordEncoder.encode(signupInfo.getPassword());
+
+        Member member = memberMapper.memberRequestToMember(signupInfo);
+//        member.updatePassword(encodePassword);
+
+        Member saveMember = memberRepository.save(member);
+    }
 
     @Override
     // 이메일 중복 검사
