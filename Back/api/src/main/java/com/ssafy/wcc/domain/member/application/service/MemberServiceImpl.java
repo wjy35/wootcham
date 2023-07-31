@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
@@ -30,15 +32,17 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberLoginResponse memberLogin(MemberRequest loginInfo) {
+    public Optional<MemberLoginResponse> memberLogin(MemberRequest loginInfo) {
         // DB에서 같은 이메일을 가진 유저 검색
-        Member findMember = memberRepository.findByEmail(loginInfo.getEmail());
+        Optional<Member> findMember = memberRepository.findByEmail(loginInfo.getEmail());
 
 //        if (passwordEncoder.matches(loginInfo.getPassword(), findMember.getPassword())) { // 비밀번호가 일치하는 경우
-        if(loginInfo.getPassword().equals(findMember.getPassword())) {
-            return memberMapper.memberToMemberLoginResponse(findMember);
+        if(findMember.isPresent()){
+            if(loginInfo.getPassword().equals(findMember.get().getPassword())) {
+                return memberMapper.memberToMemberLoginResponse(findMember.get());
+            }
         }
-        return null;
+        throw new RuntimeException("존재하지 않는 유저");
     }
 
     @Override

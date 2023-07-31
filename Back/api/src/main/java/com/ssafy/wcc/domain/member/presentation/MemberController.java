@@ -17,6 +17,7 @@ import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Api(tags = "Member 컨트롤러")
 @RestController
@@ -102,12 +103,19 @@ public class MemberController {
         Map<String, Object> res = new HashMap<>();
 
         // 비밀번호 일치 여부 파악
-        MemberLoginResponse loginMemberInfo = memberService.memberLogin(loginInfo);
-        if (loginMemberInfo != null) { // 비밀번호 일치
-            res.put("isSuccess", true);
-            res.put("data", loginMemberInfo);
+        Optional<MemberLoginResponse> loginMemberInfo = memberService.memberLogin(loginInfo);
+        if(loginMemberInfo.isPresent()){
+            res.put("isSuccess",true);
+            res.put("data", loginMemberInfo.get());
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
+
+//        if (loginMemberInfo != null) { // 비밀번호 일치
+//            res.put("isSuccess", true);
+//            res.put("data", loginMemberInfo);
+//            return new ResponseEntity<>(res, HttpStatus.OK);
+//        }
+
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

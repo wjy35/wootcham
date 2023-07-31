@@ -5,9 +5,11 @@ import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
 import com.ssafy.wcc.domain.member.db.entity.Member;
 import org.mapstruct.Mapper;
 
+import java.util.Optional;
+
 @Mapper(componentModel = "spring")
 public interface MemberMapper {
     Member memberRequestToMember(MemberRequest request);
 
-    MemberLoginResponse memberToMemberLoginResponse(Member member);
+    Optional<MemberLoginResponse> memberToMemberLoginResponse(Member member);
 }
