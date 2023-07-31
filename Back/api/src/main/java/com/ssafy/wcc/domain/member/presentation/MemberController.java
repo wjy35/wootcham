@@ -25,6 +25,7 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService memberService;
+
     private final EmailService emailService;
 
     @PostMapping("/join")
