@@ -3,6 +3,7 @@ package com.ssafy.wcc.domain.member.presentation;
 
 import com.ssafy.wcc.domain.member.application.dto.request.EmailVerifyRequest;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
+import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
 import com.ssafy.wcc.domain.member.application.service.EmailService;
 import com.ssafy.wcc.domain.member.application.service.MemberService;
 import io.swagger.annotations.*;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -86,5 +86,27 @@ public class MemberController {
         }
         resultMap.put("isSuccess", false);
         return new ResponseEntity<>(resultMap, HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/login")
+    @ApiOperation(value = "로그인")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "로그인 성공"),
+            @ApiResponse(code = 401, message = "잘못된 비밀번호"),
+            @ApiResponse(code = 404, message = "존재하지 않는 사용자")
+    })
+    public ResponseEntity<Map<String, Object>> login(
+            @RequestBody @ApiParam(value = "로그인 정보") MemberRequest loginInfo
+    ) {
+        Map<String, Object> res = new HashMap<>();
+
+        // 비밀번호 일치 여부 파악
+        MemberLoginResponse loginMemberInfo = memberService.memberLogin(loginInfo);
+        if (loginMemberInfo != null) { // 비밀번호 일치
+            res.put("isSuccess", true);
+            res.put("data", loginMemberInfo);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
