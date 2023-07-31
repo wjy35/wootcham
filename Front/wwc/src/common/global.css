@@ -1,0 +1,58 @@
+#app {
+  font-family: 'Black Han Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-decoration: none;
+}
+
+.func_btn {
+  background-color: #eee;
+  border: none;
+  padding: 1rem;
+  font-size: 1rem;
+  width: 10em;
+  border-radius: 1rem;
+  color: white;
+  box-shadow: 0 0.4rem #dfd9d9;
+  cursor: pointer;
+ }
+ 
+ .func_btn:active {
+  color: lightcoral;
+  box-shadow: 0 0.2rem #dfd9d9;
+  transform: translateY(0.2rem);
+ }
+ 
+ .func_btn:hover:not(:disabled) {
+  background: white;
+  color: lightcoral;
+  text-shadow: 0 0.1rem #bcb4b4;
+ }
+ 
+ .func_btn:disabled {
+  cursor: auto;
+  color: grey;
+ }
+
+
+ /* Scroll bar stylings */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: black;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #528265; /* 핸들의 배경색을 투명하게 설정 */
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #3B9E83; /* hover 시 핸들의 배경색을 투명하게 설정 */
+}
