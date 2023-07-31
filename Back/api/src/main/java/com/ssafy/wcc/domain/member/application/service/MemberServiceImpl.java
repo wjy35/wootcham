@@ -20,7 +20,6 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
     private final MemberMapper memberMapper;
 
-
     @Override
     // 이메일 중복 검사
     public boolean checkEmail(String email) {

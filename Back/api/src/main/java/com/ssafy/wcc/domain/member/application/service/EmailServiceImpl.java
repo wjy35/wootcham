@@ -1,13 +1,15 @@
 package com.ssafy.wcc.domain.member.application.service;
+import com.ssafy.wcc.common.util.RedisUtil;
+import com.ssafy.wcc.domain.member.application.dto.request.EmailVerifyRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import javax.mail.IllegalWriteException;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
@@ -23,14 +25,17 @@ import java.util.Random;
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender javaMailSender;
+    private final RedisUtil redisUtil;
 
     @Value("${spring.mail.username}")
     private String id;
 
     @Override
     public boolean sendMessage(String email) throws MessagingException, UnsupportedEncodingException {
-        MimeMessage message = createMessage(email);
+        String code = createCode();
+        MimeMessage message = createMessage(email, code);
         try {
+            redisUtil.setDataExpire(code, email, 60 * 5L); // 인증 코드 유효시간: 5분
             javaMailSender.send(message);
         } catch (MailException e) {
             e.printStackTrace();
@@ -40,7 +45,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public MimeMessage createMessage(String email) throws UnsupportedEncodingException, MessagingException {
+    public MimeMessage createMessage(String email, String code) throws UnsupportedEncodingException, MessagingException {
         log.info("이메일 전송 대상: {}", email);
 
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -50,7 +55,7 @@ public class EmailServiceImpl implements EmailService {
         StringBuilder msg = new StringBuilder();
         msg.append("<h1 style=\"font-size: 30px; padding-right: 30px; padding-left: 30px;\">이메일 인증 코드</h1>");
         msg.append("<div style=\"padding-right: 30px; padding-left: 30px; margin: 32px 0 40px;\"><table style=\"border-collapse: collapse; border: 0; background-color: #F4F4F4; height: 70px; table-layout: fixed; word-wrap: break-word; border-radius: 6px;\"><tbody><tr><td style=\"text-align: center; vertical-align: middle; font-size: 30px;\">");
-        msg.append(createKey());
+        msg.append(code);
         msg.append("</td></tr></tbody></table></div>");
 
         message.setText(msg.toString(), "utf-8", "html");
@@ -62,13 +67,23 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     // 6자리 숫자로 된 인증코드 생성
-    public String createKey() {
-        StringBuffer key = new StringBuffer();
+    public String createCode() {
+        StringBuffer code = new StringBuffer();
         Random rnd = new Random();
 
         for (int i = 0; i < 6; i++) { // 인증코드 6자리
-            key.append((rnd.nextInt(10)));
+            code.append((rnd.nextInt(10)));
         }
-        return key.toString();
+        return code.toString();
+    }
+
+    @Override
+    public boolean verifyEmail(EmailVerifyRequest emailVerifyRequest) throws ChangeSetPersister.NotFoundException {
+        String userCode = emailVerifyRequest.getCode();
+        String memberEmail = redisUtil.getData(userCode);
+
+        if (memberEmail == null) throw new ChangeSetPersister.NotFoundException(); // 해당 코드가 저장되지 않은 경우
+        redisUtil.deleteData(userCode);
+        return true;
     }
 }

@@ -1,11 +1,12 @@
 package com.ssafy.wcc.domain.member.presentation;
 
 
-import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
+import com.ssafy.wcc.domain.member.application.dto.request.EmailVerifyRequest;
 import com.ssafy.wcc.domain.member.application.service.EmailService;
 import com.ssafy.wcc.domain.member.application.service.MemberService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,8 @@ public class MemberController {
             @ApiResponse(code = 404, message = "사용 불가능한 이메일"),
     })
     public ResponseEntity<?> confirmEmail(@PathVariable String email) throws MessagingException, UnsupportedEncodingException {
+        Map<String, Object> resultMap = new HashMap<>();
+
         // 이메일 중복 검사
         if (memberService.checkEmail(email)) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
@@ -38,9 +41,32 @@ public class MemberController {
         try {
             emailService.sendMessage(email);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            resultMap.put("isSuccess", false);
+            return new ResponseEntity<>(resultMap, HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        resultMap.put("isSuccess", true);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
+    }
+
+    @PostMapping("/code")
+    @ApiOperation(value = "email 인증 번호 확인")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "이메일 인증 성공"),
+            @ApiResponse(code = 404, message = "이메일 인증 실패"),
+    })
+    public ResponseEntity<?> verifyEmail(
+            @RequestBody @ApiParam(value = "이메일 인증 정보", required = true) EmailVerifyRequest emailVerifyRequest
+            ) {
+        Map<String, Object> resultMap = new HashMap<>();
+
+        try {
+            emailService.verifyEmail(emailVerifyRequest);
+        } catch (ChangeSetPersister.NotFoundException e) {
+            resultMap.put("isSuccess", false);
+            return new ResponseEntity<>(resultMap, HttpStatus.NOT_FOUND);
+        }
+        resultMap.put("isSuccess", false);
+        return new ResponseEntity<>(resultMap, HttpStatus.NOT_FOUND);
     }
 }
