@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface MemberMapper {
     Member memberRequestToMember(MemberRequest request);
 
-    Optional<MemberLoginResponse> memberToMemberLoginResponse(Member member);
+    MemberLoginResponse memberToMemberLoginResponse(Member member);
 }
