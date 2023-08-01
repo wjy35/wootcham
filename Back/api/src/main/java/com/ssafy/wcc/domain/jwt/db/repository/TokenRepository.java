@@ -1,4 +1,4 @@
-package com.ssafy.wcc.domain.member.db.repository;
+package com.ssafy.wcc.domain.jwt.db.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

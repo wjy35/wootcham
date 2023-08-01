@@ -1,12 +1,11 @@
-package com.ssafy.wcc.domain.member.application.service;
+package com.ssafy.wcc.domain.jwt.application.service;
 
 import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
-import com.ssafy.wcc.domain.member.db.repository.TokenRepository;
+import com.ssafy.wcc.domain.jwt.db.repository.TokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

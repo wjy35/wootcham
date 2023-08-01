@@ -1,4 +1,4 @@
-package com.ssafy.wcc.domain.member.application.service;
+package com.ssafy.wcc.domain.jwt.application.service;
 
 import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
 
