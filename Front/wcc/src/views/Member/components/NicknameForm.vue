@@ -5,12 +5,14 @@
                 <input type="text" placeholder="닉네임" v-model="nicknameInput">
                 <button v-if="!nicknameWarning" id="nicknameCheck" @click.prevent="nicknameCheck">중복 확인</button>
             </div>
-            <p v-if="nicknameWarning">닉네임은 10자 이상 사용할 수 없습니다.</p>
-            <button @click="nickname">회원가입</button>
+            <p v-if="nicknameWarning">닉네임은 1~10자이며 특수기호는 사용할 수 없습니다.</p>
+            <SubmitButton @click="nickname" value="회원가입"></SubmitButton>
         </form>
     </div>
 </template>
 <script>
+import SubmitButton from './UI/SubmitButton.vue';
+const regNickname = /^(?![\W_]).{1,10}$/
 export default {
     name: 'NicknameForm',
     data() {
@@ -20,11 +22,15 @@ export default {
             nicknameExists: false,
         }
     },
-    
+    components: {
+        SubmitButton
+    },
     watch: {
         nicknameInput() {
-            if (this.nicknameInput.length >= 10) {
+            if (!regNickname.test(this.nicknameInput)) {
                 this.nicknameWarning = true;
+            } else if (this.nicknameInput.length === 0) {
+                this.nicknameWarning = false;
             } else {
                 this.nicknameWarning = false;
             }
