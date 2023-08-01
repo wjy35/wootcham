@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
+import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 @Component
 @RequiredArgsConstructor
@@ -16,5 +17,10 @@ public class WebSocketEventListener {
     void connectedSession(SessionConnectedEvent event){
         System.out.println(event.getMessage().getHeaders().get("simpSessionId").toString());
         matchService.createMatchMemberBySessionId(event.getMessage().getHeaders().get("simpSessionId").toString());
+    }
+
+    @EventListener
+    void disconnectSession(SessionDisconnectEvent event){
+        matchService.deleteMatchMemberBySessionId(event.getSessionId());
     }
 }

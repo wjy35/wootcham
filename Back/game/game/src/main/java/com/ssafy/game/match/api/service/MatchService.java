@@ -92,4 +92,8 @@ public class MatchService {
         template.convertAndSendToUser(gameMember.getSessionId(),READY_MATCH_DESTINATION,READY_MATCH_MESSAGE,headerAccessor.getMessageHeaders());
     }
 
+    public void deleteMatchMemberBySessionId(String sessionId){
+        this.matchMemberSession.get(sessionId).disconnect();
+        this.matchMemberSession.remove(sessionId);
+    }
 }

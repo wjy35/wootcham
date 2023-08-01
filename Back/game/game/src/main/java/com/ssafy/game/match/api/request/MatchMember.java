@@ -15,4 +15,8 @@ public class MatchMember {
     }
 
     public boolean isConnected(){ return connected; }
+
+    public void disconnect(){
+        this.connected = false;
+    }
 }
