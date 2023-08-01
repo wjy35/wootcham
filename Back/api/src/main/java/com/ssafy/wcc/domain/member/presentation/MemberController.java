@@ -6,6 +6,7 @@ import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
 import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
 import com.ssafy.wcc.domain.member.application.service.EmailService;
 import com.ssafy.wcc.domain.member.application.service.MemberService;
+import com.ssafy.wcc.domain.jwt.application.service.TokenService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -14,16 +15,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Api(tags = "Member 컨트롤러")
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
+
+    //    private final JwtUtil jwtService;
+    private final TokenService tokenService;
 
     private final MemberService memberService;
 
@@ -77,7 +81,8 @@ public class MemberController {
     })
     public ResponseEntity<?> verifyEmail(
             @RequestBody @ApiParam(value = "이메일 인증 정보", required = true) EmailVerifyRequest emailVerifyRequest
-            ) {
+    ) {
+
         Map<String, Object> resultMap = new HashMap<>();
 
         try {
@@ -103,18 +108,51 @@ public class MemberController {
         Map<String, Object> res = new HashMap<>();
 
         // 비밀번호 일치 여부 파악
-        Optional<MemberLoginResponse> loginMemberInfo = memberService.memberLogin(loginInfo);
-        if(loginMemberInfo.isPresent()){
-            res.put("isSuccess",true);
-            res.put("data", loginMemberInfo.get());
-            return new ResponseEntity<>(res, HttpStatus.OK);
-        }
+
+//        if(loginMemberInfo.isPresent()){
+//            res.put("isSuccess",true);
+//            res.put("data", loginMemberInfo.get());
+//            return new ResponseEntity<>(res, HttpStatus.OK);
+//        }
 
 //        if (loginMemberInfo != null) { // 비밀번호 일치
 //            res.put("isSuccess", true);
 //            res.put("data", loginMemberInfo);
 //            return new ResponseEntity<>(res, HttpStatus.OK);
+        try {
+            memberService.memberLogin(loginInfo);
+            MemberLoginResponse token = tokenService.makeMemberLoginResponse(loginInfo.getEmail());
+            res.put("isSuccess", true);
+            res.put("access-token", token.getAccess_token());
+            res.put("refresh-token", token.getRefresh_token());
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 //        }
+
+    }
+
+    @PostMapping("/refresh")
+    @ApiOperation(value = "토큰 갱신")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "갱신 성공"),
+            @ApiResponse(code = 404, message = "갱신 실패")
+    })
+    public ResponseEntity<Map<String, Object>> refreshToken(@RequestBody MemberRequest loginInfo, HttpServletRequest req) {
+        Map<String, Object> res = new HashMap<>();
+        String token = req.getHeader("refresh-token");
+
+        if (tokenService.checkToken(token)) {
+            if (loginInfo.getEmail().equals(memberService.getMemberEmail(token))) {
+                String accessToken = tokenService.createAccessToken(loginInfo.getEmail());
+                res.put("isSuccess", true);
+                res.put("access-token", accessToken);
+                return new ResponseEntity<>(res, HttpStatus.OK);
+            }
+        }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
