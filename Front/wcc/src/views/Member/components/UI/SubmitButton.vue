@@ -1,5 +1,5 @@
 <template>
-    <button id="submitButton">{{ value }}</button>
+    <button class="submitButton">{{ value }}</button>
 </template>
 <script>
 export default {
@@ -10,7 +10,7 @@ export default {
 }
 </script>
 <style scoped>
-    #submitButton {
+    .submitButton {
         font-family: 'Black Han Sans', sans-serif;
         width: 100%;
         background-color: #FF7926;
@@ -24,7 +24,7 @@ export default {
         padding: 0.5rem;
     }
 
-    #submitButton:hover {
+    .submitButton:hover {
         box-shadow: 5px 5px 5px black;
         cursor: pointer;
     }
