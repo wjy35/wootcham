@@ -1,7 +1,7 @@
 <template>
     <div>
         <header>
-            <div class="header-center">{{ headerText }}</div>
+            <div class="header-center">2라운드 09:30</div>
             <div class="exit-btn">
                 <a href="">나가기</a>
             </div>
@@ -11,10 +11,11 @@
 
 <script>
 export default {
-
+    name: 'HeaderBar'
+    
 }
 </script>
 
 <style>
-@import url('./game-room-header.css');
+@import url('./HeaderBar.css');
 </style>

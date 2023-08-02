@@ -1,10 +1,10 @@
 <template>
     <div class="game-room-prepare-background">
         <div class="game-room-prepare-container">
-            <img src="../../../assets/images/Game_Prepare_Banner.png" class="banner_image" alt="Game_Prepare_Banner"
+            <img src="../../../assets/images/game_prepare_banner.png" class="banner_image" alt="Game_Prepare_Banner"
                 width="800">
             <game-room-timer style="z-index: 1;"></game-room-timer>
-            <img src="../../../assets/images/laughter_icon_2_removebg_preview_2.png" class="laughter_icon"
+            <img src="../../../assets/images/laughter_icon.png" class="laughter_icon"
                 alt="Game_Prepare_Banner" width="300">
                 <div class="mission_choose">
                     <div class="mission_subject">
@@ -24,9 +24,8 @@
             </div>
             <div class="mission_keyword">
                 <span class="mission_keyword_title">키워드</span>
-                <input type="text" class="mission_keyword_content" aria-label="Sizing example input"
-                aria-describedby="inputGroup-sizing-lg" value="노트북" readonly>
-                <img type="button" src="../../../assets/images/gameDie.png" class="dice_icon" alt="Game_Prepare_Banner"
+                <input type="text" class="mission_keyword_content" :value="selectedKeyword" readonly>
+                <img type="button" @click="rollKeyword" src="../../../assets/images/dice.png" class="dice_icon" alt="Game_Prepare_Banner"
                     width="100">
                 </div>
                 <button id="submitButton">READY</button>
@@ -37,7 +36,7 @@
 </template>
 
 <script>
-import GameRoomTimer from "../components/game-room-timer/game-room-timer.vue"
+import GameRoomTimer from "../components/timer/GameTimer.vue"
 
 export default {
     name: 'GameRoomPrepare',
@@ -46,18 +45,25 @@ export default {
     },
     data() {
         return {
-            selected: '넌센스',
-            options: [
-                { value: 'nonsense', text: '넌센스' },
-                { value: 'dance', text: '막춤' },
-                { value: 'acrostic_poem', text: '삼행시' },
-                { value: 'impression', text: '성대모사' }
-            ]
+            // selected: '넌센스',
+            // options: [
+            //     { value: 'nonsense', text: '넌센스' },
+            //     { value: 'dance', text: '막춤' },
+            //     { value: 'acrostic_poem', text: '삼행시' },
+            //     { value: 'impression', text: '성대모사' }
+            // ],
+            selectedKeyword: '노트북',
+        }
+    },
+    methods:{
+        rollKeyword(){
+            const keywords = ['노트북','컴퓨터','마우스','에어컨'];
+            this.selectedKeyword = keywords[Math.floor(Math.random() * keywords.length)];
         }
     }
 }
 </script>
 
 <style>
-@import url('./game-room-prepare.css')
+@import url('./GamePrepare.css')
 </style>

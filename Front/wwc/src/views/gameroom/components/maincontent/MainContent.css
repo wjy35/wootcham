@@ -1,0 +1,10 @@
+.main-content{
+    width: 49%;
+    height: 58.5%;
+    background-color: gainsboro;
+    border-radius: 12px;
+    border: 5px solid #F47833;
+    position:absolute;
+    top:7.5%;
+    right:25.5%;
+}

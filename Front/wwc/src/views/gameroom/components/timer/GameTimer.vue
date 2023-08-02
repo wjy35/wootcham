@@ -52,14 +52,6 @@ export default {
 
         formattedTimeLeft() {
             const timeLeft = this.timeLeft;
-            // const minutes = Math.floor(timeLeft / 60);
-            // let seconds = timeLeft % 60;
-
-
-            // if (seconds < 10) {
-            //     seconds = `0${seconds}`;
-            // }
-
             return `${timeLeft}`;
         },
 
@@ -109,5 +101,5 @@ export default {
 };
 </script>
 <style scoped>
-@import url('./game-room-timer.css');
+@import url('./GameTimer.css');
 </style>

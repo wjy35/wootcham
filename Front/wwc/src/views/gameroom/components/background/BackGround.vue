@@ -10,5 +10,5 @@ export default {
 </script>
 
 <style>
-    @import url('./game-room-background.css')
+    @import url('./BackGround.css')
 </style>

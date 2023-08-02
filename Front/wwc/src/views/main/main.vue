@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import GameRoom from '../game-room/game-room.vue'
+import GameRoom from '../gameroom/GameRoom.vue'
 
 export default {
     name: 'MainView',
