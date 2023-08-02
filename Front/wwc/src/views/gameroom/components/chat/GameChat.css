@@ -1,0 +1,65 @@
+.card {
+    width: 330px;
+    height:57%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    position:absolute;
+    top:8%;
+    right:2%;
+    
+}
+
+.chat-header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    font-size: 18px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.chat-window {
+    height: 370px;
+    overflow-y: scroll;
+}
+
+.message-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.chat-input {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+}
+
+.message-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.send-button {
+    font-family: "Black Han Sans";
+    border: none;
+    outline: none;
+    background-color: #f8837a;
+    color: #ffcdad;
+    font-size: 14px;
+    border-radius: 12px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.send-button:hover {
+    background-color: #f27059;
+    color: #ffffff;
+    box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.25);
+}

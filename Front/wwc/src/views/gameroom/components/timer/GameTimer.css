@@ -1,0 +1,52 @@
+.base-timer {
+    position: relative;
+    width: 15vw;
+    height: 15vh;
+    top: 20px;
+    right: 10px;
+    display: flex;
+    justify-content: center;
+    float:right;
+  }
+  .base-timer__svg {
+    transform: scaleX(-1);
+  }
+  .base-timer__circle {
+    fill: none;
+    stroke: none;
+  }
+  .base-timer__path-elapsed {
+    stroke-width: 10px;
+    stroke: grey;
+  }
+  .base-timer__path-remaining {
+    stroke-width: 10px;
+    stroke-linecap: round;
+    transform: rotate(90deg);
+    transform-origin: center;
+    transition: 1s linear all;
+    fill-rule: nonzero;
+    stroke: currentColor;
+  }
+  .base-timer__path-remaining.green {
+    color: #41b883;
+  }
+  .base-timer__path-remaining.orange {
+    color: orange;
+  }
+  .base-timer__path-remaining.red {
+    color: red;
+  }
+  .base-timer__label {
+    position: absolute;
+    color: rgba(112.62499898672104, 69.4708514213562, 55.84322847425938, 1);
+    font-family: "Black Han Sans";
+    width: 15vw;
+    height: 15vh;
+    top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4em;
+    z-index: 999;
+  }
