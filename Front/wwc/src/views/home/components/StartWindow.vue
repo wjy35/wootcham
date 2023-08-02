@@ -9,11 +9,29 @@
       </div>
     </div>
 
-    <div class="utility-bar">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.6 11.6L22 7v10l-6.4-4.5v-1zM4 5h9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7c0-1.1.9-2 2-2z"/></svg>
+    <div class="utility-bar" @click="toggleCamera">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" :stroke="cameraOn ? '#ffffff' : '#ff0000'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path v-if="cameraOn" d="M15.6 11.6L22 7v10l-6.4-4.5v-1zM4 5h9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7c0-1.1.9-2 2-2z" />
+        <path v-else d="M2 2l19.8 19.8M15 15.7V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7c0-1.1.9-2 2-2h.3m5.4 0H13a2 2 0 0 1 2 2v3.3l1 1L22 7v10" />
+      </svg>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      cameraOn: false
+    };
+  },
+  methods: {
+    toggleCamera() {
+      this.cameraOn = !this.cameraOn;
+    }
+  }
+};
+</script>
 
 <style scoped>
 .content-window {
@@ -116,7 +134,7 @@
 
 .utility-bar svg {
   width: 23px;
-  fill: #f09f33;
+  fill: #aa2068;
   transition: .3s ease;
 }
 

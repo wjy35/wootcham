@@ -69,7 +69,7 @@ export default {
   },
   data(){
     return {
-      headerText: "게임을 시작하기 위해 카메라를 켜주세요",
+      headerText: "게임 시작하기",
       showLogoutButton: false, // 카메라가 켜지기 전까지 logout 버튼은 숨겨진다. 
       selectedScreen: 'StartWindowScreen', // 초기화면은 StartWindowScreen
     };

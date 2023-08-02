@@ -1,12 +1,15 @@
 <template>
   <div class="content-window shadow">
+    <div class="content">
+        <img src="/src/assets/images/explain_banner.png" alt="explain_banner">
+    </div>
 
   </div>
 </template>
 
 <style scoped>
 .content-window {
-  background-color: #DEDEDE;
+  background-color: #FFF2EA;
 }
 
 .content-window::before {
