@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+
+  cache:
+    container_name: wcc_api_cache
+    image: redis:alpine
+    ports:
+      - 6379:6379
+    volumes:
+      - /var/api_cache/:/data
+
+  app:
+    container_name: wcc_api
+    image: wcc_api
+    ports:
+      - 8080:8080
+    depends_on:
+      - cache
