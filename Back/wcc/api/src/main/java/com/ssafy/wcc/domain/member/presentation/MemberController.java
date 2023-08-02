@@ -3,6 +3,7 @@ package com.ssafy.wcc.domain.member.presentation;
 
 import com.ssafy.wcc.domain.member.application.dto.request.EmailVerifyRequest;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
+import com.ssafy.wcc.domain.member.application.dto.response.MemberInfoResponse;
 import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
 import com.ssafy.wcc.domain.member.application.service.EmailService;
 import com.ssafy.wcc.domain.member.application.service.MemberService;
@@ -143,6 +144,46 @@ public class MemberController {
             String refreshToken = req.getHeader("refresh-token");
             tokenService.saveLogoutToken(accessToken);
             tokenService.delete(refreshToken);
+            res.put("isSuccess", true);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (RuntimeException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+//    @PostMapping()
+//    @ApiOperation(value = "회원정보 조회")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "조회 성공"),
+//            @ApiResponse(code = 404, message = "조회 실패")
+//    })
+//    public ResponseEntity<Map<String, Object>> memberInfo(HttpServletRequest req) {
+//        Map<String, Object> res = new HashMap<>();
+//        String accessToken = req.getHeader("access-token");
+//        MemberInfoResponse memberInfoResponse;
+//        try{
+//            String refreshToken = req.getHeader("refresh-token");
+//            tokenService.saveLogoutToken(accessToken);
+//            tokenService.delete(refreshToken);
+//            res.put("isSuccess", true);
+//            return new ResponseEntity<>(res, HttpStatus.OK);
+//        } catch (RuntimeException e){
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
+
+    @DeleteMapping()
+    @ApiOperation(value = "회원 탈퇴")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "탈퇴 성공"),
+            @ApiResponse(code = 404, message = "탈퇴 실패")
+    })
+    public ResponseEntity<Map<String, Object>> memberDelete(HttpServletRequest req) {
+        Map<String, Object> res = new HashMap<>();
+        String accessToken = req.getHeader("access-token");
+        String email = tokenService.getEmail(accessToken);
+        try{
+            memberService.memberDelete(email);
             res.put("isSuccess", true);
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (RuntimeException e){

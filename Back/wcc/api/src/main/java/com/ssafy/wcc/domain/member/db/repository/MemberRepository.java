@@ -3,6 +3,7 @@ package com.ssafy.wcc.domain.member.db.repository;
 import com.ssafy.wcc.domain.member.db.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -11,5 +12,6 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
 
     Optional<Member> findByEmail(String email);
 
-//    String findByToken(String accessToken);
+    @Transactional
+    void deleteByEmail(String email);
 }

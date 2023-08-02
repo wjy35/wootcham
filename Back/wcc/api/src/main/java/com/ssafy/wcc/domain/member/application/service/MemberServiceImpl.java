@@ -53,6 +53,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public void memberDelete(String email) throws RuntimeException {
+        System.out.println(email);
+        memberRepository.deleteByEmail(email);
+    }
+
+    @Override
     public boolean checkEmail(String email) {
         return memberRepository.existsByEmail(email);
     }

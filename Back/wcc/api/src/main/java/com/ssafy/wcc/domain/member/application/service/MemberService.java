@@ -12,6 +12,8 @@ public interface MemberService {
 
     public void memberLogin(MemberRequest loginInfo);
 
+    public void memberDelete(String email);
+
     public boolean checkEmail(String email);
 
 }
