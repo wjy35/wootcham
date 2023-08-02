@@ -7,6 +7,7 @@ import com.ssafy.wcc.domain.member.db.entity.Member;
 import com.ssafy.wcc.domain.member.db.repository.MemberRepository;
 import com.ssafy.wcc.domain.jwt.db.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,10 @@ public class MemberServiceImpl implements MemberService {
     public void memberSignUp(MemberRequest signupInfo) {
         // 비밀번호에 암호 적용
         Member member = memberMapper.memberRequestToMember(signupInfo);
-//        member.updatePassword(encodePassword);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String securePassword = encoder.encode(member.getPassword());
+
+        member.setPassword(securePassword);
 
         Member saveMember = memberRepository.save(member);
 
@@ -38,14 +42,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void memberLogin(MemberRequest loginInfo) throws RuntimeException {
-        // DB에서 같은 이메일을 가진 유저 검색
         Optional<Member> findMember = memberRepository.findByEmail(loginInfo.getEmail());
-
-//        if (passwordEncoder.matches(loginInfo.getPassword(), findMember.getPassword())) { // 비밀번호가 일치하는 경우
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if (!findMember.isPresent()) {
             throw new RuntimeException("없는 아이디입니다.");
         }
-        if (!loginInfo.getPassword().equals(findMember.get().getPassword())) {
+        if (!encoder.matches(loginInfo.getPassword(), findMember.get().getPassword())) {
             throw new RuntimeException("잘못된 비밀번호입니다.");
         }
     }

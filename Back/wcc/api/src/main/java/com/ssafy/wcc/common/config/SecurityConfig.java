@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 하지않음
                 .and()
                 .authorizeRequests()
-                .antMatchers("/member/login").permitAll()
+                .antMatchers("/member/**").permitAll()
                 .antMatchers("**").authenticated()
                 .anyRequest().authenticated()
                 .and()
@@ -48,7 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
         return new BCryptPasswordEncoder();
     }
 }
