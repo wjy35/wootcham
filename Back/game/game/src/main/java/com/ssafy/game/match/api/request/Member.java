@@ -1,11 +1,11 @@
 package com.ssafy.game.match.api.request;
 
-public class MatchMember {
+public class Member {
     private String sessionId;
     private boolean connected;
 
 
-    public MatchMember(String sessionId) {
+    public Member(String sessionId) {
         this.sessionId = sessionId;
         this.connected = true;
     }
