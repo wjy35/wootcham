@@ -114,18 +114,6 @@ public class MemberController {
     ) {
         Map<String, Object> res = new HashMap<>();
 
-        // 비밀번호 일치 여부 파악
-
-//        if(loginMemberInfo.isPresent()){
-//            res.put("isSuccess",true);
-//            res.put("data", loginMemberInfo.get());
-//            return new ResponseEntity<>(res, HttpStatus.OK);
-//        }
-
-//        if (loginMemberInfo != null) { // 비밀번호 일치
-//            res.put("isSuccess", true);
-//            res.put("data", loginMemberInfo);
-//            return new ResponseEntity<>(res, HttpStatus.OK);
         try {
             memberService.memberLogin(loginInfo);
             MemberLoginResponse token = tokenService.makeMemberLoginResponse(loginInfo.getEmail());
@@ -142,6 +130,26 @@ public class MemberController {
 
     }
 
+    @PostMapping("/logout")
+    @ApiOperation(value = "로그아웃")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "로그아웃 성공"),
+            @ApiResponse(code = 404, message = "로그아웃 실패")
+    })
+    public ResponseEntity<Map<String, Object>> logout(HttpServletRequest req) {
+        Map<String, Object> res = new HashMap<>();
+        try{
+            String accessToken = req.getHeader("access-token");
+            String refreshToken = req.getHeader("refresh-token");
+            tokenService.saveLogoutToken(accessToken);
+            tokenService.delete(refreshToken);
+            res.put("isSuccess", true);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (RuntimeException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PostMapping("/refresh")
     @ApiOperation(value = "토큰 갱신")
     @ApiResponses({
@@ -150,12 +158,12 @@ public class MemberController {
     })
     public ResponseEntity<Map<String, Object>> refreshToken(@RequestBody MemberRequest loginInfo, HttpServletRequest req) {
         Map<String, Object> res = new HashMap<>();
-        String token = req.getHeader("refresh-token");
-        if (tokenService.checkToken(token)) {
-            if (loginInfo.getEmail().equals(memberService.getMemberEmail(token))) {
-                String accessToken = tokenService.createAccessToken(loginInfo.getEmail());
+        String refreshToken = req.getHeader("refresh-token");
+        if (tokenService.checkToken(refreshToken)) {
+            if (tokenService.get(refreshToken) != null) {
+                String newAccessToken = tokenService.createAccessToken(loginInfo.getEmail());
                 res.put("isSuccess", true);
-                res.put("access-token", accessToken);
+                res.put("access-token", newAccessToken);
                 return new ResponseEntity<>(res, HttpStatus.OK);
             }
         }

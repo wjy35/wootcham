@@ -8,10 +8,15 @@ import java.util.Map;
 
 public interface TokenService {
     public String createAccessToken(String email);
-    public String createRefreshToken(String id);
+    public String createRefreshToken(String email);
 
-    public String create(String id, String subject, long expireMin);
+    public String create(String email, String subject, long expireMin);
 
+    public void delete(String refreshToken);
+
+    public void saveLogoutToken(String accessToken);
+
+    public Long getExpire(String accessToken);
     public byte[] generateKey();
 
     public Map<String, Object> checkAndGetClaims(String jwt);
@@ -24,5 +29,7 @@ public interface TokenService {
 
     public Authentication getAuthentication(String token);
 
-    public String getUserPk(String token);
+    public String getEmail(String token);
+
+    public String get(String refreshToken);
 }

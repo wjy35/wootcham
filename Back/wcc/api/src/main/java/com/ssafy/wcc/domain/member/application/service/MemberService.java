@@ -14,10 +14,4 @@ public interface MemberService {
 
     public boolean checkEmail(String email);
 
-    // refreshToken으로 redis에서 email을 꺼내와야함
-    // redis namespace 나눈 뒤 구현
-
-    public String getMemberEmail(String refreshToken);
-
-
 }

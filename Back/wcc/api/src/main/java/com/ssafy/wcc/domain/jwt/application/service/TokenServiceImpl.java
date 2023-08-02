@@ -41,11 +41,23 @@ public class TokenServiceImpl implements TokenService{
     @Override
     public String createRefreshToken(String email) {
         String refreshToken = create(null, "refresh-token", expireMin*5);
-        tokenRepository.save(refreshToken, email);
+        tokenRepository.save(refreshToken, email, expireMin*5);
         return refreshToken;
     }
 
+    @Override
+    public void saveLogoutToken(String accessToken){
+        tokenRepository.save(accessToken, "logout", this.getExpire(accessToken));
+    }
 
+
+    @Override
+    public Long getExpire(String accessToken){
+        Date expiration = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(accessToken).getBody().getExpiration();
+        // 현재 시간
+        Long now = new Date().getTime();
+        return (expiration.getTime() - now);
+    }
     @Override
     public String create(String email, String subject, long expireMin) {
         Claims claims = Jwts.claims()
@@ -61,6 +73,15 @@ public class TokenServiceImpl implements TokenService{
                 .signWith(SignatureAlgorithm.HS256, this.generateKey())
                 .compact();
         return jwt;
+    }
+    @Override
+    public String get(String refreshToken){
+        return tokenRepository.getData(refreshToken);
+    }
+
+    @Override
+    public void delete(String refreshToken){
+        tokenRepository.delete(refreshToken);
     }
 
     @Override
@@ -107,8 +128,10 @@ public class TokenServiceImpl implements TokenService{
     }
 
     @Override
-    public String getUserPk(String token) {
-        String st = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(token).getBody().getSubject();
-        return st;
+    public String getEmail(String token){
+      return (String)Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(token).getBody().get("email");
     }
+
+
+
 }

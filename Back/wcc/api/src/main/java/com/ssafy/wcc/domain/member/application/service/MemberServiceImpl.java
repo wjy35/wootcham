@@ -36,7 +36,7 @@ public class MemberServiceImpl implements MemberService {
 
         member.setPassword(securePassword);
 
-        Member saveMember = memberRepository.save(member);
+        memberRepository.save(member);
 
     }
 
@@ -57,11 +57,4 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.existsByEmail(email);
     }
 
-
-    // header에서 가져온 refreshToken을 키값으로 redis에서 email조회
-// redis namespace 나눈 뒤 구현
-    @Override
-    public String getMemberEmail(String refreshToken) {
-        return null;
-    }
 }
