@@ -18,7 +18,7 @@ public class TokenRepository {
 
     public void save(String refreshToken, String value){
         ValueOperations<String, String> valueOperations = redisTokenTemplate.opsForValue();
-        String key = "Token:"+refreshToken;
+        String key = refreshToken;
         valueOperations.set(key, value);
         redisTokenTemplate.expire(key, 60, TimeUnit.SECONDS);
     }

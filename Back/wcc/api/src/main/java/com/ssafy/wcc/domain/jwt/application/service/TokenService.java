@@ -1,7 +1,9 @@
 package com.ssafy.wcc.domain.jwt.application.service;
 
 import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
+import org.springframework.security.core.Authentication;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public interface TokenService {
@@ -17,4 +19,10 @@ public interface TokenService {
     public boolean checkToken(String jwt);
 
     public MemberLoginResponse makeMemberLoginResponse(String email);
+
+    public String resolveToken(HttpServletRequest request);
+
+    public Authentication getAuthentication(String token);
+
+    public String getUserPk(String token);
 }

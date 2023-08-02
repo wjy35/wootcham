@@ -19,4 +19,5 @@ public interface MemberService {
 
     public String getMemberEmail(String refreshToken);
 
+
 }

@@ -33,6 +33,13 @@ public class MemberController {
 
     private final EmailService emailService;
 
+    @PostMapping("/test")
+    public String test(){
+
+        return "<h1>test 통과</h1>";
+    }
+
+
     @PostMapping("/join")
     @ApiOperation(value = "회원 가입")
     @ApiResponses({
@@ -144,7 +151,6 @@ public class MemberController {
     public ResponseEntity<Map<String, Object>> refreshToken(@RequestBody MemberRequest loginInfo, HttpServletRequest req) {
         Map<String, Object> res = new HashMap<>();
         String token = req.getHeader("refresh-token");
-
         if (tokenService.checkToken(token)) {
             if (loginInfo.getEmail().equals(memberService.getMemberEmail(token))) {
                 String accessToken = tokenService.createAccessToken(loginInfo.getEmail());
