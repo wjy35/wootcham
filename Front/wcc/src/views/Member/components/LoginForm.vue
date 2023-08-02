@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div id="loginForm">
+        <form id="loginForm">
             <input type="email" placeholder="이메일" v-model="emailInput" class="emailInput">
             <input type="password" placeholder="비밀번호" v-model="pwInput">
             <SubmitButton class="loginButton" value="로그인" @click="login"></SubmitButton>
@@ -8,7 +8,7 @@
                 <span @click="forgotPw">비밀번호를 잊어버렸어요</span>
                 <span @click="signup">회원가입</span>
             </div>
-        </div>
+        </form>
     </div>
 </template>
 <script>
@@ -56,7 +56,7 @@ export default {
         },
 
         signup() {
-            // SignupForm
+            // SignupForm으로 라우팅
         }
     }
 }

@@ -3,26 +3,25 @@
     <div id="welcome">
       <img id="welcome-img" alt="Vue logo" src="./assets/welcome.png">
     </div>
-    <!-- <HelloWorld id="content" msg="Welcome to Your Vue.js App"/> -->
     <!-- <LoginForm id="content"></LoginForm> -->
-    <!-- <SignupForm id="content"></SignupForm> -->
+    <SignupForm id="content"></SignupForm>
     <!-- <WelcomeMessage :isSignup=true :nickname="nickname" id="content"></WelcomeMessage> -->
-    <NicknameForm id="content"></NicknameForm>
+    <!-- <NicknameForm id="content"></NicknameForm> -->
     <!-- <FindPasswordForm id="content"></FindPasswordForm> -->
   </div>
 </template>
 
 <script>
 // import LoginForm from './components/LoginForm.vue';
-// import SignupForm from './components/SignupForm.vue';
+import SignupForm from './components/SignupForm.vue';
 // import WelcomeMessage from './components/WelcomeMessage.vue';
-import NicknameForm from './components/NicknameForm.vue';
+// import NicknameForm from './components/NicknameForm.vue';
 // import FindPasswordForm from './components/FindPasswordForm.vue';
 
 export default {
   name: 'App',
   components: {
-    NicknameForm
+    SignupForm
   },
   data() {
     return {
@@ -44,6 +43,10 @@ export default {
   width: 100vw;
   height: 100vh;
   background-color: #FFCDAD
+}
+
+body {
+  margin: 0;
 }
 
 #welcome {

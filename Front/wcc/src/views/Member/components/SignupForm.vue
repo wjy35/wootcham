@@ -1,13 +1,15 @@
 <template>
     <div>
-        <form id="signupForm">
+        <div id="signupForm">
             <div class="emailInput">
-                <input type="email" placeholder="이메일" v-model="emailInput">
-                <SubmitButton class="innerButton" @click="emailCheck" value="중복 확인"></SubmitButton>
+                <input type="email" placeholder="이메일" v-model="emailInput" @keyup.enter="emailCheck">
+                <SubmitButton class="innerButton" @click.prevent="emailCheck" value="중복 확인"></SubmitButton>
+                <p class="emailOk" v-if="emailOk">사용 가능한 이메일입니다.</p>
             </div>
             <div class="authInput">
-                <input type="text" placeholder="인증 코드" v-model="emailAuth">
-                <SubmitButton class="innerButton" @click="authorize" value="인증"></SubmitButton>
+                <input type="text" placeholder="인증 코드" v-model="emailAuth" @keyup.enter="authorize">
+                <SubmitButton class="innerButton" @click.prevent="authorize" value="인증"></SubmitButton>
+                <p class="authOk" v-if="authOk">이메일 인증 완료</p>
             </div>
             <div class="pwInput">
                 <input class="pw" type="password" placeholder="비밀번호" v-model="pwInput">
@@ -26,7 +28,7 @@
             </div>
             
             <SubmitButton value="회원가입" @click="signup"></SubmitButton>
-        </form>
+        </div>
         <div v-if="showRules" id="rules">
             <p>이용약관 어쩌구 저쩌구</p>
             <button @click.prevent="toggleRules">닫기</button>
@@ -43,7 +45,9 @@ export default {
     data() {
         return {
             emailInput: "",
+            emailOk: undefined,
             emailAuth: "",
+            authOk: false,
             pwInput: "",
             pwCheck: "",
             pwWarning: "생성 규칙",
@@ -58,20 +62,35 @@ export default {
     },  
 
     watch: {
+        emailInput() {
+            this.emailOk = undefined;
+        },
+
         pwInput() {
             if (this.pwInput.length > 0 && !regPass.test(this.pwInput)) {
                 document.querySelector(".pwRule").classList.remove("pwOk");
                 document.querySelector(".pwRule").classList.add("pwNotok");
                 this.pwWarning = "사용 불가";
+                this.pwCheckWarning = "";
             } else if (this.pwInput.length === 0) {
                 document.querySelector(".pwRule").classList.remove("pwOk");
                 document.querySelector(".pwRule").classList.remove("pwNotok");
                 this.pwWarning = "생성 규칙"
+                this.pwCheckWarning = "";
             } else {
                 document.querySelector(".pwRule").classList.add("pwOk");
                 document.querySelector(".pwRule").classList.remove("pwNotok");
                 this.pwWarning = "사용 가능";
                 this.showPwPattern = false;
+                if (this.pwCheck.length > 0 && this.pwInput !== this.pwCheck) {
+                    document.querySelector(".pwCheckWarning").classList.remove("ok");
+                    this.pwCheckWarning = "불일치"
+                } else if (this.pwCheck.length === 0) {
+                    this.pwCheckWarning = "";
+                } else {
+                    document.querySelector(".pwCheckWarning").classList.add("ok");
+                    this.pwCheckWarning = "일치";
+                }
             }
         },
         pwCheck() {
@@ -85,16 +104,27 @@ export default {
                     document.querySelector(".pwCheckWarning").classList.add("ok");
                     this.pwCheckWarning = "일치";
                 }
-            }  
+            } else {
+                this.pwCheckWarning = "";
+            }
         }
     },
 
     methods: {
         signup() {
-            if (!this.agree) {
-                alert("이용약관에 동의해주세요")
+            if (this.emailOk && this.authOk && this.pwCheckWarning === "일치" && this.agree) {
+                alert('회원가입 성공');
             } else {
-                alert("회원가입 성공")
+                alert('회원가입 실패');
+            }
+        },
+
+        authorize() {
+            if (this.emailAuth === "ssafy") {
+                alert('인증 완료')
+                this.authOk = true;
+            } else {
+                alert('틀린 코드입니다.')
             }
         },
 
@@ -105,6 +135,21 @@ export default {
         togglePwPattern() {
             if (this.pwWarning !== "사용 가능") {
                 this.showPwPattern = !this.showPwPattern;
+            }
+        },
+
+        emailCheck() {
+            if (this.emailInput.length === 0) {
+                alert('이메일을 입력해주세요.')
+            } else if (!this.emailInput.includes('@')) {
+                alert('이메일 형식을 지켜주세요')
+                this.emailOk = false;
+            } else if (this.emailInput === 'ssafy@ssafy.com') {
+                alert('중복')
+                this.emailOk = false;
+            } else {
+                alert('사용 가능한 이메일입니다.')
+                this.emailOk = true;
             }
         }
     }
@@ -236,5 +281,11 @@ export default {
 
     .toggleRules:hover {
         cursor: pointer;
+    }
+
+    .emailOk, .authOk {
+        font-size: 0.8rem;
+        margin: 0;
+        text-align: left;
     }
 </style>
