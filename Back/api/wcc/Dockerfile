@@ -5,6 +5,9 @@ WORKDIR /build
 COPY ./Back/api/wcc/build.gradle ./Back/api/wcc/settings.gradle /build/
 RUN gradle build -x test --parallel --continue > /dev/null 2>&1 || true
 
+# credential 복사
+COPY ../../util/wcc_api/env.properties /build/src/main/resources/
+
 # 빌더 이미지에서 애플리케이션 빌드
 COPY ./Back/api/wcc/ /build
 RUN gradle build -x test --parallel
