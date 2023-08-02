@@ -1,39 +1,45 @@
 <template>
 
   <div>
-    <!-- HEADER -->
-    <header>
-      <div class="header-center">{{ headerText }}</div>
-      <div class="logout-btn">
-        <a href="" v-if="showLogOutButton">로그아웃</a>
-      </div>
-    </header>
+    <div id="inner">
+      <!-- HEADER -->
+      <header>
+        <div class="header-center">{{ headerText }}</div>
+        <div class="logout-btn">
+          <a href="" v-if="showLogOutButton">로그아웃</a>
+        </div>
+      </header>
 
-    <!-- CONTENT -->
-    <div class="main-container">
-      <SideBar 
-        @selectStart="selectStart"
-        @selectNotice="selectNotice" 
-        @selectShop="selectShop" 
-        @selectRanking="selectRanking"
-        @selectInfo="selectInfo"
-      />
-      
-      <!-- Conditional rendering based on the selectedScreen data -->
-      <div v-if="selectedScreen === 'StartWindowScreen'">
-        <StartWindow/>
-      </div>
-      <div v-else-if="selectedScreen === 'NoticeWindowScreen'">
-        <NoticeWindow/>
-      </div>
-      <div v-else-if="selectedScreen === 'ShopWindowScreen'">
-        <ShopWindow/>
-      </div>
-      <div v-else-if="selectedScreen === 'RankingWindowScreen'">
-        <RankingWindow/>
-      </div>
-      <div v-else-if="selectedScreen === 'InfoWindowScreen'">
-        <InfoWindow/>
+      <!-- CONTENT -->
+      <div class="main-container">
+        <SideBar
+          @selectProfile="selectProfile"
+          @selectStart="selectStart"
+          @selectNotice="selectNotice" 
+          @selectShop="selectShop" 
+          @selectRanking="selectRanking"
+          @selectInfo="selectInfo"
+        />
+        
+        <!-- Conditional rendering based on the selectedScreen data -->
+        <div v-if="selectedScreen === 'ProfileWindowScreen'">
+          <ProfileWindow/>
+        </div>
+        <div v-if="selectedScreen === 'StartWindowScreen'">
+          <StartWindow/>
+        </div>
+        <div v-else-if="selectedScreen === 'NoticeWindowScreen'">
+          <NoticeWindow/>
+        </div>
+        <div v-else-if="selectedScreen === 'ShopWindowScreen'">
+          <ShopWindow/>
+        </div>
+        <div v-else-if="selectedScreen === 'RankingWindowScreen'">
+          <RankingWindow/>
+        </div>
+        <div v-else-if="selectedScreen === 'InfoWindowScreen'">
+          <InfoWindow/>
+        </div>
       </div>
     </div>
     
@@ -41,18 +47,20 @@
 </template>
 
 <script>
-import SideBar from './components/SideBar.vue';
+import SideBar from '/src/views/home/components/SideBar.vue';
 
-import StartWindow from './views/StartWindow.vue';
-import NoticeWindow from './views/NoticeWindow.vue';
-import ShopWindow from './views/ShopWindow.vue';
-import RankingWindow from './views/RankingWindow.vue';
-import InfoWindow from './views/InfoWindow.vue';
+import ProfileWindow from '/src/views/home/components/ProfileWindow.vue';
+import StartWindow from '/src/views/home/components/StartWindow.vue';
+import NoticeWindow from '/src/views/home/components/NoticeWindow.vue';
+import ShopWindow from '/src/views/home/components/ShopWindow.vue';
+import RankingWindow from '/src/views/home/components/RankingWindow.vue';
+import InfoWindow from '/src/views/home/components/InfoWindow.vue';
 
 export default {
   name: 'App',
   components: {
     SideBar,
+    ProfileWindow,
     StartWindow,
     NoticeWindow,
     ShopWindow,
@@ -79,6 +87,9 @@ export default {
     handleLogout(){
       // 로그아웃 로직 
     },
+    selectProfile(){
+      this.selectedScreen = 'ProfileWindowScreen';
+    },
     selectStart(){
       this.selectedScreen = 'StartWindowScreen';
     },
@@ -93,7 +104,7 @@ export default {
     },
     selectInfo(){
       this.selectedScreen = 'InfoWindowScreen';
-    }
+    },
   }
 };
 </script>

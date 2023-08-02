@@ -10,18 +10,36 @@
     </div>
 
     <div class="utility-bar">
-      안녕! 난 
-
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.6 11.6L22 7v10l-6.4-4.5v-1zM4 5h9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7c0-1.1.9-2 2-2z"/></svg>
     </div>
   </div>
 </template>
 
 <style scoped>
+.content-window {
+  background-color: #FFF2EA;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.content-window::before {
+  content: '';
+  position: absolute;
+  top: 45%;
+  left: -28px;
+  width: 50px; 
+  height: 50px; 
+  background-image: url('@/assets/images/indicator.png');
+  background-size: contain; 
+  background-repeat: no-repeat; 
+  background-color: transparent;
+}
+
 /* NOTICE CARD */
 .notice-card {
  width: 500px;
  height: 200px;
- background: rgba(255, 255, 255, 0.50);
+ background: #FFF2EA;
  border: 5px solid #FFF2EA; 
  border-radius: 10px;
  transition: border-radius 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -62,7 +80,7 @@
 
 /* UTILITY BAR */
 .utility-bar {
-  height: 8%; 
+  height: 7%; 
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -70,9 +88,36 @@
   bottom: 0; 
   left: 0;
   right: 0;
-  background-color: #63687B;
 
+  padding: 0.6em 1.1em;
+  background-color: #63687B;
   border-radius: 0 0 25px 25px; 
+  gap: 0.4rem;
+
+  font-weight: bold;
+  text-shadow: 2px 2px 3px rgb(136 0 136 / 50%);
+
+  background: linear-gradient(15deg, #880088, #aa2068, #cc3f47, #de6f3d, #f09f33, #de6f3d, #cc3f47, #aa2068, #880088) no-repeat;
+  background-size: 300%;
+  background-position: left center;
+  transition: background .3s ease;
+  color: #fff;
+}
+
+.utility-bar:hover {
+  background-size: 320%;
+  background-position: right center;
+  cursor: pointer;
+}
+
+.utility-bar:hover svg {
+  fill: #fff;
+}
+
+.utility-bar svg {
+  width: 23px;
+  fill: #f09f33;
+  transition: .3s ease;
 }
 
 
