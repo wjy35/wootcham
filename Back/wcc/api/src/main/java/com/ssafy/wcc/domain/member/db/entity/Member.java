@@ -18,6 +18,9 @@ import java.util.List;
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"email", "nickname"})})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity implements UserDetails {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false, length = 50)
     private String email;
@@ -41,7 +44,8 @@ public class Member extends BaseEntity implements UserDetails {
     private List<Report> reports = new ArrayList<>();
 
     @Builder
-    public Member(String email, String password, String nickname, int point, int money, int admin, int suspensionDay, LocalDate currentLogin) {
+    public Member(long id, String email, String password, String nickname, int point, int money, int admin, int suspensionDay, LocalDate currentLogin) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.nickname = nickname;

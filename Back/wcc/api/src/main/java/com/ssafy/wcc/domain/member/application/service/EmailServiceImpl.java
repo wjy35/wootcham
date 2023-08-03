@@ -1,5 +1,5 @@
 package com.ssafy.wcc.domain.member.application.service;
-import com.ssafy.wcc.common.util.RedisUtil;
+import com.ssafy.wcc.common.repository.EmailRedisRepository;
 import com.ssafy.wcc.domain.member.application.dto.request.EmailVerifyRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ import java.util.Random;
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender javaMailSender;
-    private final RedisUtil redisUtil;
+    private final EmailRedisRepository emailRedisRepository;
 
     @Value("${spring.mail.username}")
     private String id;
@@ -35,7 +35,7 @@ public class EmailServiceImpl implements EmailService {
         String code = createCode();
         MimeMessage message = createMessage(email, code);
         try {
-            redisUtil.setDataExpire(code, email, 60 * 5L); // 인증 코드 유효시간: 5분
+            emailRedisRepository.setDataExpire(code, email, 60 * 5L); // 인증 코드 유효시간: 5분
             javaMailSender.send(message);
         } catch (MailException e) {
             e.printStackTrace();
@@ -80,10 +80,10 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public boolean verifyEmail(EmailVerifyRequest emailVerifyRequest) throws ChangeSetPersister.NotFoundException {
         String userCode = emailVerifyRequest.getCode();
-        String memberEmail = redisUtil.getData(userCode);
+        String memberEmail = emailRedisRepository.getEmailValue(userCode);
 
         if (memberEmail == null) throw new ChangeSetPersister.NotFoundException(); // 해당 코드가 저장되지 않은 경우
-        redisUtil.deleteData(userCode);
+        emailRedisRepository.deleteEmail(userCode);
         return true;
     }
 }

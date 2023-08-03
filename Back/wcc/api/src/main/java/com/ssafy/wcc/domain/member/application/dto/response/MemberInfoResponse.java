@@ -3,8 +3,6 @@ package com.ssafy.wcc.domain.member.application.dto.response;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
-
 @Getter
 public class MemberInfoResponse {
     private String email;

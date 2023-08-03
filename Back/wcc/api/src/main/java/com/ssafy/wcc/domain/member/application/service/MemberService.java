@@ -10,9 +10,9 @@ public interface MemberService {
 
     public void memberSignUp(MemberRequest signupInfo);
 
-    public void memberLogin(MemberRequest loginInfo);
+    public Long memberLogin(MemberRequest loginInfo);
 
-    public void memberDelete(String email);
+    public void memberDelete(String Id);
 
     public boolean checkEmail(String email);
 

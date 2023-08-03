@@ -5,7 +5,6 @@ import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
 import com.ssafy.wcc.domain.member.application.mapper.MemberMapper;
 import com.ssafy.wcc.domain.member.db.entity.Member;
 import com.ssafy.wcc.domain.member.db.repository.MemberRepository;
-import com.ssafy.wcc.domain.jwt.db.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,9 +22,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberMapper memberMapper;
 
-//    private final JwtUtil jwtUtil;
 
-    private final TokenRepository tokenRepository;
 
     @Override
     public void memberSignUp(MemberRequest signupInfo) {
@@ -41,7 +38,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void memberLogin(MemberRequest loginInfo) throws RuntimeException {
+    public Long memberLogin(MemberRequest loginInfo) throws RuntimeException {
         Optional<Member> findMember = memberRepository.findByEmail(loginInfo.getEmail());
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if (!findMember.isPresent()) {
@@ -50,12 +47,12 @@ public class MemberServiceImpl implements MemberService {
         if (!encoder.matches(loginInfo.getPassword(), findMember.get().getPassword())) {
             throw new RuntimeException("잘못된 비밀번호입니다.");
         }
+        return findMember.get().getId();
     }
 
     @Override
-    public void memberDelete(String email) throws RuntimeException {
-        System.out.println(email);
-        memberRepository.deleteByEmail(email);
+    public void memberDelete(String id) throws RuntimeException {
+        memberRepository.deleteById(Long.parseLong(id));
     }
 
     @Override
