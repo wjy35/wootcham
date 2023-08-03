@@ -1,7 +1,10 @@
 <template>
   <div class="content-window shadow">
+    <div class="banner">
+      <img src="@/assets/images/notice_banner.png" alt="notice_banner">
+    </div>
+
     <div class="content">
-        <img src="/src/assets/images/notice_banner.png" alt="notice_banner">
 
         <div class="notice-card shadow">
           <div class="notice-card-content">
@@ -32,8 +35,10 @@ export default {
 <style scoped>
 .content-window {
   background-color: #FFF2EA;
+
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .content-window::before {
@@ -49,7 +54,8 @@ export default {
   background-color: transparent;
 }
 
-.content img {
+.banner img {
   width: 340px;
+  margin-top: -60px;
 }
 </style>
