@@ -1,16 +1,14 @@
 package com.ssafy.game.match.api.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.game.game.api.processor.GameProcessor;
 import com.ssafy.game.game.db.entity.Game;
 import com.ssafy.game.game.db.repository.GameRepository;
 import com.ssafy.game.match.api.request.Member;
 import com.ssafy.game.match.api.response.MatchResponse;
 import com.ssafy.game.match.common.GameSetting;
+import com.ssafy.game.match.db.repository.MatchMemberSession;
+import com.ssafy.game.util.MessageSender;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
@@ -19,30 +17,27 @@ public class MatchService {
     private final String MATCH_DESTINATION ="/queue/match";
     private final int GAME_ENTER_REQUEST_WAIT_SECOND = 10;
     private final Deque<Member> matchMemberQueue;
-    private final Map<String, Member> matchMemberSession;
-    private final SimpMessageSendingOperations template;
-    private final ObjectMapper mapper;
+    private final MatchMemberSession matchMemberSession;
     private final GameRepository gameRepository;
+    private final MessageSender messageSender;
 
     @Autowired
-    public MatchService(SimpMessageSendingOperations template, GameRepository gameRepository) {
+    public MatchService(MatchMemberSession matchMemberSession, GameRepository gameRepository, MessageSender messageSender) {
+        this.matchMemberSession = matchMemberSession;
         this.gameRepository = gameRepository;
-        this.matchMemberSession = new HashMap<>();
+        this.messageSender = messageSender;
         this.matchMemberQueue = new ArrayDeque<>();
-        this.template = template;
-        this.mapper = new ObjectMapper();
     }
 
     public void createMatchMemberBySessionId(String sessionId){
         Member matchMember = new Member(sessionId);
 
-        this.matchMemberQueue.offer(matchMember);
-        this.matchMemberSession.put(matchMember.getSessionId(),matchMember);
+        matchMemberQueue.offer(matchMember);
+        this.matchMemberSession.insertMember(matchMember);
     }
 
     public void deleteMatchMemberBySessionId(String sessionId){
-        this.matchMemberSession.get(sessionId).disconnect();
-        this.matchMemberSession.remove(sessionId);
+        this.matchMemberSession.deleteMemberBySessionId(sessionId);
     }
 
     public void startMatch(){
@@ -54,22 +49,37 @@ public class MatchService {
 
             sendEnterRequestToAllGameMember(gameMember.get(),game);
 
-            Thread.sleep(GAME_ENTER_REQUEST_WAIT_SECOND *1000);
-            if(game.getMembers().size() == GameSetting.MAX_GAMEMEMBER_COUNT){
-                sendEnterResult(game.getGameId());
-                GameProcessor gameProcessor = new GameProcessor(game,this.template);
-                Thread thread = new Thread(gameProcessor);
-                thread.start();
-            }else{
-                gameRepository.deleteGameByGameId(game.getGameId());
-                System.out.println("Game Deleted");
-                /**
-                 * ToDo Game 파괴시 현재 유저를 다시 매칭큐의 앞으로 이동시켜 주어야 함
-                 */
+//            Thread.sleep(GAME_ENTER_REQUEST_WAIT_SECOND *1000);
+            int second = GAME_ENTER_REQUEST_WAIT_SECOND;
+
+            /**
+             * ToDo
+             * gameMember Que가 초기화 되지 않고 순회하도록 바꿔야함
+             */
+            while(second-->0){
+                messageSender.sendObjectToAll("/topic/enter/"+game.getGameId(),second);
+
+                if(game.getMembers().size() == GameSetting.MAX_GAMEMEMBER_COUNT){
+                    sendEnterResult(game.getGameId());
+                    GameProcessor gameProcessor = new GameProcessor(game,this.messageSender);
+                    Thread thread = new Thread(gameProcessor);
+                    thread.start();
+                    return;
+                }
+
+                Thread.sleep(1000);
             }
+
+            /**
+             * ToDo Game 파괴시 현재 유저를 다시 매칭큐의 앞으로 이동시켜 주어야 함
+             */
+
+            gameRepository.deleteGameByGameId(game.getGameId());
+            System.out.println("Game Deleted");
+
         }catch (NullPointerException e){
             e.printStackTrace();
-        }catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
@@ -101,7 +111,11 @@ public class MatchService {
     }
 
     public void enterGame(String sessionId,String gameId){
-        gameRepository.findGameByGameId(gameId).getMembers().put(sessionId,matchMemberSession.get(sessionId));
+        System.out.println("gameRepository = " + gameRepository);
+
+        gameRepository.findGameByGameId(gameId)
+                .getMembers()
+                .put(sessionId,matchMemberSession.findBySessionId(sessionId));
     }
 
     private void sendEnterRequestToAllGameMember(Deque<Member> gameMemberQueue, Game game){
@@ -115,21 +129,11 @@ public class MatchService {
     }
 
     private void sendEnterRequestToGameMember(Member gameMember, String gameId) {
-        SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
-        headerAccessor.setLeaveMutable(true);
-        headerAccessor.setSessionId(gameMember.getSessionId());
-
         try {
-            String message = mapper.writeValueAsString(new MatchResponse(gameMember.getSessionId(),gameId));
-
-            System.out.println("To : " + gameMember.getSessionId());
-            System.out.println("Message = " + message);
-
-            template.convertAndSendToUser(
+            messageSender.sendObjectToMember(
                     gameMember.getSessionId(),
                     MATCH_DESTINATION,
-                    message,
-                    headerAccessor.getMessageHeaders()
+                    new MatchResponse(gameMember.getSessionId(),gameId)
             );
         }catch (Exception e){
             e.printStackTrace();
@@ -138,6 +142,7 @@ public class MatchService {
 
     private void sendEnterResult(String gameId){
         System.out.println("Send Load Game Request");
-        template.convertAndSend( "/topic/enter/"+gameId,"true");
+        messageSender.sendStringToAll("/topic/enter/"+gameId,"true");
+//        template.convertAndSend( "/topic/enter/"+gameId,"true");
     }
 }

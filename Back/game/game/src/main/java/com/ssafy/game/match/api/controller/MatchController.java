@@ -4,6 +4,7 @@ import com.ssafy.game.match.api.service.MatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -22,4 +23,5 @@ public class MatchController {
     void enter(@DestinationVariable String sessionId, @DestinationVariable String gameId){
         matchService.enterGame(sessionId,gameId);
     }
+
 }
