@@ -44,6 +44,7 @@ export default {
         login() {
             if (this.emailInput === 'ssafy@ssafy.com' && this.pwInput === 'ssafy') {
                 alert('로그인 성공');
+                this.$router.push({name: "welcome"})
             } else if (!this.emailInput.includes('@')) {
                 alert('이메일 형식을 지켜주세요');
             } else {
@@ -53,10 +54,12 @@ export default {
 
         forgotPw() {
             // FindPassword로 라우팅
+            this.$router.push({name: "findpw"})
         },
 
         signup() {
             // SignupForm으로 라우팅
+            this.$router.push({name: "signup"})
         }
     }
 }

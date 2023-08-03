@@ -1,5 +1,5 @@
 {
-  "name": "wwc",
+  "name": "wcc",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,6 +10,7 @@
   "dependencies": {
     "@tensorflow/tfjs-node": "^1.7.4",
     "axios": "0.21.1",
+    "bootstrap": "^5.3.1",
     "canvas": "^2.11.2",
     "core-js": "^3.9.1",
     "cors": "^2.8.5",
@@ -18,7 +19,7 @@
     "multer": "^1.4.5-lts.1",
     "openvidu-browser": "2.28.0",
     "vue": "^3.2.13",
-    "bootstrap": "^5.3.1"
+    "vue-router": "^4.2.4"
   },
   "devDependencies": {
     "@babel/eslint-parser": "7.19.1",

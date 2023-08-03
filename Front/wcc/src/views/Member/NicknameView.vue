@@ -1,7 +1,7 @@
 <template lang="">
     <div id="nickname">
         <div id="welcome">
-            <img id="welcome-img" alt="Vue logo" src="./assets/images/welcome.png">
+            <img id="welcome-img" alt="Vue logo" src="../../assets/images/welcome.png">
         </div>
         <NicknameForm id="content"></NicknameForm>
     </div>
@@ -16,7 +16,7 @@ export default {
     }
 }
 </script>
-<style lang="">
+<style>
     #nickname {
     font-family: 'Noto Sans KR', sans-serif;
     -webkit-font-smoothing: antialiased;

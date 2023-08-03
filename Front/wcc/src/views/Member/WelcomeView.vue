@@ -1,7 +1,7 @@
 <template lang="">
     <div id="welc">
         <div id="welcome">
-            <img id="welcome-img" alt="Vue logo" src="./assets/images/welcome.png">
+            <img id="welcome-img" alt="Vue logo" src="../../assets/images/welcome.png">
         </div>
         <WelcomeMessage isSignup=true nickname="yaong" id="content"></WelcomeMessage>
     </div>
@@ -16,7 +16,7 @@ export default {
     }
 }
 </script>
-<style lang="">
+<style>
     #welc {
     font-family: 'Noto Sans KR', sans-serif;
     -webkit-font-smoothing: antialiased;

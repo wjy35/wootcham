@@ -1,7 +1,7 @@
 <template lang="">
     <div id="findPassword">
         <div id="welcome">
-            <img id="welcome-img" alt="Vue logo" src="./assets/images/welcome.png">
+            <img id="welcome-img" alt="Vue logo" src="../../assets/images/welcome.png">
         </div>
         <FindPasswordForm id="content"></FindPasswordForm>
     </div>
@@ -16,7 +16,7 @@ export default {
     }
 }
 </script>
-<style lang="">
+<style>
     #findPassword {
     font-family: 'Noto Sans KR', sans-serif;
     -webkit-font-smoothing: antialiased;
