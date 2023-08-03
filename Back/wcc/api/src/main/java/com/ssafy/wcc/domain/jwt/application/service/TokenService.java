@@ -15,6 +15,7 @@ public interface TokenService {
     public void saveLogoutToken(String accessToken);
 
     public Long getExpire(String accessToken);
+
     public byte[] generateKey();
 
     public Map<String, Object> checkAndGetClaims(String jwt);

@@ -8,6 +8,7 @@ import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
 import com.ssafy.wcc.domain.member.application.service.EmailService;
 import com.ssafy.wcc.domain.member.application.service.MemberService;
 import com.ssafy.wcc.domain.jwt.application.service.TokenService;
+import com.ssafy.wcc.domain.member.db.entity.Member;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -144,26 +145,24 @@ public class MemberController {
         }
     }
 
-//    @PostMapping()
-//    @ApiOperation(value = "회원정보 조회")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "조회 성공"),
-//            @ApiResponse(code = 404, message = "조회 실패")
-//    })
-//    public ResponseEntity<Map<String, Object>> memberInfo(HttpServletRequest req) {
-//        Map<String, Object> res = new HashMap<>();
-//        String accessToken = req.getHeader("access-token");
-//        MemberInfoResponse memberInfoResponse;
-//        try{
-//            String refreshToken = req.getHeader("refresh-token");
-//            tokenService.saveLogoutToken(accessToken);
-//            tokenService.delete(refreshToken);
-//            res.put("isSuccess", true);
-//            return new ResponseEntity<>(res, HttpStatus.OK);
-//        } catch (RuntimeException e){
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//    }
+    @PostMapping()
+    @ApiOperation(value = "회원정보 조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 404, message = "조회 실패")
+    })
+    public ResponseEntity<Map<String, Object>> memberInfo(HttpServletRequest req) {
+        Map<String, Object> res = new HashMap<>();
+        String accessToken = req.getHeader("access-token");
+        try{
+            MemberInfoResponse memberInfoResponse = memberService.memberInfoResponse(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
+            res.put("isSuccess", true);
+            res.put("data", memberInfoResponse);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (RuntimeException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     @DeleteMapping()
     @ApiOperation(value = "회원 탈퇴")
