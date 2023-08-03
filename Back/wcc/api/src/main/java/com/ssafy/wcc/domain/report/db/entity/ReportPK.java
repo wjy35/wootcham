@@ -1,7 +1,8 @@
 package com.ssafy.wcc.domain.report.db.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import com.ssafy.wcc.domain.member.db.entity.Member;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -9,6 +10,6 @@ import java.time.LocalDate;
 public class ReportPK implements Serializable {
     private LocalDate date;
 
-    @Column(name = "member_id")
+    @Column(name="member_id")
     private Long memberId;
 }
