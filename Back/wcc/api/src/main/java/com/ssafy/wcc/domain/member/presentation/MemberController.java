@@ -154,10 +154,30 @@ public class MemberController {
     public ResponseEntity<Map<String, Object>> memberInfo(HttpServletRequest req) {
         Map<String, Object> res = new HashMap<>();
         String accessToken = req.getHeader("access-token");
+
         try{
             MemberInfoResponse memberInfoResponse = memberService.memberInfoResponse(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
             res.put("isSuccess", true);
             res.put("data", memberInfoResponse);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (RuntimeException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping()
+    @ApiOperation(value = "회원정보 수정")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "수정 성공"),
+            @ApiResponse(code = 404, message = "수정 실패")
+    })
+    public ResponseEntity<Map<String, Object>> memberUpdate(@RequestBody MemberRequest memberRequest, HttpServletRequest req) {
+        Map<String, Object> res = new HashMap<>();
+        String accessToken = req.getHeader("access-token");
+        String id = tokenService.getAccessTokenId(accessToken);
+        try{
+            memberService.memberUpdate(memberRequest, id);
+            res.put("isSuccess", true);
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (RuntimeException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

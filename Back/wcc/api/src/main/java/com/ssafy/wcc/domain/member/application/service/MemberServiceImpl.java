@@ -11,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
@@ -23,7 +22,6 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
 
     private final MemberMapper memberMapper;
-
 
 
     @Override
@@ -55,6 +53,18 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void memberDelete(String id) throws RuntimeException {
         memberRepository.deleteById(Long.parseLong(id));
+    }
+
+    @Override
+    public void memberUpdate(MemberRequest memberRequest, String id) {
+        Optional<Member> member = memberRepository.findById(Long.parseLong(id));
+        if(member.isPresent()){
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String securePassword = encoder.encode(memberRequest.getPassword());
+            member.get().setNickname(memberRequest.getNickname());
+            member.get().setPassword(securePassword);
+            memberRepository.save(member.get());
+        }
     }
 
     @Override
