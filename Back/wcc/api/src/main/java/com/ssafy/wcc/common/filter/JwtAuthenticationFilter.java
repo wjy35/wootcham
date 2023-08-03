@@ -24,7 +24,9 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         String token = tokenService.resolveToken((HttpServletRequest) request);
         // 유효한 토큰인지 확인합니다.
         if (token != null && tokenService.checkToken(token)) {
-            if(tokenService.get(token) == null) {
+            String s = tokenService.getAccessTokenId("BlackList: "+token);
+            if(s == null) {
+                System.out.println(s);
                 // 토큰이 유효하면 토큰으로부터 유저 정보를 받아옵니다.
                 Authentication authentication = tokenService.getAuthentication(token);
                 // SecurityContext 에 Authentication 객체를 저장합니다.
