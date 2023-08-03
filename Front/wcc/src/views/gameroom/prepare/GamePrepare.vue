@@ -27,7 +27,7 @@
                     <img type="button" @click="rollKeyword" src="../../../assets/images/dice.png" class="dice_icon"
                         alt="Game_Prepare_Banner" width="100">
                 </div>
-                <button id="submitButton">READY</button>
+                <button id="submitButton" @click="goMainGame">READY</button>
             </div>
         </div>
 
@@ -58,6 +58,9 @@ export default {
         rollKeyword() {
             const keywords = ['노트북', '컴퓨터', '마우스', '에어컨'];
             this.selectedKeyword = keywords[Math.floor(Math.random() * keywords.length)];
+        },
+        goMainGame(){
+            this.$router.push({name:'maingame'})
         }
     },
 }
