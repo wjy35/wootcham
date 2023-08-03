@@ -5,6 +5,8 @@ import SignupViewVue from "@/views/Member/SignupView.vue";
 import WelcomeViewVue from "@/views/Member/WelcomeView.vue";
 import MainGameVue from "@/views/gameroom/maingame/MainGame.vue";
 import GamePrepareVue from "@/views/gameroom/prepare/GamePrepare.vue";
+import HomeView from "@/views/home/HomeView.vue"
+
 import { createWebHistory, createRouter } from "vue-router";
 
 // 유효성 검증 코드 참조
@@ -37,7 +39,7 @@ const routes = [
   },
   {
     path: "/welcome",
-    name: "welcome",
+    name: "welcome", 
     component: WelcomeViewVue,
   },
   {
@@ -69,6 +71,11 @@ const routes = [
     path: "/maingame",
     name: "maingame",
     component: MainGameVue,
+  },
+  {
+    path: "/home",
+    name: "homeview",
+    component: HomeView,
   },
 
 ];

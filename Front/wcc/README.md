@@ -1,4 +1,4 @@
-# wwc
+# wcc
 
 ## Project setup
 ```

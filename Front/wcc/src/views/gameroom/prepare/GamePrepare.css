@@ -3,24 +3,25 @@
 	background-color: #FFCDAD;
 }
 
-.banner_image{
+.banner_image {
 	/* z-index: 2;
 	display: flex;
 	align-items: center; */
 	position: absolute;
 	top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
-.mission_choose{
+.mission_choose {
 	position: absolute;
-	width:100%;
-	height:auto;
+	width: 100%;
+	height: auto;
 	top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
+
 .game-room-prepare-container {
 	background: #FFF2EA;
 	position: relative;
@@ -87,6 +88,7 @@
 	color: rgba(112.62499898672104, 69.4708514213562, 55.84322847425938, 1);
 	background-color: #FFFFFF;
 	width: 20vw;
+	height: 7.5vh;
 	border-radius: 8px;
 	font-family: "Black Han Sans";
 	text-align: center;
@@ -94,8 +96,8 @@
 	margin: 1.5rem 0 5rem auto;
 }
 
-.mission_keyword_content:focus{
-	outline:2px solid #FF7B27;
+.mission_keyword_content:focus {
+	outline: 2px solid #FF7B27;
 }
 
 .laughter_icon {
@@ -115,14 +117,13 @@
 	width: fit-content;
 	background-color: #FF7926;
 	color: white;
-	font-size: 2rem; 
+	font-size: 2rem;
 	border: none;
 	border-radius: 1rem;
 	box-shadow: 5px 5px 5px gray;
-	/* float:center; */
-	margin-top: 1rem;
-	margin-bottom: 0rem;
-	padding: 0.5rem;
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
 }
 
 #submitButton:hover {

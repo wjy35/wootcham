@@ -44,7 +44,10 @@ export default {
         login() {
             if (this.emailInput === 'ssafy@ssafy.com' && this.pwInput === 'ssafy') {
                 alert('로그인 성공');
-                this.$router.push({name: "welcome"})
+                // this.$router.push({name: "welcome"})
+
+                // home 화면으로 라우팅
+                this.$router.push({ name: 'homeview' })
             } else if (!this.emailInput.includes('@')) {
                 alert('이메일 형식을 지켜주세요');
             } else {
@@ -54,29 +57,28 @@ export default {
 
         forgotPw() {
             // FindPassword로 라우팅
-            this.$router.push({name: "findpw"})
+            this.$router.push({ name: "findpw" })
         },
 
         signup() {
             // SignupForm으로 라우팅
-            this.$router.push({name: "signup"})
+            this.$router.push({ name: "signup" })
         }
     }
 }
 </script>
 <style scoped>
-    #loginForm {
-        width: 60%;
-        margin: auto;
-        text-align: center;
-    }
+#loginForm {
+    width: 60%;
+    margin: auto;
+    text-align: center;
+}
 
-    #routes {
-        display: flex;
-        justify-content: space-between;
-        text-decoration: underline;
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-    }
-    
+#routes {
+    display: flex;
+    justify-content: space-between;
+    text-decoration: underline;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
 </style>
