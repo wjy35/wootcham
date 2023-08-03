@@ -22,8 +22,7 @@ services:
     container_name: wcc_game
     image: wcc_game
     ports:
-      - 8090:8080
+       - 8090:8080
     depends_on:
       - user_cache
-      - game_cache	
-
+      - game_cache
