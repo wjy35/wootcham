@@ -7,12 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public interface TokenService {
-    public String createAccessToken(String email);
-    public String createRefreshToken(String email);
+    public String createAccessToken(String id);
+    public String createRefreshToken(String id);
 
-    public String create(String email, String subject, long expireMin);
-
-    public void delete(String refreshToken);
+    public String create(String subject, long expireMin);
 
     public void saveLogoutToken(String accessToken);
 
@@ -23,13 +21,17 @@ public interface TokenService {
 
     public boolean checkToken(String jwt);
 
-    public MemberLoginResponse makeMemberLoginResponse(String email);
+    public MemberLoginResponse makeMemberLoginResponse(String id);
 
     public String resolveToken(HttpServletRequest request);
 
     public Authentication getAuthentication(String token);
 
-    public String getEmail(String token);
+    public void deleteRefreshToken(String refreshToken);
 
-    public String get(String refreshToken);
+    public String getAccessTokenId(String token);
+    public String getBlackListTokenId(String token);
+    public String getRefreshTokenId(String token);
+
+    public String getEmailData(String token);
 }

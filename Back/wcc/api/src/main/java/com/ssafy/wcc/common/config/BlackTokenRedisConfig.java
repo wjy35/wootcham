@@ -8,16 +8,16 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-public class TokenRedisConfig extends RedisConfig{
+public class BlackTokenRedisConfig extends RedisConfig{
     @Bean
     @Primary
     public RedisConnectionFactory tokenRedisConnectionFactory() {
-        return createLettuceConnectionFactory(0);
+        return createLettuceConnectionFactory(2);
     }
 
     @Bean
-    @Qualifier("redisTokenTemplate")
-    public RedisTemplate<?, ?> redisTokenTemplate() {
+    @Qualifier("redisBlackListTokenTemplate")
+    public RedisTemplate<?, ?> redisBlackListTokenTemplate() {
         RedisTemplate<byte[], byte[]> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(tokenRedisConnectionFactory());
         redisTemplate.setKeySerializer(new StringRedisSerializer());

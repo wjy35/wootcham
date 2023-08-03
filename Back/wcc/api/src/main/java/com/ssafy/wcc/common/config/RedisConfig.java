@@ -21,7 +21,7 @@ public class RedisConfig {
     private int port;
 
     public RedisConnectionFactory createLettuceConnectionFactory(int dbIndex) {
-        final RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
         redisStandaloneConfiguration.setHostName(host);
         redisStandaloneConfiguration.setPort(port);
         redisStandaloneConfiguration.setDatabase(dbIndex);

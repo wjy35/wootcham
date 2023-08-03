@@ -34,12 +34,6 @@ public class MemberController {
 
     private final EmailService emailService;
 
-    @PostMapping("/test")
-    public String test(){
-
-        return "<h1>test 통과</h1>";
-    }
-
 
     @PostMapping("/join")
     @ApiOperation(value = "회원 가입")
@@ -116,8 +110,8 @@ public class MemberController {
         Map<String, Object> res = new HashMap<>();
 
         try {
-            memberService.memberLogin(loginInfo);
-            MemberLoginResponse token = tokenService.makeMemberLoginResponse(loginInfo.getEmail());
+            long id = memberService.memberLogin(loginInfo);
+            MemberLoginResponse token = tokenService.makeMemberLoginResponse(String.valueOf(id));
             res.put("isSuccess", true);
             res.put("access-token", token.getAccess_token());
             res.put("refresh-token", token.getRefresh_token());
@@ -127,7 +121,6 @@ public class MemberController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-//        }
 
     }
 
@@ -143,7 +136,7 @@ public class MemberController {
             String accessToken = req.getHeader("access-token");
             String refreshToken = req.getHeader("refresh-token");
             tokenService.saveLogoutToken(accessToken);
-            tokenService.delete(refreshToken);
+            tokenService.deleteRefreshToken(refreshToken);
             res.put("isSuccess", true);
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (RuntimeException e){
@@ -181,9 +174,9 @@ public class MemberController {
     public ResponseEntity<Map<String, Object>> memberDelete(HttpServletRequest req) {
         Map<String, Object> res = new HashMap<>();
         String accessToken = req.getHeader("access-token");
-        String email = tokenService.getEmail(accessToken);
+        String id = tokenService.getAccessTokenId(accessToken);
         try{
-            memberService.memberDelete(email);
+            memberService.memberDelete(id);
             res.put("isSuccess", true);
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (RuntimeException e){
@@ -191,24 +184,5 @@ public class MemberController {
         }
     }
 
-    @PostMapping("/refresh")
-    @ApiOperation(value = "토큰 갱신")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "갱신 성공"),
-            @ApiResponse(code = 404, message = "갱신 실패")
-    })
-    public ResponseEntity<Map<String, Object>> refreshToken(@RequestBody MemberRequest loginInfo, HttpServletRequest req) {
-        Map<String, Object> res = new HashMap<>();
-        String refreshToken = req.getHeader("refresh-token");
-        if (tokenService.checkToken(refreshToken)) {
-            if (tokenService.get(refreshToken) != null) {
-                String newAccessToken = tokenService.createAccessToken(loginInfo.getEmail());
-                res.put("isSuccess", true);
-                res.put("access-token", newAccessToken);
-                return new ResponseEntity<>(res, HttpStatus.OK);
-            }
-        }
 
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
 }

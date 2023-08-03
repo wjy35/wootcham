@@ -1,7 +1,10 @@
 package com.ssafy.wcc.domain.jwt.application.service;
 
+import com.ssafy.wcc.common.repository.AccessTokenRedisRepository;
+import com.ssafy.wcc.common.repository.BlackListTokenRedisRepository;
+import com.ssafy.wcc.common.repository.EmailRedisRepository;
+import com.ssafy.wcc.common.repository.RefreshTokenRedisRepository;
 import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
-import com.ssafy.wcc.domain.jwt.db.repository.TokenRepository;
 import com.ssafy.wcc.domain.member.db.entity.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -25,7 +28,10 @@ import java.util.Map;
 public class TokenServiceImpl implements TokenService{
 
     private final CustomUserDetailService customUserDetailService;
-    private final TokenRepository tokenRepository;
+    private final EmailRedisRepository emailRedisRepository;
+    private final AccessTokenRedisRepository accessTokenRedisRepository;
+    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
+    private final BlackListTokenRedisRepository blackListTokenRedisRepository;
 
     @Value("${jwt.salt}")
     private String salt;
@@ -34,20 +40,22 @@ public class TokenServiceImpl implements TokenService{
     private Long expireMin;
 
     @Override
-    public String createAccessToken(String email) {
-        return create(email, "access-token", expireMin);
+    public String createAccessToken(String id) {
+        String accessToken = create("access-token", expireMin);
+        accessTokenRedisRepository.saveAccessToken(accessToken, id, expireMin);
+        return accessToken;
     }
 
     @Override
-    public String createRefreshToken(String email) {
-        String refreshToken = create(null, "refresh-token", expireMin*5);
-        tokenRepository.save(refreshToken, email, expireMin*5);
+    public String createRefreshToken(String id) {
+        String refreshToken = create("refresh-token", expireMin*5);
+        refreshTokenRedisRepository.saveRefreshToken(refreshToken, id, expireMin*5);
         return refreshToken;
     }
 
     @Override
     public void saveLogoutToken(String accessToken){
-        tokenRepository.save(accessToken, "logout", this.getExpire(accessToken));
+        blackListTokenRedisRepository.saveBlackListToken(accessToken, "logout", this.getExpire(accessToken));
     }
 
 
@@ -58,14 +66,13 @@ public class TokenServiceImpl implements TokenService{
         Long now = new Date().getTime();
         return (expiration.getTime() - now);
     }
+
     @Override
-    public String create(String email, String subject, long expireMin) {
+    public String create(String subject, long expireMin) {
         Claims claims = Jwts.claims()
                 .setSubject(subject)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expireMin));
-
-        claims.put("email", email);
 
         String jwt = Jwts.builder()
                 .setHeaderParam("typ", "jwtToken")
@@ -74,14 +81,30 @@ public class TokenServiceImpl implements TokenService{
                 .compact();
         return jwt;
     }
+
     @Override
-    public String get(String refreshToken){
-        return tokenRepository.getData(refreshToken);
+    public String getAccessTokenId(String token){
+        return accessTokenRedisRepository.getAccessTokenValue(token);
     }
 
     @Override
-    public void delete(String refreshToken){
-        tokenRepository.delete(refreshToken);
+    public String getBlackListTokenId(String token) {
+        return blackListTokenRedisRepository.getBlackListTokenValue(token);
+    }
+
+    @Override
+    public String getRefreshTokenId(String token) {
+        return refreshTokenRedisRepository.getRefreshTokenValue(token);
+    }
+
+    @Override
+    public String getEmailData(String token) {
+        return emailRedisRepository.getEmailValue(token);
+    }
+
+    @Override
+    public void deleteRefreshToken(String refreshToken){
+        refreshTokenRedisRepository.deleteRefreshToken(refreshToken);
     }
 
     @Override
@@ -109,8 +132,8 @@ public class TokenServiceImpl implements TokenService{
     }
 
     @Override
-    public MemberLoginResponse makeMemberLoginResponse(String email) {
-        MemberLoginResponse response = new MemberLoginResponse(this.createAccessToken(email),this.createRefreshToken(email));
+    public MemberLoginResponse makeMemberLoginResponse(String id) {
+        MemberLoginResponse response = new MemberLoginResponse(this.createAccessToken(id),this.createRefreshToken(id));
         return response;
     }
 
@@ -121,17 +144,19 @@ public class TokenServiceImpl implements TokenService{
 
     @Override
     public Authentication getAuthentication(String token) {
-        String email = (String)Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(token).getBody().get("email");
-        Member m = Member.builder().email(email).build();
+        System.out.println("token = " + token);
+        String id = this.getAccessTokenId(token);
+        System.out.println("id = " + id);
+        Member m = Member.builder().id  (Long.parseLong(id)).build();
         UserDetails userDetails = m;
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    @Override
-    public String getEmail(String token){
-      return (String)Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(token).getBody().get("email");
-    }
-
+//    @Override
+//    public String getEmail(String token){
+//      return (String)Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(token).getBody().get("email");
+//    }
+//
 
 
 }
