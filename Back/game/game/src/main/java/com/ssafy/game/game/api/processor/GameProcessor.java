@@ -1,14 +1,14 @@
 package com.ssafy.game.game.api.processor;
 
-import com.ssafy.game.game.db.entity.Game;
+import com.ssafy.game.match.db.entity.Group;
 import com.ssafy.game.util.MessageSender;
 
 public class GameProcessor implements Runnable{
-    private final Game game;
+    private final Group group;
     private final MessageSender sender;
 
-    public GameProcessor(Game game, MessageSender sender) {
-        this.game = game;
+    public GameProcessor(Group group, MessageSender sender) {
+        this.group = group;
         this.sender = sender;
     }
 
