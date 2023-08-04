@@ -34,7 +34,7 @@
   
    /* 스크롤바 스타일링 */
   ::-webkit-scrollbar {
-    width: 4px;
+    width: 0.1px;
     height: 7px;
   }
   /* Track */
@@ -72,4 +72,8 @@
    /* 빠른 flex */
    .flex {
     display: flex;
+   }
+
+   .cursor-pointer {
+    cursor: pointer;
    }

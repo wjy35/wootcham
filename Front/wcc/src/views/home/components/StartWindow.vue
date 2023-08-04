@@ -1,32 +1,18 @@
 <template>
   <div class="content-window shadow">
     <div class="content">
-      <div class="notice-card shadow">
+      <div class="notice-card shadow flex">
         <div class="notice-card-content">
-          <p class="heading">WootCham Club</p>
+          <!-- <p class="heading">WootCham Club</p> -->
           <p class="para">카메라를 켜지 않으면 게임을 시작할 수 없습니다. <br> 하단 카메라 버튼을 눌러주세요.</p>
         </div>
+          <!-- 실시간 웃음 정도 데이터 -->
+          <div class="laugh-o-meter">
+            <RealtimeGauge :data="realtimeData"/>
+          </div>
       </div>
+
     </div>
-
-    <div class="gauge">
-      <ul class="meter">
-        <li class="low"></li>
-        <li class="normal"></li>
-        <li class="high"></li>
-      </ul>
-
-      <div class="dial">
-          <div class="inner" :style="dialStyle">
-            <div class="arrow">
-            </div>
-          </div>			
-      </div>
-
-      <div class="value">
-        {{ gaugeValue }}
-      </div>
-		</div>
 
     <div class="utility-bar" @click="toggleCamera">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" :stroke="cameraOn ? '#ffffff' : '#ff0000'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -38,54 +24,42 @@
 </template>
 
 <script>
+import RealtimeGauge from './RealtimeGauge.vue';
+
 export default {
+  components: {
+    RealtimeGauge
+  },
   data() {
     return {
       cameraOn: false,
-      gaugeValue: 0,
-      dialRotation: 0
+      realtimeData: 50 // 실시간 데이터를 저장할 변수 (초기값 0)
     };
+  },
+  created(){
+    // 실시간 데이터를 받는 로직 (예: WebSocket 등)
+    // 데이터가 업데이트될 때마다 this.realtimeData를 업데이트합니다.
   },
   methods: {
     toggleCamera() {
       this.cameraOn = !this.cameraOn;
     },
-    rotateDial() {
-      const value = Math.round(Math.random() * 100);
-      const deg = (value * 177.5) / 100;
-
-      this.gaugeValue = value;
-      this.dialRotation = deg;
-    },
-  },
-  computed: {
-    dialStyle() {
-      return {
-        transform: `rotate(${this.dialRotation}deg)`,
-        msTransform: `rotate(${this.dialRotation}deg)`,
-        mozTransform: `rotate(${this.dialRotation}deg)`,
-        oTransform: `rotate(${this.dialRotation}deg)`,
-        webkitTransform: `rotate(${this.dialRotation}deg)`,
-      };
-    },
-  },
-  mounted() {
-    setInterval(this.rotateDial, 2000);
   },
 };
 </script>
 
 <style scoped>
 .content-window {
+  position: relative;
+  
   background-color: #FFF2EA;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 .content-window::before {
   content: '';
   position: absolute;
-  top: 45%;
+  top: 46%;
   left: -28px;
   width: 50px; 
   height: 50px; 
@@ -97,12 +71,18 @@ export default {
 
 /* NOTICE CARD */
 .notice-card {
- width: 500px;
- height: 200px;
- background: #FFF2EA;
- border: 5px solid #FFF2EA; 
- border-radius: 10px;
- transition: border-radius 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: absolute;
+  bottom: 60px;
+  right: 20px;
+  
+  justify-content: space-around;
+  
+  width: 500px;
+  height: 200px;
+  background: #FFF2EA;
+  border: 5px solid #FFF2EA; 
+  border-radius: 10px;
+  transition: border-radius 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .notice-card-content {
@@ -110,7 +90,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
+  
   gap: 1em;
   height: 100%;
   transition: transform 0.4s ease;
@@ -118,6 +98,9 @@ export default {
 
 .notice-card:hover .notice-card-content {
   transform: scale(0.96);
+}
+.laugh-o-meter {
+  padding: 5px 0 3px;
 }
 
 .heading {
@@ -178,125 +161,6 @@ export default {
   width: 23px;
   fill: #aa2068;
   transition: .3s ease;
-}
-
-/* ------------ GAUGE ------------- */ 
-.gauge {
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  top: 30px;
-  left: 50%;
-  margin-left: -250px;
-  border-radius: 100%;
-  transform-origin: 50% 50%;
-  -webkit-transform-origin: 50% 50%;
-  -ms-transform-origin: 50% 50%;
-  -webkit-transform: rotate(0deg);
-}
-
-.meter
-{
-  margin: 0;
-  padding: 0;
-}
-
-.meter > li
-{
-  width: 250px;
-  height: 250px;
-  list-style-type: none;
-  position: absolute;
-  border-top-left-radius: 250px;
-  border-top-right-radius: 0px;
-  transform-origin:  100% 100%;;
-  -webkit-transform-origin:  100% 100%;;
-  -ms-transform-origin:  100% 100%;;
-  transition-property: -webkit-transform;
-  pointer-events: none;
-}
-
-.meter .low
-{
-  transform: rotate(0deg); /* W3C */
-  -webkit-transform: rotate(0deg); /* Safari & Chrome */
-  -moz-transform: rotate(0deg); /* Firefox */
-  -ms-transform: rotate(0deg); /* Internet Explorer */
-  -o-transform: rotate(0deg); /* Opera */
-  z-index: 8;
-  background-color: #09B84F;
-}
-
-.meter .normal
-{
-  transform: rotate(47deg); /* W3C */
-  -webkit-transform: rotate(47deg); /* Safari & Chrome */
-  -moz-transform: rotate(47deg); /* Firefox */
-  -ms-transform: rotate(47deg); /* Internet Explorer */
-  -o-transform: rotate(47deg); /* Opera */
-  z-index: 7;
-  background-color: #FEE62A;
-}
-
-.meter .high
-{
-  transform: rotate(90deg); /* W3C */
-  -webkit-transform: rotate(90deg); /* Safari & Chrome */
-  -moz-transform: rotate(90deg); /* Firefox */
-  -ms-transform: rotate(90deg); /* Internet Explorer */
-  -o-transform: rotate(90deg); /* Opera */
-  z-index: 6;
-  background-color: #FA0E1C;
-}
-
-
-.dial,
-.dial .inner
-{
-  width: 470px;
-  height: 470px;
-  position: relative;
-  top: 10px;
-  left: 5px;
-  border-radius: 100%;
-  border-color: purple;
-  z-index: 10;
-  transition-property: -webkit-transform;
-  transition-duration: 1s;
-  transition-timing-function: ease-in-out;
-  transform: rotate(0deg); /* W3C */
-  -webkit-transform: rotate(0deg); /* Safari & Chrome */
-  -moz-transform: rotate(0deg); /* Firefox */
-  -ms-transform: rotate(0deg); /* Internet Explorer */
-  -o-transform: rotate(0deg); /* Opera */
-}
-
-.dial .arrow
-{
-  width: 0; 
-  height: 0; 
-  position: absolute;
-  top: 214px;
-  left: 24px;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-bottom: 32px solid #FFFFFF;
-  -webkit-transform: rotate(-88deg); /* Safari & Chrome */
-  -moz-transform: rotate(88deg); /* Firefox */
-  -ms-transform: rotate(88deg); /* Internet Explorer */
-  -o-transform: rotate(88deg); /* Opera */
-
-}
-
-.gauge .value
-{
-  font-family: 'Josefin Slab', serif;
-  font-size: 50px;
-  color: #ffffff;
-  position: absolute;
-  top: 142px;
-  left: 45%;
-  z-index: 11;
 }
 
 </style>

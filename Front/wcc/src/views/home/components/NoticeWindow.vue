@@ -5,19 +5,14 @@
     </div>
 
     <div class="content">
-
-        <div class="notice-card shadow">
-          <div class="notice-card-content">
-            <p class="heading">WootCham Club</p>
-            <p class="para">카메라를 켜지 않으면 게임을 시작할 수 없습니다. <br> 하단 카메라 버튼을 눌러주세요.</p>
-          </div>
       </div>
-        <div class="heading">{{ noticeTitle }}</div>
-        <div class="para_date">{{ noticeDate }}</div>
+        <div class="flex ">
+          <div class="heading">{{ noticeTitle }}</div>
+          <div class="para_date">{{ noticeDate }}</div>
+        </div>
         <div class="para_content">{{ noticeContent }}</div>
     </div>
         
-  </div>
 </template>
 
 <script>
@@ -44,7 +39,7 @@ export default {
 .content-window::before {
   content: '';
   position: absolute;
-  top: 54%;
+  top: 56.5%;
   left: -28px;
   width: 50px; 
   height: 50px; 
@@ -57,5 +52,9 @@ export default {
 .banner img {
   width: 340px;
   margin-top: -60px;
+}
+
+.content {
+
 }
 </style>

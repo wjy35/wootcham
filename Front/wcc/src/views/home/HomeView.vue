@@ -3,6 +3,8 @@
         <div id="inner">
             <!-- HEADER -->
             <header>
+                <a href="/home" class="logo">WootCham Club</a>
+
                 <div @click="handleStartGame" class="header-center">{{ headerText }}</div>
                 <div class="logout-btn">
                     <a href="" v-if="showLogOutButton">로그아웃</a>
@@ -103,7 +105,24 @@ export default {
 };
 </script>
   
-<style>
+<style scoped>
+.logo {
+    position: absolute;
+    left: 125px;
+
+    color: #FF7B27;
+    font-family: Luckiest Guy, cursive;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+}
+
+.logo:hover {
+    color: #FFF2EA;
+}
+
 header {
     position: fixed;
     top: 0;

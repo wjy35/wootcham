@@ -51,7 +51,6 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .content-window {
   background-color: #FFF2EA;
@@ -64,7 +63,7 @@ export default {
 .content-window::before {
   content: '';
   position: absolute;
-  top: 83%;
+  top: 88%;
   left: -28px;
   width: 50px; 
   height: 50px; 
