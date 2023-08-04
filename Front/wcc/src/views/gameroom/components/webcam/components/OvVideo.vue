@@ -51,9 +51,15 @@ export default {
 			state.timerId = setInterval(async () => {
 				state.detections = await faceapi.detectSingleFace(myWebCam.value, new faceapi.TinyFaceDetectorOptions())
 					.withFaceExpressions()
-
-				console.log("감정 탐지 시작!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-				console.log(state.detections.expressions)
+				if (state.detections === undefined) {
+					console.log('out of frame')
+				} else {
+					if (state.detections.expressions.happy > 0.7) {
+						console.log('laugh')
+					} else {
+						console.log('neutral')
+					}
+				}
 				// if (state.detections) {
 				// 	let maxVal = 0
 				// 	let maxEmotion = ''
@@ -68,14 +74,14 @@ export default {
 				// }
 
 
-			}, 250)
+			}, 1000)
 
 		}
 
 		onMounted(async () => {
 			props.streamManager.addVideoElement(myWebCam.value)
-			await faceapi.nets.tinyFaceDetector.load('/static/models')
-			await faceapi.nets.faceExpressionNet.load('/static/models')
+			await faceapi.nets.tinyFaceDetector.loadFromUri('/models')
+			await faceapi.nets.faceExpressionNet.loadFromUri('/models')
 		})
 
 		watch(() => state.show, () => {
