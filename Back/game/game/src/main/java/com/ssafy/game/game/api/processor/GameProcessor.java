@@ -1,34 +1,40 @@
 package com.ssafy.game.game.api.processor;
 
-import com.ssafy.game.match.db.entity.Group;
+import com.ssafy.game.game.db.entity.GameSession;
+import com.ssafy.game.match.common.GameSetting;
 import com.ssafy.game.util.MessageSender;
 
 public class GameProcessor implements Runnable{
-    private final Group group;
+    private final GameSession gameSession;
     private final MessageSender sender;
 
-    public GameProcessor(Group group, MessageSender sender) {
-        this.group = group;
+    public GameProcessor(GameSession gameSession, MessageSender sender) {
+        this.gameSession = gameSession;
         this.sender = sender;
     }
 
     @Override
     public void run() {
         waitLoadGame();
-        /**
-         * ToDo
-         * Scheduled
-         * excuteThread(excute Service)
-         * observer thread
-         */
+        sender.sendObjectToAll("/topic/game/"+gameSession.getSessionId(),"hello");
+
+    }
+    private boolean allMemberLoadGame(){
+        if(gameSession.getGameMembers().size()== GameSetting.MAX_GAMEMEMBER_COUNT)return true;
+        return false;
     }
 
     private void waitLoadGame(){
-        try {
-            Thread.sleep(5000);
-            System.out.println("Game Loading");
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        int second = 30;
+        while(second-->0){
+            sender.sendObjectToAll("/topic/game/"+gameSession.getSessionId(),second);
+
+            if(allMemberLoadGame()) return;
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }
