@@ -2,9 +2,6 @@ package com.ssafy.game.match.db.repository;
 
 import com.ssafy.game.match.api.request.Member;
 import org.springframework.stereotype.Repository;
-
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 

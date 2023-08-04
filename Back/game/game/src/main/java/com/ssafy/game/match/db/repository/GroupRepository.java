@@ -4,7 +4,6 @@ import com.ssafy.game.match.db.entity.Group;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.stereotype.Repository;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
