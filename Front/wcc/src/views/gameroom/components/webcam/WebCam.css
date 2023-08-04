@@ -25,6 +25,10 @@
 	height:100%;
 }
 
+.player video{
+	width:100%;
+	height:auto;
+}
 .col1{
 	position: relative;
 	width:24%;
