@@ -189,7 +189,8 @@ export default {
         <div class="col1">
             <div class="player player1">
                 <img v-if="user[0] === undefined" src="../../../../assets/images/WCC_logo.png">
-                <user-video v-else :stream-manager="user[0]"></user-video>
+                <user-video v-else-if="myTurn === 0" :stream-manager="user[0]" videoType="myVideo"></user-video>
+                <user-video v-else :stream-manager="user[0]" videoType="notMyVideo"></user-video>
             </div>
             <div class="player player2">
                 <img v-if="user[1] === undefined" src="../../../../assets/images/WCC_logo.png">
@@ -200,19 +201,25 @@ export default {
         <div class="row1">
             <div class="player player3">
                 <img v-if="user[2] === undefined" src="../../../../assets/images/WCC_logo.png">
-                <user-video v-else :stream-manager="user[2]"></user-video>
+                <user-video v-else-if="myTurn === 2" :stream-manager="user[2]" videoType="myVideo"></user-video>
+                <user-video v-else :stream-manager="user[2]" videoType="notMyVideo"></user-video>
             </div>
             <div class="player player4">
                 <img v-if="user[3] === undefined" src="../../../../assets/images/WCC_logo.png">
-                <user-video v-else :stream-manager="user[3]"></user-video>
+                <user-video v-else-if="myTurn === 3" :stream-manager="user[3]" videoType="myVideo"></user-video>
+                <user-video v-else :stream-manager="user[3]" videoType="notMyVideo"></user-video>
             </div>
             <div class="player player5">
                 <img v-if="user[4] === undefined" src="../../../../assets/images/WCC_logo.png">
-                <user-video v-else :stream-manager="user[4]"></user-video>
+                <user-video v-else-if="myTurn === 4" :stream-manager="user[4]" videoType="myVideo"></user-video>
+                <user-video v-else :stream-manager="user[4]" videoType="notMyVideo"></user-video>
             </div>
             <div class="player player6">
                 <img v-if="user[5] === undefined" src="../../../../assets/images/WCC_logo.png">
-                <user-video v-else :stream-manager="user[5]"></user-video>
+                <user-video v-else-if="myTurn === 5" :stream-manager="user[5]" videoType="myVideo"></user-video>
+                <user-video v-else :stream-manager="user[5]" videoType="notMyVideo"></user-video>
+                <!-- <user-video v-if="mainStreamManager !== undefined" :stream-manager="mainStreamManager" videoType="screen"></user-video>
+                <img v-else src="../../../../assets/images/WCC_logo.png"> -->
             </div>
         </div>
     </div>
@@ -247,7 +254,7 @@ export default {
             mySessionId: "SessionA",
             myUserName: "Participant" + Math.floor(Math.random() * 100),
 
-            myTurn: 1,
+            myTurn: 0,
             user: [undefined, undefined, undefined, undefined, undefined, undefined]
         };
         
@@ -270,16 +277,26 @@ export default {
             // On every new Stream received...
             this.session.on("streamCreated", ({ stream }) => {
                 const subscriber = this.session.subscribe(stream);
-                this.subscribers.push(subscriber);
+                if (subscriber.stream.typeOfVideo === "SCREEN") {
+                    this.mainStreamManager = subscriber;
+                }
+                else {
+                    this.subscribers.push(subscriber);
+                    const index = this.subscribers.indexOf(subscriber, 0);
+                    this.user[index + 1] = subscriber;
+                }
             });
 
             // On every Stream destroyed...
             this.session.on("streamDestroyed", ({ stream }) => {
+                // 스크린 스트림이 파괴될 때 mainStreamManager를 지금 하고 있는 사람 캠으로 전환
+                this.mainStreamManager = undefined;
                 const index = this.subscribers.indexOf(stream.streamManager, 0);
                 if (index >= 0) {
                     this.subscribers.splice(index, 1);
+                    this.user[index + 1] = undefined;
                 }
-            });
+            })
 
             // On every asynchronous exception...
             this.session.on("exception", ({ exception }) => {
