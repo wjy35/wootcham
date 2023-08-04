@@ -188,26 +188,31 @@ export default {
     <div class="game-room-webcam-container">
         <div class="col1">
             <div class="player player1">
-                <img src="../../../../assets/images/WCC_logo.png">
+                <img v-if="user[0] === undefined" src="../../../../assets/images/WCC_logo.png">
+                <user-video v-else :stream-manager="user[0]"></user-video>
             </div>
             <div class="player player2">
-                <user-video :stream-manager="publisher" />
-                <!-- <img src="../../../../assets/images/WCC_logo.png"> -->
+                <img v-if="user[1] === undefined" src="../../../../assets/images/WCC_logo.png">
+                <user-video v-else-if="myTurn === 1" :stream-manager="user[1]" videoType="myVideo"></user-video>
+                <user-video v-else :stream-manager="user[1]" videoType="notMyVideo"></user-video>
             </div>
         </div>
         <div class="row1">
             <div class="player player3">
-                <img src="../../../../assets/images/WCC_logo.png">
+                <img v-if="user[2] === undefined" src="../../../../assets/images/WCC_logo.png">
+                <user-video v-else :stream-manager="user[2]"></user-video>
             </div>
             <div class="player player4">
-                <user-video :stream-manager="publisher" />
-                <!-- <img src="../../../../assets/images/WCC_logo.png"> -->
+                <img v-if="user[3] === undefined" src="../../../../assets/images/WCC_logo.png">
+                <user-video v-else :stream-manager="user[3]"></user-video>
             </div>
             <div class="player player5">
-                <img src="../../../../assets/images/WCC_logo.png">
+                <img v-if="user[4] === undefined" src="../../../../assets/images/WCC_logo.png">
+                <user-video v-else :stream-manager="user[4]"></user-video>
             </div>
             <div class="player player6">
-                <img src="../../../../assets/images/WCC_logo.png">
+                <img v-if="user[5] === undefined" src="../../../../assets/images/WCC_logo.png">
+                <user-video v-else :stream-manager="user[5]"></user-video>
             </div>
         </div>
     </div>
@@ -216,14 +221,14 @@ export default {
 <script>
 import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
-import UserVideo from "./components/UserVideo";
+import UserVideo from "./components/UserVideo.vue";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5000/';
 
 export default {
-    name: "App",
+    name: "WebCam",
 
     components: {
         UserVideo,
@@ -241,6 +246,9 @@ export default {
             // Join form
             mySessionId: "SessionA",
             myUserName: "Participant" + Math.floor(Math.random() * 100),
+
+            myTurn: 1,
+            user: [undefined, undefined, undefined, undefined, undefined, undefined]
         };
         
     },
@@ -304,12 +312,15 @@ export default {
                         });
 
                         // Set the main video in the page to display our webcam and store our Publisher
-                        this.mainStreamManager = publisher;
+                        // this.mainStreamManager = publisher;
                         this.publisher = publisher;
+                        console.log(this.publisher);
 
                         // --- 6) Publish your stream ---
 
                         this.session.publish(this.publisher);
+                        this.addUser();
+                        console.log(this.user[this.myTurn]);
                     })
                     .catch((error) => {
                         console.log("There was an error connecting to the session:", error.code, error.message);
@@ -332,6 +343,13 @@ export default {
 
             // Remove beforeunload listener
             window.removeEventListener("beforeunload", this.leaveSession);
+        },
+
+        addUser() {
+            // 서버에서 주어진 순서에 따라 user 배치
+            // 나(==publisher) 배치
+            this.user[this.myTurn] = this.publisher;
+            // subscribers 배치
         },
 
         updateMainVideoStreamManager(stream) {
