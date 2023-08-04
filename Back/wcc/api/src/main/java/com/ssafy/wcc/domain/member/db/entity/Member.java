@@ -1,6 +1,8 @@
 package com.ssafy.wcc.domain.member.db.entity;
 
 import com.ssafy.wcc.common.db.BaseEntity;
+import com.ssafy.wcc.domain.notice.db.entity.Notice;
+import com.ssafy.wcc.domain.record.db.entity.Record;
 import com.ssafy.wcc.domain.report.db.entity.Report;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -40,8 +42,14 @@ public class Member extends BaseEntity implements UserDetails {
     @Column(name = "current_login")
     private LocalDate currentLogin;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Report> reports = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    private List<Record> records = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<Notice> notices = new ArrayList<>();
 
     @Builder
     public Member(long id, String email, String password, String nickname, int point, int money, int admin, int suspensionDay, LocalDate currentLogin) {

@@ -18,6 +18,7 @@ public class Report {
     private ReportPK reportPK;
 
     @ManyToOne
+    @JoinColumn(referencedColumnName = "id")
     @MapsId("memberId")
     Member member;
 }

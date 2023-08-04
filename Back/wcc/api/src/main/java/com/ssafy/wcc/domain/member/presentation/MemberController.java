@@ -156,7 +156,9 @@ public class MemberController {
         String accessToken = req.getHeader("access-token");
 
         try{
+            System.out.println("??");
             MemberInfoResponse memberInfoResponse = memberService.memberInfoResponse(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
+            System.out.println("?????");
             res.put("isSuccess", true);
             res.put("data", memberInfoResponse);
             return new ResponseEntity<>(res, HttpStatus.OK);

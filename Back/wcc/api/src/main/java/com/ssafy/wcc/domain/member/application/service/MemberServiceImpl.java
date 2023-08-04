@@ -35,6 +35,10 @@ public class MemberServiceImpl implements MemberService {
 
         memberRepository.save(member);
 
+        // report 생성
+        // notice 생성
+        // record 생성
+        // member_item 생성
     }
 
     @Override
@@ -87,7 +91,6 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean checkNickname(String nickname) throws RuntimeException {
         long count = memberRepository.countByNickname(nickname);
-        System.out.println("count = " + count);
         if(count == 0){
             return true;
         }

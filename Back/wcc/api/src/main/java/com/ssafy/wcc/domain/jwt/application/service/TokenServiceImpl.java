@@ -144,9 +144,7 @@ public class TokenServiceImpl implements TokenService{
 
     @Override
     public Authentication getAuthentication(String token) {
-        System.out.println("token = " + token);
         String id = this.getAccessTokenId(token);
-        System.out.println("id = " + id);
         Member m = Member.builder().id  (Long.parseLong(id)).build();
         UserDetails userDetails = m;
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
