@@ -203,5 +203,24 @@ public class MemberController {
         }
     }
 
+    @PostMapping("/nickname")
+    @ApiOperation(value="닉네임 중복 검사")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "중복 아님"),
+            @ApiResponse(code = 404, message = "중복")
+    })
+    public ResponseEntity<Map<String, Object>> nickNameCheck(@RequestBody MemberRequest loginInfo)
+    {
+        Map<String, Object> res = new HashMap<>();
 
+        String nickName = loginInfo.getNickname();
+
+        if(memberService.checkNickname(nickName)) {
+            res.put("unique", true);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }else{
+            res.put("unique", false);
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
+        }
+    }
 }

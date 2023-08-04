@@ -33,4 +33,6 @@ public class EmailRepository {
     public void deleteData(String key) {
         redisTemplate.delete(key);
     }
+
+
 }

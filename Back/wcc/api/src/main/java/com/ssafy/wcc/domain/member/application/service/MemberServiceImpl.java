@@ -58,7 +58,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void memberUpdate(MemberRequest memberRequest, String id) {
         Optional<Member> member = memberRepository.findById(Long.parseLong(id));
-        if(member.isPresent()){
+        if (member.isPresent()) {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             String securePassword = encoder.encode(memberRequest.getPassword());
             member.get().setNickname(memberRequest.getNickname());
@@ -74,13 +74,23 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-    public MemberInfoResponse memberInfoResponse(Long id) throws  RuntimeException{
-      Optional<Member> findMember = memberRepository.findById(id);
-      if (findMember.isPresent()) {
-          int report = findMember.get().getReports().get(0).getReport();
-          MemberInfoResponse memberInfoResponse = memberMapper.toMemberInfoResponse(findMember.get(), report);
-          return memberInfoResponse;
-      }
-      return null;
+    public MemberInfoResponse memberInfoResponse(Long id) throws RuntimeException {
+        Optional<Member> findMember = memberRepository.findById(id);
+        if (findMember.isPresent()) {
+            int report = findMember.get().getReports().get(0).getReport();
+            MemberInfoResponse memberInfoResponse = memberMapper.toMemberInfoResponse(findMember.get(), report);
+            return memberInfoResponse;
+        }
+        return null;
+    }
+
+    @Override
+    public boolean checkNickname(String nickname) throws RuntimeException {
+        long count = memberRepository.countByNickname(nickname);
+        System.out.println("count = " + count);
+        if(count == 0){
+            return true;
+        }
+        return false;
     }
 }

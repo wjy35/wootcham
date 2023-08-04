@@ -20,4 +20,5 @@ public interface MemberService {
 
     public MemberInfoResponse memberInfoResponse(Long id);
 
+    public boolean checkNickname(String nickname);
 }
