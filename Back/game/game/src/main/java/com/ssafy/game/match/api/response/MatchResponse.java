@@ -8,13 +8,13 @@ import lombok.Setter;
 public class MatchResponse {
     private boolean isSuccess;
 
-    private String sessionId;
-    private String gameId;
+    private String memberId;
+    private String groupId;
     private int matchStatus;
 
-    public MatchResponse(String sessionId, String gameId, int matchStatus) {
-        this.sessionId = sessionId;
-        this.gameId = gameId;
+    public MatchResponse(String memberId, String groupId, int matchStatus) {
+        this.memberId = memberId;
+        this.groupId = groupId;
         this.matchStatus = matchStatus;
         this.isSuccess = true;
     }

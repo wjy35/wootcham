@@ -13,13 +13,7 @@ public class WebSocketEventListener {
     private final MatchService matchService;
 
     @EventListener
-    void connectedSession(SessionConnectedEvent event){
-        System.out.println(event.getMessage().getHeaders().get("simpSessionId").toString());
-        matchService.createMatchMemberBySessionId(event.getMessage().getHeaders().get("simpSessionId").toString());
-    }
-
-    @EventListener
     void disconnectSession(SessionDisconnectEvent event){
-        matchService.deleteMatchMemberBySessionId(event.getSessionId());
+        matchService.deleteMatchMemberByMemberId(event.getSessionId());
     }
 }

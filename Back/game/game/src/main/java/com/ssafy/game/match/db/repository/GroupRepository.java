@@ -19,8 +19,8 @@ public class GroupRepository {
         this.groups = new HashMap<>();
     }
 
-    public void deleteGroupByGroupId(String gameId){
-        this.groups.remove(gameId);
+    public void deleteGroupByGroupId(String groupId){
+        this.groups.remove(groupId);
     }
 
     public Group createNewGroup(){
@@ -29,7 +29,7 @@ public class GroupRepository {
         return group;
     }
 
-    public Group findGroupByGroupId(String gameId){
-        return this.groups.get(gameId);
+    public Group findGroupByGroupId(String groupId){
+        return this.groups.get(groupId);
     }
 }

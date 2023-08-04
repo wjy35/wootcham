@@ -1,7 +1,9 @@
 package com.ssafy.game.match.api.controller;
 
+import com.ssafy.game.match.api.observer.MatchEventSource;
+import com.ssafy.game.match.api.observer.MatchObserver;
 import com.ssafy.game.match.api.service.MatchService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -11,18 +13,30 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Controller
 @CrossOrigin(originPatterns = "*")
-@RequiredArgsConstructor
 public class MatchController {
     private final MatchService matchService;
 
+    @Autowired
+    public MatchController(MatchService matchService) {
+        this.matchService = matchService;
+
+        MatchEventSource matchEventSource = new MatchEventSource(matchService);
+        MatchObserver matchObserver = new MatchObserver(matchService);
+
+        matchEventSource.addObserver(matchObserver);
+        Thread thread = new Thread(matchEventSource);
+        thread.start();
+    }
+
     @SubscribeMapping("/user/queue/match")
-    void setMatchService(){
-        matchService.match();
+    void setMatchService(@Header("simpSessionId") String memberId){
+        matchService.createMatchMemberByMemberId(memberId);
     }
 
 
-    @MessageMapping("/enter/{gameId}/{sessionId}")
-    void enter(String sessionId, @DestinationVariable String gameId){
-        matchService.enterGame(sessionId,gameId);
+    @MessageMapping("/enter/{groupId}/{memberId}")
+    void enter(@DestinationVariable String memberId, @DestinationVariable String groupId){
+        System.out.println("enter memberId = " + memberId);
+        matchService.enterGame(memberId,groupId);
     }
 }

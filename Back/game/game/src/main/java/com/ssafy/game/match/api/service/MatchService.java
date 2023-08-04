@@ -29,22 +29,25 @@ public class MatchService {
         this.matchMemberQueue = new ArrayDeque<>();
     }
 
-    public void createMatchMemberBySessionId(String sessionId){
-        Member matchMember = new Member(sessionId);
+    public void createMatchMemberByMemberId(String memberId){
+        Member matchMember = new Member(memberId);
 
         matchMemberQueue.offer(matchMember);
         this.matchMemberSession.insertMember(matchMember);
     }
 
-    public void deleteMatchMemberBySessionId(String sessionId){
-        this.matchMemberSession.deleteMemberBySessionId(sessionId);
+    public void deleteMatchMemberByMemberId(String memberId){
+        this.matchMemberSession.deleteMemberByMemberId(memberId);
     }
 
-    public void match(){
-        if(matchMemberQueue.size()<GameSetting.MAX_GAMEMEMBER_COUNT) return;
+    public boolean matchable(){
+        if(matchMemberQueue.size()<GameSetting.MAX_GAMEMEMBER_COUNT) return false;
 
+        return true;
+    }
+
+    public void sendMatchResult(List<Member> groupMemberList){
         try{
-            List<Member> groupMemberList = Optional.of(getGroupMemberList()).get();
             Group group = groupRepository.createNewGroup();
             sendMatchStatusToGroupMembers(groupMemberList, group,MatchStatus.MATCHED);
 
@@ -66,27 +69,22 @@ public class MatchService {
                 Thread.sleep(1000);
             }
 
-            /**
-             * ToDo Game 옵저버 패턴으로 변경해야 함
-             */
+            Collection<Member> enterGroupMemberList = group.getMembers().values();
 
-            sendMatchStatusToGroupMembers(groupMemberList, group,MatchStatus.MATCHING);
-            for(Member member : groupMemberList){
+            sendMatchStatusToGroupMembers(enterGroupMemberList, group,MatchStatus.MATCHING);
+
+            for(Member member : group.getMembers().values()){
                 if(member.isConnected()){
                     this.matchMemberQueue.offerFirst(member);
                 }
             }
-
             groupRepository.deleteGroupByGroupId(group.getGroupId());
-            System.out.println("Game Deleted");
-        }catch (NullPointerException e){
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        }catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private synchronized List<Member> getGroupMemberList(){
+    public synchronized List<Member> getGroupMemberList(){
         Member matchMember;
         List<Member> groupMemberList = new ArrayList<>(GameSetting.MAX_GAMEMEMBER_COUNT);
 
@@ -111,29 +109,29 @@ public class MatchService {
         return null;
     }
 
-    public void enterGame(String sessionId, String gameId){
-        groupRepository.findGroupByGroupId(gameId)
+    public void enterGame(String memberId, String groupId){
+        groupRepository.findGroupByGroupId(groupId)
                 .getMembers()
-                .put(sessionId,matchMemberSession.findBySessionId(sessionId));
+                .put(memberId,matchMemberSession.findByMemberId(memberId));
     }
 
-    private void sendObjectToGroupMembers(List<Member> groupMemberList, Object object){
+    private void sendObjectToGroupMembers(Collection<Member> groupMemberList, Object object){
         for(Member groupMember : groupMemberList){
             messageSender.sendObjectToMember(
-                    groupMember.getSessionId(),
+                    groupMember.getMemberId(),
                     "/queue/match",
                     object
             );
         }
     }
 
-    private void sendMatchStatusToGroupMembers(List<Member> groupMemberList, Group group, int matchStatus){
+    private void sendMatchStatusToGroupMembers(Collection<Member> groupMemberList, Group group, int matchStatus){
         for(Member groupMember : groupMemberList){
             messageSender.sendObjectToMember(
-                    groupMember.getSessionId(),
+                    groupMember.getMemberId(),
                     "/queue/match",
                     new MatchResponse(
-                            groupMember.getSessionId(),
+                            groupMember.getMemberId(),
                             group.getGroupId(),
                             matchStatus
                     )

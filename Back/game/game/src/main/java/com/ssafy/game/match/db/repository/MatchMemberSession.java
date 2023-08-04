@@ -14,15 +14,15 @@ public class MatchMemberSession {
     }
 
     public void insertMember(Member matchMember){
-        session.put(matchMember.getSessionId(), matchMember);
+        session.put(matchMember.getMemberId(), matchMember);
     }
 
-    public void deleteMemberBySessionId(String sessionId){
-        this.session.get(sessionId).disconnect();
-        this.session.remove(sessionId);
+    public void deleteMemberByMemberId(String memberId){
+        this.session.get(memberId).disconnect();
+        this.session.remove(memberId);
     }
 
-    public Member findBySessionId(String sessionId){
-        return session.get(sessionId);
+    public Member findByMemberId(String memberId){
+        return session.get(memberId);
     }
 }
