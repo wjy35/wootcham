@@ -1,11 +1,13 @@
 package com.ssafy.wcc.domain.member.application.service;
 
 import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
+import com.ssafy.wcc.domain.member.application.dto.response.MemberInfoResponse;
+import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
 import com.ssafy.wcc.domain.member.application.mapper.MemberMapper;
 import com.ssafy.wcc.domain.member.db.entity.Member;
 import com.ssafy.wcc.domain.member.db.repository.MemberRepository;
-import com.ssafy.wcc.domain.jwt.db.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,46 +23,77 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberMapper memberMapper;
 
-//    private final JwtUtil jwtUtil;
-
-    private final TokenRepository tokenRepository;
 
     @Override
     public void memberSignUp(MemberRequest signupInfo) {
         // 비밀번호에 암호 적용
-//        String encodePassword = passwordEncoder.encode(signupInfo.getPassword());
-
         Member member = memberMapper.memberRequestToMember(signupInfo);
-//        member.updatePassword(encodePassword);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String securePassword = encoder.encode(member.getPassword());
 
-        Member saveMember = memberRepository.save(member);
+        member.setPassword(securePassword);
+
+        memberRepository.save(member);
+
+        // report 생성
+        // notice 생성
+        // record 생성
+        // member_item 생성
     }
 
     @Override
-    public void memberLogin(MemberRequest loginInfo) throws RuntimeException{
-        // DB에서 같은 이메일을 가진 유저 검색
+    public Long memberLogin(MemberRequest loginInfo) throws RuntimeException {
         Optional<Member> findMember = memberRepository.findByEmail(loginInfo.getEmail());
-
-//        if (passwordEncoder.matches(loginInfo.getPassword(), findMember.getPassword())) { // 비밀번호가 일치하는 경우
-        if(!findMember.isPresent()){
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (!findMember.isPresent()) {
             throw new RuntimeException("없는 아이디입니다.");
         }
-        if(!loginInfo.getPassword().equals(findMember.get().getPassword())) {
+        if (!encoder.matches(loginInfo.getPassword(), findMember.get().getPassword())) {
             throw new RuntimeException("잘못된 비밀번호입니다.");
+        }
+        return findMember.get().getId();
+    }
+
+    @Override
+    public void memberDelete(String id) throws RuntimeException {
+        memberRepository.deleteById(Long.parseLong(id));
+    }
+
+    @Override
+    public void memberUpdate(MemberRequest memberRequest, String id) {
+        Optional<Member> member = memberRepository.findById(Long.parseLong(id));
+        if (member.isPresent()) {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String securePassword = encoder.encode(memberRequest.getPassword());
+            member.get().setNickname(memberRequest.getNickname());
+            member.get().setPassword(securePassword);
+            memberRepository.save(member.get());
         }
     }
 
     @Override
-    // 이메일 중복 검사
     public boolean checkEmail(String email) {
         return memberRepository.existsByEmail(email);
     }
 
 
-    // header에서 가져온 refreshToken을 키값으로 redis에서 email조회
-    // redis namespace 나눈 뒤 구현
     @Override
-    public String getMemberEmail(String refreshToken) {
+    public MemberInfoResponse memberInfoResponse(Long id) throws RuntimeException {
+        Optional<Member> findMember = memberRepository.findById(id);
+        if (findMember.isPresent()) {
+            int report = findMember.get().getReports().get(0).getReport();
+            MemberInfoResponse memberInfoResponse = memberMapper.toMemberInfoResponse(findMember.get(), report);
+            return memberInfoResponse;
+        }
         return null;
+    }
+
+    @Override
+    public boolean checkNickname(String nickname) throws RuntimeException {
+        long count = memberRepository.countByNickname(nickname);
+        if(count == 0){
+            return true;
+        }
+        return false;
     }
 }
