@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Embeddable
 public class MemberItemPK implements Serializable {
     @Column(name="collection_id")
-    private Long collectionId;
+    private int collectionId;
 
     @Column(name="member_id")
     private Long memberId;

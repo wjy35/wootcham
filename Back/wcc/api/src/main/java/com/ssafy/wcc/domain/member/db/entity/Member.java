@@ -45,11 +45,14 @@ public class Member extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Report> reports = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Record> records = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Notice> notices = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<MemberItem> memberItems = new ArrayList<>();
 
     @Builder
     public Member(long id, String email, String password, String nickname, int point, int money, int admin, int suspensionDay, LocalDate currentLogin) {
