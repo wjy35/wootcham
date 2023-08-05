@@ -20,7 +20,7 @@ services:
 
   app:
     container_name: wcc_game
-    image: wcc_game
+    image: wcc_game_server
     ports:
        - 8090:8080
     depends_on:
