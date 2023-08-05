@@ -12,7 +12,7 @@ services:
 
   app:
     container_name: wcc_api
-    image: wcc_api
+    image: wcc_api_server
     ports:
       - 8080:8080
     depends_on:
