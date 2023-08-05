@@ -1,17 +1,18 @@
-package com.ssafy.wcc.common.util;
+package com.ssafy.wcc.domain.member.db.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.time.Duration;
 
-@Service
+@Repository
 @RequiredArgsConstructor
-public class RedisUtil {
+public class EmailRepository {
 
     private final StringRedisTemplate redisTemplate;
+
     public String getData(String key) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         return valueOperations.get(key);
@@ -32,4 +33,6 @@ public class RedisUtil {
     public void deleteData(String key) {
         redisTemplate.delete(key);
     }
+
+
 }
