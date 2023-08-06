@@ -220,4 +220,6 @@ public class MemberController {
             return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
         }
     }
+
+
 }

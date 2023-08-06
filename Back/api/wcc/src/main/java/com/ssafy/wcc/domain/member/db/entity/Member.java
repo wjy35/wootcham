@@ -42,7 +42,7 @@ public class Member extends BaseEntity implements UserDetails {
     @Column(name = "current_login")
     private LocalDate currentLogin;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member")
     private List<Report> reports = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
