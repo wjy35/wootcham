@@ -95,8 +95,10 @@ public class CollectionController {
 
         try {
             collectionItemService.buy(Long.parseLong(id),collectionId);
+            res.put("isSuccess",true);
             return new ResponseEntity<>(res, HttpStatus.OK);
         }catch (Exception e){
+            res.put("isSuccess",false);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
