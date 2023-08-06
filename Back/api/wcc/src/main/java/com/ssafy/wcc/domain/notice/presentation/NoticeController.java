@@ -1,6 +1,8 @@
 package com.ssafy.wcc.domain.notice.presentation;
 
+import com.ssafy.wcc.common.exception.WCCException;
 import com.ssafy.wcc.domain.jwt.application.service.TokenService;
+import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeListResponse;
 import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeResponse;
 import com.ssafy.wcc.domain.notice.application.service.NoticeService;
 import io.swagger.annotations.Api;
@@ -41,7 +43,7 @@ public class NoticeController {
             @ApiResponse(code=404, message = "공지사항 조회 실패"),
     })
     public ResponseEntity<?> listNoticeForUsers(HttpServletRequest req) {
-        log.info("listNoticeForUsers controller 진입");
+        logger.info("listNoticeForUsers controller 진입");
         Map<String, Object> res = new HashMap<>();
         String accessToken = req.getHeader("access-token");
         String id = tokenService.getAccessTokenId(accessToken);
@@ -51,7 +53,28 @@ public class NoticeController {
             res.put("data", list);
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (RuntimeException e) {
-            log.info("여기야여기");
+            logger.info("여기야여기");
+            res.put("isSuccess", false);
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/list")
+    @ApiOperation("관리자. 공지 목록 조회")
+    @ApiResponses({
+            @ApiResponse(code=200, message = "공지사항 조회 성공"),
+            @ApiResponse(code=404, message = "공지사항 조회 실패"),
+    })
+    public ResponseEntity<?> listNoticeForAdmin(HttpServletRequest req) {
+        log.info("listNoticeForAdmin controller 진입");
+        Map<String, Object> res = new HashMap<>();
+        String accessToken = req.getHeader("access-token");
+        try {
+            List<NoticeListResponse> list = noticeService.getNoticeListForAdmin(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
+            res.put("isSuccess", true);
+            res.put("data", list);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (WCCException e) {
             res.put("isSuccess", false);
             return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
         }

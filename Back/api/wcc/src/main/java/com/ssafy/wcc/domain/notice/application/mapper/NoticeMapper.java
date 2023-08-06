@@ -1,5 +1,6 @@
 package com.ssafy.wcc.domain.notice.application.mapper;
 
+import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeListResponse;
 import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeResponse;
 import com.ssafy.wcc.domain.notice.db.entity.Notice;
 import org.mapstruct.Mapper;
@@ -10,4 +11,6 @@ public interface NoticeMapper {
     NoticeMapper INSTANCE = Mappers.getMapper(NoticeMapper.class);
 
     public NoticeResponse toNoticeResponse(Notice notice);
+
+    public NoticeListResponse toNoticeListResponse(Notice notice);
 }

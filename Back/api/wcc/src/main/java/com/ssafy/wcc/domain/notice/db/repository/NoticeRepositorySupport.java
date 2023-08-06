@@ -32,4 +32,10 @@ public class NoticeRepositorySupport extends QuerydslRepositorySupport {
                 .limit(lim)
                 .fetch();
     }
+
+    public List<Notice> listNoticeForAdmin() {
+        return jpaQueryFactory.select(Projections.bean(Notice.class, notice.id, notice.subject, notice.date))
+                .from(notice)
+                .fetch();
+    }
 }
