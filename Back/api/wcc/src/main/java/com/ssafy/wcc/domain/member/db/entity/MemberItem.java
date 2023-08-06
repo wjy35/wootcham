@@ -3,7 +3,9 @@ package com.ssafy.wcc.domain.member.db.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.wcc.domain.collection.db.entity.CollectionItem;
 import com.ssafy.wcc.domain.record.db.entity.RecordKey;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -30,4 +32,6 @@ public class MemberItem {
     @ManyToOne
     @MapsId("collectionId")
     private CollectionItem collection;
+
+
 }

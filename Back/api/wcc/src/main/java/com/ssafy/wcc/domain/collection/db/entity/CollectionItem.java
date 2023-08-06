@@ -14,7 +14,7 @@ import java.util.List;
 public class CollectionItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(nullable = false)
     private int type;
@@ -32,7 +32,7 @@ public class CollectionItem {
     private List<MemberItem> memberItems = new ArrayList<>();
 
     @Builder
-    public CollectionItem(int id, int type, String name, int price, String description, List<MemberItem> memberItems) {
+    public CollectionItem(Long id, int type, String name, int price, String description, List<MemberItem> memberItems) {
         this.id = id;
         this.type = type;
         this.name = name;

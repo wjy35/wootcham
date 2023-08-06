@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface CollectionItemRepository extends JpaRepository<CollectionItem, Long> {
     List<CollectionItem> findAll();
+
 }

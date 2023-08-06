@@ -30,8 +30,6 @@ public class CollectionController {
 
     private final TokenService tokenService;
 
-    private final MemberItemService memberItemService;
-
     private final CollectionItemService collectionItemService;
 
     @GetMapping
@@ -40,42 +38,66 @@ public class CollectionController {
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패"),
     })
-    public ResponseEntity<Map<String, Object>> collectionList(
-            HttpServletRequest req
-            ) {
+    public ResponseEntity<Map<String, Object>> collectionList( HttpServletRequest req) {
         Map<String, Object> res = new HashMap<>();
         String accessToken = req.getHeader("access-token");
         String id = tokenService.getAccessTokenId(accessToken);
-        List<CollectionItem> list = collectionItemService.getList(Long.parseLong(id));
 
-        JSONArray arr = new JSONArray();
-        for(int i=0; i<list.size(); i++){
-            JSONObject data = new JSONObject();
-            CollectionItem collectionItem = list.get(i);
-            data.put("id",collectionItem.getId());
-            data.put("type",collectionItem.getType());
-            data.put("name",collectionItem.getName());
-            data.put("price",collectionItem.getPrice());
-            data.put("description",collectionItem.getDescription());
-            data.put("wear",false);
-            data.put("buy",false);
-            for(int j=0; j<collectionItem.getMemberItems().size(); j++){
-                if(collectionItem.getMemberItems().get(j).getMember().getId() == Long.parseLong(id)) {
-                    if(collectionItem.getMemberItems().get(j).isWear()){
-                        data.put("wear",true);
-                    }
+        try {
+            List<CollectionItem> list = collectionItemService.getList(Long.parseLong(id));
 
-                    if(collectionItem.getMemberItems().get(j).isBuy()){
-                        data.put("buy",true);
+            JSONArray arr = new JSONArray();
+            for(int i=0; i<list.size(); i++){
+                JSONObject data = new JSONObject();
+                CollectionItem collectionItem = list.get(i);
+                data.put("id",collectionItem.getId());
+                data.put("type",collectionItem.getType());
+                data.put("name",collectionItem.getName());
+                data.put("price",collectionItem.getPrice());
+                data.put("description",collectionItem.getDescription());
+                data.put("wear",false);
+                data.put("buy",false);
+                for(int j=0; j<collectionItem.getMemberItems().size(); j++){
+                    if(collectionItem.getMemberItems().get(j).getMember().getId() == Long.parseLong(id)) {
+                        if(collectionItem.getMemberItems().get(j).isWear()){
+                            data.put("wear",true);
+                        }
+
+                        if(collectionItem.getMemberItems().get(j).isBuy()){
+                            data.put("buy",true);
+                        }
+                        data.put("ssss", collectionItem.getMemberItems().get(j).getMember().getId());
                     }
-                    data.put("ssss", collectionItem.getMemberItems().get(j).getMember().getId());
                 }
-            }
 
-            arr.add(data);
+                arr.add(data);
+            }
+            res.put("isSuccess", true);
+            res.put("data",arr);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        res.put("isSuccess", true);
-        res.put("data",arr);
-        return new ResponseEntity<>(res, HttpStatus.OK);
+
+    }
+
+    @PostMapping("/{collectionId}")
+    @ApiOperation(value = "도감 아이템 구매")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 404, message = "조회 실패"),
+    })
+    public ResponseEntity<Map<String, Object>> buy(@PathVariable int collectionId, HttpServletRequest req) {
+        Map<String, Object> res = new HashMap<>();
+
+        String accessToken = req.getHeader("access-token");
+        String id = tokenService.getAccessTokenId(accessToken);
+
+        try {
+            collectionItemService.buy(Long.parseLong(id),collectionId);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

@@ -8,7 +8,6 @@ import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
 import com.ssafy.wcc.domain.member.application.service.EmailService;
 import com.ssafy.wcc.domain.member.application.service.MemberService;
 import com.ssafy.wcc.domain.jwt.application.service.TokenService;
-import com.ssafy.wcc.domain.member.db.entity.Member;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -28,13 +27,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MemberController {
 
-    //    private final JwtUtil jwtService;
     private final TokenService tokenService;
 
     private final MemberService memberService;
 
     private final EmailService emailService;
-
 
     @PostMapping("/join")
     @ApiOperation(value = "회원 가입")

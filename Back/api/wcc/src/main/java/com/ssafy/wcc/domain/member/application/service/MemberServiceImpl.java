@@ -34,7 +34,6 @@ public class MemberServiceImpl implements MemberService {
         member.setPassword(securePassword);
 
         memberRepository.save(member);
-
         // report 생성
         // notice 생성
         // record 생성
