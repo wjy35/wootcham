@@ -34,9 +34,7 @@ public class CollectionItemServiceImpl implements CollectionItemService{
         MemberItemRequest memberItemRequest = MemberItemRequest.builder().buy(true).wear(false).memberId(memberId).collectionId(collectionId).build();
 
         MemberItem memberItem = memberItemMapper.memberItemRequestToMemberItem(memberItemRequest);
-
         Optional<Member> member = memberRepository.findById(memberId);
-
         if(member.isPresent()){
             int myMoney = member.get().getMoney();
             int itemPrice = this.getPrice(collectionId);

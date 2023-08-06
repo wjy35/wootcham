@@ -81,20 +81,21 @@ public class CollectionController {
 
     }
 
-    @PostMapping("/{collectionId}")
+    @PostMapping()
     @ApiOperation(value = "도감 아이템 구매")
     @ApiResponses({
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패"),
     })
-    public ResponseEntity<Map<String, Object>> buy(@PathVariable int collectionId, HttpServletRequest req) {
+    public ResponseEntity<Map<String, Object>> buy(@RequestBody Map<String,Integer> collectionId, HttpServletRequest req) {
+
         Map<String, Object> res = new HashMap<>();
 
         String accessToken = req.getHeader("access-token");
         String id = tokenService.getAccessTokenId(accessToken);
 
         try {
-            collectionItemService.buy(Long.parseLong(id),collectionId);
+            collectionItemService.buy(Long.parseLong(id),collectionId.get("collection_id"));
             res.put("isSuccess",true);
             return new ResponseEntity<>(res, HttpStatus.OK);
         }catch (Exception e){
@@ -102,4 +103,5 @@ public class CollectionController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    
 }
