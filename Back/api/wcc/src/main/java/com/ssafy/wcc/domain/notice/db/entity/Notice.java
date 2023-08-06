@@ -12,6 +12,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "notice")
+//@NoArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Notice {
     @Id
@@ -33,4 +34,13 @@ public class Notice {
 
     @ManyToOne
     private Member member;
+
+    @Builder
+    public Notice(String subject, String content, long hit,  Date date, Member member) {
+        this.subject = subject;
+        this.content = content;
+        this.hit = hit;
+        this.date = date;
+        this.member = member;
+    }
 }
