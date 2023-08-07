@@ -9,10 +9,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -23,15 +20,10 @@ import java.util.Map;
 @RestController
 @RequestMapping
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class JwtController {
 
     private final TokenService tokenService;
-
-    @PostMapping("/test")
-    public String test(){
-
-        return "<h1>test 통과</h1>";
-    }
 
     @PostMapping("/refresh")
     @ApiOperation(value = "토큰 갱신")

@@ -26,6 +26,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class MemberController {
 
     private final TokenService tokenService;
@@ -115,13 +116,14 @@ public class MemberController {
             long id = memberService.memberLogin(loginInfo);
             MemberLoginResponse token = tokenService.makeMemberLoginResponse(String.valueOf(id));
             res.put("isSuccess", true);
-            res.put("access-token", token.getAccess_token());
-            res.put("refresh-token", token.getRefresh_token());
+            res.put("access_token", token.getAccess_token());
+            res.put("refresh_token", token.getRefresh_token());
 
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            res.put("isSuccess", false);
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
         }
 
     }
@@ -135,14 +137,15 @@ public class MemberController {
     public ResponseEntity<Map<String, Object>> logout(HttpServletRequest req) {
         Map<String, Object> res = new HashMap<>();
         try{
-            String accessToken = req.getHeader("access-token");
-            String refreshToken = req.getHeader("refresh-token");
+            String accessToken = req.getHeader("access_token");
+            String refreshToken = req.getHeader("refresh_token");
             tokenService.saveLogoutToken(accessToken);
             tokenService.deleteRefreshToken(refreshToken);
             res.put("isSuccess", true);
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (RuntimeException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            res.put("isSuccess", false);
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -162,7 +165,8 @@ public class MemberController {
             res.put("data", memberInfoResponse);
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (RuntimeException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            res.put("isSuccess", false);
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -174,14 +178,15 @@ public class MemberController {
     })
     public ResponseEntity<Map<String, Object>> memberUpdate(@RequestBody MemberRequest memberRequest, HttpServletRequest req) {
         Map<String, Object> res = new HashMap<>();
-        String accessToken = req.getHeader("access-token");
+        String accessToken = req.getHeader("access_token");
         String id = tokenService.getAccessTokenId(accessToken);
         try{
             memberService.memberUpdate(memberRequest, id);
             res.put("isSuccess", true);
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (RuntimeException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            res.put("isSuccess", false);
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -193,14 +198,15 @@ public class MemberController {
     })
     public ResponseEntity<Map<String, Object>> memberDelete(HttpServletRequest req) {
         Map<String, Object> res = new HashMap<>();
-        String accessToken = req.getHeader("access-token");
+        String accessToken = req.getHeader("access_token");
         String id = tokenService.getAccessTokenId(accessToken);
         try{
             memberService.memberDelete(id);
             res.put("isSuccess", true);
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (RuntimeException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            res.put("isSuccess", false);
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
         }
     }
 

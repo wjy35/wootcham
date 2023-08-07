@@ -2,6 +2,7 @@ package com.ssafy.wcc.domain.report.db.entity;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Embeddable
+@RequiredArgsConstructor
 public class ReportPK implements Serializable {
 
     private LocalDate date;

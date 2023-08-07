@@ -26,6 +26,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/collection")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class CollectionController {
 
     private final TokenService tokenService;
