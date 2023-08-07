@@ -25,8 +25,7 @@ public class RankServiceImpl implements RankService{
         List<Member> rankList = repository.findTop10ByOrderByPointDesc();
         List<MemberInfoResponse> result = new ArrayList<>();
         for(int i=0; i<rankList.size(); i++){
-            int report = rankList.get(i).getReports().get(0).getReport();
-            MemberInfoResponse memberInfoResponse = memberMapper.toMemberInfoResponse(rankList.get(i), report);
+            MemberInfoResponse memberInfoResponse = memberMapper.toMemberInfoResponse(rankList.get(i));
             result.add(memberInfoResponse);
         }
         return result;

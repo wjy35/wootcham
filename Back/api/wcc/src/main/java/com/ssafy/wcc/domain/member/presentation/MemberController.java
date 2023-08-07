@@ -1,6 +1,7 @@
 package com.ssafy.wcc.domain.member.presentation;
 
 
+import com.ssafy.wcc.domain.collection.application.service.CollectionItemService;
 import com.ssafy.wcc.domain.member.application.dto.request.EmailVerifyRequest;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
 import com.ssafy.wcc.domain.member.application.dto.response.MemberInfoResponse;
@@ -32,6 +33,8 @@ public class MemberController {
     private final MemberService memberService;
 
     private final EmailService emailService;
+
+    private final CollectionItemService collectionItemService;
 
     @PostMapping("/join")
     @ApiOperation(value = "회원 가입")
@@ -220,6 +223,5 @@ public class MemberController {
             return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
         }
     }
-
 
 }

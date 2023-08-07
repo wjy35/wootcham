@@ -33,6 +33,7 @@ public class CollectionItemServiceImpl implements CollectionItemService{
 
     @Override
     public boolean buy(Long memberId, int collectionId) {
+
         MemberItemRequest memberItemRequest = MemberItemRequest.builder().buy(true).wear(false).memberId(memberId).collectionId(collectionId).build();
 
         MemberItem memberItem = memberItemMapper.memberItemRequestToMemberItem(memberItemRequest);
@@ -46,10 +47,10 @@ public class CollectionItemServiceImpl implements CollectionItemService{
                 memberItemRepository.save(memberItem);
                 return true;
             }else{
-                throw new RuntimeException();
+                throw new RuntimeException("돈이 없어요");
             }
         }
-        throw new RuntimeException();
+        throw new RuntimeException("구매 실패");
     }
 
     @Override

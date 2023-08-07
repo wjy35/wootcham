@@ -14,8 +14,7 @@ import org.mapstruct.factory.Mappers;
 public interface MemberMapper {
     MemberMapper INSTANCE = Mappers.getMapper(MemberMapper.class);
 
-    @Mapping(source="report", target="report")
-    public MemberInfoResponse toMemberInfoResponse(Member member, Integer report);
+    public MemberInfoResponse toMemberInfoResponse(Member member);
 
     Member memberRequestToMember(MemberRequest request);
 
