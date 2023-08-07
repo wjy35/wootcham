@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<video :id="streamManager.stream.connection.connectionId" autoplay/>
-		<button @click="stopDetect">stop</button>
-		<button @click="startDetect">start</button>
+		<!-- <button @click="stopDetect">stop</button>
+		<button @click="startDetect">start</button> -->
 	</div>
 </template>
 
