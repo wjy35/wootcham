@@ -1,9 +1,9 @@
 .base-timer {
-    position: relative;
+    position: absolute;
     width: 15vw;
     height: 15vh;
-    top: 20px;
-    right: 10px;
+    top: 100px;
+    right: 30px;
     display: flex;
     justify-content: center;
     float:right;
@@ -17,7 +17,7 @@
   }
   .base-timer__path-elapsed {
     stroke-width: 10px;
-    stroke: grey;
+    stroke: white;
   }
   .base-timer__path-remaining {
     stroke-width: 10px;
@@ -29,18 +29,18 @@
     stroke: currentColor;
   }
   .base-timer__path-remaining.green {
-    color: #41b883;
+    color: #FF7B27;
   }
   .base-timer__path-remaining.orange {
     color: orange;
   }
   .base-timer__path-remaining.red {
-    color: red;
+    color: #F27059;
   }
   .base-timer__label {
     position: absolute;
-    color: rgba(112.62499898672104, 69.4708514213562, 55.84322847425938, 1);
-    font-family: "Black Han Sans";
+    color: #F27059;
+    font-family: "Luckiest Guy";
     width: 15vw;
     height: 15vh;
     top: auto;
