@@ -4,13 +4,25 @@
       <img src="@/assets/images/notice_banner.png" alt="notice_banner">
     </div>
 
-    <div class="content">
+
+    <div class="scroll-snap-card">
+      <div class="slide one">
+          <div class="item">
+            <div class="notice-card flex">
+              <div class="heading">{{ noticeTitle }}</div>
+              <div class="para_date">{{ noticeDate }}</div>
+            </div>
+            <div class="para_content">{{ noticeContent }}</div>
+          </div>
       </div>
-        <div class="flex ">
-          <div class="heading">{{ noticeTitle }}</div>
-          <div class="para_date">{{ noticeDate }}</div>
-        </div>
-        <div class="para_content">{{ noticeContent }}</div>
+      <div class="slide two">
+          <p class="tip">Scroll On Me</p>
+      </div>
+      <div class="slide three">
+          <p class="tip">Scroll On Me</p>
+      </div>
+    </div>
+
     </div>
         
 </template>
@@ -54,7 +66,48 @@ export default {
   margin-top: -60px;
 }
 
-.content {
 
+/* 메인 콘텐츠 */
+.one {
+  background-color: #f43f5e;
+}
+
+.two {
+  background-color: #3b82f6;
+}
+
+.three {
+  background-color: #22c55e;
+}
+
+.scroll-snap-card {
+  height: 100%;
+  width: 100%;
+  scroll-snap-type: y mandatory;
+  overflow: auto;
+  border-radius: 10px;
+}
+
+.scroll-snap-card .slide {
+  width: 100%;
+  height: 100%;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px 50px 0;
+}
+
+.scroll-snap-card .slide .item .notice-card {
+  font-size: 2em;
+  color: white;
+  font-weight: 400;
+}
+
+.scroll-snap-card .slide .item .para-content {
+  font-size: 1em;
+  color: white;
+  font-weight: 700;
 }
 </style>

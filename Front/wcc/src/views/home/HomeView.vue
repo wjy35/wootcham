@@ -1,43 +1,44 @@
 <template>
-    <div>
-        <div id="inner">
-            <!-- HEADER -->
-            <header>
-                <a href="/home" class="logo">WootCham Club</a>
+    <div id="inner">
+        <!-- HEADER -->
+        <header>
+            <a href="/home" class="logo">WootCham Club</a>
 
-                <div @click="handleStartGame" class="header-center">{{ headerText }}</div>
-                <div class="logout-btn">
-                    <a href="" v-if="showLogOutButton">로그아웃</a>
-                </div>
-            </header>
+            <div class="header-center">
+                <span @click="handleStartGame">{{ headerText }}</span>
+            </div>
 
-            <!-- CONTENT -->
-            <div class="main-container">
-                <SideBar @selectProfile="selectProfile" @selectStart="selectStart" @selectNotice="selectNotice"
-                    @selectShop="selectShop" @selectRanking="selectRanking" @selectInfo="selectInfo" />
+            <div class="logout-btn">
+                <div @click="logout">Log Out</div>
+                <!-- 로그아웃 기능 추가하여야 함 -->
+            </div>
+        </header>
 
-                <!-- Conditional rendering based on the selectedScreen data -->
-                <div v-if="selectedScreen === 'ProfileWindowScreen'">
-                    <ProfileWindow />
-                </div>
-                <div v-if="selectedScreen === 'StartWindowScreen'">
-                    <StartWindow />
-                </div>
-                <div v-else-if="selectedScreen === 'NoticeWindowScreen'">
-                    <NoticeWindow />
-                </div>
-                <div v-else-if="selectedScreen === 'ShopWindowScreen'">
-                    <ShopWindow />
-                </div>
-                <div v-else-if="selectedScreen === 'RankingWindowScreen'">
-                    <RankingWindow />
-                </div>
-                <div v-else-if="selectedScreen === 'InfoWindowScreen'">
-                    <InfoWindow />
-                </div>
+        <!-- CONTENT -->
+        <div class="main-container">
+            <SideBar @selectProfile="selectProfile" @selectStart="selectStart" @selectNotice="selectNotice"
+                @selectShop="selectShop" @selectRanking="selectRanking" @selectInfo="selectInfo" />
+
+            <!-- Conditional rendering based on the selectedScreen data -->
+            <div v-if="selectedScreen === 'ProfileWindowScreen'">
+                <ProfileWindow />
+            </div>
+            <div v-if="selectedScreen === 'StartWindowScreen'">
+                <StartWindow />
+            </div>
+            <div v-else-if="selectedScreen === 'NoticeWindowScreen'">
+                <NoticeWindow />
+            </div>
+            <div v-else-if="selectedScreen === 'ShopWindowScreen'">
+                <ShopWindow />
+            </div>
+            <div v-else-if="selectedScreen === 'RankingWindowScreen'">
+                <RankingWindow />
+            </div>
+            <div v-else-if="selectedScreen === 'InfoWindowScreen'">
+                <InfoWindow />
             </div>
         </div>
-
     </div>
 </template>
   
@@ -63,8 +64,7 @@ export default {
     },
     data() {
         return {
-            headerText: "게임 시작하기",
-            showLogoutButton: false, // 카메라가 켜지기 전까지 logout 버튼은 숨겨진다. 
+            headerText: "게임 시작하기", // 카메라가 켜지기 전까지 logout 버튼은 숨겨진다. 
             selectedScreen: 'StartWindowScreen', // 초기화면은 StartWindowScreen
         };
     },
@@ -72,16 +72,15 @@ export default {
         // 카메라가 켜졌을 때 실행되는 로직 (카메라 사용 가능 여부 감지)
         handleCameraOn() {
             this.headerText = "게임 시작";
-            this.showLogoutButton = true;
         },
         // '게임 시작' 버튼이 누르면 '매칭중입니다' 표시 
         handleStartGame() {
             this.headerText = "매칭중입니다";
             // gameroom 으로
-            this.$router.push({name: "gameprepare"});
+            this.$router.push({name: "gameroom"});
         },
-        handleLogout() {
-            // 로그아웃 로직 
+        logout() {
+            this.$router.push({name: "login"});
         },
         selectProfile() {
             this.selectedScreen = 'ProfileWindowScreen';
@@ -120,7 +119,7 @@ export default {
 }
 
 .logo:hover {
-    color: #FFF2EA;
+    color: cornsilk;
 }
 
 header {
@@ -153,21 +152,29 @@ header {
 }
 
 .header-center:hover {
-    cursor: pointer;
     transform: scale(0.96);
+}
+
+.header-center span {
+    cursor: pointer;
 }
 
 .logout-btn {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 7px;
+    right: 80px;
     margin: 10px 20px;
-    color: #FF7B27;
-    font-size: 25px;
+    color: #F27059;
+    font-size: 20px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
     text-decoration: none;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    transform: scale(0.96);
 }
 
 .main-container {

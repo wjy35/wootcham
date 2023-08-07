@@ -24,11 +24,21 @@
 
     <div class="sidebar-menus">
       <div>
-        <div @click="selectStart" class="start-button sidebar-menu">게임 시작</div>
-        <div @click="selectNotice" class="notice-button sidebar-menu">공지</div>
-        <div @click="selectShop"  class="shop-button sidebar-menu">도감</div>
-        <div @click="selectRanking" class="ranking-button sidebar-menu">랭킹</div>
-        <div @click="selectInfo" class="info-button sidebar-menu">게임 설명</div>
+        <div @click="selectStart"
+            class="start-button sidebar-menu">게임 시작
+        </div>
+        <div @click="selectNotice"
+          class="-button sidebar-menu">공지
+        </div>
+        <div @click="selectShop"  
+              class="shop-button sidebar-menu">도감
+        </div>
+        <div @click="selectRanking" 
+              class="ranking-button sidebar-menu">랭킹
+        </div>
+        <div @click="selectInfo" 
+              class="info-button sidebar-menu">설명
+        </div>
       </div>
     </div>
   </div>
@@ -40,6 +50,7 @@ export default {
     return {
       username: "username",
       gamepoint: "1000",
+      activeMenuItem: ''
     };
   },
   methods: {
