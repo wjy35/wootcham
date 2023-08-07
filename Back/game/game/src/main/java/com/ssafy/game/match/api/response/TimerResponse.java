@@ -6,12 +6,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class LastTimeResponse {
+public class TimerResponse {
     private boolean isSuccess;
     private int second;
     private int matchStatus;
 
-    public LastTimeResponse(int second) {
+    public TimerResponse(int second) {
         this.isSuccess = true;
         this.second = second;
         this.matchStatus = MatchStatus.MATCHED;

@@ -17,8 +17,8 @@ public class GameProcessor implements Runnable{
     public void run() {
         waitLoadGame();
         sender.sendObjectToAll("/topic/game/"+gameSession.getSessionId(),"hello");
-
     }
+
     private boolean allMemberLoadGame(){
         if(gameSession.getGameMembers().size()== GameSetting.MAX_GAMEMEMBER_COUNT)return true;
         return false;

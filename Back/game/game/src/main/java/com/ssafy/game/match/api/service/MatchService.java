@@ -7,7 +7,7 @@ import com.ssafy.game.match.api.response.GameSessionResponse;
 import com.ssafy.game.match.db.entity.Group;
 import com.ssafy.game.match.db.repository.GroupRepository;
 import com.ssafy.game.match.api.request.Member;
-import com.ssafy.game.match.api.response.LastTimeResponse;
+import com.ssafy.game.match.api.response.TimerResponse;
 import com.ssafy.game.match.api.response.MatchResponse;
 import com.ssafy.game.match.common.GameSetting;
 import com.ssafy.game.match.common.MatchStatus;
@@ -31,7 +31,6 @@ public class MatchService {
 
     private OpenVidu openvidu;
 
-    private final int GAME_ENTER_REQUEST_WAIT_SECOND = 10;
     private final Deque<Member> matchMemberQueue;
     private final MatchMemberSession matchMemberSession;
     private final GroupRepository groupRepository;
@@ -74,13 +73,21 @@ public class MatchService {
             Group group = groupRepository.createNewGroup();
             sendMatchStatusToGroupMembers(groupMemberList, group,MatchStatus.MATCHED);
 
-            int second = GAME_ENTER_REQUEST_WAIT_SECOND;
+            int second = GameSetting.MAX_GAMEMEMBER_ENTER_WAIT_SECOND;
             while(second-->0){
                 sendObjectToGroupMembers(
                         groupMemberList,
-                        new LastTimeResponse(second)
+                        new TimerResponse(second)
                 );
 
+
+                /**
+                 * ToDo
+                 * openvidu 모듈화
+                 * 게임 시작 모듈화 및 이름 수정
+                 * 메세지 보내기 모듈화
+                 * 게임 시작 스레드 관리
+                 */
                 if(group.getMembers().size() == GameSetting.MAX_GAMEMEMBER_COUNT){
                     SessionProperties gameSessionProperties = new SessionProperties.Builder().build();
                     Session openviduSession = openvidu.createSession(gameSessionProperties);
@@ -89,6 +96,7 @@ public class MatchService {
                     GameSession gameSession = new GameSession(gameSessionId);
                     gameSessionRepository.insertGameSession(gameSession);
                     sendGameLoadRequestToAll(groupMemberList,openviduSession);
+
                     GameProcessor gameProcessor = new GameProcessor(gameSession,this.messageSender);
                     Thread thread = new Thread(gameProcessor);
                     thread.start();
