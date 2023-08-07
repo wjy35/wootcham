@@ -7,16 +7,17 @@ import com.ssafy.game.util.MessageSender;
 public class GameProcessor implements Runnable{
     private final GameSession gameSession;
     private final MessageSender sender;
+    private final String gameDestination;
 
     public GameProcessor(GameSession gameSession, MessageSender sender) {
         this.gameSession = gameSession;
         this.sender = sender;
+        this.gameDestination = "/topic/game/"+gameSession.getSessionId();
     }
 
     @Override
     public void run() {
-        waitLoadGame();
-        sender.sendObjectToAll("/topic/game/"+gameSession.getSessionId(),"hello");
+        waitGameLoad();
     }
 
     private boolean allMemberLoadGame(){
@@ -24,10 +25,10 @@ public class GameProcessor implements Runnable{
         return false;
     }
 
-    private void waitLoadGame(){
-        int second = 30;
+    private void waitGameLoad(){
+        int second = GameSetting.MAX_GAME_LOAD_SECOND;
         while(second-->0){
-            sender.sendObjectToAll("/topic/game/"+gameSession.getSessionId(),second);
+            sender.sendObjectToAll(gameDestination,second);
 
             if(allMemberLoadGame()) return;
             try {
@@ -36,6 +37,9 @@ public class GameProcessor implements Runnable{
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    private void waitGameStart(){
 
     }
 
