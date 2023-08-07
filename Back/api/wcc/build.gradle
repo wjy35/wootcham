@@ -71,6 +71,10 @@ dependencies {
 
 	// email
 	implementation 'org.springframework.boot:spring-boot-starter-mail:2.7.0'
+
+	// json
+	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
 }
 
 // queryDSL plugin
