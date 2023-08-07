@@ -18,7 +18,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"email", "nickname"})})
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor
 public class Member extends BaseEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,17 +42,33 @@ public class Member extends BaseEntity implements UserDetails {
     @Column(name = "current_login")
     private LocalDate currentLogin;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member")
     private List<Report> reports = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Record> records = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Notice> notices = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<MemberItem> memberItems = new ArrayList<>();
+
+//    @Builder
+//    public Member(long id, String email, String password, String nickname, int point, int money, int admin, int suspensionDay, LocalDate currentLogin) {
+//        this.id = id;
+//        this.email = email;
+//        this.password = password;
+//        this.nickname = nickname;
+//        this.point = point;
+//        this.money = money;
+//        this.admin = admin;
+//        this.suspensionDay = suspensionDay;
+//        this.currentLogin = currentLogin;
+//    }
+
     @Builder
-    public Member(long id, String email, String password, String nickname, int point, int money, int admin, int suspensionDay, LocalDate currentLogin) {
+    public Member(Long id, String email, String password, String nickname, Integer point, Integer money, Integer admin, Integer suspensionDay, LocalDate currentLogin, List<Report> reports, List<Record> records, List<Notice> notices, List<MemberItem> memberItems) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -62,6 +78,10 @@ public class Member extends BaseEntity implements UserDetails {
         this.admin = admin;
         this.suspensionDay = suspensionDay;
         this.currentLogin = currentLogin;
+        this.reports = reports;
+        this.records = records;
+        this.notices = notices;
+        this.memberItems = memberItems;
     }
 
     public void updateCurrentLogin() {
