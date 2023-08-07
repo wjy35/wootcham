@@ -25,7 +25,6 @@ public class MessageSender {
 
     public void sendObjectToAll(String destination,Object object){
         try {
-            System.out.println(destination);
             String message = objectMapper.writeValueAsString(object);
             sendStringToAll(destination,message);
         } catch (JsonProcessingException e) {

@@ -1,5 +1,8 @@
 package com.ssafy.game.game.api.processor;
 
+import com.ssafy.game.common.GameSessionSetting;
+import com.ssafy.game.game.api.response.GameStatus;
+import com.ssafy.game.game.api.response.GameStatusResponse;
 import com.ssafy.game.game.db.entity.GameSession;
 import com.ssafy.game.match.common.GameSetting;
 import com.ssafy.game.util.MessageSender;
@@ -18,11 +21,11 @@ public class GameProcessor implements Runnable{
     @Override
     public void run() {
         waitGameLoad();
+        waitGameStart();
     }
 
-    private boolean allMemberLoadGame(){
-        if(gameSession.getGameMembers().size()== GameSetting.MAX_GAMEMEMBER_COUNT)return true;
-        return false;
+    private void round(){
+        sendGameStatusResponse(new GameStatusResponse(GameStatus.GAMEMEMBER_ORDER,0));
     }
 
     private void waitGameLoad(){
@@ -40,7 +43,27 @@ public class GameProcessor implements Runnable{
     }
 
     private void waitGameStart(){
+        int second = GameSessionSetting.MAX_GAME_WAIT_SECOND;
+        GameStatusResponse gameStatusResponse = new GameStatusResponse(GameStatus.WAIT_GAME_START,second);
+
+        try{
+            while(second-->0){
+                gameStatusResponse.setSecond(second);
+                sendGameStatusResponse(gameStatusResponse);
+                Thread.sleep(1000);
+            }
+        }catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
+    private void sendGameStatusResponse(GameStatusResponse gameStatusResponse){
+        sender.sendObjectToAll(gameDestination,gameStatusResponse);
+    }
+
+    private boolean allMemberLoadGame(){
+        if(gameSession.getGameMembers().size()== GameSetting.MAX_GAMEMEMBER_COUNT)return true;
+        return false;
+    }
 }
