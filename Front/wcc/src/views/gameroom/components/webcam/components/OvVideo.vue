@@ -15,3 +15,10 @@ export default {
 	},
 };
 </script>
+
+<style scoped>
+	video {
+		width: 100%;
+		height: auto;
+	}
+</style>
