@@ -36,6 +36,39 @@ public class GameProcessor implements Runnable{
 
     private void round(){
         orderGameMember();
+        pickTopicType();
+        pickTopicKeyword();
+        System.out.println("gameSession.getTopics() = " + gameSession.getTopics());
+    }
+
+    private void pickTopicKeyword(){
+        int second = GameSessionSetting.MAX_PICK_TOPIC_KEYWORD_SECOND;
+        GameStatusResponse gameStatusResponse = new GameStatusResponse(GameStatus.PICK_TOPIC_KEYWORD,second);
+
+        try{
+            while(second-->0){
+                gameStatusResponse.setSecond(second);
+                sendGameStatusResponse(gameStatusResponse);
+                Thread.sleep(1000);
+            }
+        }catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void pickTopicType(){
+        int second = GameSessionSetting.MAX_PICK_TOPIC_TYPE_SECOND;
+        GameStatusResponse gameStatusResponse = new GameStatusResponse(GameStatus.PICK_TOPIC_TYPE,second);
+
+        try{
+            while(second-->0){
+                gameStatusResponse.setSecond(second);
+                sendGameStatusResponse(gameStatusResponse);
+                Thread.sleep(1000);
+            }
+        }catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void orderGameMember(){
