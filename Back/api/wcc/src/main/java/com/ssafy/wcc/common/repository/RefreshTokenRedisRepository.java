@@ -16,7 +16,7 @@ public class RefreshTokenRedisRepository {
     public void saveRefreshToken(String refreshToken, String value, Long timeout) {
         ValueOperations<String, String> valueOperations = redisRefreshTokenTemplate.opsForValue();
         valueOperations.set("RefreshToken: "+refreshToken, value);
-        redisRefreshTokenTemplate.expire("RefreshToken: "+refreshToken, timeout, TimeUnit.SECONDS);
+        redisRefreshTokenTemplate.expire("RefreshToken: "+refreshToken, timeout, TimeUnit.MILLISECONDS);
     }
 
     public String getRefreshTokenValue(String key) {
