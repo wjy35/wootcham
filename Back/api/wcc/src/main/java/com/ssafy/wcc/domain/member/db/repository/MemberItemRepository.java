@@ -10,5 +10,5 @@ import java.util.Optional;
 @Transactional
 public interface MemberItemRepository extends JpaRepository<MemberItem, Long> {
     List<MemberItem> findAllByMemberId(Long id);
-
+    Optional<MemberItem> findByMemberIdAndCollectionId(Long memberId, Long collectionId);
 }

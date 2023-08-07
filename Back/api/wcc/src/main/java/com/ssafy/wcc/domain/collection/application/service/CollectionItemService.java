@@ -10,5 +10,6 @@ public interface CollectionItemService {
 
     boolean buy(Long memberId, int collectionId);
 
+    boolean wear(Long memberId, int collectionId);
     int getPrice(int collectionId);
 }

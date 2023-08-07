@@ -98,10 +98,33 @@ public class CollectionController {
             collectionItemService.buy(Long.parseLong(id),collectionId.get("collection_id"));
             res.put("isSuccess",true);
             return new ResponseEntity<>(res, HttpStatus.OK);
+        }catch (RuntimeException e){
+            res.put("isSuccess",false);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping()
+    @ApiOperation(value = "도감 아이템 착용")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "착용 성공"),
+            @ApiResponse(code = 404, message = "착용 실패"),
+    })
+    public ResponseEntity<Map<String, Object>> wear(@RequestBody Map<String,Integer> collectionId, HttpServletRequest req) {
+
+        Map<String, Object> res = new HashMap<>();
+
+        String accessToken = req.getHeader("access-token");
+        String id = tokenService.getAccessTokenId(accessToken);
+
+        try {
+            collectionItemService.wear(Long.parseLong(id),collectionId.get("collection_id"));
+            res.put("isSuccess",true);
+            return new ResponseEntity<>(res, HttpStatus.OK);
         }catch (Exception e){
             res.put("isSuccess",false);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    
+
 }

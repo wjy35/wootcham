@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static com.ssafy.wcc.domain.member.db.entity.QMember.member;
+
 @Service
 @RequiredArgsConstructor
 public class CollectionItemServiceImpl implements CollectionItemService{
@@ -46,6 +48,32 @@ public class CollectionItemServiceImpl implements CollectionItemService{
             }else{
                 throw new RuntimeException();
             }
+        }
+        throw new RuntimeException();
+    }
+
+    @Override
+    public boolean wear(Long memberId, int collectionId) {
+        Optional<MemberItem> memberItem = memberItemRepository.findByMemberIdAndCollectionId(memberId, (long)collectionId);
+        if(memberItem.isPresent()){
+            Optional<CollectionItem> nowCollectionItem = collectionItemRepository.findById((long)collectionId);
+            if(nowCollectionItem.isPresent()){
+                int type = nowCollectionItem.get().getType();
+                List<CollectionItem> itemList = collectionItemRepository.findAllByType(type);
+                for(int i=0; i<itemList.size(); i++){
+                    Long itemId = itemList.get(i).getId();
+                    Optional<MemberItem> m = memberItemRepository.findByMemberIdAndCollectionId(memberId, itemId);
+                    if(m.isPresent()){
+                        m.get().setWear(false);
+                    }
+                    memberItemRepository.save(m.get());
+                }
+            }
+
+            memberItem.get().setWear(true);
+            memberItemRepository.save(memberItem.get());
+
+            return true;
         }
         throw new RuntimeException();
     }
