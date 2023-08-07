@@ -1,12 +1,17 @@
 <template>
   <div class="content-window shadow">
     <div class="content">
-      <div class="notice-card shadow">
+      <div class="notice-card shadow flex">
         <div class="notice-card-content">
-          <p class="heading">WootCham Club</p>
+          <!-- <p class="heading">WootCham Club</p> -->
           <p class="para">카메라를 켜지 않으면 게임을 시작할 수 없습니다. <br> 하단 카메라 버튼을 눌러주세요.</p>
         </div>
+          <!-- 실시간 웃음 정도 데이터 -->
+          <div class="laugh-o-meter">
+            <RealtimeGauge :data="realtimeData"/>
+          </div>
       </div>
+
     </div>
 
     <div class="utility-bar" @click="toggleCamera">
@@ -19,31 +24,42 @@
 </template>
 
 <script>
+import RealtimeGauge from './RealtimeGauge.vue';
+
 export default {
+  components: {
+    RealtimeGauge
+  },
   data() {
     return {
-      cameraOn: false
+      cameraOn: false,
+      realtimeData: 50 // 실시간 데이터를 저장할 변수 (초기값 0)
     };
+  },
+  created(){
+    // 실시간 데이터를 받는 로직 (예: WebSocket 등)
+    // 데이터가 업데이트될 때마다 this.realtimeData를 업데이트합니다.
   },
   methods: {
     toggleCamera() {
       this.cameraOn = !this.cameraOn;
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
 .content-window {
+  position: relative;
+  
   background-color: #FFF2EA;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 .content-window::before {
   content: '';
   position: absolute;
-  top: 45%;
+  top: 46%;
   left: -28px;
   width: 50px; 
   height: 50px; 
@@ -55,12 +71,18 @@ export default {
 
 /* NOTICE CARD */
 .notice-card {
- width: 500px;
- height: 200px;
- background: #FFF2EA;
- border: 5px solid #FFF2EA; 
- border-radius: 10px;
- transition: border-radius 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: absolute;
+  bottom: 60px;
+  right: 20px;
+  
+  justify-content: space-around;
+  
+  width: 500px;
+  height: 200px;
+  background: #FFF2EA;
+  border: 5px solid #FFF2EA; 
+  border-radius: 10px;
+  transition: border-radius 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .notice-card-content {
@@ -68,7 +90,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
+  
   gap: 1em;
   height: 100%;
   transition: transform 0.4s ease;
@@ -76,6 +98,9 @@ export default {
 
 .notice-card:hover .notice-card-content {
   transform: scale(0.96);
+}
+.laugh-o-meter {
+  padding: 5px 0 3px;
 }
 
 .heading {
@@ -137,6 +162,5 @@ export default {
   fill: #aa2068;
   transition: .3s ease;
 }
-
 
 </style>

@@ -1,12 +1,19 @@
 <template>
     <div>
         <form id="loginForm">
-            <input type="email" placeholder="이메일" v-model="emailInput" class="emailInput">
-            <input type="password" placeholder="비밀번호" v-model="pwInput">
+            <input 
+                type="email" placeholder="이메일" 
+                v-model="emailInput" class="email-input"
+            >
+            <input 
+                type="password" 
+                placeholder="비밀번호" 
+                v-model="pwInput" class="password-input"
+            >
             <SubmitButton class="loginButton" value="로그인" @click="login"></SubmitButton>
             <div id="routes">
-                <span @click="forgotPw">비밀번호를 잊어버렸어요</span>
-                <span @click="signup">회원가입</span>
+                <span class="cursor-pointer" @click="forgotPw">비밀번호를 잊어버렸어요</span>
+                <span class="cursor-pointer" @click="signup">회원가입</span>
             </div>
         </form>
     </div>
@@ -72,6 +79,10 @@ export default {
     width: 60%;
     margin: auto;
     text-align: center;
+}
+
+.email-input {
+    color: red;
 }
 
 #routes {
