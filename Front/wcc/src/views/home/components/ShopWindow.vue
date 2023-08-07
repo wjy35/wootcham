@@ -1,37 +1,48 @@
 <template>
   <div class="content-window shadow">
+    <div class="banner"> 
+      <img src="@/assets/images/shop_banner.png" alt="explain_banner">
+    </div>
+
     <div class="content">
-
       <div class="filter-bar">
-          <div class="radio-inputs">
-            <label class="radio">
-              <input type="radio" name="radio" checked="">
-              <span class="name">뱃지</span>
-            </label>
-            <label class="radio">
-              <input type="radio" name="radio">
-              <span class="name">프레임</span>
-            </label>
-                
-            <label class="radio">
-              <input type="radio" name="radio">
-              <span class="name">아이콘</span>
-            </label>
-          </div>
-
           <input type="text" class="search" placeholder="Search..." />
       </div>
       
-      <div class="products">
-        <div class="card">
-        <div class="card__subtitle">상품</div>
-        <div class="card__wrapper">
-        <div class="card__title">1000 포인트</div>
-        <div class="card__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" style="user-select: none; width: 100%; height: 100%; display: inline-block; fill: rgb(224, 223, 220); flex-shrink: 0; cursor: auto;" color="rgb(224, 223, 220)"><g color="rgb(224, 223, 220)"><circle cx="128" cy="128" r="96" opacity="0.2"></circle><circle cx="128" cy="128" r="96" fill="none" stroke="rgb(224, 223, 220)" stroke-miterlimit="10" stroke-width="16"></circle><polyline points="134.1 161.9 168 128 134.1 94.1" fill="none" stroke="rgb(224, 223, 220)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></polyline><line x1="88" y1="128" x2="168" y2="128" fill="none" stroke="rgb(224, 223, 220)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line></g></svg></div>
-    </div>
-</div>
-      
+      <div class="prroducts">
+        <div class="explain-card">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 5H4V19L13.2923 9.70649C13.6828 9.31595 14.3159 9.31591 14.7065 9.70641L20 15.0104V5ZM2 3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918C2.44405 21 2 20.5551 2 20.0066V3.9934ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path></svg>
+          <div class="explain-card__content">
+            <p class="explain-card__title">explain-card Title
+            </p><p class="explain-card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+          </div>
+        </div>
+
+        <div class="explain-card">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 5H4V19L13.2923 9.70649C13.6828 9.31595 14.3159 9.31591 14.7065 9.70641L20 15.0104V5ZM2 3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918C2.44405 21 2 20.5551 2 20.0066V3.9934ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path></svg>
+          <div class="explain-card__content">
+            <p class="explain-card__title">explain-card Title
+            </p><p class="explain-card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+          </div>
+        </div>
+
+        <div class="explain-card">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 5H4V19L13.2923 9.70649C13.6828 9.31595 14.3159 9.31591 14.7065 9.70641L20 15.0104V5ZM2 3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918C2.44405 21 2 20.5551 2 20.0066V3.9934ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path></svg>
+          <div class="explain-card__content">
+            <p class="explain-card__title">explain-card Title
+            </p><p class="explain-card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+          </div>
+        </div>
+
+        <div class="explain-card">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 5H4V19L13.2923 9.70649C13.6828 9.31595 14.3159 9.31591 14.7065 9.70641L20 15.0104V5ZM2 3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918C2.44405 21 2 20.5551 2 20.0066V3.9934ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path></svg>
+          <div class="explain-card__content">
+            <p class="explain-card__title">explain-card Title
+            </p><p class="explain-card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+          </div>
+        </div>
       </div>
+
 
     </div>
   </div>
@@ -39,13 +50,22 @@
 
 <style scoped>
 .content-window {
-  background-color: #DEDEDE;
+  background-color: #FFF2EA;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
+.banner img {
+  width: 350px;
+  margin-top: -60px;
+}
+
 
 .content-window::before {
   content: '';
   position: absolute;
-  top: 63%;
+  top: 67%;
   left: -28px;
   width: 50px; 
   height: 50px; 
@@ -61,42 +81,6 @@
   margin: 0 auto;
 }
 
-.radio-inputs {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  border-radius: 0.5rem;
-  background-color: #EEE;
-  box-sizing: border-box;
-  box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
-  padding: 0.25rem;
-  margin: 1rem;
-  width: 300px;
-  font-size: 14px;
-}
-.radio-inputs .radio {
-  flex: 1 1 auto;
-  text-align: center;
-}
-.radio-inputs .radio input {
-  display: none;
-}
-.radio-inputs .radio .name {
-  display: flex;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.5rem;
-  border: none;
-  padding: .5rem 0;
-  color: rgba(51, 65, 85, 1);
-  transition: all .15s ease-in-out;
-}
-.radio-inputs .radio input:checked + .name {
-  background-color: #fff;
-  font-weight: 600;
-}
-
 .search {
   padding: 5px 10px;
   border: 1px solid #ccc;
@@ -105,102 +89,71 @@
 
 .products {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
 }
 
-.card {
-  --main-color: #323232;
-  --sub-color: #5b5b5b;
-  --bg-color: #c7c7c7;
-  --accent-color: #242C88;
+
+.explain-card {
   position: relative;
-  width: 270px;
-  padding: 25px;
-  border-radius: 25px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  background-color: var(--bg-color);
-  transition: all 0.2s;
-  cursor: pointer;
-  box-shadow: 0px 0px 5px -1.5px #000;
-}
+  width: 180px;
+  height: 200px;
+  background: linear-gradient(-45deg, #f89b29 0%, #ff0f7b 100% );
+  border-radius: 10px;
 
-.card::before {
-  content: '';
-  width: 99%;
-  height: 99%;
-  background: var(--sub-color);
-  position: absolute;
-  z-index: -1;
-  top: 1px;
-  left: 1px;
-  border-radius: 25px;
-  transition: all 0.3s;
-}
+  margin: 10px;
 
-.card__wrapper {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
 }
 
-.card__img {
-  width: 100%;
+.explain-card svg {
+  width: 48px;
+  fill: #333;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
 }
 
-.card__title {
-  color: var(--main-color);
-  font-weight: 900;
-  font-size: 25px;
+.explain-card:hover {
+  transform: rotate(-5deg) scale(1.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.card__subtitle {
-  color: var(--sub-color);
-  font-weight: 600;
-  font-size: 20px;
-}
-
-.card__icon {
-  width: 40px;
-  height: 40px;
-  transform: rotate(-45deg);
-  transition: all 0.3s;
-}
-
-.card__icon svg {
+.explain-card__content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
   width: 100%;
   height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #fff;
+  opacity: 0;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
 }
 
-.card__icon g {
-  fill: var(--main-color);
+.explain-card:hover .explain-card__content {
+  transform: translate(-50%, -50%) rotate(0deg);
+  opacity: 1;
 }
 
-.card__icon circle, polyline, line {
-  stroke: var(--main-color);
+.explain-card__title {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+  font-weight: 700;
 }
 
-.card:hover .card__icon {
-  transform: rotate(0);
+.explain-card__description {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: #777;
+  line-height: 1.4;
 }
 
-.card:hover .card__icon circle, .card:hover .card__icon polyline, .card:hover .card__icon line {
-  stroke: var(--accent-color);
-}
-
-.card:hover .card__icon g {
-  fill: var(--accent-color);
-}
-
-.card:hover {
-  box-shadow: 0px 0px 20px -5px #000;
-}
-
-.card:hover::before {
-  transform: rotate(10deg);
-  box-shadow: 0px 0px 20px -5px #000;
+.explain-card:hover svg {
+  scale: 0;
+  transform: rotate(-45deg);
 }
 </style>

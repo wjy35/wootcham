@@ -1,20 +1,30 @@
 <template>
   <div class="content-window shadow">
-    <div class="content">
-        <img src="/src/assets/images/notice_banner.png" alt="notice_banner">
+    <div class="banner">
+      <img src="@/assets/images/notice_banner.png" alt="notice_banner">
+    </div>
 
-        <div class="notice-card shadow">
-          <div class="notice-card-content">
-            <p class="heading">WootCham Club</p>
-            <p class="para">카메라를 켜지 않으면 게임을 시작할 수 없습니다. <br> 하단 카메라 버튼을 눌러주세요.</p>
+
+    <div class="scroll-snap-card">
+      <div class="slide one">
+          <div class="item">
+            <div class="notice-card flex">
+              <div class="heading">{{ noticeTitle }}</div>
+              <div class="para_date">{{ noticeDate }}</div>
+            </div>
+            <div class="para_content">{{ noticeContent }}</div>
           </div>
       </div>
-        <div class="heading">{{ noticeTitle }}</div>
-        <div class="para_date">{{ noticeDate }}</div>
-        <div class="para_content">{{ noticeContent }}</div>
+      <div class="slide two">
+          <p class="tip">Scroll On Me</p>
+      </div>
+      <div class="slide three">
+          <p class="tip">Scroll On Me</p>
+      </div>
+    </div>
+
     </div>
         
-  </div>
 </template>
 
 <script>
@@ -32,14 +42,16 @@ export default {
 <style scoped>
 .content-window {
   background-color: #FFF2EA;
+
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .content-window::before {
   content: '';
   position: absolute;
-  top: 54%;
+  top: 56.5%;
   left: -28px;
   width: 50px; 
   height: 50px; 
@@ -49,7 +61,53 @@ export default {
   background-color: transparent;
 }
 
-.content img {
+.banner img {
   width: 340px;
+  margin-top: -60px;
+}
+
+
+/* 메인 콘텐츠 */
+.one {
+  background-color: #f43f5e;
+}
+
+.two {
+  background-color: #3b82f6;
+}
+
+.three {
+  background-color: #22c55e;
+}
+
+.scroll-snap-card {
+  height: 100%;
+  width: 100%;
+  scroll-snap-type: y mandatory;
+  overflow: auto;
+  border-radius: 10px;
+}
+
+.scroll-snap-card .slide {
+  width: 100%;
+  height: 100%;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px 50px 0;
+}
+
+.scroll-snap-card .slide .item .notice-card {
+  font-size: 2em;
+  color: white;
+  font-weight: 400;
+}
+
+.scroll-snap-card .slide .item .para-content {
+  font-size: 1em;
+  color: white;
+  font-weight: 700;
 }
 </style>
