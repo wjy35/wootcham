@@ -2,10 +2,10 @@
     <div>
         <div class="main-content">
             <!-- <span>Main Content</span> -->
-            <user-video v-if="mainStreamManager !== undefined" :stream-manager="mainStreamManager" videoType="screen"></user-video>
+            <user-video v-if="main !== undefined" :stream-manager="main" videoType="screen"></user-video>
             <img v-else src="../../../../assets/images/WCC_logo.png">
             <button @click="connectScreen">connect screen</button>
-            <button @click="stopScreen">stop screen</button>
+            <button @click="disconnectScreen">stop screen</button>
         </div>
     </div>
 </template>
@@ -14,6 +14,7 @@
 import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
 import UserVideo from "../webcam/components/UserVideo.vue";
+import { mapState } from 'vuex';
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -28,15 +29,23 @@ export default {
         return {
             OVScreen: undefined,
             sessionScreen: undefined,
-            mainStreamManager: undefined,
+            // mainStreamManager: undefined,
 
             // Join form
             mySessionId: "SessionA",
             myUserName: "Participant" + Math.floor(Math.random() * 100),
 
-            isScreenShared: false,
+            // isScreenShared: false,
         }
     },
+
+    computed: {
+        ...mapState({ main : state => state.gameStore.mainStreamManager } )
+    },
+
+    // mounted: {
+        
+    // },
 
     methods: {
         connectScreen () {
@@ -47,40 +56,42 @@ export default {
 				this.sessionScreen.connect(token, { clientData: this.myUserName + ' 님의 화면공유' })
 				.then(() => {
 					let publisher = this.OVScreen.initPublisher("sharingvideo", {
-						audioSource: false,
+						audioSource: undefined,
 						videoSource: "screen",
-            publishVideo: true,
+                        publishVideo: true,
+                        publishAudio: true,
 						resolution: "640x480",
 						frameRate: 10,
-            insertMode: 'APPEND',
-            mirror: false
+                        insertMode: 'APPEND',
+                        mirror: false
 					});
-					publisher.once('accessAllowed', () => {
-						try {
-							this.isScreenShared=true;
-							this.session.signal({
-								data: JSON.stringify(status),  // Any string (optional)
-								to: [],
-								type: 'startScreenSharing'             // The type of message (optional)
-							})
-							publisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
-								this.session.signal({
-									data: JSON.stringify(status),  // Any string (optional)
-									to: [],
-									type: 'stopScreenSharing'             // The type of message (optional)
-								})
-								this.leaveScreenSession()
-								this.isScreenShared=false;
-							});
-						} catch (error) {
-							console.error('Error applying constraints: ', error);
-						}
-					});
-					publisher.once('accessDenied', () => {
-						console.warn('ScreenShare: Access Denied');
-					});
-          this.sessionScreen.publish(publisher);
-					this.mainStreamManager = publisher;
+					// publisher.once('accessAllowed', () => {
+					// 	try {
+					// 		this.isScreenShared=true;
+					// 		this.session.signal({
+					// 			data: JSON.stringify(status),  // Any string (optional)
+					// 			to: [],
+					// 			type: 'startScreenSharing'             // The type of message (optional)
+					// 		})
+					// 		publisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
+					// 			this.session.signal({
+					// 				data: JSON.stringify(status),  // Any string (optional)
+					// 				to: [],
+					// 				type: 'stopScreenSharing'             // The type of message (optional)
+					// 			})
+					// 			this.disconnectScreen()
+					// 			// this.isScreenShared=false;
+					// 		});
+					// 	} catch (error) {
+					// 		console.error('Error applying constraints: ', error);
+					// 	}
+					// });
+					// publisher.once('accessDenied', () => {
+					// 	console.warn('ScreenShare: Access Denied');
+					// });
+                    this.sessionScreen.publish(publisher);
+                    this.$store.commit('gameStore/SET_MAIN', publisher);
+					// this.mainStreamManager = publisher;
 				}).catch((error => {
 					console.warn('There was an error connecting to the session:', error.code, error.message);
 				}));
@@ -88,17 +99,13 @@ export default {
 			// window.addEventListener('beforeunload', this.leaveSessionForScreenSharing)
 		},
 
-        stopScreen() {
-            this.isScreenShared = false;
-            this.leaveScreenSession()
-        },
-
-        leaveScreenSession () {
+        disconnectScreen () {
             if (this.sessionScreen) {
                 this.sessionScreen.disconnect();
             }
+            this.$store.commit('gameStore/SET_MAIN', undefined);
             this.sessionScreen = undefined;
-            this.mainStreamManager = undefined;
+            // this.mainStreamManager = undefined;
             this.OVScreen = undefined;
         },
 

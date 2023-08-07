@@ -73,7 +73,8 @@ const memberStore = {
       );
     },
     async getUserInfo({ commit, dispatch }, token) {
-      let decodeToken = jwtDecode(token);
+      // let decodeToken = jwtDecode(token);
+      let decodeToken = token;
       // console.log("2. getUserInfo() decodeToken :: ", decodeToken);
       await findById(
         decodeToken.userid,

@@ -1,6 +1,7 @@
 <template>
 	<div>
-		<video :id="streamManager.stream.connection.connectionId" autoplay/>
+		<video id="myVideo" autoplay></video>
+		<!-- <video :id="streamManager.stream.connection.connectionId" autoplay/> -->
 		<!-- <button @click="stopDetect">stop</button>
 		<button @click="startDetect">start</button> -->
 	</div>
@@ -27,7 +28,7 @@ export default {
 	},
 
 	mounted () {
-		cam = document.getElementById(this.streamManager.stream.connection.connectionId);
+		cam = document.getElementById("myVideo");
 		Promise.all([
 			faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
 			faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
@@ -47,8 +48,7 @@ export default {
 	},
 
 	updated () {
-		console.log(this.streamManager)
-		cam = document.getElementById(this.streamManager.stream.connection.connectionId);
+		cam = document.getElementById("myVideo");
 		Promise.all([
 			faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
 			faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
@@ -73,8 +73,7 @@ export default {
 	},
 
 	methods: {
-		async detectLaugh(id, cam) {
-			console.log('detecting ' + id);
+		async detectLaugh(cam) {
 			const detections = await faceapi.detectSingleFace(cam, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
 			if (detections === undefined) {
 				this.outOfFrame += 1;
@@ -95,7 +94,7 @@ export default {
 		startDetect() {
 			console.log('start')
 			interval = setInterval(() => {
-				this.detectLaugh(this.streamManager.stream.connection.connectionId, cam);
+				this.detectLaugh(cam);
 			}, 1000);
 		}
 	}
