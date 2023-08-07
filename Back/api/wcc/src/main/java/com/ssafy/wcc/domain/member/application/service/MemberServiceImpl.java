@@ -1,16 +1,26 @@
 package com.ssafy.wcc.domain.member.application.service;
 
+import com.ssafy.wcc.domain.collection.db.entity.CollectionItem;
+import com.ssafy.wcc.domain.collection.db.repository.CollectionItemRepository;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
 import com.ssafy.wcc.domain.member.application.dto.response.MemberInfoResponse;
 import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
 import com.ssafy.wcc.domain.member.application.mapper.MemberMapper;
 import com.ssafy.wcc.domain.member.db.entity.Member;
+import com.ssafy.wcc.domain.member.db.entity.MemberItem;
+import com.ssafy.wcc.domain.member.db.entity.MemberItemPK;
+import com.ssafy.wcc.domain.member.db.repository.MemberItemRepository;
 import com.ssafy.wcc.domain.member.db.repository.MemberRepository;
+import com.ssafy.wcc.domain.report.db.entity.Report;
+import com.ssafy.wcc.domain.report.db.entity.ReportPK;
+import com.ssafy.wcc.domain.report.db.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,22 +33,31 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberMapper memberMapper;
 
+    private final CollectionItemRepository collectionItemRepository;
+
+    private final MemberItemRepository memberItemRepository;
 
     @Override
     public void memberSignUp(MemberRequest signupInfo) {
         // 비밀번호에 암호 적용
         Member member = memberMapper.memberRequestToMember(signupInfo);
+        member.setMoney(0);
+        member.setAdmin(1);
+        member.setPoint(0);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String securePassword = encoder.encode(member.getPassword());
 
         member.setPassword(securePassword);
-
         memberRepository.save(member);
+        Optional<Member> findMember = memberRepository.findByEmail(member.getEmail());
+        List<CollectionItem> collectionItemList = collectionItemRepository.findAll();
+        for(int i=0; i<collectionItemList.size(); i++){
+            MemberItemPK memberItemPK = MemberItemPK.builder().memberId(findMember.get().getId()).collectionId(collectionItemList.get(i).getId()).build();
+            Optional<CollectionItem> collectionItem = collectionItemRepository.findById(memberItemPK.getCollectionId());
+            MemberItem memberItem = MemberItem.builder().buy(false).wear(false).memberItemPK(memberItemPK).member(findMember.get()).collection(collectionItem.get()).build();
+            memberItemRepository.save(memberItem);
+        }
 
-        // report 생성
-        // notice 생성
-        // record 생성
-        // member_item 생성
     }
 
     @Override
@@ -81,8 +100,7 @@ public class MemberServiceImpl implements MemberService {
     public MemberInfoResponse memberInfoResponse(Long id) throws RuntimeException {
         Optional<Member> findMember = memberRepository.findById(id);
         if (findMember.isPresent()) {
-            int report = findMember.get().getReports().get(0).getReport();
-            MemberInfoResponse memberInfoResponse = memberMapper.toMemberInfoResponse(findMember.get(), report);
+            MemberInfoResponse memberInfoResponse = memberMapper.toMemberInfoResponse(findMember.get());
             return memberInfoResponse;
         }
         return null;
