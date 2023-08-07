@@ -1,11 +1,16 @@
 package com.ssafy.game.game.api.processor;
 
 import com.ssafy.game.common.GameSessionSetting;
+import com.ssafy.game.game.api.response.GameOrderResponse;
 import com.ssafy.game.game.api.response.GameStatus;
 import com.ssafy.game.game.api.response.GameStatusResponse;
 import com.ssafy.game.game.db.entity.GameSession;
 import com.ssafy.game.match.common.GameSetting;
 import com.ssafy.game.util.MessageSender;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class GameProcessor implements Runnable{
     private final GameSession gameSession;
@@ -22,10 +27,27 @@ public class GameProcessor implements Runnable{
     public void run() {
         waitGameLoad();
         waitGameStart();
+
+        for(int i=0; i<GameSetting.ROUND_COUNT; i++){
+            round();
+        }
+
     }
 
     private void round(){
-        sendGameStatusResponse(new GameStatusResponse(GameStatus.GAMEMEMBER_ORDER,0));
+        orderGameMember();
+    }
+
+    private void orderGameMember(){
+        List<String> gameMemberOrder = getShuffledGameMemberIdList();
+        createAndsendGameMemberOrderResponse(gameMemberOrder);
+    }
+
+    private List<String> getShuffledGameMemberIdList(){
+        List<String> gameMemberOrder = new ArrayList<>(gameSession.getGameMembers().keySet());
+        Collections.shuffle(gameMemberOrder);
+
+        return gameMemberOrder;
     }
 
     private void waitGameLoad(){
@@ -60,6 +82,10 @@ public class GameProcessor implements Runnable{
 
     private void sendGameStatusResponse(GameStatusResponse gameStatusResponse){
         sender.sendObjectToAll(gameDestination,gameStatusResponse);
+    }
+
+    private void createAndsendGameMemberOrderResponse(List<String> order){
+        sender.sendObjectToAll(gameDestination,new GameOrderResponse(GameStatus.ORDER_GAMEMEMBER,order));
     }
 
     private boolean allMemberLoadGame(){

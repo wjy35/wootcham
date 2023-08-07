@@ -10,4 +10,9 @@ import java.util.List;
 public class GameOrderResponse {
     private int gameStatus;
     private List<String> order;
+
+    public GameOrderResponse(int gameStatus, List<String> order) {
+        this.gameStatus = gameStatus;
+        this.order = order;
+    }
 }
