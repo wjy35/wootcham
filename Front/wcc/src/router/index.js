@@ -1,11 +1,15 @@
-import FindPasswordViewVue from "@/views/Member/FindPasswordView.vue";
 import LoginViewVue from "@/views/Member/LoginView.vue";
+import FindPasswordViewVue from "@/views/Member/FindPasswordView.vue";
 import NicknameViewVue from "@/views/Member/NicknameView.vue";
 import SignupViewVue from "@/views/Member/SignupView.vue";
 import WelcomeViewVue from "@/views/Member/WelcomeView.vue";
-import MainGameVue from "@/views/gameroom/maingame/MainGame.vue";
-import GamePrepareVue from "@/views/gameroom/prepare/GamePrepare.vue";
+
 import HomeView from "@/views/home/HomeView.vue"
+
+import GameRoomVue from "@/views/gameroom/GameRoom.vue";
+import GamePrepareVue from "@/views/gameroom/prepare/GamePrepare.vue";
+import MainGameVue from "@/views/gameroom/maingame/MainGame.vue";
+import GameResultVue from "@/views/gameroom/gameresult/GameResult.vue"
 
 import { createWebHistory, createRouter } from "vue-router";
 
@@ -53,14 +57,21 @@ const routes = [
     component: NicknameViewVue,
   },
   {
-    path: "/welcome",
-    name: "welcome",
-    component: WelcomeViewVue,
-  },
-  {
     path: "/signup",
     name: "signup",
     component: SignupViewVue,
+  },
+
+  {
+    path: "/home",
+    name: "homeview",
+    component: HomeView,
+  },
+
+  {
+    path: "/gameroom",
+    name: "gameroom",
+    component: GameRoomVue,
   },
   {
     path: "/gameprepare",
@@ -73,9 +84,9 @@ const routes = [
     component: MainGameVue,
   },
   {
-    path: "/home",
-    name: "homeview",
-    component: HomeView,
+    path: "/gameresult",
+    name: "gameresult",
+    component: GameResultVue,
   },
 
 ];
@@ -84,4 +95,5 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
 export default router;
