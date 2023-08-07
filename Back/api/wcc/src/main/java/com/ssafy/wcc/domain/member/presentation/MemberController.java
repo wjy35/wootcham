@@ -95,7 +95,7 @@ public class MemberController {
             return new ResponseEntity<>(resultMap, HttpStatus.NOT_FOUND);
         }
         resultMap.put("isSuccess", false);
-        return new ResponseEntity<>(resultMap, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
     @PostMapping("/login")
