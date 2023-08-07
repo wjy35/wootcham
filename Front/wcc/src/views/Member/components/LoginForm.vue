@@ -3,7 +3,7 @@
         <form id="loginForm">
             <input type="email" placeholder="이메일" v-model="emailInput" class="emailInput">
             <input type="password" placeholder="비밀번호" v-model="pwInput">
-            <SubmitButton class="loginButton" value="로그인" @click="login"></SubmitButton>
+            <SubmitButton class="loginButton" value="로그인" @click.prevent="login"></SubmitButton>
             <div id="routes">
                 <span @click="forgotPw">비밀번호를 잊어버렸어요</span>
                 <span @click="signup">회원가입</span>
@@ -12,7 +12,10 @@
     </div>
 </template>
 <script>
+// import { useStore } from 'vuex'
+// import * as memberApi from '@/api/member';
 import SubmitButton from './UI/SubmitButton.vue';
+import api from '@/api/http'
 
 export default {
     name: 'LoginForm',
@@ -42,17 +45,45 @@ export default {
 
     methods: {
         login() {
-            if (this.emailInput === 'ssafy@ssafy.com' && this.pwInput === 'ssafy') {
-                alert('로그인 성공');
-                // this.$router.push({name: "welcome"})
+            api.post(`/member/login`, {
+                email: this.emailInput,
+                password: this.pwInput
+            })
+                .then(({ data }) => {
+                    if (data.isSuccess == true) {
+                        // localStorage에 토큰 저장
+                        localStorage.setItem("access_token", data.access_token);
+                        localStorage.setItem("refresh_token", data.refresh_token);
 
-                // home 화면으로 라우팅
-                this.$router.push({ name: 'homeview' })
-            } else if (!this.emailInput.includes('@')) {
-                alert('이메일 형식을 지켜주세요');
-            } else {
-                alert('로그인 실패');
-            }
+                        // store에 토큰 저장
+                        this.$store.commit('setAccessToken', localStorage.getItem('access_token'));
+
+                        // 사용자 정보 읽어와서 state에 저장
+                        // api.defaults.headers["access-token"] = localStorage.getItem("access_token");
+                        // api.post(`/member`)
+                        //     .then(({ data }) => {
+                        //         if (data.isSuccess == true) {
+                        //             console.log("회원 정보 조회 성공...............")
+                        //         } else {
+                        //             console.log("회원 정보 조회 실패...............")
+                        //         }
+                        //     })
+                        //     .catch(error => {
+                        //         alert(error.message)
+                        //         console.log(error.response)
+                        //     });
+
+                        // 홈 화면으로 이동
+                        this.$router.push({ name: 'homeview' })
+                    } else {
+                        alert("아이디와 비밀번호를 다시 확인해주세요.")
+                    }
+                })
+                .catch(error => {
+                    alert("잠시 후 다시 시도해주세요.")
+                    console.log(error.message)
+                });
+
         },
 
         forgotPw() {
