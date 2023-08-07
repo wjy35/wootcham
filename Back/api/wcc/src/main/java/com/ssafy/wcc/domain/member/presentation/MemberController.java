@@ -35,8 +35,6 @@ public class MemberController {
 
     private final EmailService emailService;
 
-    private final CollectionItemService collectionItemService;
-
     @PostMapping("/join")
     @ApiOperation(value = "회원 가입")
     @ApiResponses({
@@ -157,8 +155,7 @@ public class MemberController {
     })
     public ResponseEntity<Map<String, Object>> memberInfo(HttpServletRequest req) {
         Map<String, Object> res = new HashMap<>();
-        String accessToken = req.getHeader("access-token");
-
+        String accessToken = req.getHeader("access_token");
         try{
             MemberInfoResponse memberInfoResponse = memberService.memberInfoResponse(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
             res.put("isSuccess", true);

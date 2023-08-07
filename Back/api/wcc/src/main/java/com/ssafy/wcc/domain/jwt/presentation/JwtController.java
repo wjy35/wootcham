@@ -33,12 +33,13 @@ public class JwtController {
     })
     public ResponseEntity<Map<String, Object>> refreshToken(@RequestBody MemberRequest loginInfo, HttpServletRequest req) {
         Map<String, Object> res = new HashMap<>();
-        String refreshToken = req.getHeader("refresh-token");
+        String refreshToken = req.getHeader("refresh_token");
         if (tokenService.checkToken(refreshToken)) {
-            if (tokenService.getRefreshTokenId(""+refreshToken) != null) {
-                String newAccessToken = tokenService.createAccessToken(loginInfo.getEmail());
+            if (tokenService.getRefreshTokenId(refreshToken) != null) {
+                String id = tokenService.getRefreshTokenId(refreshToken);
+                String newAccessToken = tokenService.createAccessToken(id);
                 res.put("isSuccess", true);
-                res.put("access-token", newAccessToken);
+                res.put("access_token", newAccessToken);
                 return new ResponseEntity<>(res, HttpStatus.OK);
             }
         }

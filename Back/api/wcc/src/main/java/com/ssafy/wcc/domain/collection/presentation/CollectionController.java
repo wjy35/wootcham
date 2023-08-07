@@ -41,7 +41,7 @@ public class CollectionController {
     })
     public ResponseEntity<Map<String, Object>> collectionList( HttpServletRequest req) {
         Map<String, Object> res = new HashMap<>();
-        String accessToken = req.getHeader("access-token");
+        String accessToken = req.getHeader("access_token");
         String id = tokenService.getAccessTokenId(accessToken);
 
         try {
@@ -92,7 +92,7 @@ public class CollectionController {
 
         Map<String, Object> res = new HashMap<>();
 
-        String accessToken = req.getHeader("access-token");
+        String accessToken = req.getHeader("access_token");
         String id = tokenService.getAccessTokenId(accessToken);
 
         try {
@@ -115,7 +115,7 @@ public class CollectionController {
 
         Map<String, Object> res = new HashMap<>();
 
-        String accessToken = req.getHeader("access-token");
+        String accessToken = req.getHeader("access_token");
         String id = tokenService.getAccessTokenId(accessToken);
 
         try {
