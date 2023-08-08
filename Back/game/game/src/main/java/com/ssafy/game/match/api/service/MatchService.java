@@ -50,8 +50,9 @@ public class MatchService {
     public void createMatchMemberByMemberId(String memberId){
         Member matchMember = new Member(memberId);
 
-        matchMemberQueue.offer(matchMember);
-        System.out.println("size: " + matchMemberQueue.size());
+        this.matchMemberQueue.offer(matchMember);
+        System.out.println("size: " + this.matchMemberQueue.size());
+        System.out.println("GameSetting.MAX_GAMEMEMBER_COUNT = " + GameSetting.MAX_GAMEMEMBER_COUNT);
         this.matchMemberSession.insertMember(matchMember);
     }
 
@@ -60,7 +61,8 @@ public class MatchService {
     }
 
     public boolean matchable(){
-        if(matchMemberQueue.size()<GameSetting.MAX_GAMEMEMBER_COUNT) return false;
+        if(this.matchMemberQueue.size()>1) System.out.println("TESTESTSETT"+this.matchMemberQueue.size());
+        if(this.matchMemberQueue.size()<GameSetting.MAX_GAMEMEMBER_COUNT) return false;
         System.out.println("size in matchable : " + matchMemberQueue.size());
 
         return true;
