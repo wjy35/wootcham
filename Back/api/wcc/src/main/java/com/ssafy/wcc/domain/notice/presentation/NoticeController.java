@@ -15,9 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -39,13 +37,12 @@ public class NoticeController {
     @GetMapping
     @ApiOperation("최근 공지 4개 조회")
     @ApiResponses({
-            @ApiResponse(code=200, message = "공지사항 조회 성공"),
-            @ApiResponse(code=404, message = "공지사항 조회 실패"),
+            @ApiResponse(code = 200, message = "공지사항 조회 성공"),
+            @ApiResponse(code = 404, message = "공지사항 조회 실패"),
     })
-    public ResponseEntity<?> listNoticeForUsers(HttpServletRequest req) {
+    public ResponseEntity<?> listNoticeForUsers(@RequestHeader("access_token") String accessToken) {
         logger.info("listNoticeForUsers controller 진입");
         Map<String, Object> res = new HashMap<>();
-        String accessToken = req.getHeader("access_token");
         try {
             List<NoticeForUserResponse> list = noticeService.getNoticeListForUsers(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
             res.put("isSuccess", true);
@@ -60,13 +57,12 @@ public class NoticeController {
     @GetMapping("/list")
     @ApiOperation("관리자. 공지 목록 조회")
     @ApiResponses({
-            @ApiResponse(code=200, message = "공지사항 조회 성공"),
-            @ApiResponse(code=404, message = "공지사항 조회 실패"),
+            @ApiResponse(code = 200, message = "공지사항 조회 성공"),
+            @ApiResponse(code = 404, message = "공지사항 조회 실패"),
     })
-    public ResponseEntity<?> listNoticeForAdmin(HttpServletRequest req) {
+    public ResponseEntity<?> listNoticeForAdmin(@RequestHeader("access_token") String accessToken) {
         log.info("listNoticeForAdmin controller 진입");
         Map<String, Object> res = new HashMap<>();
-        String accessToken = req.getHeader("access_token");
         try {
             List<NoticeForAdminResponse> list = noticeService.getNoticeListForAdmin(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
             res.put("isSuccess", true);
