@@ -53,14 +53,16 @@ public class NoticeServiceImpl implements NoticeService {
     public List<NoticeForAdminResponse> getNoticeListForAdmin(long id) throws WCCException {
         logger.info("getNoticeListForAdmin service 진입");
         Optional<Member> member = memberRepository.findById(id);
-        if (member.isPresent()) {
-            if(member.get().getAdmin() != 1) throw new WCCException(Error.NOT_ADMIN);
 
-            List<Notice> noticeList = noticeRepositorySupport.listNoticeForAdmin();
-            return noticeList.stream()
-                    .map(n -> noticeMapper.toNoticeListResponse(n))
-                    .collect(Collectors.toList());
+        if (member.isEmpty()) {
+            throw new WCCException(Error.USER_NOT_FOUND);
         }
-        return null;
+
+        if (member.get().getAdmin() != 0) throw new WCCException(Error.NOT_ADMIN);
+
+        List<Notice> noticeList = noticeRepositorySupport.listNoticeForAdmin();
+        return noticeList.stream()
+                .map(n -> noticeMapper.toNoticeListResponse(n))
+                .collect(Collectors.toList());
     }
 }
