@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Api(tags = "Member 컨트롤러")
+@Api(tags = "Report 컨트롤러")
 @RestController
 @RequestMapping("/report")
 @RequiredArgsConstructor
