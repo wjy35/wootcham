@@ -12,7 +12,7 @@
             </div>
             
             <div id="routes">
-                <SubmitButton class='routeButton' value="로그인"></SubmitButton >
+                <SubmitButton class='routeButton' value="로그인" @click="goLogin"></SubmitButton >
             </div>
             <div>
                 <div @click="goForsignUp" class="goForsignUp">아직 회원이 아니신가요?</div>
@@ -46,6 +46,9 @@ export default {
                 alert('존재하지 않는 이메일입니다');
                 this.emailInput = "";
             }
+        },
+        goLogin(){
+            this.$router.push('/');
         },
         goForsignUp(){
             this.$router.push('/signup');

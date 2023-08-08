@@ -76,7 +76,7 @@ export default {
 </script>
 <style scoped>
 #loginForm {
-    width: 60%;
+    width: 70%;
     margin: auto;
     text-align: center;
 }
@@ -92,8 +92,14 @@ export default {
 #routes {
     display: flex;
     justify-content: space-between;
+
+    padding: 0 20px;
     text-decoration: underline;
     margin-top: 1rem;
     margin-bottom: 1rem;
+}
+
+#routes span:hover {
+    color: white;
 }
 </style>

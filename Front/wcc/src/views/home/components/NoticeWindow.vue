@@ -8,9 +8,9 @@
     <div class="scroll-snap-card">
       <div class="slide one">
           <div class="item">
-            <div class="notice-card flex">
+            <div class="notice-card">
               <div class="heading">{{ noticeTitle }}</div>
-              <div class="para_date">{{ noticeDate }}</div>
+              <div class="para_date">- {{ noticeDate }}</div>
             </div>
             <div class="para_content">{{ noticeContent }}</div>
           </div>
@@ -103,6 +103,11 @@ export default {
   font-size: 2em;
   color: white;
   font-weight: 400;
+
+  display: flex;
+  gap: 20px;
+
+  padding: 30px;
 }
 
 .scroll-snap-card .slide .item .para-content {
