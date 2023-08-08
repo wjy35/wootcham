@@ -1,20 +1,22 @@
 package com.ssafy.game.match.api.service;
 
 import com.ssafy.game.game.api.processor.GameProcessor;
+import com.ssafy.game.game.db.entity.GameMember;
 import com.ssafy.game.game.db.entity.GameSession;
+import com.ssafy.game.game.db.repository.GameMemberRepository;
 import com.ssafy.game.game.db.repository.GameSessionRepository;
-import com.ssafy.game.match.api.response.GameSessionResponse;
+import com.ssafy.game.match.api.response.GameCreatedResponse;
 import com.ssafy.game.match.db.entity.Group;
 import com.ssafy.game.match.db.repository.GroupRepository;
 import com.ssafy.game.match.api.request.Member;
-import com.ssafy.game.match.api.response.LastTimeResponse;
+import com.ssafy.game.match.api.response.TimerResponse;
 import com.ssafy.game.match.api.response.MatchResponse;
 import com.ssafy.game.match.common.GameSetting;
-import com.ssafy.game.match.common.MatchStatus;
+import com.ssafy.game.match.api.response.MatchStatus;
 import com.ssafy.game.match.db.repository.MatchMemberSession;
 import com.ssafy.game.util.MessageSender;
 import io.openvidu.java.client.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class MatchService {
     @Value("${OPENVIDU_URL}")
     private String OPENVIDU_URL;
@@ -31,24 +34,16 @@ public class MatchService {
 
     private OpenVidu openvidu;
 
-    private final int GAME_ENTER_REQUEST_WAIT_SECOND = 10;
-    private final Deque<Member> matchMemberQueue;
+    private Deque<Member> matchMemberQueue;
     private final MatchMemberSession matchMemberSession;
     private final GroupRepository groupRepository;
     private final MessageSender messageSender;
     private final GameSessionRepository gameSessionRepository;
+    private final GameMemberRepository gameMemberRepository;
 
     @PostConstruct
     public void init() {
         this.openvidu = new OpenVidu(OPENVIDU_URL, OPENVIDU_SECRET);
-    }
-
-    @Autowired
-    public MatchService(MatchMemberSession matchMemberSession, GroupRepository groupRepository, MessageSender messageSender, GameSessionRepository gameSessionRepository) {
-        this.matchMemberSession = matchMemberSession;
-        this.groupRepository = groupRepository;
-        this.messageSender = messageSender;
-        this.gameSessionRepository =  gameSessionRepository;
         this.matchMemberQueue = new ArrayDeque<>();
     }
 
@@ -74,13 +69,20 @@ public class MatchService {
             Group group = groupRepository.createNewGroup();
             sendMatchStatusToGroupMembers(groupMemberList, group,MatchStatus.MATCHED);
 
-            int second = GAME_ENTER_REQUEST_WAIT_SECOND;
+            int second = GameSetting.MAX_GAMEMEMBER_ENTER_WAIT_SECOND;
             while(second-->0){
                 sendObjectToGroupMembers(
                         groupMemberList,
-                        new LastTimeResponse(second)
+                        new TimerResponse(second)
                 );
 
+                /**
+                 * ToDo
+                 * openvidu 모듈화
+                 * 게임 시작 모듈화 및 이름 수정
+                 * 메세지 보내기 모듈화
+                 * 게임 시작 스레드 관리
+                 */
                 if(group.getMembers().size() == GameSetting.MAX_GAMEMEMBER_COUNT){
                     SessionProperties gameSessionProperties = new SessionProperties.Builder().build();
                     Session openviduSession = openvidu.createSession(gameSessionProperties);
@@ -89,6 +91,7 @@ public class MatchService {
                     GameSession gameSession = new GameSession(gameSessionId);
                     gameSessionRepository.insertGameSession(gameSession);
                     sendGameLoadRequestToAll(groupMemberList,openviduSession);
+
                     GameProcessor gameProcessor = new GameProcessor(gameSession,this.messageSender);
                     Thread thread = new Thread(gameProcessor);
                     thread.start();
@@ -143,7 +146,7 @@ public class MatchService {
         return null;
     }
 
-    public void enterGame(String memberId, String groupId){
+    public void enterGame(String groupId, String memberId){
         groupRepository.findGroupByGroupId(groupId)
                 .getMembers()
                 .put(memberId,matchMemberSession.findByMemberId(memberId));
@@ -182,13 +185,16 @@ public class MatchService {
                         .build();
                 Connection connection = openviduSession.createConnection(connectionProperties);
 
+                GameMember gameMember = new GameMember(openviduSession.getSessionId(),groupMember.getMemberId(),connection.getToken());
+                gameMemberRepository.save(gameMember);
+
                 messageSender.sendObjectToMember(
-                        groupMember.getMemberId(),
+                        gameMember.getMemberId(),
                         "/queue/match",
-                        new GameSessionResponse(
-                                openviduSession.getSessionId(),
-                                connection.getToken(),
-                                groupMember.getMemberId()
+                        new GameCreatedResponse(
+                                gameMember.getSessionId(),
+                                gameMember.getMemberId(),
+                                gameMember.getMemberToken()
                         )
                 );
             }
