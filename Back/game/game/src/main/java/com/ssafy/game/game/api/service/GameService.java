@@ -26,6 +26,6 @@ public class GameService {
     }
 
     public void pick(String sessionId, String memberId, TopicRequest topicRequest){
-        gameSessionRepository.findBySessionId(sessionId).pickTopic(memberId,new Topic(topicRequest.getType(),topicRequest.getKeyword()));
+        gameSessionRepository.findBySessionId(sessionId).pickTopic(memberId, topicRequest.getType(), topicRequest.getKeyword());
     }
 }

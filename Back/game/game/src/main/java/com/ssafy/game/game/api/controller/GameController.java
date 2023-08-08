@@ -24,9 +24,11 @@ public class GameController {
         gameService.load(sessionId,memberId);
     }
 
-    @MessageMapping("/pick/{sessionId}")
+    @MessageMapping("/pick/shuffle/{sessionId}")
     void pick(@Payload TopicRequest topicRequest, @DestinationVariable String sessionId, @Header("simpSessionId") String memberId){
         gameService.pick(sessionId,memberId,topicRequest);
     }
+
+
 
 }

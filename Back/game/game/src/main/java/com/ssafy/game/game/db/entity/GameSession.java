@@ -11,7 +11,7 @@ import java.util.Map;
 @Setter
 public class GameSession {
     private String sessionId;
-    private Map<String, GameMember> gameMembers;
+    private Map<String,GameMember> gameMembers;
     private Map<String,Topic> topics;
 
     public GameSession(String sessionId) {
@@ -20,7 +20,11 @@ public class GameSession {
         this.topics = new HashMap<>();
     }
 
-    public void pickTopic(String memberId,Topic topic){
-        topics.put(memberId,topic);
+    public void pickTopic(String memberId, Integer type, String keyword){
+        if(topics.containsKey(memberId)){
+            topics.put(memberId,new Topic(type,keyword));
+        }else{
+            topics.get(memberId).setTopic(type, keyword);
+        }
     }
 }

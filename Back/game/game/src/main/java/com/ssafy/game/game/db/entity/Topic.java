@@ -8,7 +8,6 @@ import javax.persistence.IdClass;
 
 @Entity
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -16,4 +15,17 @@ import javax.persistence.IdClass;
 public class Topic {
     @Id Integer type;
     @Id String keyword;
+
+    void setTopic(Integer type, String keyword){
+        this.type = type;
+        this.keyword = keyword;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 }
