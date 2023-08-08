@@ -23,6 +23,12 @@ public class SwaggerConfig {
         return getDocket("com.ssafy.wcc.domain.member", "회원", Predicates.or(PathSelectors.regex("/member.*")));
     }
 
+    @Bean
+    public Docket noticeApi(){
+        return getDocket("com.ssafy.wcc.domain.notice", "공지", Predicates.or(PathSelectors.regex("/notice.*")));
+    }
+
+
     public Docket getDocket(String base, String groupName, Predicate<String> predicate) {
         return new Docket(DocumentationType.SWAGGER_2).groupName(groupName).select()
                 .apis(RequestHandlerSelectors.basePackage(base)).paths(predicate)
