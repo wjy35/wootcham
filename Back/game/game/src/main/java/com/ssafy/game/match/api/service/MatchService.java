@@ -51,8 +51,6 @@ public class MatchService {
         Member matchMember = new Member(memberId);
 
         this.matchMemberQueue.offer(matchMember);
-        System.out.println("size: " + this.matchMemberQueue.size());
-        System.out.println("GameSetting.MAX_GAMEMEMBER_COUNT = " + GameSetting.MAX_GAMEMEMBER_COUNT);
         this.matchMemberSession.insertMember(matchMember);
     }
 
