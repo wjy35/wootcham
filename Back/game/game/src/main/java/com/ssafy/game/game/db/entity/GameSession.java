@@ -26,19 +26,22 @@ public class GameSession {
     private Map<String,Topic> topics;
     private List<String> orderList;
     private boolean checkedSkipPreparedPresent;
+    private boolean checkedSkipPresent;
 
     public GameSession(String sessionId) {
         this.sessionId = sessionId;
         this.gameMembers = new HashMap<>();
         this.topics = new HashMap<>();
         this.checkedSkipPreparedPresent = false;
+        this.checkedSkipPresent = false;
     }
 
     public void pickTopic(String memberToken, Integer type, String keyword){
-        if(topics.containsKey(memberToken)){
-            topics.put(memberToken,new Topic(type,keyword));
-        }else{
-            topics.get(memberToken).setTopic(type, keyword);
-        }
+        topics.get(memberToken).setTopic(type, keyword);
+        // ToDo merge로 변경
+    }
+
+    public void loadTopic(String memberToken){
+        topics.put(memberToken,new Topic(0,"default"));
     }
 }

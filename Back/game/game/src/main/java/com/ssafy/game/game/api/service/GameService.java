@@ -3,6 +3,7 @@ package com.ssafy.game.game.api.service;
 import com.ssafy.game.game.api.request.LoadRequest;
 import com.ssafy.game.game.api.request.TopicRequest;
 import com.ssafy.game.game.db.entity.GameMember;
+import com.ssafy.game.game.db.entity.GameSession;
 import com.ssafy.game.game.db.repository.GameMemberRepository;
 import com.ssafy.game.game.db.repository.GameSessionRepository;
 import com.ssafy.game.util.MessageSender;
@@ -15,12 +16,13 @@ import javax.transaction.Transactional;
 public class GameService {
     private final GameSessionRepository gameSessionRepository;
     private final GameMemberRepository gameMemberRepository;
-    private final MessageSender sender;
 
     @Transactional
     public void load(String sessionId, String memberId){
         GameMember gameMember = gameMemberRepository.findByMemberId(memberId);
-        gameSessionRepository.findBySessionId(sessionId).getGameMembers().put(gameMember.getMemberToken(), gameMember);
+        GameSession gameSession = gameSessionRepository.findBySessionId(sessionId);
+        gameSession.getGameMembers().put(gameMember.getMemberToken(), gameMember);
+        gameSession.loadTopic(gameMember.getMemberToken());
     }
 
     public void pick(String sessionId, TopicRequest topicRequest){

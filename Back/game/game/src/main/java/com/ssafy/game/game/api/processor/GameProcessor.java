@@ -1,11 +1,9 @@
 package com.ssafy.game.game.api.processor;
 
 import com.ssafy.game.common.GameSessionSetting;
-import com.ssafy.game.game.api.response.GameOrderResponse;
-import com.ssafy.game.game.api.response.GameStatus;
-import com.ssafy.game.game.api.response.GameStatusResponse;
-import com.ssafy.game.game.api.response.PreparePresentResponse;
+import com.ssafy.game.game.api.response.*;
 import com.ssafy.game.game.db.entity.GameSession;
+import com.ssafy.game.game.db.entity.Topic;
 import com.ssafy.game.match.common.GameSetting;
 import com.ssafy.game.util.MessageSender;
 import java.util.ArrayList;
@@ -32,7 +30,6 @@ public class GameProcessor implements Runnable{
         for(int i=0; i<GameSetting.ROUND_COUNT; i++){
             round();
         }
-
     }
 
     private void round(){
@@ -42,9 +39,9 @@ public class GameProcessor implements Runnable{
 
         for(int i=0; i<gameSession.getOrderList().size(); i++){
             preparePresent(i);
+            present(i);
+            System.out.println("gameSession.getTopics() = " + gameSession.getTopics());
         }
-
-        System.out.println("gameSession.getTopics() = " + gameSession.getTopics());
     }
 
     private void preparePresent(int order){
@@ -52,6 +49,7 @@ public class GameProcessor implements Runnable{
 
         String teller = gameSession.getOrderList().get(order);
         PreparePresentResponse preparePresentResponse = new PreparePresentResponse(teller,second);
+        gameSession.setCheckedSkipPreparedPresent(false);
 
         try{
             while(second-->0){
@@ -62,6 +60,26 @@ public class GameProcessor implements Runnable{
                     return;
                 }
 
+                Thread.sleep(1000);
+            }
+        }catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void present(int order){
+        int second = GameSessionSetting.MAX_PRESENT_SECOND;
+
+        String teller = gameSession.getOrderList().get(order);
+        gameSession.setCheckedSkipPresent(false);
+        PresentResponse presentResponse = new PresentResponse(teller,second,gameSession.getTopics().get(teller).toString());
+
+        try{
+            while(second-->0){
+                presentResponse.setSecond(second);
+                sendGameStatusResponse(presentResponse);
+
+                if(gameSession.isCheckedSkipPresent()) return;
                 Thread.sleep(1000);
             }
         }catch (InterruptedException e) {
