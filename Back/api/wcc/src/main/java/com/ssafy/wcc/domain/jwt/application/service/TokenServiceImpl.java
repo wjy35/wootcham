@@ -41,14 +41,14 @@ public class TokenServiceImpl implements TokenService{
 
     @Override
     public String createAccessToken(String id) {
-        String accessToken = create("access-token", expireMin);
+        String accessToken = create("access_token", expireMin);
         accessTokenRedisRepository.saveAccessToken(accessToken, id, expireMin);
         return accessToken;
     }
 
     @Override
     public String createRefreshToken(String id) {
-        String refreshToken = create("refresh-token", expireMin*5);
+        String refreshToken = create("refresh_token", expireMin*5);
         refreshTokenRedisRepository.saveRefreshToken(refreshToken, id, expireMin*5);
         return refreshToken;
     }
@@ -139,11 +139,12 @@ public class TokenServiceImpl implements TokenService{
 
     @Override
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("access-token");
+        return request.getHeader("access_token");
     }
 
     @Override
-    public Authentication getAuthentication(String token) {
+    public Authentication getAuthentication(String token) throws RuntimeException{
+
         String id = this.getAccessTokenId(token);
         Member m = Member.builder().id  (Long.parseLong(id)).build();
         UserDetails userDetails = m;

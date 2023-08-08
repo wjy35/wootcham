@@ -131,4 +131,3 @@ gradle-app.setting
 .classpath
 package-lock.json
 Front/wcc/.eslintignore
-Back/

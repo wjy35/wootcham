@@ -37,12 +37,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 하지않음
                 .and()
                 .authorizeRequests()
-                .antMatchers("/member/**").permitAll()
-                .antMatchers("**").authenticated()
-                .anyRequest().authenticated()
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class); //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//                .antMatchers("/api/member").authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
+                .anyRequest().permitAll()
+                .and().cors();
     }
 
 

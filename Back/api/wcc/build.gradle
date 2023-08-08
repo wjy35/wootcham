@@ -64,13 +64,16 @@ dependencies {
 	// swagger
 	implementation("io.springfox:springfox-swagger2:2.8.0")
 	implementation("io.springfox:springfox-swagger-ui:2.8.0")
-//	implementation("io.springfox:springfox-boot-starter:3.0.0")
 
 	// guava
 	implementation("com.google.guava:guava:32.1.1-jre")
 
 	// email
 	implementation 'org.springframework.boot:spring-boot-starter-mail:2.7.0'
+
+	// json
+	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
 }
 
 // queryDSL plugin
