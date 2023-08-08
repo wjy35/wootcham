@@ -1,10 +1,7 @@
 package com.ssafy.wcc.domain.collection.db.entity;
 
 import com.ssafy.wcc.domain.member.db.entity.MemberItem;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,4 +30,14 @@ public class CollectionItem {
 
     @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY)
     private List<MemberItem> memberItems = new ArrayList<>();
+
+    @Builder
+    public CollectionItem(Long id, int type, String name, int price, String description, List<MemberItem> memberItems) {
+        this.id = id;
+        this.type = type;
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.memberItems = memberItems;
+    }
 }
