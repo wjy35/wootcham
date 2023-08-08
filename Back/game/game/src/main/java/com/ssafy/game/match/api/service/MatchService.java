@@ -35,6 +35,7 @@ public class MatchService {
     private OpenVidu openvidu;
 
     private Deque<Member> matchMemberQueue;
+    private int count;
     private final MatchMemberSession matchMemberSession;
     private final GroupRepository groupRepository;
     private final MessageSender messageSender;
@@ -45,6 +46,7 @@ public class MatchService {
     public void init() {
         this.openvidu = new OpenVidu(OPENVIDU_URL, OPENVIDU_SECRET);
         this.matchMemberQueue = new ArrayDeque<>();
+        this.count = -1;
     }
 
     public void createMatchMemberByMemberId(String memberId){
@@ -59,9 +61,11 @@ public class MatchService {
     }
 
     public boolean matchable(){
-        if(this.matchMemberQueue.size()>1) System.out.println("TESTESTSETT"+this.matchMemberQueue.size());
+        if(this.count+3 < this.matchMemberQueue.size()){
+            System.out.println("matchMemberQueue = " + matchMemberQueue.size());
+            this.count++;
+        }
         if(this.matchMemberQueue.size()<GameSetting.MAX_GAMEMEMBER_COUNT) return false;
-        System.out.println("size in matchable : " + matchMemberQueue.size());
 
         return true;
     }
