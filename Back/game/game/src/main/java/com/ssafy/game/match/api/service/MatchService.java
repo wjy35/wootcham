@@ -61,6 +61,13 @@ public class MatchService {
     }
 
     public boolean matchable(){
+        System.out.println("this.matchMemberQueue.size() = " + this.matchMemberQueue.size());
+        System.out.println("matchMemberQueue = " + matchMemberQueue);
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         if(this.matchMemberQueue.size()<GameSetting.MAX_GAMEMEMBER_COUNT) return false;
 
         return true;
