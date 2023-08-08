@@ -35,8 +35,6 @@ public class MemberController {
 
     private final EmailService emailService;
 
-    private final CollectionItemService collectionItemService;
-
     @PostMapping("/join")
     @ApiOperation(value = "회원 가입")
     @ApiResponses({
@@ -134,11 +132,12 @@ public class MemberController {
             @ApiResponse(code = 200, message = "로그아웃 성공"),
             @ApiResponse(code = 404, message = "로그아웃 실패")
     })
-    public ResponseEntity<Map<String, Object>> logout(HttpServletRequest req) {
+    public ResponseEntity<Map<String, Object>> logout(
+            @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken,
+            @RequestHeader("refresh_token") @ApiParam(value = "refresh_token", required = true) String refreshToken
+    ) {
         Map<String, Object> res = new HashMap<>();
         try{
-            String accessToken = req.getHeader("access_token");
-            String refreshToken = req.getHeader("refresh_token");
             tokenService.saveLogoutToken(accessToken);
             tokenService.deleteRefreshToken(refreshToken);
             res.put("isSuccess", true);
@@ -155,10 +154,8 @@ public class MemberController {
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패")
     })
-    public ResponseEntity<Map<String, Object>> memberInfo(HttpServletRequest req) {
+    public ResponseEntity<Map<String, Object>> memberInfo(@RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
         Map<String, Object> res = new HashMap<>();
-        String accessToken = req.getHeader("access-token");
-
         try{
             MemberInfoResponse memberInfoResponse = memberService.memberInfoResponse(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
             res.put("isSuccess", true);
@@ -176,9 +173,8 @@ public class MemberController {
             @ApiResponse(code = 200, message = "수정 성공"),
             @ApiResponse(code = 404, message = "수정 실패")
     })
-    public ResponseEntity<Map<String, Object>> memberUpdate(@RequestBody MemberRequest memberRequest, HttpServletRequest req) {
+    public ResponseEntity<Map<String, Object>> memberUpdate(@RequestBody MemberRequest memberRequest, @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
         Map<String, Object> res = new HashMap<>();
-        String accessToken = req.getHeader("access_token");
         String id = tokenService.getAccessTokenId(accessToken);
         try{
             memberService.memberUpdate(memberRequest, id);
@@ -196,9 +192,8 @@ public class MemberController {
             @ApiResponse(code = 200, message = "탈퇴 성공"),
             @ApiResponse(code = 404, message = "탈퇴 실패")
     })
-    public ResponseEntity<Map<String, Object>> memberDelete(HttpServletRequest req) {
+    public ResponseEntity<Map<String, Object>> memberDelete(@RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
         Map<String, Object> res = new HashMap<>();
-        String accessToken = req.getHeader("access_token");
         String id = tokenService.getAccessTokenId(accessToken);
         try{
             memberService.memberDelete(id);

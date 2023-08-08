@@ -39,9 +39,8 @@ public class CollectionController {
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패"),
     })
-    public ResponseEntity<Map<String, Object>> collectionList( HttpServletRequest req) {
+    public ResponseEntity<Map<String, Object>> collectionList( @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
         Map<String, Object> res = new HashMap<>();
-        String accessToken = req.getHeader("access-token");
         String id = tokenService.getAccessTokenId(accessToken);
 
         try {
@@ -88,11 +87,10 @@ public class CollectionController {
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패"),
     })
-    public ResponseEntity<Map<String, Object>> buy(@RequestBody Map<String,Integer> collectionId, HttpServletRequest req) {
+    public ResponseEntity<Map<String, Object>> buy(@RequestBody Map<String,Integer> collectionId, @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
 
         Map<String, Object> res = new HashMap<>();
 
-        String accessToken = req.getHeader("access-token");
         String id = tokenService.getAccessTokenId(accessToken);
 
         try {
@@ -111,11 +109,10 @@ public class CollectionController {
             @ApiResponse(code = 200, message = "착용 성공"),
             @ApiResponse(code = 404, message = "착용 실패"),
     })
-    public ResponseEntity<Map<String, Object>> wear(@RequestBody Map<String,Integer> collectionId, HttpServletRequest req) {
+    public ResponseEntity<Map<String, Object>> wear(@RequestBody Map<String,Integer> collectionId, @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
 
         Map<String, Object> res = new HashMap<>();
 
-        String accessToken = req.getHeader("access-token");
         String id = tokenService.getAccessTokenId(accessToken);
 
         try {

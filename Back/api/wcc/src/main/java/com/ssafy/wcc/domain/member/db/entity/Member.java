@@ -37,7 +37,7 @@ public class Member extends BaseEntity implements UserDetails {
     private Integer admin;
 
     @Column(name = "suspension_day")
-    private Integer suspensionDay;
+    private LocalDate suspensionDay;
 
     @Column(name = "current_login")
     private LocalDate currentLogin;
@@ -68,7 +68,7 @@ public class Member extends BaseEntity implements UserDetails {
 //    }
 
     @Builder
-    public Member(Long id, String email, String password, String nickname, Integer point, Integer money, Integer admin, Integer suspensionDay, LocalDate currentLogin, List<Report> reports, List<Record> records, List<Notice> notices, List<MemberItem> memberItems) {
+    public Member(Long id, String email, String password, String nickname, Integer point, Integer money, Integer admin, LocalDate suspensionDay, LocalDate currentLogin, List<Report> reports, List<Record> records, List<Notice> notices, List<MemberItem> memberItems) {
         this.id = id;
         this.email = email;
         this.password = password;

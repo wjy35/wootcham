@@ -27,7 +27,7 @@ public class RankController {
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패"),
     })
-    public ResponseEntity<Map<String, Object>> rank( @RequestBody @ApiParam(value = "회원가입 정보", required = true) MemberRequest signupInfo) {
+    public ResponseEntity<Map<String, Object>> rank() {
         Map<String, Object> res = new HashMap<>();
         try {
             List<MemberInfoResponse> rankList= rankService.getRank();
