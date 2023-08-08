@@ -17,7 +17,7 @@ public class MatchObserver implements Observer {
     public void update(Observable o, Object arg) {
         try{
             List<Member> groupMemberList = Optional.of(matchService.getGroupMemberList()).get();
-
+            System.out.println("Observer Update");
             Thread thread = new Thread(
                     () -> matchService.sendMatchResult(groupMemberList)
             );
