@@ -31,8 +31,6 @@ public class MatchController {
 
     @SubscribeMapping("/user/queue/match")
     void setMatchService(@Header("simpSessionId") String memberId){
-        System.out.println("memberId = " + memberId);
-        System.out.println("matchService = " + matchService);
         matchService.createMatchMemberByMemberId(memberId);
     }
 

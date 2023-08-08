@@ -35,7 +35,6 @@ public class MatchService {
     private OpenVidu openvidu;
 
     private Deque<Member> matchMemberQueue;
-    private int count;
     private final MatchMemberSession matchMemberSession;
     private final GroupRepository groupRepository;
     private final MessageSender messageSender;
@@ -46,12 +45,11 @@ public class MatchService {
     public void init() {
         this.openvidu = new OpenVidu(OPENVIDU_URL, OPENVIDU_SECRET);
         this.matchMemberQueue = new ArrayDeque<>();
-        this.count = -1;
     }
 
     public void createMatchMemberByMemberId(String memberId){
         Member matchMember = new Member(memberId);
-
+        System.out.println("carate this = " + this);
         this.matchMemberQueue.offer(matchMember);
         this.matchMemberSession.insertMember(matchMember);
     }
@@ -61,6 +59,7 @@ public class MatchService {
     }
 
     public boolean matchable(){
+        System.out.println("matchable this = " + this);
         System.out.println("this.matchMemberQueue.size() = " + this.matchMemberQueue.size());
         System.out.println("matchMemberQueue = " + matchMemberQueue);
         try {

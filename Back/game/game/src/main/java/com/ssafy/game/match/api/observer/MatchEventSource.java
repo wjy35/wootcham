@@ -13,7 +13,6 @@ public class MatchEventSource extends Observable implements Runnable{
 
     @Override
     public void run() {
-        System.out.println("matchService = " + matchService);
         while(true){
             if(matchService.matchable()){
                 setChanged();
