@@ -2,10 +2,7 @@ package com.ssafy.wcc.domain.jwt.presentation;
 
 import com.ssafy.wcc.domain.jwt.application.service.TokenService;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,14 +28,14 @@ public class JwtController {
             @ApiResponse(code = 200, message = "갱신 성공"),
             @ApiResponse(code = 404, message = "갱신 실패")
     })
-    public ResponseEntity<Map<String, Object>> refreshToken(@RequestBody MemberRequest loginInfo, HttpServletRequest req) {
+    public ResponseEntity<Map<String, Object>> refreshToken(@RequestHeader("refresh_token") @ApiParam(value = "refresh_token", required = true) String refreshToken) {
         Map<String, Object> res = new HashMap<>();
-        String refreshToken = req.getHeader("refresh-token");
         if (tokenService.checkToken(refreshToken)) {
-            if (tokenService.getRefreshTokenId(""+refreshToken) != null) {
-                String newAccessToken = tokenService.createAccessToken(loginInfo.getEmail());
+            if (tokenService.getRefreshTokenId(refreshToken) != null) {
+                String id = tokenService.getRefreshTokenId(refreshToken);
+                String newAccessToken = tokenService.createAccessToken(id);
                 res.put("isSuccess", true);
-                res.put("access-token", newAccessToken);
+                res.put("access_token", newAccessToken);
                 return new ResponseEntity<>(res, HttpStatus.OK);
             }
         }
