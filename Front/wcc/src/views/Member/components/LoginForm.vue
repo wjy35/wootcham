@@ -81,8 +81,12 @@ export default {
     text-align: center;
 }
 
+#loginForm input {
+    background-color: #FFF2EA;
+}
+
 .email-input {
-    color: red;
+    color: black;
 }
 
 #routes {
