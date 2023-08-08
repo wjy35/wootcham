@@ -59,11 +59,6 @@ public class MatchService {
     }
 
     public synchronized boolean matchable(){
-//        try {
-//            Thread.sleep(10000);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
         if(this.matchMemberQueue.size()<GameSetting.MAX_GAMEMEMBER_COUNT) return false;
 
         return true;
@@ -72,7 +67,6 @@ public class MatchService {
     public void sendMatchResult(List<Member> groupMemberList){
         try{
             Group group = groupRepository.createNewGroup();
-            System.out.println("send Match Result");
             sendMatchStatusToGroupMembers(groupMemberList, group,MatchStatus.MATCHED);
 
             int second = GameSetting.MAX_GAMEMEMBER_ENTER_WAIT_SECOND;
@@ -186,7 +180,7 @@ public class MatchService {
         try {
             for(Member groupMember : groupMemberList){
                 ConnectionProperties connectionProperties = new ConnectionProperties.Builder()
-                        .role(OpenViduRole.SUBSCRIBER)
+                        .role(OpenViduRole.PUBLISHER)
                         .data(groupMember.getMemberId())
                         .build();
                 Connection connection = openviduSession.createConnection(connectionProperties);
