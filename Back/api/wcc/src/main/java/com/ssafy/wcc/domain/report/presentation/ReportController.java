@@ -34,7 +34,7 @@ public class ReportController {
             @ApiResponse(code = 200, message = "신고 성공"),
             @ApiResponse(code = 404, message = "신고 실패"),
     })
-    public ResponseEntity<Map<String,Object>> report(@RequestBody Map<String,Integer> memberId, HttpServletRequest req) {
+    public ResponseEntity<Map<String,Object>> report(@RequestBody Map<String,Integer> memberId) {
         Map<String, Object> resultMap = new HashMap<>();
         reportService.report(Long.valueOf(memberId.get("member_id")));
         resultMap.put("isSuccess", true);
@@ -48,9 +48,8 @@ public class ReportController {
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패"),
     })
-    public ResponseEntity<Map<String,Object>> memberList(HttpServletRequest req) {
+    public ResponseEntity<Map<String,Object>> memberList(@RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
         Map<String, Object> resultMap = new HashMap<>();
-        String accessToken = req.getHeader("access_token");
         String id = tokenService.getAccessTokenId(accessToken);
         List<AllMemberResponse> memberResponseList = reportService.getList();
 
