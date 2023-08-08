@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -69,6 +70,15 @@ public class MemberServiceImpl implements MemberService {
         if (!encoder.matches(loginInfo.getPassword(), findMember.get().getPassword())) {
             throw new RuntimeException("잘못된 비밀번호입니다.");
         }
+
+        if(findMember.get().getSuspensionDay() != null){
+            LocalDate date1 = findMember.get().getSuspensionDay();
+            LocalDate date2 = LocalDate.now();
+            if(date1.compareTo(date2) >= 0){
+                throw new RuntimeException("정지된 유저입니다");
+            }
+        }
+
         return findMember.get().getId();
     }
 
