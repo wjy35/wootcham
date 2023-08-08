@@ -2,7 +2,6 @@ package com.ssafy.game.game.api.controller;
 
 import com.ssafy.game.game.api.request.TopicRequest;
 import com.ssafy.game.game.api.service.GameService;
-import com.ssafy.game.game.db.entity.Topic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
@@ -27,6 +26,11 @@ public class GameController {
     @MessageMapping("/pick/shuffle/{sessionId}")
     void pick(@Payload TopicRequest topicRequest, @DestinationVariable String sessionId, @Header("simpSessionId") String memberId){
         gameService.pick(sessionId,memberId,topicRequest);
+    }
+
+    @MessageMapping("/skip/prepare/{sessionId}")
+    void skipPrepare(@DestinationVariable String sessionId){
+        gameService.skipPreparePresent(sessionId);
     }
 
 

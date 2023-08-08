@@ -4,6 +4,7 @@ import com.ssafy.game.common.GameSessionSetting;
 import com.ssafy.game.game.api.response.GameOrderResponse;
 import com.ssafy.game.game.api.response.GameStatus;
 import com.ssafy.game.game.api.response.GameStatusResponse;
+import com.ssafy.game.game.api.response.PreparePresentResponse;
 import com.ssafy.game.game.db.entity.GameSession;
 import com.ssafy.game.match.common.GameSetting;
 import com.ssafy.game.util.MessageSender;
@@ -38,7 +39,34 @@ public class GameProcessor implements Runnable{
         orderGameMember();
         pickTopicType();
         pickTopicKeyword();
+
+        for(int i=0; i<GameSetting.MAX_GAMEMEMBER_COUNT; i++){
+            preparePresent(i);
+        }
+
         System.out.println("gameSession.getTopics() = " + gameSession.getTopics());
+    }
+
+    private void preparePresent(int order){
+        int second = GameSessionSetting.MAX_PREPARE_PRESENT_SECOND;
+
+        String teller = gameSession.getOrderList().get(order);
+        PreparePresentResponse preparePresentResponse = new PreparePresentResponse(teller,second);
+
+        try{
+            while(second-->0){
+                preparePresentResponse.setSecond(second);
+                sendGameStatusResponse(preparePresentResponse);
+
+                if(gameSession.isCheckedSkipPreparedPresent()){
+                    return;
+                }
+
+                Thread.sleep(1000);
+            }
+        }catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void pickTopicKeyword(){
@@ -72,8 +100,10 @@ public class GameProcessor implements Runnable{
     }
 
     private void orderGameMember(){
-        List<String> gameMemberOrder = getShuffledGameMemberIdList();
-        createAndsendGameMemberOrderResponse(gameMemberOrder);
+        List<String> shuffledGameMemberIdList = getShuffledGameMemberIdList();
+        gameSession.setOrderList(shuffledGameMemberIdList);
+
+        createAndsendGameMemberOrderResponse(shuffledGameMemberIdList);
     }
 
     private List<String> getShuffledGameMemberIdList(){

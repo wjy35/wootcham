@@ -2,10 +2,8 @@ package com.ssafy.game.game.api.service;
 
 import com.ssafy.game.game.api.request.TopicRequest;
 import com.ssafy.game.game.db.entity.GameMember;
-import com.ssafy.game.game.db.entity.Topic;
 import com.ssafy.game.game.db.repository.GameMemberRepository;
 import com.ssafy.game.game.db.repository.GameSessionRepository;
-import com.ssafy.game.game.db.repository.TopicRepository;
 import com.ssafy.game.util.MessageSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,5 +25,9 @@ public class GameService {
 
     public void pick(String sessionId, String memberId, TopicRequest topicRequest){
         gameSessionRepository.findBySessionId(sessionId).pickTopic(memberId, topicRequest.getType(), topicRequest.getKeyword());
+    }
+
+    public void skipPreparePresent(String sessionId){
+        gameSessionRepository.findBySessionId(sessionId).setCheckedSkipPreparedPresent(true);
     }
 }
