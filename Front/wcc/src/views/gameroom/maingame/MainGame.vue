@@ -2,9 +2,7 @@
     <div class="inner">
         <!-- HEADER -->
         <header>
-            <div class="header-center">2라운드 09:30</div>
-            <button @click="connectScreen">connect screen</button>
-            <button @click="disconnectScreen">stop screen</button>
+            <div class="header-center">{{ game-round }} 라운드 {{ game-time }}</div>
             <button class="Btn" @click="showModal = true">
                 <img src="@/assets/images/getout.png" class="sign" alt="나가기" style="width: 24px;">
                 <div class="text">게임 나가기</div>
@@ -27,21 +25,25 @@
                     <!-- 임시로 이미지 넣음-->
                     <img v-if="mainStreamManager === undefined" src="https://media.istockphoto.com/id/518360318/photo/crazy-horse.jpg?s=612x612&w=0&k=20&c=KP27AuWsogbIb1dRSqqwRn_ykPMqguJb7z2q3x9xr5A=" alt="">
                     <UserVideo v-else :stream-manager="mainStreamManager" videoType="screen"/>
+              
                     <!-- Progress Bar -->
                     <div class="loader">
                       <div></div>
                     </div>
-                    <!-- 화면 공유 & 턴 종료 버튼 -->
-                    <ul class="wrapper">
-                      <li @click='connectScreen' class="icon facebook">
-                          <span class="tooltip">화면공유</span>
-                          <span><i class="fab fa-facebook-f"></i></span>
-                      </li>
-                      <li @click="disconnectScreen" class="icon instagram">
-                          <span class="tooltip">턴 종료</span>
-                          <span><i class="fab fa-instagram"></i></span>
-                      </li>
-                    </ul>
+
+                    <div class="share-btn screenshare">
+                      <div class="sign">
+                        <img src="@/assets/images/stream.png" alt="">
+                      </div>
+                      <div class="text">화면 공유</div>
+                    </div>
+
+                    <div class="share-btn endterm">
+                      <div class="sign">
+                        <img src="@/assets/images/the-end.png" alt="">
+                      </div>
+                      <div class="text">턴 종료</div>
+                    </div>
                   </div>
                 </div>
 
@@ -68,35 +70,35 @@
 
                 <!-- 5번 박스 -->
                 <div class="main video video-two shadow">
-                  <img v-if="subscribers[0] === undefined" src="../../../assets/images/WCC_logo.png">
+                  <img v-if="subscribers[0] === undefined" src="@/assets/images/WCC_logo.png">
                   <UserVideo v-else :stream-manager="subscribers[0]" videoType="notMyVideo"/>
                   <div v-if="subscribers[0] !== undefined" class="video-username">{{ nickname(subscribers[0]) }}</div>
                 </div>
 
                 <!-- 9번 박스 -->
                 <div class="main video video-three shadow">
-                  <img v-if="subscribers[1] === undefined" src="../../../assets/images/WCC_logo.png">
+                  <img v-if="subscribers[1] === undefined" src="@/assets/images/WCC_logo.png">
                   <UserVideo v-else :stream-manager="subscribers[1]" videoType="notMyVideo"/>
                   <div v-if="subscribers[1] !== undefined" class="video-username">{{ nickname(subscribers[1]) }}</div>
                 </div>
 
                 <!-- 10번 박스 -->
                 <div class="main video video-four shadow">
-                  <img v-if="subscribers[2] === undefined" src="../../../assets/images/WCC_logo.png">
+                  <img v-if="subscribers[2] === undefined" src="@/assets/images/WCC_logo.png">
                   <UserVideo v-else :stream-manager="subscribers[2]" videoType="notMyVideo"/>
                   <div v-if="subscribers[2] !== undefined" class="video-username">{{ nickname(subscribers[2]) }}</div>
                 </div>
 
                 <!-- 11번 박스 -->
                 <div class="main video video-five shadow">
-                  <img v-if="subscribers[3] === undefined" src="../../../assets/images/WCC_logo.png">
+                  <img v-if="subscribers[3] === undefined" src="@/assets/images/WCC_logo.png">
                   <UserVideo v-else :stream-manager="subscribers[3]" videoType="notMyVideo"/>
                   <div v-if="subscribers[3] !== undefined" class="video-username">{{ nickname(subscribers[3]) }}</div>
                 </div>
 
                 <!-- 12번 박스 -->
                 <div class="main video video-six shadow">
-                  <img v-if="subscribers[4] === undefined" src="../../../assets/images/WCC_logo.png">
+                  <img v-if="subscribers[4] === undefined" src="@/assets/images/WCC_logo.png">
                   <UserVideo v-else :stream-manager="subscribers[4]" videoType="notMyVideo"/>
                   <div v-if="subscribers[4] !== undefined" class="video-username">{{ nickname(subscribers[4]) }}</div>
                 </div>
@@ -140,6 +142,10 @@ export default {
     data() {
       return {
         showModal: false,
+        // Game Maintainence
+
+        
+        // Chat
         chatUsername: "가상의 유저",
         // Camera
         OV: undefined,
@@ -383,6 +389,10 @@ header {
     width: 100%;
     height: 100%;
     overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .video-username {
@@ -392,6 +402,10 @@ header {
   z-index: 99;
 
   color: white;
+}
+
+.video img {
+  width: 250px;
 }
 
 
@@ -426,8 +440,8 @@ header {
   position: absolute;
   left: 10px;
   bottom: 5px;
-  width: 75%;
-  height: 25px;
+  width: 96%;
+  height: 10px;
   border-radius: 8px;
   background-color: #47a7ff44;
 }
@@ -452,90 +466,87 @@ header {
   }
 }
 
-/* Screen Share Button and End Term Button */
-.wrapper {
-  display: inline-flex;
-  list-style: none;
-
+/* ---------- SHARE BTN --------- */
+.screenshare {
   position: absolute;
-  bottom: 0px;
-  right: 5px;
-  height: 25px;
-
-  font-family: "Poppins", sans-serif;
-  justify-content: center;
+  right: 18px;
+  bottom: 30px;
+  width: 96%;
+  height: 10px;
+  z-index: 99;
 }
 
-.wrapper .icon {
-  position: relative;
-  background: #fff;
-  border-radius: 8px;
-  margin: 10px;
-  
-  width: 50px;
-  height: 25px;
-  font-size: 18px;
+.endterm {
+  position: absolute;
+  right: 18px;
+  bottom: 90px;
+  width: 96%;
+  height: 10px;
+  z-index: 99;
+
+}
+
+.share-btn {
   display: flex;
-  justify-content: center;
   align-items: center;
-  flex-direction: column;
-  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.wrapper .tooltip {
-  position: absolute;
-  top: 0;
-  font-size: 14px;
-  background: #fff;
-  color: #fff;
-  padding: 5px 8px;
+  justify-content: flex-start;
+  width: 45px;
+  height: 45px;
+  border: none;
   border-radius: 5px;
-  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  cursor: pointer;
+  transition-duration: .3s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
 }
 
-.wrapper .tooltip::before {
+/* plus sign */
+.share-btn .sign {
+  width: 100%;
+  transition-duration: .3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.share-btn .sign img {
+  width: 25px;
+}
+
+.share-btn .text {
   position: absolute;
-  content: "";
-  height: 8px;
-  width: 8px;
-  background: #fff;
-  bottom: -3px;
-  left: 50%;
-  transform: translate(-50%) rotate(45deg);
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  font-family: Noto Sans;
+
+  right: 0%;
+  width: 0%;
+  opacity: 0;
+  color: black;
+  font-size: 1em;
+  font-weight: 400;
+  transition-duration: .3s;
+}
+/* hover effect on button width */
+.share-btn:hover {
+  width: 125px;
+  border-radius: 5px;
+  transition-duration: .3s;
 }
 
-.wrapper .icon:hover .tooltip {
-  top: -45px;
+.share-btn:hover .sign {
+  width: 30%;
+  transition-duration: .3s;
+  padding-left: 20px;
+}
+/* hover effect button's text */
+.share-btn:hover .text {
   opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+  width: 70%;
+  transition-duration: .3s;
+  padding: 5px 0 5px 10px;
 }
-
-.wrapper .icon:hover span,
-.wrapper .icon:hover .tooltip {
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+/* button click effect*/
+.share-btn:active {
+  transform: translate(2px ,2px);
 }
-
-.wrapper .facebook:hover,
-.wrapper .facebook:hover .tooltip,
-.wrapper .facebook:hover .tooltip::before {
-  background: #1877F2;
-  color: #fff;
-}
-
-.wrapper .instagram:hover,
-.wrapper .instagram:hover .tooltip,
-.wrapper .instagram:hover .tooltip::before {
-  background: #E4405F;
-  color: #fff;
-}
-
 
 /* -------- CHAT --------- */
 .chat-card {
