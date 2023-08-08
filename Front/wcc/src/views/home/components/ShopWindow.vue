@@ -5,16 +5,17 @@
     </div>
 
     <div class="scroll-snap-card">
-      <div class="slide red">
+      <div class="slide image-products">
+        <div class="image-item">
+          <div></div>
+        </div>
+      </div>
+      <div class="slide frame-products">
           <p class="tip">Scroll On Me</p>
       </div>
-      <div class="slide blue">
+      <div class="slide naming-products">
           <p class="tip">Scroll On Me</p>
       </div>
-      <div class="slide green">
-          <p class="tip">Scroll On Me</p>
-      </div>
-
 
     </div>
   </div>
@@ -29,13 +30,13 @@
 }
 
 .banner img {
-  width: 350px;
-  margin-top: -60px;
+  width: 340px;
+  margin-top: -110px;
 }
 
 .content-window::before {
   content: '';
-  position: absolute;
+  position: absolut-e;
   top: 67%;
   left: -28px;
   width: 50px; 
@@ -51,15 +52,56 @@
   height: 700px;
 }
 
-.red {
+/* ------------- 프로필 이미지 상점 ------------- */
+.image-products {
   background-color: #f43f5e;
 }
 
-.blue {
+.card {
+ width: 190px;
+ height: 254px;
+ box-shadow: 0 10px 10px rgba(0, 0, 0, 0.212);
+ background: #fff;
+ display: flex;
+ border-radius: 20px;
+ justify-content: center;
+ position: relative;
+ transition: all .4s;
+}
+
+.card::before {
+ content: '---content---';
+ letter-spacing: 0.2em;
+ position: absolute;
+ bottom: 8px;
+ left: 20px;
+ color: rgb(51, 51, 51);
+ font-size: 0.8em;
+ font-weight: 700;
+}
+
+.card div {
+ width: 100%;
+ height: 100%;
+ border-radius: 20px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.212);
+ cursor: pointer;
+ z-index: 10;
+ transition: all .4s;
+ background-color: #fff;
+}
+
+.card:hover div {
+ transform: translateY(-30px);
+}
+
+/* ------------- 프레임 상점 ------------- */
+.frame-products {
   background-color: #3b82f6;
 }
 
-.green {
+/* ------------- 휘장 상점 ------------- */
+.naming-products {
   background-color: #22c55e;
 }
 
