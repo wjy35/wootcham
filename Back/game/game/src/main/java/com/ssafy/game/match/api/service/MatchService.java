@@ -49,7 +49,7 @@ public class MatchService {
 
     public void createMatchMemberByMemberId(String memberId){
         Member matchMember = new Member(memberId);
-        System.out.println("carate this = " + this);
+
         this.matchMemberQueue.offer(matchMember);
         this.matchMemberSession.insertMember(matchMember);
     }
@@ -59,14 +59,11 @@ public class MatchService {
     }
 
     public boolean matchable(){
-        System.out.println("matchable this = " + this);
-        System.out.println("this.matchMemberQueue.size() = " + this.matchMemberQueue.size());
-        System.out.println("matchMemberQueue = " + matchMemberQueue);
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            Thread.sleep(10000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
         if(this.matchMemberQueue.size()<GameSetting.MAX_GAMEMEMBER_COUNT) return false;
 
         return true;
