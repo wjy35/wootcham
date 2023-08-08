@@ -67,6 +67,7 @@ public class MatchService {
     public void sendMatchResult(List<Member> groupMemberList){
         try{
             Group group = groupRepository.createNewGroup();
+            System.out.println("send Match Result");
             sendMatchStatusToGroupMembers(groupMemberList, group,MatchStatus.MATCHED);
 
             int second = GameSetting.MAX_GAMEMEMBER_ENTER_WAIT_SECOND;
