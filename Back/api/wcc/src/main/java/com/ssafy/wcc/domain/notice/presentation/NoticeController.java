@@ -111,7 +111,7 @@ public class NoticeController {
             @ApiResponse(code = 200, message = "공지사항 수정 성공"),
             @ApiResponse(code = 404, message = "공지사항 수정 실패"),
     })
-    public ResponseEntity<> updateNotice(
+    public ResponseEntity<?> updateNotice(
             @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken,
             @RequestBody @ApiParam(value = "글 정보", required = true) NoticeRequest request
     ) {
