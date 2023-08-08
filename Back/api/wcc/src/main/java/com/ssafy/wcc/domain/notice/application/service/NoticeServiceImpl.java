@@ -5,7 +5,7 @@ import com.ssafy.wcc.common.exception.WCCException;
 import com.ssafy.wcc.domain.member.db.entity.Member;
 import com.ssafy.wcc.domain.member.db.repository.MemberRepository;
 import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeForAdminResponse;
-import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeForUserResponse;
+import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeResponse;
 import com.ssafy.wcc.domain.notice.application.mapper.NoticeMapper;
 import com.ssafy.wcc.domain.notice.db.entity.Notice;
 import com.ssafy.wcc.domain.notice.db.repository.NoticeRepositorySupport;
@@ -32,16 +32,11 @@ public class NoticeServiceImpl implements NoticeService {
     private final NoticeRepositorySupport noticeRepositorySupport;
     private final NoticeMapper noticeMapper;
 
-
     @Override
-    public List<NoticeForUserResponse> getNoticeListForUsers(long id) throws WCCException {
+    public List<NoticeResponse> getNoticeListForUsers(long id) throws WCCException {
         logger.info("getNoticeListForUsers service 진입: {}", id);
-        Optional<Member> member = memberRepository.findById(id);
-        if (member.isEmpty()) {
-            throw new WCCException(Error.USER_NOT_FOUND);
-        }
-
-        logger.info("공지를 받으려는 Member 정보: {}", member);
+        checkMember(id, 1);
+        
         long count = noticeRepository.countBy();
         List<Notice> noticeList = noticeRepositorySupport.listNoticeForUsers(Math.min(count, 4));
         return noticeList.stream()
@@ -52,17 +47,31 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public List<NoticeForAdminResponse> getNoticeListForAdmin(long id) throws WCCException {
         logger.info("getNoticeListForAdmin service 진입");
-        Optional<Member> member = memberRepository.findById(id);
-
-        if (member.isEmpty()) {
-            throw new WCCException(Error.USER_NOT_FOUND);
-        }
-
-        if (member.get().getAdmin() != 0) throw new WCCException(Error.NOT_ADMIN);
+        checkMember(id, 0);
 
         List<Notice> noticeList = noticeRepositorySupport.listNoticeForAdmin();
         return noticeList.stream()
                 .map(n -> noticeMapper.toNoticeListResponse(n))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public NoticeResponse getNoticeDetail(long memberId, long noticeId) throws WCCException {
+        logger.info("getNoticeDetail service 진입");
+        checkMember(memberId, 0);
+
+        Optional<Notice> notice = noticeRepositorySupport.getNoticeDetail(noticeId);
+        if (notice.isEmpty()) throw new WCCException(Error.NO_SUCH_NOTICE);
+        return noticeMapper.toNoticeResponse(notice.get());
+    }
+    
+    public void checkMember(long id, int type) throws WCCException {
+        Optional<Member> member = memberRepository.findById(id);
+        if (member.isEmpty()) throw new WCCException(Error.USER_NOT_FOUND);
+
+        // 관리자인지도 추가로 확인해야하는 경우
+        if (type == 0) if (member.get().getAdmin() != 0) throw new WCCException(Error.NOT_ADMIN);
+
+        logger.info("공지를 받으려는 Member 이메일: {}", member.get().getEmail());
     }
 }

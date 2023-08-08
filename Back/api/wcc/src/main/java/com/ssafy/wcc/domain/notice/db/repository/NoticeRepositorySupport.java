@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class NoticeRepositorySupport extends QuerydslRepositorySupport {
@@ -37,5 +38,12 @@ public class NoticeRepositorySupport extends QuerydslRepositorySupport {
         return jpaQueryFactory.select(Projections.bean(Notice.class, notice.id, notice.subject, notice.date))
                 .from(notice)
                 .fetch();
+    }
+
+    public Optional<Notice> getNoticeDetail(long noticeId) {
+        return Optional.ofNullable(jpaQueryFactory.select(Projections.bean(Notice.class, notice.subject, notice.content, notice.date))
+                .from(notice)
+                .where(notice.id.eq(noticeId))
+                .fetchOne());
     }
 }

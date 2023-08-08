@@ -2,13 +2,12 @@ package com.ssafy.wcc.domain.notice.presentation;
 
 import com.ssafy.wcc.common.exception.WCCException;
 import com.ssafy.wcc.domain.jwt.application.service.TokenService;
+import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
+import com.ssafy.wcc.domain.notice.application.dto.request.NoticeRequest;
 import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeForAdminResponse;
-import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeForUserResponse;
+import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeResponse;
 import com.ssafy.wcc.domain.notice.application.service.NoticeService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -17,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +42,7 @@ public class NoticeController {
         logger.info("listNoticeForUsers controller 진입");
         Map<String, Object> res = new HashMap<>();
         try {
-            List<NoticeForUserResponse> list = noticeService.getNoticeListForUsers(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
+            List<NoticeResponse> list = noticeService.getNoticeListForUsers(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
             res.put("isSuccess", true);
             res.put("data", list);
             return new ResponseEntity<>(res, HttpStatus.OK);
@@ -74,4 +72,26 @@ public class NoticeController {
         }
     }
 
+    @GetMapping("/detail")
+    @ApiOperation("관리자. 공지 상세보기")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "공지사항 상세보기 성공"),
+            @ApiResponse(code = 404, message = "공지사항 상세보기 실패"),
+    })
+    public ResponseEntity<?> noticeDetail(
+            @RequestHeader ("access_token")  @ApiParam(value = "acess_token", required = true) String accessToken,
+            @RequestBody @ApiParam(value = "글 아이디", required = true) NoticeRequest request
+            ) {
+        log.info("noticeDetail controller 진입");
+        Map<String, Object> res = new HashMap<>();
+        try {
+            NoticeResponse notice = noticeService.getNoticeDetail(Long.parseLong(tokenService.getAccessTokenId(accessToken)), request.getId());
+            res.put("isSuccess", true);
+            res.put("data", notice);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (WCCException e) {
+            res.put("isSuccess", false);
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
+        }
+    }
 }
