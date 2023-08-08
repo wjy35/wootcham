@@ -4,6 +4,7 @@ import com.ssafy.wcc.common.exception.Error;
 import com.ssafy.wcc.common.exception.WCCException;
 import com.ssafy.wcc.domain.member.db.entity.Member;
 import com.ssafy.wcc.domain.member.db.repository.MemberRepository;
+import com.ssafy.wcc.domain.notice.application.dto.request.NoticeRequest;
 import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeForAdminResponse;
 import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeResponse;
 import com.ssafy.wcc.domain.notice.application.mapper.NoticeMapper;
@@ -15,7 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -64,7 +67,21 @@ public class NoticeServiceImpl implements NoticeService {
         if (notice.isEmpty()) throw new WCCException(Error.NO_SUCH_NOTICE);
         return noticeMapper.toNoticeResponse(notice.get());
     }
-    
+
+    @Override
+    @Transactional
+    public void registerNotice(long id, NoticeRequest noticeRequest) throws WCCException {
+        logger.info("registerNotice service 진입");
+        checkMember(id, 0);
+
+        Notice notice = Notice.builder()
+                .subject(noticeRequest.getSubject())
+                .content(noticeRequest.getContent())
+                .date(new Date())
+                .build();
+        noticeRepository.save(notice);
+    }
+
     public void checkMember(long id, int type) throws WCCException {
         Optional<Member> member = memberRepository.findById(id);
         if (member.isEmpty()) throw new WCCException(Error.USER_NOT_FOUND);

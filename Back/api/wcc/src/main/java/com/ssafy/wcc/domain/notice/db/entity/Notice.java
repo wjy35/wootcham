@@ -9,7 +9,6 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Getter
-@Setter
 @Entity
 @Table(name = "notice")
 @NoArgsConstructor

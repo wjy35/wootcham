@@ -38,7 +38,9 @@ public class NoticeController {
             @ApiResponse(code = 200, message = "공지사항 조회 성공"),
             @ApiResponse(code = 404, message = "공지사항 조회 실패"),
     })
-    public ResponseEntity<?> listNoticeForUsers(@RequestHeader("access_token") String accessToken) {
+    public ResponseEntity<?> listNoticeForUsers(
+            @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken
+    ) {
         logger.info("listNoticeForUsers controller 진입");
         Map<String, Object> res = new HashMap<>();
         try {
@@ -58,7 +60,9 @@ public class NoticeController {
             @ApiResponse(code = 200, message = "공지사항 조회 성공"),
             @ApiResponse(code = 404, message = "공지사항 조회 실패"),
     })
-    public ResponseEntity<?> listNoticeForAdmin(@RequestHeader("access_token") String accessToken) {
+    public ResponseEntity<?> listNoticeForAdmin(
+            @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken
+    ) {
         log.info("listNoticeForAdmin controller 진입");
         Map<String, Object> res = new HashMap<>();
         try {
@@ -79,15 +83,37 @@ public class NoticeController {
             @ApiResponse(code = 404, message = "공지사항 상세보기 실패"),
     })
     public ResponseEntity<?> noticeDetail(
-            @RequestHeader ("access_token")  @ApiParam(value = "acess_token", required = true) String accessToken,
+            @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken,
             @RequestBody @ApiParam(value = "글 아이디", required = true) NoticeRequest request
-            ) {
+    ) {
         log.info("noticeDetail controller 진입");
         Map<String, Object> res = new HashMap<>();
         try {
             NoticeResponse notice = noticeService.getNoticeDetail(Long.parseLong(tokenService.getAccessTokenId(accessToken)), request.getId());
             res.put("isSuccess", true);
             res.put("data", notice);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (WCCException e) {
+            res.put("isSuccess", false);
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("")
+    @ApiOperation("관리자. 공지사항 등록하기")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "공지사항 상세보기 성공"),
+            @ApiResponse(code = 404, message = "공지사항 상세보기 실패"),
+    })
+    public ResponseEntity<?> registerNotice(
+            @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken,
+            @RequestBody @ApiParam(value = "글 아이디", required = true) NoticeRequest request
+    ) {
+        log.info("registerNotice controller 진입");
+        Map<String, Object> res = new HashMap<>();
+        try {
+            noticeService.registerNotice(Long.parseLong(tokenService.getAccessTokenId(accessToken)), request);
+            res.put("isSuccess", true);
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (WCCException e) {
             res.put("isSuccess", false);
