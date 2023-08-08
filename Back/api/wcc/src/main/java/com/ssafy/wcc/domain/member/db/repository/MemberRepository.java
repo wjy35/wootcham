@@ -20,6 +20,7 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
     @Override
     Optional<Member> findById(Long id);
 
+
     Long countByNickname(String nickname);
 
 }

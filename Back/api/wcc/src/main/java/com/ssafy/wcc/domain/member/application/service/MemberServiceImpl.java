@@ -11,9 +11,6 @@ import com.ssafy.wcc.domain.member.db.entity.MemberItem;
 import com.ssafy.wcc.domain.member.db.entity.MemberItemPK;
 import com.ssafy.wcc.domain.member.db.repository.MemberItemRepository;
 import com.ssafy.wcc.domain.member.db.repository.MemberRepository;
-import com.ssafy.wcc.domain.report.db.entity.Report;
-import com.ssafy.wcc.domain.report.db.entity.ReportPK;
-import com.ssafy.wcc.domain.report.db.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,10 +34,12 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberItemRepository memberItemRepository;
 
+
     @Override
     public void memberSignUp(MemberRequest signupInfo) {
         // 비밀번호에 암호 적용
         Member member = memberMapper.memberRequestToMember(signupInfo);
+
         member.setMoney(0);
         member.setAdmin(1);
         member.setPoint(0);
