@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CollectionItemService {
-    List<CollectionItem> getList(Long id);
+    List<CollectionItem> getCollectionList(Long id);
 
     boolean buy(Long memberId, int collectionId);
 

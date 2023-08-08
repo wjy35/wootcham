@@ -4,6 +4,7 @@ package com.ssafy.wcc.domain.member.presentation;
 import com.ssafy.wcc.domain.collection.application.service.CollectionItemService;
 import com.ssafy.wcc.domain.member.application.dto.request.EmailVerifyRequest;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
+import com.ssafy.wcc.domain.member.application.dto.request.MemberloginRequest;
 import com.ssafy.wcc.domain.member.application.dto.response.MemberInfoResponse;
 import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
 import com.ssafy.wcc.domain.member.application.service.EmailService;
@@ -106,7 +107,7 @@ public class MemberController {
             @ApiResponse(code = 404, message = "존재하지 않는 사용자")
     })
     public ResponseEntity<Map<String, Object>> login(
-            @RequestBody @ApiParam(value = "로그인 정보") MemberRequest loginInfo
+            @RequestBody @ApiParam(value = "로그인 정보") MemberloginRequest loginInfo
     ) {
         Map<String, Object> res = new HashMap<>();
 

@@ -1,13 +1,14 @@
 package com.ssafy.wcc.domain.member.application.service;
 
 import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
+import com.ssafy.wcc.domain.member.application.dto.request.MemberloginRequest;
 import com.ssafy.wcc.domain.member.application.dto.response.MemberInfoResponse;
 
 public interface MemberService {
 
     public void memberSignUp(MemberRequest signupInfo);
 
-    public Long memberLogin(MemberRequest loginInfo);
+    public Long memberLogin(MemberloginRequest loginInfo);
 
     public void memberDelete(String Id);
 

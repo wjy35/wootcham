@@ -44,7 +44,7 @@ public class CollectionController {
         String id = tokenService.getAccessTokenId(accessToken);
 
         try {
-            List<CollectionItem> list = collectionItemService.getList(Long.parseLong(id));
+            List<CollectionItem> list = collectionItemService.getCollectionList(Long.parseLong(id));
 
             JSONArray arr = new JSONArray();
             for(int i=0; i<list.size(); i++){
