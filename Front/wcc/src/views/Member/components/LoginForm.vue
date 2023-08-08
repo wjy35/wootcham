@@ -3,14 +3,14 @@
         <form id="loginForm">
             <input 
                 type="email" placeholder="이메일" 
-                v-model="emailInput" class="email-input"
+                v-model="state.form.emailInput" class="email-input"
             >
             <input 
                 type="password" 
                 placeholder="비밀번호" 
-                v-model="pwInput" class="password-input"
+                v-model="state.form.pwInput" class="password-input"
             >
-            <SubmitButton class="loginButton" value="로그인" @click="login"></SubmitButton>
+            <SubmitButton class="loginButton" value="로그인" @click.prevent="login"></SubmitButton>
             <div id="routes">
                 <span class="cursor-pointer" @click="forgotPw">비밀번호를 잊어버렸어요</span>
                 <span class="cursor-pointer" @click="signup">회원가입</span>
@@ -19,59 +19,99 @@
     </div>
 </template>
 <script>
+import { reactive, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import SubmitButton from './UI/SubmitButton.vue';
+import api from '@/api/index'
 
 export default {
     name: 'LoginForm',
-    data() {
-        return {
-            emailInput: "",
-            pwInput: "",
-            emailCheck: true,
-        }
-    },
 
     components: {
         SubmitButton
     },
 
-    watch: {
-        emailInput() {
-            if (this.emailInput.length > 0 && !this.emailInput.includes("@")) {
-                this.emailCheck = false;
-                document.querySelector(".emailInput").classList.add("warning");
-            } else {
-                this.emailCheck = true;
-                document.querySelector(".emailInput").classList.remove("warning");
+    setup(){     
+
+        const store = useStore();       // store 등록
+        const router = useRouter()      // router 등록
+
+        const state = reactive({        // state 선언
+            form: {
+                emailInput: "",
+                pwInput: "",
+                emailCheck: true,
             }
+        })
+        
+        // 이메일 유효성 검사
+        watch(() => state.form.emailInput, () => {
+            if (state.form.emailInput.length > 0 && !state.form.emailInput.includes("@")) {
+                state.form.emailInputemailCheck = false;
+                document.querySelector(".email-input").classList.add("warning");
+            } else {
+                state.form.emailInputemailCheck = true;
+                document.querySelector(".email-input").classList.remove("warning");
+            }
+        })
+
+        const login = () => {
+            // 로그인 요청
+            api.post(`/member/login`, {
+                email: state.form.emailInput,
+                password: state.form.pwInput
+            }).then(({ data }) => {
+                console.log("data:", data)
+
+                        // localStorage에 토큰 저장
+                        localStorage.setItem("access_token", data.access_token);
+                        localStorage.setItem("refresh_token", data.refresh_token);
+
+                        // store에 토큰 저장
+                        store.commit('setAccessToken', localStorage.getItem('access_token'));
+                        console.log("Store AccessToken: ", store.getters['getAccessToken']);
+
+                        // To-Do: 사용자 정보 읽어와서 state에 저장
+                        // api.defaults.headers["access-token"] = localStorage.getItem("access_token");
+                        // api.post(`/member`)
+                        //     .then(({ data }) => {
+                        //         if (data.isSuccess == true) {
+                        //             console.log("회원 정보 조회 성공...............")
+                        //         } else {
+                        //             console.log("회원 정보 조회 실패...............")
+                        //         }
+                        //     })
+                        //     .catch(error => {
+                        //         alert(error.message)
+                        //         console.log(error.response)
+                        //     });
+
+                        // 홈 화면으로 이동
+                        router.push({ name: 'homeview' })
+
+                }).catch(error => {
+                    if(error.response.status == 404){   // 사용자 정보 없음
+                        alert("이메일과 비밀번호를 다시 확인해주세요.")
+                    }else{
+                        alert("잠시 후 다시 시도해주세요.")
+                    }
+                })
         }
+
+        const forgotPw = () => {
+            // FindPassword로 라우팅
+            router.push({ name: "findpw" })
+        }
+
+        const signup = () => {
+            // SignupForm으로 라우팅
+            router.push({ name: "signup" })
+        }
+
+        return { state, login, forgotPw, signup };
     },
 
-    methods: {
-        login() {
-            if (this.emailInput === 'ssafy@ssafy.com' && this.pwInput === 'ssafy') {
-                alert('로그인 성공');
-                // this.$router.push({name: "welcome"})
-
-                // home 화면으로 라우팅
-                this.$router.push({ name: 'homeview' })
-            } else if (!this.emailInput.includes('@')) {
-                alert('이메일 형식을 지켜주세요');
-            } else {
-                alert('로그인 실패');
-            }
-        },
-
-        forgotPw() {
-            // FindPassword로 라우팅
-            this.$router.push({ name: "findpw" })
-        },
-
-        signup() {
-            // SignupForm으로 라우팅
-            this.$router.push({ name: "signup" })
-        }
-    }
 }
 </script>
 <style scoped>
