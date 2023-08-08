@@ -1,36 +1,60 @@
 <template>
-<div v-if="streamManager">
-	<ov-video :stream-manager="streamManager"/>
-	<!-- <div><p>{{ clientData }}</p></div> -->
-</div>
+    <div class="userVideo" v-if="streamManager">
+        <OvVideo v-if="!isMyVideo" :stream-manager="streamManager"/>
+        <MyOvVideo v-else :stream-manager="streamManager"/>
+        <!-- <div><p>{{ clientData }}</p></div> -->
+    </div>
 </template>
 
 <script>
-import OvVideo from './OvVideo';
+import OvVideo from './OvVideo.vue';
+import MyOvVideo from './MyOvVideo.vue';
 
 export default {
-	name: 'UserVideo',
+    name: 'UserVideo',
 
-	components: {
-		OvVideo,
-	},
+    props: {
+        videoType: String,
+        streamManager: Object,
+    },
 
-	props: {
-		streamManager: Object,
-	},
+    data() {
+        return {
+            isMyVideo: false,
+        }
+    },
 
-	computed: {
-		clientData () {
-			const { clientData } = this.getConnectionData();
-			return clientData;
-		},
-	},
+    components: {
+        OvVideo, MyOvVideo
+    },
 
-	methods: {
-		getConnectionData () {
-			const { connection } = this.streamManager.stream;
-			return JSON.parse(connection.data);
-		},
-	},
+    computed: {
+        clientData () {
+            const { clientData } = this.getConnectionData();
+            return clientData;
+        },
+    },
+
+    mounted() {
+        // streamManager가 내 비디오가 아니면 isMyVideo를 false로 바꿈
+        if (this.videoType === "myVideo") {
+            this.isMyVideo = true;
+        }
+    },
+
+    methods: {
+        getConnectionData () {
+            const { connection } = this.streamManager.stream;
+            return JSON.parse(connection.data);
+        },
+    },
 };
 </script>
+
+<style scoped>
+    .userVideo {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+    
