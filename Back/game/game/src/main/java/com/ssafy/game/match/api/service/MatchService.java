@@ -58,13 +58,12 @@ public class MatchService {
         this.matchMemberSession.deleteMemberByMemberId(memberId);
     }
 
-    public boolean matchable(){
+    public synchronized boolean matchable(){
 //        try {
 //            Thread.sleep(10000);
 //        } catch (InterruptedException e) {
 //            throw new RuntimeException(e);
 //        }
-        if(this.matchMemberQueue.size()>1) System.out.println("nice");
         if(this.matchMemberQueue.size()<GameSetting.MAX_GAMEMEMBER_COUNT) return false;
 
         return true;
