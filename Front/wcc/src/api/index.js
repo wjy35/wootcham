@@ -1,14 +1,10 @@
 import axios from "axios";
 
-// local vue api axios instance
-function apiInstance() {
-  const instance = axios.create({
-    baseURL: process.env.VUE_APP_API_BASE_URL,
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-    },
-  });
-  return instance;
-}
-
-export { apiInstance };
+// axios 객체 생성
+export default axios.create({
+  // baseURL: "https://i9a604.p.ssafy.io",
+  baseURL: "http://localhost:8080",
+  headers: {
+    "Content-type": "application/json",
+  },
+});
