@@ -17,4 +17,6 @@ public interface NoticeService {
     public NoticeResponse getNoticeDetail(long memberId, long noticeId) throws WCCException;
 
     public void registerNotice(long id, NoticeRequest noticeRequest) throws WCCException;
+
+    public void updateNotice(long id, NoticeRequest noticeRequest) throws WCCException;
 }

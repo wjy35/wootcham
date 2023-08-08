@@ -82,6 +82,15 @@ public class NoticeServiceImpl implements NoticeService {
         noticeRepository.save(notice);
     }
 
+    @Override
+    @Transactional
+    public void updateNotice(long id, NoticeRequest noticeRequest) throws WCCException {
+        logger.info("updateNotice service 진입");
+        checkMember(id, 0);
+
+        noticeRepositorySupport.updateNoticeInfo(noticeRequest);
+    }
+
     public void checkMember(long id, int type) throws WCCException {
         Optional<Member> member = memberRepository.findById(id);
         if (member.isEmpty()) throw new WCCException(Error.USER_NOT_FOUND);
@@ -91,4 +100,5 @@ public class NoticeServiceImpl implements NoticeService {
 
         logger.info("공지를 받으려는 Member 이메일: {}", member.get().getEmail());
     }
+
 }

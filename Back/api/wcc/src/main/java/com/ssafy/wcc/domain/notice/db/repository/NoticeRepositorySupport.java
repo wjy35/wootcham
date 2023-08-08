@@ -2,6 +2,7 @@ package com.ssafy.wcc.domain.notice.db.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.wcc.domain.notice.application.dto.request.NoticeRequest;
 import com.ssafy.wcc.domain.notice.db.entity.Notice;
 import com.ssafy.wcc.domain.notice.db.entity.QNotice;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -45,5 +46,13 @@ public class NoticeRepositorySupport extends QuerydslRepositorySupport {
                 .from(notice)
                 .where(notice.id.eq(noticeId))
                 .fetchOne());
+    }
+
+    public Long updateNoticeInfo(NoticeRequest noticeRequest) {
+        return jpaQueryFactory.update(notice)
+                .set(notice.subject, noticeRequest.getSubject())
+                .set(notice.content, noticeRequest.getContent())
+                .where(notice.id.eq(noticeRequest.getId()))
+                .execute();
     }
 }

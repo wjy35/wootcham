@@ -120,4 +120,26 @@ public class NoticeController {
             return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("")
+    @ApiOperation("관리자. 공지사항 수정")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "공지사항 수정 성공"),
+            @ApiResponse(code = 404, message = "공지사항 수정 실패"),
+    })
+    public ResponseEntity<?> updateNotice(
+            @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken,
+            @RequestBody @ApiParam(value = "글 아이디", required = true) NoticeRequest request
+    ) {
+        log.info("updateNotice controller 진입");
+        Map<String, Object> res = new HashMap<>();
+        try {
+            noticeService.updateNotice(Long.parseLong(tokenService.getAccessTokenId(accessToken)), request);
+            res.put("isSuccess", true);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (WCCException e) {
+            res.put("isSuccess", false);
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
+        }
+    }
 }
