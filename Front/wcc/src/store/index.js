@@ -24,10 +24,24 @@ export default createStore({
     setAccessToken(state, payload) {
       state.accessToken = payload;
     },
+    setUserEmail(state, payload){
+      state.userInfo.email = payload;
+    },
+    setUserMoney(state, payload){
+      state.userInfo.money = payload;
+    },
+    setUserNickname(state, payload){
+      state.userInfo.nickname = payload;
+    },
+    setUserPoint(state, payload){
+      state.userInfo.point = payload;
+    }
   },
 
   getters: {
     getUserInfo(state) {
+      console.log("getuserinfo called............")
+      console.log("userInfo: ", state.userInfo);
       return state.userInfo;
     },
     getAccessToken(state) {

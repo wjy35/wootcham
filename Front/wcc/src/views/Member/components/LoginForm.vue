@@ -1,15 +1,8 @@
 <template>
     <div>
         <form id="loginForm">
-            <input 
-                type="email" placeholder="이메일" 
-                v-model="state.form.emailInput" class="email-input"
-            >
-            <input 
-                type="password" 
-                placeholder="비밀번호" 
-                v-model="state.form.pwInput" class="password-input"
-            >
+            <input type="email" placeholder="이메일" v-model="state.form.emailInput" class="email-input">
+            <input type="password" placeholder="비밀번호" v-model="state.form.pwInput" class="password-input">
             <SubmitButton class="loginButton" value="로그인" @click.prevent="login"></SubmitButton>
             <div id="routes">
                 <span class="cursor-pointer" @click="forgotPw">비밀번호를 잊어버렸어요</span>
@@ -32,7 +25,7 @@ export default {
         SubmitButton
     },
 
-    setup(){     
+    setup() {
 
         const store = useStore();       // store 등록
         const router = useRouter()      // router 등록
@@ -44,7 +37,7 @@ export default {
                 emailCheck: true,
             }
         })
-        
+
         // 이메일 유효성 검사
         watch(() => state.form.emailInput, () => {
             if (state.form.emailInput.length > 0 && !state.form.emailInput.includes("@")) {
@@ -64,39 +57,44 @@ export default {
             }).then(({ data }) => {
                 console.log("data:", data)
 
-                        // localStorage에 토큰 저장
-                        localStorage.setItem("access_token", data.access_token);
-                        localStorage.setItem("refresh_token", data.refresh_token);
+                // localStorage에 토큰 저장
+                localStorage.setItem("access_token", data.access_token);
+                localStorage.setItem("refresh_token", data.refresh_token);
 
-                        // store에 토큰 저장
-                        store.commit('setAccessToken', localStorage.getItem('access_token'));
-                        console.log("Store AccessToken: ", store.getters['getAccessToken']);
+                // store에 토큰 저장
+                store.commit('setAccessToken', localStorage.getItem('access_token'));
+                console.log("Store AccessToken: ", store.getters['getAccessToken']);
 
-                        // To-Do: 사용자 정보 읽어와서 state에 저장
-                        // api.defaults.headers["access-token"] = localStorage.getItem("access_token");
-                        // api.post(`/member`)
-                        //     .then(({ data }) => {
-                        //         if (data.isSuccess == true) {
-                        //             console.log("회원 정보 조회 성공...............")
-                        //         } else {
-                        //             console.log("회원 정보 조회 실패...............")
-                        //         }
-                        //     })
-                        //     .catch(error => {
-                        //         alert(error.message)
-                        //         console.log(error.response)
-                        //     });
+                // 사용자 정보 읽어와서 state에 저장
+                api.defaults.headers["access_token"] = localStorage.getItem("access_token");
+                api.post(`/member`)
+                    .then(({ data }) => {
+                        if (data.isSuccess == true) {
+                            console.log("회원 정보 조회 성공...............")
+                            console.log("data: ", data.data)
+                            store.commit('setUserEmail', data.data.email)
+                            store.commit('setUserMoney', data.data.money)
+                            store.commit('setUserNickname', data.data.nickname)
+                            store.commit('setUserPoint', data.data.point)
+                        } else {
+                            console.log("회원 정보 조회 실패...............")
+                        }
+                    })
+                    .catch(error => {
+                        alert(error.message)
+                        console.log(error.response)
+                    });
 
-                        // 홈 화면으로 이동
-                        router.push({ name: 'homeview' })
+                // 홈 화면으로 이동
+                router.push({ name: 'homeview' })
 
-                }).catch(error => {
-                    if(error.response.status == 404){   // 사용자 정보 없음
-                        alert("이메일과 비밀번호를 다시 확인해주세요.")
-                    }else{
-                        alert("잠시 후 다시 시도해주세요.")
-                    }
-                })
+            }).catch(error => {
+                if (error.response.status == 404) {   // 사용자 정보 없음
+                    alert("이메일과 비밀번호를 다시 확인해주세요.")
+                } else {
+                    alert("잠시 후 다시 시도해주세요.")
+                }
+            })
         }
 
         const forgotPw = () => {

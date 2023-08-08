@@ -13,12 +13,11 @@
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
               <path d="m18 0 8 12 10-8-4 20H4L0 4l10 8 8-12z"></path>
           </svg>
-          {{ gamepoint }}
+          <span v-text="state.userInfo.point"></span>
         </div>
       </div>
 
-      <div class="username">
-        {{ username }}
+      <div class="username" v-text="state.userInfo.nickname">
       </div>
     </div>
 
@@ -45,6 +44,9 @@
 </template>
 
 <script>
+import { reactive, onMounted } from 'vue'
+import { useStore } from 'vuex'
+
 export default {
   data(){
     return {
@@ -53,6 +55,28 @@ export default {
       activeMenuItem: ''
     };
   },
+  
+  setup(){
+    const store = useStore();       // store 등록
+    
+    const state = reactive({        // state 선언
+      userInfo: {
+
+      }
+    })
+
+    onMounted(() => state.form.userInfo, () => {
+
+    })
+
+    state.userInfo = store.getters['getUserInfo'];
+
+    console.log("userInfo", state.userInfo)
+
+    return { state };
+
+  },
+
   methods: {
     selectProfile(){
       this.$emit('selectProfile');
