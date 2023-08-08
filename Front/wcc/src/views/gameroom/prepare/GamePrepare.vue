@@ -62,7 +62,7 @@
 											>
 											<div class="dice-container">
 													<span class="dice-tooltip">
-															랜덤으로 키워드 정하기
+															랜덤으로 키워드를 정할 수 있습니다.
 													</span>
 													<img 
 															type="button" 
@@ -74,12 +74,13 @@
 													>
 											</div>
 									</div>
-									<button 
-										id="submitButton" 
-										@click="goMainGame"
-										class="shadow">
-										READY
+
+									<button id-="submitButton" @click="goMainGame" class="shadow">
+										<span class="now">ENTER ROOM</span>
+										<span class="play">READY!</span>
 									</button>
+											
+
 							</div>
 							
 						</div>					
@@ -175,8 +176,8 @@ header {
 
 .game-room-prepare-modal {
 	background-color: #FFF2EA;
-	width: 1000px;
-	height: 450px;
+	width: 800px;
+	height: 420px;
 
 	border-radius: 15px;
 }
@@ -298,13 +299,14 @@ header {
 
 .dice-tooltip {
 	position: absolute;
+	top: -80px;
+	left: 50%;
+
 	background-color: rgba(0, 0, 0, 0.8);
 	color: white;
 	padding: 5px;
 	border-radius: 5px;
 	font-size: 14px;
-	top: -30px;
-	left: 50%;
 	transform: translateX(-50%);
 	display: none;
 	pointer-events: none;
@@ -313,7 +315,7 @@ header {
 .dice-icon {
 	position: absolute;
 	right: 25%;
-	bottom: 45%;
+	bottom: 25%;
 	cursor: pointer;
 }
 
@@ -322,22 +324,59 @@ header {
 }
 
 
-#submitButton {
-	font-family: 'Black Han Sans', sans-serif;
-	width: fit-content;
-	background-color: #FF7926;
-	color: white;
-	font-size: 1.5rem;
-	border: none;
-	border-radius: 1rem;
-	box-shadow: 5px 5px 5px gray;
-	
-	position: relative;
-	left: 50%;
-	transform: translateX(-50%);
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+	width: 180px;
+	height: 40px;
+
+  gap: 10px;
+  padding: 0 10px;
+  color: white;
+  text-shadow: 2px 2px rgb(116, 116, 116);
+  text-transform: uppercase;
+  border: solid 2px #FFF2EA;
+  letter-spacing: 1px;
+  font-weight: 600;
+  font-size: 17px;
+  background-color: #F27059;
+  border-radius: 50px;
+
+  position: absolute;
+	left: 44%;
+	bottom: -15%;
+  overflow: hidden;
+  transition: all .5s ease;
 }
 
-#submitButton:hover {
-	cursor: pointer;
+button:active {
+  transform: scale(.9);
+  transition: all 100ms ease;
+}
+
+
+.play {
+  transition: all .5s ease;
+  transition-delay: 300ms;
+}
+
+.now {
+  position: absolute;
+  left: 0;
+  transform: translateX(-100%);
+  transition: all .5s ease;
+  z-index: 2;
+}
+
+button:hover .now {
+  transform: translateX(10px);
+  transition-delay: 300ms;
+}
+
+button:hover .play {
+  transform: translateX(200%);
+  transition-delay: 300ms;
 }
 </style>

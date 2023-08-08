@@ -14,9 +14,7 @@
   
   /* 버튼 (공통 컴포넌트) */
   #submitButton {
-    font-family: 'Black Han Sans', sans-serif;
     width: 100%;
-    background-color: #FF7926;
     color: white;
     font-size: 2rem; 
     border: none;
