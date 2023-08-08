@@ -1,14 +1,19 @@
 <template>
     <div>
         <form id="loginForm">
-            <!-- <input type="email" placeholder="이메일" v-model="emailInput" class="emailInput"> -->
-            <!-- <input type="password" placeholder="비밀번호" v-model="pwInput"> -->
-            <input type="email" placeholder="이메일" v-model="state.form.emailInput" class="emailInput">
-            <input type="password" placeholder="비밀번호" v-model="state.form.pwInput">
+            <input 
+                type="email" placeholder="이메일" 
+                v-model="state.form.emailInput" class="email-input"
+            >
+            <input 
+                type="password" 
+                placeholder="비밀번호" 
+                v-model="state.form.pwInput" class="password-input"
+            >
             <SubmitButton class="loginButton" value="로그인" @click.prevent="login"></SubmitButton>
             <div id="routes">
-                <span @click="forgotPw">비밀번호를 잊어버렸어요</span>
-                <span @click="signup">회원가입</span>
+                <span class="cursor-pointer" @click="forgotPw">비밀번호를 잊어버렸어요</span>
+                <span class="cursor-pointer" @click="signup">회원가입</span>
             </div>
         </form>
     </div>
@@ -44,10 +49,10 @@ export default {
         watch(() => state.form.emailInput, () => {
             if (state.form.emailInput.length > 0 && !state.form.emailInput.includes("@")) {
                 state.form.emailInputemailCheck = false;
-                document.querySelector(".emailInput").classList.add("warning");
+                document.querySelector(".email-input").classList.add("warning");
             } else {
                 state.form.emailInputemailCheck = true;
-                document.querySelector(".emailInput").classList.remove("warning");
+                document.querySelector(".email-input").classList.remove("warning");
             }
         })
 
@@ -57,7 +62,8 @@ export default {
                 email: state.form.emailInput,
                 password: state.form.pwInput
             }).then(({ data }) => {
-                    if (data.isSuccess == true) {
+                console.log("data:", data)
+
                         // localStorage에 토큰 저장
                         localStorage.setItem("access_token", data.access_token);
                         localStorage.setItem("refresh_token", data.refresh_token);
@@ -83,12 +89,13 @@ export default {
 
                         // 홈 화면으로 이동
                         router.push({ name: 'homeview' })
-                    } else {
-                        alert("아이디와 비밀번호를 다시 확인해주세요.")
-                    }
+
                 }).catch(error => {
-                    alert("잠시 후 다시 시도해주세요.")
-                    console.log(error.message)
+                    if(error.response.status == 404){   // 사용자 정보 없음
+                        alert("이메일과 비밀번호를 다시 확인해주세요.")
+                    }else{
+                        alert("잠시 후 다시 시도해주세요.")
+                    }
                 })
         }
 
@@ -109,16 +116,30 @@ export default {
 </script>
 <style scoped>
 #loginForm {
-    width: 60%;
+    width: 70%;
     margin: auto;
     text-align: center;
+}
+
+#loginForm input {
+    background-color: #FFF2EA;
+}
+
+.email-input {
+    color: black;
 }
 
 #routes {
     display: flex;
     justify-content: space-between;
+
+    padding: 0 20px;
     text-decoration: underline;
     margin-top: 1rem;
     margin-bottom: 1rem;
+}
+
+#routes span:hover {
+    color: white;
 }
 </style>

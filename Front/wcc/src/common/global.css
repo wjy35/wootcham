@@ -6,6 +6,7 @@
   }
   
   #inner {
+    position: relative;
     min-width: 1500px; 
     margin: 0 auto;
   }
@@ -13,9 +14,7 @@
   
   /* 버튼 (공통 컴포넌트) */
   #submitButton {
-    font-family: 'Black Han Sans', sans-serif;
     width: 100%;
-    background-color: #FF7926;
     color: white;
     font-size: 2rem; 
     border: none;
@@ -34,7 +33,7 @@
   
    /* 스크롤바 스타일링 */
   ::-webkit-scrollbar {
-    width: 4px;
+    width: 0.1px;
     height: 7px;
   }
   /* Track */
@@ -67,4 +66,18 @@
     box-shadow: inset 0 -3em 3em rgba(0,0,0,0.1),
                 0 0  0 2px rgb(190, 190, 190),
                 0.3em 0.3em 1em rgba(0,0,0,0.3);
+   }
+
+   /* 빠른 flex */
+   .flex {
+    display: flex;
+   }
+
+   .cursor-pointer {
+    cursor: pointer;
+   }
+
+   .material-icons {
+    color: #fff;
+    font-size: 30px;
    }
