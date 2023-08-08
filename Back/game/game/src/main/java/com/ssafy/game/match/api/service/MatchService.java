@@ -61,10 +61,6 @@ public class MatchService {
     }
 
     public boolean matchable(){
-        if(this.count+3 < this.matchMemberQueue.size()){
-            System.out.println("matchMemberQueue = " + matchMemberQueue.size());
-            this.count++;
-        }
         if(this.matchMemberQueue.size()<GameSetting.MAX_GAMEMEMBER_COUNT) return false;
 
         return true;
