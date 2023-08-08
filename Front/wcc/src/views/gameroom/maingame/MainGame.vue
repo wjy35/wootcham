@@ -27,27 +27,43 @@
                     <!-- 임시로 이미지 넣음-->
                     <img v-if="mainStreamManager === undefined" src="https://media.istockphoto.com/id/518360318/photo/crazy-horse.jpg?s=612x612&w=0&k=20&c=KP27AuWsogbIb1dRSqqwRn_ykPMqguJb7z2q3x9xr5A=" alt="">
                     <UserVideo v-else :stream-manager="mainStreamManager" videoType="screen"/>
+                    <!-- Progress Bar -->
+                    <div class="loader">
+                      <div></div>
+                    </div>
+                    <!-- 화면 공유 & 턴 종료 버튼 -->
+                    <ul class="wrapper">
+                      <li @click='connectScreen' class="icon facebook">
+                          <span class="tooltip">화면공유</span>
+                          <span><i class="fab fa-facebook-f"></i></span>
+                      </li>
+                      <li @click="disconnectScreen" class="icon instagram">
+                          <span class="tooltip">턴 종료</span>
+                          <span><i class="fab fa-instagram"></i></span>
+                      </li>
+                    </ul>
                   </div>
-                  
                 </div>
 
                 <!-- 4, 8번 박스 === chat-card -->
                 <div class="main chat-card shadow">
-                    <div class="chat-body">
-                      <ul v-for="m in messageList" :key="m.connectionId">
-                        <li v-if="nickname(publisher) === m.nickname" class="message incoming">
-                          <p><span>{{ m.nickname }}</span>: {{ m.message }}</p>
-                        </li>
-                        <li v-if="nickname(publisher) !== m.nickname" class="message outgoing">
-                          <p><span>{{ m.nickname }}</span>: {{ m.message }}</p>
-                        </li>
-                      </ul>
-                    </div>
+                  <div class="chat-body">
+                    <ul v-for="m in messageList" :key="m.connectionId">
+                      <li v-if="nickname(publisher) === m.nickname" class="message incoming">
+                        <p><span>{{ m.nickname }}</span>: {{ m.message }}</p>
+                      </li>
+                      <li v-if="nickname(publisher) !== m.nickname" class="message outgoing">
+                        <p><span>{{ m.nickname }}</span>: {{ m.message }}</p>
+                      </li>
+                    </ul>
+                  </div>
 
-                    <div class="input-container shadow">
-                        <input placeholder="메시지를 입력해주세요." type="text" class="input" v-model="message" @keyup.enter="sendMessage">
-                        <span @click="sendMessage">Enter</span>
-                    </div>
+                  <div class="input-container shadow">
+                      <input placeholder="메시지를 입력해주세요." type="text" class="input" v-model="message" @keyup.enter="sendMessage">
+                      <button @click="sendMessage" class="invite-btn" type="button">
+                        SEND
+                      </button>
+                  </div>
                 </div>
 
                 <!-- 5번 박스 -->
@@ -393,27 +409,133 @@ header {
   position: absolute;
   top: 5px;
   left: 5px;
-  z-index: 99;
 
   color: white;
 }
 
 #main-content-video {
   position: absolute;
-  top: 0;
-  left: 0;
+  left: 5px;
+  
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
-#main-content-video img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-
-  border-radius: 10px;
+.loader {
+  position: absolute;
+  left: 10px;
+  bottom: 5px;
+  width: 75%;
+  height: 25px;
+  border-radius: 8px;
+  background-color: #47a7ff44;
 }
+
+.loader div {
+  height: 100%;
+  width: 100%;
+  border-radius: 8px;
+  background-color: #F27059;
+  animation: width7435 60s linear infinite;
+  transition: all;
+}
+
+@keyframes width7435 {
+  from {
+    /*width: 0;*/
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Screen Share Button and End Term Button */
+.wrapper {
+  display: inline-flex;
+  list-style: none;
+
+  position: absolute;
+  bottom: 0px;
+  right: 5px;
+  height: 25px;
+
+  font-family: "Poppins", sans-serif;
+  justify-content: center;
+}
+
+.wrapper .icon {
+  position: relative;
+  background: #fff;
+  border-radius: 8px;
+  margin: 10px;
+  
+  width: 50px;
+  height: 25px;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .tooltip {
+  position: absolute;
+  top: 0;
+  font-size: 14px;
+  background: #fff;
+  color: #fff;
+  padding: 5px 8px;
+  border-radius: 5px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .tooltip::before {
+  position: absolute;
+  content: "";
+  height: 8px;
+  width: 8px;
+  background: #fff;
+  bottom: -3px;
+  left: 50%;
+  transform: translate(-50%) rotate(45deg);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .icon:hover .tooltip {
+  top: -45px;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.wrapper .icon:hover span,
+.wrapper .icon:hover .tooltip {
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper .facebook:hover,
+.wrapper .facebook:hover .tooltip,
+.wrapper .facebook:hover .tooltip::before {
+  background: #1877F2;
+  color: #fff;
+}
+
+.wrapper .instagram:hover,
+.wrapper .instagram:hover .tooltip,
+.wrapper .instagram:hover .tooltip::before {
+  background: #E4405F;
+  color: #fff;
+}
+
 
 /* -------- CHAT --------- */
 .chat-card {
@@ -486,81 +608,70 @@ header {
 /* 메시지 입력창 */
 .input-container {
   position: relative;
+
   display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 2.8rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 20px 20px 30px rgba(0, 0, 0, .05);
+}
+
+.input-container input {
+  height: 100%;
   width: 100%;
-  max-width: 500px;
-}
-
-.input-container > span,
-.input-container .input {
-  white-space: nowrap;
-  display: block;
-}
-
-.input-container > span,
-.input-container .input:first-child {
-  border-radius: 6px 0 0 6px;
-}
-
-.input-container > span,
-.input-container .input {
-  border-radius: 0 6px 6px 0;
-}
-
-.input-container > span,
-.input-container .input {
-  margin-left: -1px;
-}
-
-.input-container .input {
-  position: relative;
-  z-index: 1;
-  flex: 1 1 auto;
-  width: 1%;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.input-container span {
-  text-align: center;
-  padding: 8px 12px;
-  font-size: 14px;
-  line-height: 25px;
-  color: #6b7385;
-  background:  #FFF2EA;
-  border: 1px solid #FFF2EA;
-  font-weight: bold;
-  transition: background 0.3s ease, border 0.3s ease, color 0.3s ease;
-}
-
-.input-container:focus-within > span {
-  color: #FFF2EA;
-  background-color: #F8837A;
-  border-color: #F8837A;
-}
-
-.input {
-  display: block;
-  width: 100%;
-  padding: 8px 16px;
-  line-height: 25px;
-  font-size: 14px;
-  font-weight: 500;
-  font-family: inherit;
-  border-radius: 6px;
-  color: black;
-  border: 1px solid  #FFF2EA;
-  background: #fff;
-  transition: border 0.3s ease;
-}
-
-.input::placeholder {
-  color: #CBD1DC;
-}
-
-.input:focus {
+  border-radius: 8px;
+  border: 1px solid  rgb(176 190 197);
+  background-color: transparent;
+  padding: 0.625rem 70px 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+  color: rgb(69 90 100);
   outline: none;
-  border-color: #F8837A;
+  transition: all .15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-container input:focus {
+  border: 1px solid #F27059;
+}
+
+.invite-btn {
+  position: absolute;
+  width: 65px;
+  right: 4px;
+  top: 4px;
+  bottom: 4px;
+  z-index: 10;
+  border-radius: 4px;
+  background-color: #F27059;
+  color: #fff;
+  padding-top: .25rem;
+  padding-bottom: .25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  border: none;
+  transition: .6s ease;
+}
+
+.invite-btn:hover {
+  right: 2px;
+  top: 2px;
+  bottom: 2px;
+  border-radius: 8px;
+}
+
+.input-container input:placeholder-shown ~ .invite-btn {
+  pointer-events: none;
+  background-color: gray;
+  opacity: 0.5;
 }
 
 /* ---------- MODAL ---------- */
