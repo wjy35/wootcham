@@ -13,35 +13,38 @@
             <div class="gridlayout">
                 <!-- 1번 박스 === video-one -->
                 <div class="main video video-one shadow">
-                  <div class="video-username">username</div>
+                  <img v-if="publisher === undefined" src="../../../assets/images/WCC_logo.png">
+                  <UserVideo v-else :stream-manager="publisher" videoType="myVideo"/>
+                  <div v-if="publisher !== undefined" class="video-username">{{ nickname(publisher) }}</div>
                 </div>
 
                 <!-- 2, 3, 6, 7번 박스 === Main Content -->
                 <div class="main main-content shadow">
-                    <div class="main-content-username">username</div>
-                    <div id="main-content-video">
-                    
-                      <!-- Progress Bar -->
-                      <div class="loader">
-                        <div></div>
-                      </div>
-
-                      <div class="share-btn screenshare">
-                        <div class="sign">
-                          <img src="@/assets/images/stream.png" alt="">
-                        </div>
-                        <div class="text">화면 공유</div>
-                      </div>
-
-                      <div class="share-btn endterm">
-                        <div class="sign">
-                          <img src="@/assets/images/the-end.png" alt="">
-                        </div>
-                        <div class="text">턴 종료</div>
-                      </div>
-
-
+                  <div class="main-content-username">username</div>
+                  <div id="main-content-video">
+                    <!-- 임시로 이미지 넣음-->
+                    <img v-if="mainStreamManager === undefined" src="https://media.istockphoto.com/id/518360318/photo/crazy-horse.jpg?s=612x612&w=0&k=20&c=KP27AuWsogbIb1dRSqqwRn_ykPMqguJb7z2q3x9xr5A=" alt="">
+                    <UserVideo v-else :stream-manager="mainStreamManager" videoType="screen"/>
+              
+                    <!-- Progress Bar -->
+                    <div class="loader">
+                      <div></div>
                     </div>
+
+                    <div class="share-btn screenshare">
+                      <div class="sign">
+                        <img src="@/assets/images/stream.png" alt="">
+                      </div>
+                      <div class="text">화면 공유</div>
+                    </div>
+
+                    <div class="share-btn endterm">
+                      <div class="sign">
+                        <img src="@/assets/images/the-end.png" alt="">
+                      </div>
+                      <div class="text">턴 종료</div>
+                    </div>
+                  </div>
                 </div>
 
                 <!-- 4, 8번 박스 === chat-card -->
