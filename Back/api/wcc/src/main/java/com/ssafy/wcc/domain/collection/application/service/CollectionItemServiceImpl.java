@@ -26,7 +26,7 @@ public class CollectionItemServiceImpl implements CollectionItemService{
     final private MemberRepository memberRepository;
 
     @Override
-    public List<CollectionItem> getList(Long id) {
+    public List<CollectionItem> getCollectionList(Long id) {
         List<CollectionItem> collectionItemList = collectionItemRepository.findAll();
         return collectionItemList;
     }

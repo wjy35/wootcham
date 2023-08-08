@@ -13,7 +13,7 @@ public class MemberItemServiceImpl implements MemberItemService{
     final private MemberItemRepository memberItemRepository;
 
     @Override
-    public List<MemberItem> getList(Long id) {
+    public List<MemberItem> getMemberItemList(Long id) {
         List<MemberItem> memberItemList = memberItemRepository.findAllByMemberId(id);
         return memberItemList;
     }
