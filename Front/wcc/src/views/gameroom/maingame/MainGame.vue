@@ -3,7 +3,8 @@
         <!-- HEADER -->
         <header>
             <div class="header-center">2라운드 09:30</div>
-
+            <button @click="connectScreen">connect screen</button>
+            <button @click="disconnectScreen">stop screen</button>
             <button class="Btn" @click="showModal = true">
                 <img src="@/assets/images/getout.png" class="sign" alt="나가기" style="width: 24px;">
                 <div class="text">게임 나가기</div>
@@ -14,76 +15,90 @@
             <div class="gridlayout">
                 <!-- 1번 박스 === video-one -->
                 <div class="main video video-one shadow">
-                  <div class="video-username">username</div>
+                  <img v-if="publisher === undefined" src="../../../assets/images/WCC_logo.png">
+                  <UserVideo v-else :stream-manager="publisher" videoType="myVideo"/>
+                  <div v-if="publisher !== undefined" class="video-username">{{ nickname(publisher) }}</div>
                 </div>
 
                 <!-- 2, 3, 6, 7번 박스 === Main Content -->
                 <div class="main main-content shadow">
-                    <div class="main-content-username">username</div>
-                    <div id="main-content-video">
-                    
-                      <!-- Progress Bar -->
-                      <div class="loader">
-                        <div></div>
-                      </div>
-
-                      <!-- 화면 공유 & 턴 종료 버튼 -->
-                      <ul class="wrapper">
-                        <li class="icon facebook">
-                            <span class="tooltip">화면공유</span>
-                            <span><i class="fab fa-facebook-f"></i></span>
-                        </li>
-                        <li class="icon instagram">
-                            <span class="tooltip">턴 종료</span>
-                            <span><i class="fab fa-instagram"></i></span>
-                        </li>
-                      </ul>
-
+                  <div class="main-content-username">username</div>
+                  <div id="main-content-video">
+                    <!-- 임시로 이미지 넣음-->
+                    <img v-if="mainStreamManager === undefined" src="https://media.istockphoto.com/id/518360318/photo/crazy-horse.jpg?s=612x612&w=0&k=20&c=KP27AuWsogbIb1dRSqqwRn_ykPMqguJb7z2q3x9xr5A=" alt="">
+                    <UserVideo v-else :stream-manager="mainStreamManager" videoType="screen"/>
+                    <!-- Progress Bar -->
+                    <div class="loader">
+                      <div></div>
                     </div>
+                    <!-- 화면 공유 & 턴 종료 버튼 -->
+                    <ul class="wrapper">
+                      <li @click='connectScreen' class="icon facebook">
+                          <span class="tooltip">화면공유</span>
+                          <span><i class="fab fa-facebook-f"></i></span>
+                      </li>
+                      <li @click="disconnectScreen" class="icon instagram">
+                          <span class="tooltip">턴 종료</span>
+                          <span><i class="fab fa-instagram"></i></span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
 
                 <!-- 4, 8번 박스 === chat-card -->
                 <div class="main chat-card shadow">
-                    <div class="chat-body">
-                        <div class="message incoming">
-                             <p><span>{{ chatUsername }}</span>: 받은 메시지</p>
-                        </div>
-                        <div class="message outgoing">
-                            <p><span>나</span>: 보낸 메시지</p>
-                        </div>
-                    </div>
+                  <div class="chat-body">
+                    <ul v-for="m in messageList" :key="m.connectionId">
+                      <li v-if="nickname(publisher) === m.nickname" class="message incoming">
+                        <p><span>{{ m.nickname }}</span>: {{ m.message }}</p>
+                      </li>
+                      <li v-if="nickname(publisher) !== m.nickname" class="message outgoing">
+                        <p><span>{{ m.nickname }}</span>: {{ m.message }}</p>
+                      </li>
+                    </ul>
+                  </div>
 
-                    <div class="input-container">
-                      <input required="" placeholder="메시지를 입력하세요" type="email">
-                      <button class="invite-btn" type="button">
+                  <div class="input-container shadow">
+                      <input placeholder="메시지를 입력해주세요." type="text" class="input" v-model="message" @keyup.enter="sendMessage">
+                      <button @click="sendMessage" class="invite-btn" type="button">
                         SEND
                       </button>
-                    </div>
+                  </div>
                 </div>
 
                 <!-- 5번 박스 -->
                 <div class="main video video-two shadow">
-                    <div class="video-username">username</div>
+                  <img v-if="subscribers[0] === undefined" src="../../../assets/images/WCC_logo.png">
+                  <UserVideo v-else :stream-manager="subscribers[0]" videoType="notMyVideo"/>
+                  <div v-if="subscribers[0] !== undefined" class="video-username">{{ nickname(subscribers[0]) }}</div>
                 </div>
 
                 <!-- 9번 박스 -->
                 <div class="main video video-three shadow">
-                  <div class="video-username">username</div>
+                  <img v-if="subscribers[1] === undefined" src="../../../assets/images/WCC_logo.png">
+                  <UserVideo v-else :stream-manager="subscribers[1]" videoType="notMyVideo"/>
+                  <div v-if="subscribers[1] !== undefined" class="video-username">{{ nickname(subscribers[1]) }}</div>
                 </div>
 
                 <!-- 10번 박스 -->
                 <div class="main video video-four shadow">
-                  <div class="video-username">username</div>
+                  <img v-if="subscribers[2] === undefined" src="../../../assets/images/WCC_logo.png">
+                  <UserVideo v-else :stream-manager="subscribers[2]" videoType="notMyVideo"/>
+                  <div v-if="subscribers[2] !== undefined" class="video-username">{{ nickname(subscribers[2]) }}</div>
                 </div>
 
                 <!-- 11번 박스 -->
                 <div class="main video video-five shadow">
-                  <div class="video-username">username</div>
+                  <img v-if="subscribers[3] === undefined" src="../../../assets/images/WCC_logo.png">
+                  <UserVideo v-else :stream-manager="subscribers[3]" videoType="notMyVideo"/>
+                  <div v-if="subscribers[3] !== undefined" class="video-username">{{ nickname(subscribers[3]) }}</div>
                 </div>
 
                 <!-- 12번 박스 -->
-                <div class=",ain video video-six shadow">
-                  <div class="video-username">username</div>
+                <div class="main video video-six shadow">
+                  <img v-if="subscribers[4] === undefined" src="../../../assets/images/WCC_logo.png">
+                  <UserVideo v-else :stream-manager="subscribers[4]" videoType="notMyVideo"/>
+                  <div v-if="subscribers[4] !== undefined" class="video-username">{{ nickname(subscribers[4]) }}</div>
                 </div>
 
                 <!-- <img src="@/assets/images/WCC_logo.png"> -->
@@ -113,19 +128,178 @@
 </template>
 
 <script>
+import axios from "axios";
+import { OpenVidu } from "openvidu-browser";
+import UserVideo from "../components/webcam/components/UserVideo.vue";
+
+axios.defaults.headers.post["Content-Type"] = "application/json";
+
+const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5000/';
+
 export default {
-    data(){
-        return{
-            showModal: false,
-            chatUsername: "가상의 유저"
-        };
+    data() {
+      return {
+        showModal: false,
+        chatUsername: "가상의 유저",
+        // Camera
+        OV: undefined,
+        session: undefined,
+        publisher: undefined,
+        subscribers: [undefined, undefined, undefined, undefined, undefined],
+        // Screen
+        OVScreen: undefined,
+        sessionScreen: undefined,
+        // mainContent
+        mainStreamManager: undefined,
+        // userInfo
+        mySessionId: "SessionA",
+        myUserName: "Participant" + Math.floor(Math.random() * 100),
+        token: '',
+        // message
+        message: '',
+        messageList: [],
+      };
+    },
+    mounted() {
+      this.joinSession();
+    },
+    unmounted() {
+      this.disconnectScreen();
+      this.leaveSession();
     },
     methods: {
-        exitGame(){
+        sendMessage() {
+          if (this.message.trim()) {
+            const data = { message: this.message, nickname: this.myUserName, streamId: this.publisher.stream.streamId };
+            this.publisher.stream.session.signal({
+                data: JSON.stringify(data),
+                type: 'chat',
+            });
+            this.message = '';
+          }
+        },
+        nickname(publisher) {
+            return JSON.parse(publisher.stream.connection.data).clientData;
+        },
+        exitGame() {
             // 게임 종료 동작을 수행하는 코드
             this.$router.push('/home');
-        }
+        },
+        joinSession() {
+            this.OV = new OpenVidu();
+            this.session = this.OV.initSession();
+            this.session.on("streamCreated", ({ stream }) => {
+                const subscriber = this.session.subscribe(stream);
+                if (subscriber.stream.typeOfVideo === "SCREEN") {
+                    this.mainStreamManager = subscriber;
+                }
+                else {
+                    for (let i = 0; i <= 4; i++) {
+                        if (this.subscribers[i] === undefined) {
+                            console.log(i + '번째 유저');
+                            this.subscribers[i] = subscriber;
+                            break;
+                        }
+                    }
+                }
+            });
+            this.session.on("streamDestroyed", ({ stream }) => {
+                // 스크린 스트림이 파괴될 때 mainStreamManager를 지금 하고 있는 사람 캠으로 전환
+                this.mainStreamManager = undefined;
+                const index = this.subscribers.indexOf(stream.streamManager, 0);
+                if (index >= 0) {
+                    this.subscribers[index] = undefined;
+                }
+            });
+            this.session.on("exception", ({ exception }) => {
+                console.warn(exception);
+            });
+            this.session.on("signal:chat", (event) => {
+                const data = JSON.parse(event.data);
+                let newList = this.messageList;
+                newList.push({ connectionId: event.from.connectionId, nickname: data.nickname, message: data.message });
+                this.messageList = newList;
+            });
+            this.getToken(this.mySessionId).then((token) => {
+                this.session.connect(token, { clientData: this.myUserName })
+                    .then(() => {
+                    let publisher = this.OV.initPublisher(undefined, {
+                        audioSource: undefined,
+                        videoSource: undefined,
+                        publishAudio: true,
+                        publishVideo: true,
+                        resolution: "640x480",
+                        frameRate: 30,
+                        insertMode: "APPEND",
+                        mirror: false, // Whether to mirror your local video or not
+                    });
+                    this.publisher = publisher;
+                    this.session.publish(publisher);
+                })
+                    .catch((error) => {
+                    console.log("There was an error connecting to the session:", error.code, error.message);
+                });
+            });
+        },
+        connectScreen() {
+            this.OVScreen = new OpenVidu();
+            this.sessionScreen = this.OV.initSession();
+            this.getToken(this.mySessionId).then((token) => {
+                this.sessionScreen.connect(token, { clientData: this.myUserName })
+                    .then(() => {
+                    let publisher = this.OVScreen.initPublisher("screenShare", {
+                        audioSource: undefined,
+                        videoSource: "screen",
+                        publishAudio: true,
+                        publishVideo: true,
+                        resolution: "640x480",
+                        frameRate: 30,
+                        insertMode: "APPEND",
+                        mirror: false, // Whether to mirror your local video or not
+                    });
+                    this.mainStreamManager = publisher;
+                    this.sessionScreen.publish(publisher);
+                })
+                    .catch((error) => {
+                    console.log("There was an error connecting to the session:", error.code, error.message);
+                });
+            });
+        },
+        disconnectScreen() {
+            if (this.sessionScreen) {
+                this.sessionScreen.disconnect();
+            }
+            this.sessionScreen = undefined;
+            this.mainStreamManager = undefined;
+            this.OVScreen = undefined;
+        },
+        leaveSession() {
+            if (this.session)
+                this.session.disconnect();
+            this.session = undefined;
+            this.mainStreamManager = undefined;
+            this.publisher = undefined;
+            this.subscribers = [];
+            this.OV = undefined;
+        },
+        async getToken(mySessionId) {
+            const sessionId = await this.createSession(mySessionId);
+            return await this.createToken(sessionId);
+        },
+        async createSession(sessionId) {
+            const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions', { customSessionId: sessionId }, {
+                headers: { 'Content-Type': 'application/json', },
+            });
+            return response.data; // The sessionId
+        },
+        async createToken(sessionId) {
+            const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions/' + sessionId + '/connections', {}, {
+                headers: { 'Content-Type': 'application/json', },
+            });
+            return response.data; // The token
+        },
     },
+    components: { UserVideo }
 }
 </script>
 

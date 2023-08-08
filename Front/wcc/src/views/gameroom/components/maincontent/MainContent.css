@@ -1,0 +1,20 @@
+.main-content{
+    width: 49%;
+    height: 58.5%;
+    background-color: gainsboro;
+    border-radius: 12px;
+    border: 5px solid #F47833;
+    position:absolute;
+    top:7.5%;
+    right:25.5%;
+}
+
+.main-content img{
+	width:100%;
+	height:100%;
+}
+
+.main-content video{
+	width:100%;
+	height:100%;
+}
