@@ -23,7 +23,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         // 헤더에서 accessToken을 받아옵니다.
         String token = tokenService.resolveToken((HttpServletRequest) request);
         // 유효한 토큰인지 확인합니다.
-        System.out.println("token = " + token);
         if (token != null && tokenService.checkToken(token)) {
             String s = tokenService.getAccessTokenId("BlackList: "+token);
             if(s == null) {

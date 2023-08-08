@@ -5,11 +5,12 @@ import com.ssafy.wcc.domain.report.db.entity.ReportPK;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public interface ReportRepository extends JpaRepository<Report, Long> {
 
-    Report findByReportPK_DateAndReportPK_MemberId(LocalDate date, Long memberId);
+    Optional<Report> findByReportPK_DateAndReportPK_MemberId(LocalDate date, Long memberId);
 
-    Report findByReportPK(ReportPK reportPK);
+    List<Report> findAllByReportPK_MemberId(Long memberId);
 }

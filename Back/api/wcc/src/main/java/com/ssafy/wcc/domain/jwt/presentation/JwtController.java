@@ -31,7 +31,7 @@ public class JwtController {
             @ApiResponse(code = 200, message = "갱신 성공"),
             @ApiResponse(code = 404, message = "갱신 실패")
     })
-    public ResponseEntity<Map<String, Object>> refreshToken(@RequestBody MemberRequest loginInfo, HttpServletRequest req) {
+    public ResponseEntity<Map<String, Object>> refreshToken(HttpServletRequest req) {
         Map<String, Object> res = new HashMap<>();
         String refreshToken = req.getHeader("refresh_token");
         if (tokenService.checkToken(refreshToken)) {

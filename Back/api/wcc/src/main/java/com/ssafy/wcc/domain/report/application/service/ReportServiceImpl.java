@@ -2,6 +2,7 @@ package com.ssafy.wcc.domain.report.application.service;
 
 import com.ssafy.wcc.domain.member.db.entity.Member;
 import com.ssafy.wcc.domain.member.db.repository.MemberRepository;
+import com.ssafy.wcc.domain.report.application.dto.response.AllMemberResponse;
 import com.ssafy.wcc.domain.report.db.entity.Report;
 import com.ssafy.wcc.domain.report.db.entity.ReportPK;
 import com.ssafy.wcc.domain.report.db.repository.ReportRepository;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,14 +33,14 @@ public class ReportServiceImpl implements ReportService{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(today, formatter);
 
-        Report report = reportRepository.findByReportPK_DateAndReportPK_MemberId(date, memberId);
+        Optional<Report> report = reportRepository.findByReportPK_DateAndReportPK_MemberId(date, memberId);
 
         Optional<Member> member = memberRepository.findById(memberId);
-        if(report != null){
-            int count = report.getReport();
+        if(report.isPresent()){
+            int count = report.get().getReport();
             Report newReport = Report.builder()
-                    .reportPK(report.getReportPK())
-                    .member(report.getMember())
+                    .reportPK(report.get().getReportPK())
+                    .member(report.get().getMember())
                     .report(count+1).build();
             reportRepository.save(newReport);
         }else{
@@ -50,4 +53,36 @@ public class ReportServiceImpl implements ReportService{
             reportRepository.save(newReport);
         }
     }
+
+    @Override
+    public List<AllMemberResponse> getList() {
+        List<Member> memberList = memberRepository.findAll();
+        List<AllMemberResponse> allMemberResponsesList = new ArrayList<>();
+        for(int i=0; i<memberList.size(); i++){
+            Member member = memberList.get(i);
+
+            List<Report> reportList = reportRepository.findAllByReportPK_MemberId(member.getId());
+
+            int tot = 0;
+            for(int j=0; j<reportList.size(); j++){
+                tot += reportList.get(j).getReport();
+            }
+            AllMemberResponse allMemberResponse = AllMemberResponse.builder()
+                    .id(member.getId())
+                    .email(member.getEmail())
+                    .nickname(member.getNickname())
+                    .point(member.getPoint())
+                    .admin(member.getAdmin())
+                    .suspensionDay(member.getSuspensionDay())
+                    .money(member.getMoney())
+                    .reportCount(tot)
+                    .build();
+
+            allMemberResponsesList.add(allMemberResponse);
+        }
+
+        return allMemberResponsesList;
+    }
+
+
 }
