@@ -12,7 +12,17 @@ import java.util.Map;
 @Setter
 public class GameSession {
     private String sessionId;
+
+    /**
+     * key: memberToken
+     * value: GameMember
+     */
     private Map<String,GameMember> gameMembers;
+
+    /**
+     * key: memberToken
+     * value: Topic
+     */
     private Map<String,Topic> topics;
     private List<String> orderList;
     private boolean checkedSkipPreparedPresent;
@@ -24,11 +34,11 @@ public class GameSession {
         this.checkedSkipPreparedPresent = false;
     }
 
-    public void pickTopic(String memberId, Integer type, String keyword){
-        if(topics.containsKey(memberId)){
-            topics.put(memberId,new Topic(type,keyword));
+    public void pickTopic(String memberToken, Integer type, String keyword){
+        if(topics.containsKey(memberToken)){
+            topics.put(memberToken,new Topic(type,keyword));
         }else{
-            topics.get(memberId).setTopic(type, keyword);
+            topics.get(memberToken).setTopic(type, keyword);
         }
     }
 }

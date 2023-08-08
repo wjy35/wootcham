@@ -35,8 +35,7 @@ public class MatchController {
 
 
     @MessageMapping("/enter/{groupId}/{memberId}")
-    void enter(@DestinationVariable String memberId, @DestinationVariable String groupId){
-        System.out.println("enter memberId = " + memberId);
-        matchService.enterGame(memberId,groupId);
+    void enter(@DestinationVariable String groupId,@DestinationVariable String memberId){
+        matchService.enterGame(groupId, memberId);
     }
 }

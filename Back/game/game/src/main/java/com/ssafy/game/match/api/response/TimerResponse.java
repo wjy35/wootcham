@@ -1,6 +1,5 @@
 package com.ssafy.game.match.api.response;
 
-import com.ssafy.game.match.common.MatchStatus;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -8,10 +8,10 @@ import com.ssafy.game.game.api.response.PreparePresentResponse;
 import com.ssafy.game.game.db.entity.GameSession;
 import com.ssafy.game.match.common.GameSetting;
 import com.ssafy.game.util.MessageSender;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameProcessor implements Runnable{
     private final GameSession gameSession;
@@ -40,7 +40,7 @@ public class GameProcessor implements Runnable{
         pickTopicType();
         pickTopicKeyword();
 
-        for(int i=0; i<GameSetting.MAX_GAMEMEMBER_COUNT; i++){
+        for(int i=0; i<gameSession.getOrderList().size(); i++){
             preparePresent(i);
         }
 
@@ -100,17 +100,23 @@ public class GameProcessor implements Runnable{
     }
 
     private void orderGameMember(){
-        List<String> shuffledGameMemberIdList = getShuffledGameMemberIdList();
-        gameSession.setOrderList(shuffledGameMemberIdList);
+        List<String> shuffledGameMemberTokenList = getShuffledGameMemberTokenList();
+        gameSession.setOrderList(shuffledGameMemberTokenList);
 
-        createAndsendGameMemberOrderResponse(shuffledGameMemberIdList);
+        createAndsendGameMemberOrderResponse(shuffledGameMemberTokenList);
     }
 
-    private List<String> getShuffledGameMemberIdList(){
-        List<String> gameMemberOrder = new ArrayList<>(gameSession.getGameMembers().keySet());
-        Collections.shuffle(gameMemberOrder);
+    private List<String> getShuffledGameMemberTokenList(){
+        List<String> gameMemberOrderList = gameSession
+                .getGameMembers()
+                .values()
+                .stream()
+                .map(gameMember -> gameMember.getMemberToken())
+                .collect(Collectors.toCollection(ArrayList::new));
 
-        return gameMemberOrder;
+        Collections.shuffle(gameMemberOrderList);
+
+        return gameMemberOrderList;
     }
 
     private void waitGameLoad(){
@@ -152,7 +158,8 @@ public class GameProcessor implements Runnable{
     }
 
     private boolean allMemberLoadGame(){
-        if(gameSession.getGameMembers().size()== GameSetting.MAX_GAMEMEMBER_COUNT)return true;
+        if(gameSession.getGameMembers().size()==GameSetting.MAX_GAMEMEMBER_COUNT) return true;
+
         return false;
     }
 }

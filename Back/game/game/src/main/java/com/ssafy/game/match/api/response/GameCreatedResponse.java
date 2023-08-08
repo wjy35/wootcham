@@ -1,19 +1,18 @@
 package com.ssafy.game.match.api.response;
 
-import com.ssafy.game.match.common.MatchStatus;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class GameSessionResponse {
+public class GameCreatedResponse {
     private boolean isSuccess;
     private String sessionId;
     private String memberToken;
     private String memberId;
     private int matchStatus;
 
-    public GameSessionResponse(String sessionId, String memberToken, String memberId) {
+    public GameCreatedResponse(String sessionId, String memberId, String memberToken) {
         this.sessionId = sessionId;
         this.memberToken = memberToken;
         this.memberId = memberId;

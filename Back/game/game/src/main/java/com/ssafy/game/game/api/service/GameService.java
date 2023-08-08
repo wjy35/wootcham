@@ -1,5 +1,6 @@
 package com.ssafy.game.game.api.service;
 
+import com.ssafy.game.game.api.request.LoadRequest;
 import com.ssafy.game.game.api.request.TopicRequest;
 import com.ssafy.game.game.db.entity.GameMember;
 import com.ssafy.game.game.db.repository.GameMemberRepository;
@@ -18,13 +19,12 @@ public class GameService {
 
     @Transactional
     public void load(String sessionId, String memberId){
-        GameMember gameMember = new GameMember(sessionId,memberId);
-        gameMemberRepository.save(gameMember);
-        gameSessionRepository.findBySessionId(sessionId).getGameMembers().put(memberId,gameMember);
+        GameMember gameMember = gameMemberRepository.findByMemberId(memberId);
+        gameSessionRepository.findBySessionId(sessionId).getGameMembers().put(gameMember.getMemberToken(), gameMember);
     }
 
-    public void pick(String sessionId, String memberId, TopicRequest topicRequest){
-        gameSessionRepository.findBySessionId(sessionId).pickTopic(memberId, topicRequest.getType(), topicRequest.getKeyword());
+    public void pick(String sessionId, TopicRequest topicRequest){
+        gameSessionRepository.findBySessionId(sessionId).pickTopic(topicRequest.getMemberToken(), topicRequest.getType(), topicRequest.getKeyword());
     }
 
     public void skipPreparePresent(String sessionId){

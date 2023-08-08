@@ -1,5 +1,6 @@
 package com.ssafy.game.game.api.controller;
 
+import com.ssafy.game.game.api.request.LoadRequest;
 import com.ssafy.game.game.api.request.TopicRequest;
 import com.ssafy.game.game.api.service.GameService;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,8 @@ public class GameController {
     }
 
     @MessageMapping("/pick/shuffle/{sessionId}")
-    void pick(@Payload TopicRequest topicRequest, @DestinationVariable String sessionId, @Header("simpSessionId") String memberId){
-        gameService.pick(sessionId,memberId,topicRequest);
+    void pick(@Payload TopicRequest topicRequest, @DestinationVariable String sessionId){
+        gameService.pick(sessionId,topicRequest);
     }
 
     @MessageMapping("/skip/prepare/{sessionId}")

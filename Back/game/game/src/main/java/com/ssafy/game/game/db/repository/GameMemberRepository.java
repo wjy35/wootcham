@@ -8,6 +8,9 @@ import java.util.Map;
 
 @Repository
 public class GameMemberRepository {
+    /**
+     * key: memberId
+     */
     private Map<String, GameMember> db;
 
     public GameMemberRepository() {
@@ -16,5 +19,9 @@ public class GameMemberRepository {
 
     public void save(GameMember gameMember){
         db.put(gameMember.getMemberId(),gameMember);
+    }
+
+    public GameMember findByMemberId(String memberId){
+        return db.get(memberId);
     }
 }
