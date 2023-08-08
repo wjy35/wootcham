@@ -64,6 +64,7 @@ public class MatchService {
 //        } catch (InterruptedException e) {
 //            throw new RuntimeException(e);
 //        }
+        if(this.matchMemberQueue.size()>1) System.out.println("nice");
         if(this.matchMemberQueue.size()<GameSetting.MAX_GAMEMEMBER_COUNT) return false;
 
         return true;
