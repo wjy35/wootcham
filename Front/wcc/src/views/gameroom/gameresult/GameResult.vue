@@ -7,26 +7,119 @@
       
       <div class="main-container">
           <div class="ranking-modal shadow">
-              <div class="rank-card"></div>
-              <div class="rank-card"></div>
-              <div class="rank-card"></div>
-              <div class="rank-card"></div>
-              <div class="rank-card"></div>
+            <div class="rank-card">
+                <div class="rank-card-image">
+                  <img src="@/assets/images/profile.png" alt="">
+                  <span class="report-icon" @click="showModal = true">
+                    <img src="@/assets/images/report.png" alt="">
+                  </span>
+                </div>
+                <div class="rank-card-detail">
+                  <div class="rank-heading">#1</div>
+                  <div class="rank-info">
+                    <div class="rank-username">verylonglongbigbigusername</div>
+                    <div class="rank-pts-earned">+ 250</div>
+                  </div>
+                </div>
+              </div>
 
               <div class="rank-card">
                 <div class="rank-card-image">
                   <img src="@/assets/images/profile.png" alt="">
+                  <span class="report-icon" @click="showModal = true">
+                    <img src="@/assets/images/report.png" alt="">
+                  </span>
                 </div>
                 <div class="rank-card-detail">
-                  <div class="rank">#{{ rank }}</div>
-                  <div class="username">{{ username }}</div>
-                  <div>
-                    <div class="pts-earned">{{  }}</div>
+                  <div class="rank-heading">#2</div>
+                  <div class="rank-info">
+                    <div class="rank-username">verylonglongbigbigusername</div>
+                    <div class="rank-pts-earned">+ 250</div>
                   </div>
-                  <div class="report-btn"></div>
                 </div>
-                
+              </div>
 
+              <div class="rank-card">
+                <div class="rank-card-image">
+                  <img src="@/assets/images/profile.png" alt="">
+                  <span class="report-icon" @click="showModal = true">
+                    <img src="@/assets/images/report.png" alt="">
+                  </span>
+                </div>
+                <div class="rank-card-detail">
+                  <div class="rank-heading">#3</div>
+                  <div class="rank-info">
+                    <div class="rank-username">verylonglongbigbigusername</div>
+                    <div class="rank-pts-earned">+ 250</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rank-card">
+                <div class="rank-card-image">
+                  <img src="@/assets/images/profile.png" alt="">
+                  <span class="report-icon" @click="showModal = true">
+                    <img src="@/assets/images/report.png" alt="">
+                  </span>
+                </div>
+                <div class="rank-card-detail">
+                  <div class="rank-heading">#4</div>
+                  <div class="rank-info">
+                    <div class="rank-username">verylonglongbigbigusername</div>
+                    <div class="rank-pts-earned">+ 250</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rank-card">
+                <div class="rank-card-image">
+                  <img src="@/assets/images/profile.png" alt="">
+                  <span class="report-icon" @click="showModal = true">
+                    <img src="@/assets/images/report.png" alt="">
+                  </span>
+                </div>
+                <div class="rank-card-detail">
+                  <div class="rank-heading">#5</div>
+                  <div class="rank-info">
+                    <div class="rank-username">verylonglongbigbigusername</div>
+                    <div class="rank-pts-earned">+ 250</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rank-card">
+                <div class="rank-card-image">
+                  <img src="@/assets/images/profile.png" alt="">
+                  <span class="report-icon" @click="showModal = true">
+                    <img src="@/assets/images/report.png" alt="">
+                  </span>
+                </div>
+                <div class="rank-card-detail">
+                  <div class="rank-heading">#6</div>
+                  <div class="rank-info">
+                    <div class="rank-username">verylonglongbigbigusername</div>
+                    <div class="rank-pts-earned">+ 250</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 유저 신고 모달창 -->
+              <div v-if="showModal" class="modal">
+                  <div class="modal-card">
+                    <div class="header">
+                      <img src="@/assets/images/report.png" alt="">
+                      <div class="content">
+                        <span class="title">속임수, 부정행위, 괴롭힘을 저지르는 불건전 행위 플레이어 신고</span>
+                        <p class="message">선택한 유저를 신고합니다. 
+                          신고가 이루어지면 웃참클럽 시스템에서 해당 게임을 확인하여 
+                          페널티 적용 여부를 결정합니다.</p>
+                      </div>
+                      <div class="actions">
+                        <button class="desactivate" type="button">신고하기</button>
+                        <button class="cancel" type="button" @click="showModal = false">취소하기</button>
+                      </div>
+                    </div>
+                </div>
               </div>
 
             
@@ -37,8 +130,8 @@
             <div class="banner"> 
               <img src="@/assets/images/game_result_banner.png" alt="explain_banner">
             </div>
-            <div class="results-summary-container">
-              <div class="confetti">
+
+              <!-- <div class="confetti">
                 <div class="confetti-piece"></div>
                 <div class="confetti-piece"></div>
                 <div class="confetti-piece"></div>
@@ -58,8 +151,7 @@
                 <div class="confetti-piece"></div>
                 <div class="confetti-piece"></div>
                 <div class="confetti-piece"></div>
-              </div>
-            </div>
+              </div> -->
 
             <!-- 버튼 -->
             <div class="gameend-option-btn">
@@ -69,12 +161,31 @@
 
           </div>
       </div>
+  
 
   </div>
 </template>
 
 <script>
+export default {
+  name: "GameResult",
+  components: {
 
+  },
+  data() {
+    return {
+      showModal: false,
+    }
+  },
+  methods: {
+    toggleReport() {
+      this.showReport = !this.showReport;
+    }, 
+    report() {
+        // 신고 로직
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -129,7 +240,7 @@ header {
 /* ------------ 랭킹 ------------ */ 
 .ranking-modal {
   position: relative;
-	width: 400px;
+	width: 500px;
 	height: 570px;
   
 	background-color: #FFF2EA;
@@ -154,24 +265,158 @@ header {
 .rank-card-image img{
   width: 60px;
   height: 60px;
-  margin: 0 25px 0;
+  margin: 0 10px 0 10px;
   border-radius: 50%;
-
   flex-shrink: 0;
+  transition: filter 0.3s ease;
+}
+
+.rank-card-image .report-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  color: red;
+  display: none;
+}
+
+.rank-card-image:hover .report-icon {
+  display: block; 
 }
 
 .rank-card-detail {
   flex-grow: 1;
   background-color: #FFF2EA;
   border-radius: 50px 20px;
-  margin: 10px 3px 10px 0;
   height: 93%;
+  position: relative;
 
+  margin: 5px;
+}
+
+.rank-card-detail .rank-heading {
+  color: #F27059;
+  position: absolute;
+  left: 10px;
+  top: 5px;
+  font-size: 3em;
+}
+
+.rank-card-detail .rank-info {
+  position: absolute;
+  left: 100px;
+  top: 15px;
+}
+
+.rank-info .rank-username {
+  color: #FAAD1B;
+  white-space: normal;
+}
+
+.rank-info .rank-pts-earned {
+  color: yellowgreen;
+  white-space: normal;
+}
+
+
+.rank-card:hover .rank-card-image,
+.rank-card:hover .rank-card-detail {
+  transform: scale(0.96);
+}
+
+/* -------- 유저 신고 모달창 (User Report Modal) ----------- */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
+}
 
+.modal-card {
+  overflow: hidden;
+  position: relative;
+  background-color: #ffffff;
+  text-align: left;
+  border-radius: 0.5rem;
+  max-width: 500px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
 
+.modal-card .header {
+  padding: 1.25rem 1rem 1rem 1rem;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-card .header img {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 9999px;
+}
+
+.modal-card .header .content {
+  margin-top: 0.75rem;
+  text-align: center;
+}
+
+.title {
+  color: #111827;
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+}
+
+.message {
+  margin-top: 1rem;
+  color: #6B7280;
+  font-size: 1rem;
+  line-height: 1.25rem;
+}
+
+.actions {
+  margin: 0.75rem 1rem;
+  background-color: #F9FAFB;
+}
+
+.desactivate {
+  display: inline-flex;
+  padding: 0.5rem 1rem;
+  background-color: #DC2626;
+  color: #ffffff;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  justify-content: center;
+  width: 100%;
+  border-radius: 0.375rem;
+  border-width: 1px;
+  border-color: transparent;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.cancel {
+  display: inline-flex;
+  margin-top: 0.75rem;
+  padding: 0.5rem 1rem;
+  background-color: #ffffff;
+  color: #374151;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  justify-content: center;
+  width: 100%;
+  border-radius: 0.375rem;
+  border: 1px solid #D1D5DB;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 /* ------- 게임 결과 요약 ------- */ 
@@ -182,22 +427,17 @@ header {
 
   border: 3px solid #F27059;
 	border-radius: 15px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  position: relative;
 }
 
 .banner img {
   width: 350px;
   margin-top: -60px;
-}
-
-.results-summary-container {
-  font-family: Luckiest Guy;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: 10px;
-
-  border-radius: 10px;
-  backface-visibility: hidden;
 }
 
 .confetti {
@@ -385,33 +625,35 @@ header {
   from {
     opacity: 0;
   }
-
   50% {
     opacity: 1;
   }
-
   to {
     transform: translateY(200px);
   }
 }
 
 .gameend-option-btn {
-    gap: 50px;
+    gap: 100px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 2em;
+    font-size: 5em;
 }
 
 .gameend-option-one {
-    color: #FF7B27;
+    width: 150px;
+    height: 60px;
+    border-radius: 25px;
+    background-image: linear-gradient(135deg, #feb692 0%, #ea5455 100%);
+    box-shadow: 0 20px 30px -6px rgba(238, 103, 97, 0.5);
     cursor: pointer;
-    font-size: 1em;
-}
+    
+    border: none;
+    font-size: 24px;
+    color: white;
 
-.modal-content-btn div:hover {
-    transform: translateY(3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .gameend-option-two {
@@ -427,11 +669,15 @@ header {
     border: none;
     font-size: 24px;
     color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .gameend-option-two:hover {
   transform: translateY(3px);
-  border-radius: 25px;
+  border-radius: 50px;
 }
 
 .gameend-option-two:active {
