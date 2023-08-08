@@ -51,6 +51,7 @@ public class MatchService {
         Member matchMember = new Member(memberId);
 
         matchMemberQueue.offer(matchMember);
+        System.out.println("size: " + matchMemberQueue.size());
         this.matchMemberSession.insertMember(matchMember);
     }
 
@@ -59,8 +60,8 @@ public class MatchService {
     }
 
     public boolean matchable(){
-        System.out.println("matchMemberQueue = " + matchMemberQueue.size());
         if(matchMemberQueue.size()<GameSetting.MAX_GAMEMEMBER_COUNT) return false;
+        System.out.println("size in matchable : " + matchMemberQueue.size());
 
         return true;
     }
