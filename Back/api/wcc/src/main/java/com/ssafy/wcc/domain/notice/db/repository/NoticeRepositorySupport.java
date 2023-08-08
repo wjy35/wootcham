@@ -25,11 +25,11 @@ public class NoticeRepositorySupport extends QuerydslRepositorySupport {
         this.entityManager = entityManager;
     }
 
-    public List<Notice> listNoticeForUsers(long lim) {
+    public List<Notice> listNoticeForUsers(long limit) {
         return jpaQueryFactory.select(Projections.bean(Notice.class, notice.subject, notice.content, notice.date))
                 .from(notice)
                 .orderBy(notice.id.desc())
-                .limit(lim)
+                .limit(limit)
                 .fetch();
     }
 

@@ -2,8 +2,8 @@ package com.ssafy.wcc.domain.notice.presentation;
 
 import com.ssafy.wcc.common.exception.WCCException;
 import com.ssafy.wcc.domain.jwt.application.service.TokenService;
-import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeListResponse;
-import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeResponse;
+import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeForAdminResponse;
+import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeForUserResponse;
 import com.ssafy.wcc.domain.notice.application.service.NoticeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,15 +45,13 @@ public class NoticeController {
     public ResponseEntity<?> listNoticeForUsers(HttpServletRequest req) {
         logger.info("listNoticeForUsers controller 진입");
         Map<String, Object> res = new HashMap<>();
-        String accessToken = req.getHeader("access-token");
-        String id = tokenService.getAccessTokenId(accessToken);
+        String accessToken = req.getHeader("access_token");
         try {
-            List<NoticeResponse> list = noticeService.getNoticeListForUsers(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
+            List<NoticeForUserResponse> list = noticeService.getNoticeListForUsers(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
             res.put("isSuccess", true);
             res.put("data", list);
             return new ResponseEntity<>(res, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            logger.info("여기야여기");
+        } catch (WCCException e) {
             res.put("isSuccess", false);
             return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
         }
@@ -68,9 +66,9 @@ public class NoticeController {
     public ResponseEntity<?> listNoticeForAdmin(HttpServletRequest req) {
         log.info("listNoticeForAdmin controller 진입");
         Map<String, Object> res = new HashMap<>();
-        String accessToken = req.getHeader("access-token");
+        String accessToken = req.getHeader("access_token");
         try {
-            List<NoticeListResponse> list = noticeService.getNoticeListForAdmin(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
+            List<NoticeForAdminResponse> list = noticeService.getNoticeListForAdmin(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
             res.put("isSuccess", true);
             res.put("data", list);
             return new ResponseEntity<>(res, HttpStatus.OK);

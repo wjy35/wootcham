@@ -12,8 +12,8 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "notice")
-//@NoArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Notice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

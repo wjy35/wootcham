@@ -4,8 +4,8 @@ import com.ssafy.wcc.common.exception.Error;
 import com.ssafy.wcc.common.exception.WCCException;
 import com.ssafy.wcc.domain.member.db.entity.Member;
 import com.ssafy.wcc.domain.member.db.repository.MemberRepository;
-import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeListResponse;
-import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeResponse;
+import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeForAdminResponse;
+import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeForUserResponse;
 import com.ssafy.wcc.domain.notice.application.mapper.NoticeMapper;
 import com.ssafy.wcc.domain.notice.db.entity.Notice;
 import com.ssafy.wcc.domain.notice.db.repository.NoticeRepositorySupport;
@@ -34,23 +34,23 @@ public class NoticeServiceImpl implements NoticeService {
 
 
     @Override
-    public List<NoticeResponse> getNoticeListForUsers(long id) throws RuntimeException {
+    public List<NoticeForUserResponse> getNoticeListForUsers(long id) throws WCCException {
         logger.info("getNoticeListForUsers service 진입: {}", id);
         Optional<Member> member = memberRepository.findById(id);
-        if (member.isPresent()) {
-            logger.info("공지를 받으려는 Member 정보: {}", member);
-            long count = noticeRepository.countBy();
-            List<Notice> noticeList = noticeRepositorySupport.listNoticeForUsers(Math.min(count, 4));
-            return noticeList.stream()
-                    .map(n -> noticeMapper.toNoticeResponse(n))
-                    .collect(Collectors.toList());
+        if (member.isEmpty()) {
+            throw new WCCException(Error.USER_NOT_FOUND);
         }
-        logger.info("!!!!!!!!");
-        return null;
+
+        logger.info("공지를 받으려는 Member 정보: {}", member);
+        long count = noticeRepository.countBy();
+        List<Notice> noticeList = noticeRepositorySupport.listNoticeForUsers(Math.min(count, 4));
+        return noticeList.stream()
+                .map(n -> noticeMapper.toNoticeResponse(n))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<NoticeListResponse> getNoticeListForAdmin(long id) throws WCCException {
+    public List<NoticeForAdminResponse> getNoticeListForAdmin(long id) throws WCCException {
         logger.info("getNoticeListForAdmin service 진입");
         Optional<Member> member = memberRepository.findById(id);
         if (member.isPresent()) {
