@@ -43,15 +43,11 @@ public class NoticeController {
     ) {
         logger.info("listNoticeForUsers controller 진입");
         Map<String, Object> res = new HashMap<>();
-        try {
-            List<NoticeResponse> list = noticeService.getNoticeListForUsers(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
-            res.put("isSuccess", true);
-            res.put("data", list);
-            return new ResponseEntity<>(res, HttpStatus.OK);
-        } catch (WCCException e) {
-            res.put("isSuccess", false);
-            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
-        }
+
+        List<NoticeResponse> list = noticeService.getNoticeListForUsers(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
+        res.put("isSuccess", true);
+        res.put("data", list);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @GetMapping("/list")
@@ -65,15 +61,11 @@ public class NoticeController {
     ) {
         log.info("listNoticeForAdmin controller 진입");
         Map<String, Object> res = new HashMap<>();
-        try {
-            List<NoticeForAdminResponse> list = noticeService.getNoticeListForAdmin(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
-            res.put("isSuccess", true);
-            res.put("data", list);
-            return new ResponseEntity<>(res, HttpStatus.OK);
-        } catch (WCCException e) {
-            res.put("isSuccess", false);
-            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
-        }
+
+        List<NoticeForAdminResponse> list = noticeService.getNoticeListForAdmin(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
+        res.put("isSuccess", true);
+        res.put("data", list);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @GetMapping("/detail")
@@ -88,15 +80,11 @@ public class NoticeController {
     ) {
         log.info("noticeDetail controller 진입");
         Map<String, Object> res = new HashMap<>();
-        try {
-            NoticeResponse notice = noticeService.getNoticeDetail(Long.parseLong(tokenService.getAccessTokenId(accessToken)), request.getId());
-            res.put("isSuccess", true);
-            res.put("data", notice);
-            return new ResponseEntity<>(res, HttpStatus.OK);
-        } catch (WCCException e) {
-            res.put("isSuccess", false);
-            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
-        }
+
+        NoticeResponse notice = noticeService.getNoticeDetail(Long.parseLong(tokenService.getAccessTokenId(accessToken)), request.getId());
+        res.put("isSuccess", true);
+        res.put("data", notice);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @PostMapping("")
@@ -107,18 +95,14 @@ public class NoticeController {
     })
     public ResponseEntity<?> registerNotice(
             @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken,
-            @RequestBody @ApiParam(value = "글 아이디", required = true) NoticeRequest request
+            @RequestBody @ApiParam(value = "글 정보", required = true) NoticeRequest request
     ) {
         log.info("registerNotice controller 진입");
         Map<String, Object> res = new HashMap<>();
-        try {
-            noticeService.registerNotice(Long.parseLong(tokenService.getAccessTokenId(accessToken)), request);
-            res.put("isSuccess", true);
-            return new ResponseEntity<>(res, HttpStatus.OK);
-        } catch (WCCException e) {
-            res.put("isSuccess", false);
-            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
-        }
+
+        noticeService.registerNotice(Long.parseLong(tokenService.getAccessTokenId(accessToken)), request);
+        res.put("isSuccess", true);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @PutMapping("")
@@ -127,19 +111,17 @@ public class NoticeController {
             @ApiResponse(code = 200, message = "공지사항 수정 성공"),
             @ApiResponse(code = 404, message = "공지사항 수정 실패"),
     })
-    public ResponseEntity<?> updateNotice(
+    public ResponseEntity<> updateNotice(
             @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken,
-            @RequestBody @ApiParam(value = "글 아이디", required = true) NoticeRequest request
+            @RequestBody @ApiParam(value = "글 정보", required = true) NoticeRequest request
     ) {
         log.info("updateNotice controller 진입");
         Map<String, Object> res = new HashMap<>();
-        try {
-            noticeService.updateNotice(Long.parseLong(tokenService.getAccessTokenId(accessToken)), request);
-            res.put("isSuccess", true);
-            return new ResponseEntity<>(res, HttpStatus.OK);
-        } catch (WCCException e) {
-            res.put("isSuccess", false);
-            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
-        }
+
+        noticeService.updateNotice(Long.parseLong(tokenService.getAccessTokenId(accessToken)), request);
+        res.put("isSuccess", true);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
+
+
 }
