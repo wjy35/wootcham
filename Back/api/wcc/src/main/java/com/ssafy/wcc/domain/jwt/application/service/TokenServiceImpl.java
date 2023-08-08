@@ -143,11 +143,13 @@ public class TokenServiceImpl implements TokenService{
     }
 
     @Override
-    public Authentication getAuthentication(String token) {
+    public Authentication getAuthentication(String token) throws RuntimeException{
+
         String id = this.getAccessTokenId(token);
         Member m = Member.builder().id  (Long.parseLong(id)).build();
         UserDetails userDetails = m;
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+
     }
 
 //    @Override

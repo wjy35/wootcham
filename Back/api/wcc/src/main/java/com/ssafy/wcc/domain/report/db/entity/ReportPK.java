@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class ReportPK implements Serializable {
 
+    @Column(name = "date")
     private LocalDate date;
 
     @Column(name="member_id")
