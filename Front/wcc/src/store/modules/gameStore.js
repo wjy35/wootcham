@@ -15,6 +15,7 @@ const gameStore = {
     mainStreamManager: undefined,
     messageList: [],
     userName: '',
+    ready: false,
   },
   getters: {},
   mutations: {
@@ -30,7 +31,10 @@ const gameStore = {
     SET_USERNAME(state, userName) {
       console.log('setnickname')
       state.userName = userName;
-    }
+    },
+    SET_READY(state) {
+      state.ready = true;
+    },
   },
   actions: {
     // 게임 시작할 때 세션에 들어가서 카메라 publisher를 만들기 
