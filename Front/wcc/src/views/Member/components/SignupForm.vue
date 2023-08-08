@@ -40,7 +40,7 @@
             
             <SubmitButton value="회원가입" @click="signup"></SubmitButton>
         </div>
-        <CommonModal v-if="showRules">
+        <CommonModal class="modal1" v-if="showRules">
             <h1>이 용 약 관</h1>
             <div class="ruleArea">‘웃참클럽’(이하 ‘회사’라 합니다)는 이용자의 개인정보를 중요시하며, 「정보통신망 이용촉진 및 정보보호 등에 관한 법률」, 「개인정보 보호법」을 준수하기 위하여 노력하고 있습니다.<br>
             회사는 개인정보처리방침을 통하여 회사가 이용자로부터 제공받은 개인정보를 어떠한 용도와 방식으로 이용하고 있으며, 개인정보보호를 위해 어떠한 조치를 취하고 있는지 알려드립니다.<br>
@@ -83,7 +83,7 @@
         
             <SubmitButton class='close' @click.prevent="toggleRules" value="닫기"></SubmitButton>
         </CommonModal>
-        <CommonModal v-if="checkSend">
+        <CommonModal class="modal1" v-if="checkSend">
             <p class="sendConfirm">{{ emailInput }}으로 이메일 인증 코드를 전송하시겠습니까?</p>
             <SubmitButton class='close' @click.prevent="sendYes" value="보내기"></SubmitButton>
             <SubmitButton class='close' @click.prevent="sendNo" value="닫기"></SubmitButton>
@@ -446,4 +446,5 @@ export default {
     .sendConfirm {
         color: #FFF2EA;
     }
+
 </style>
