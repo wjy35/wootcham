@@ -28,16 +28,18 @@
                       <div></div>
                     </div>
                     <!-- 화면 공유 & 턴 종료 버튼 -->
-                    <ul class="wrapper">
-                      <li @click='connectScreen' class="icon facebook">
-                          <span class="tooltip">화면공유</span>
-                          <span><i class="fab fa-facebook-f"></i></span>
-                      </li>
-                      <li @click="disconnectScreen" class="icon instagram">
-                          <span class="tooltip">턴 종료</span>
-                          <span><i class="fab fa-instagram"></i></span>
-                      </li>
-                    </ul>
+                    <div @click='connectScreen' class="share-btn screenshare">
+                        <div class="sign">
+                          <img src="@/assets/images/stream.png" alt="">
+                        </div>
+                        <div class="text">화면 공유</div>
+                    </div>
+                    <div @click="disconnectScreen" class="share-btn endterm">
+                        <div class="sign">
+                          <img src="@/assets/images/the-end.png" alt="">
+                        </div>
+                        <div class="text">턴 종료</div>
+                    </div>
                   </div>
                 </div>
 

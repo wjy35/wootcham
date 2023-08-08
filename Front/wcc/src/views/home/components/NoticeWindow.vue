@@ -2,10 +2,6 @@
   <div class="content-window shadow">
     <span class="season"></span>
 
-    <div class="banner">
-      <img src="@/assets/images/notice_banner.png" alt="notice_banner">
-    </div>
-
 
     <div class="scroll-snap-card">
       <div class="slide one">
@@ -90,12 +86,6 @@ export default {
   box-shadow: 0 5px 10px rgba(0,0,0,0.23);
 }
 
-.banner img {
-  width: 340px;
-  margin-top: -60px;
-}
-
-
 /* 메인 콘텐츠 */
 .one {
   background-color: #ece8e1;
@@ -115,7 +105,6 @@ export default {
   scroll-snap-type: y mandatory;
   overflow: auto;
   border-radius: 10px;
-  margin-top: -10px;
 }
 
 .scroll-snap-card .slide {
