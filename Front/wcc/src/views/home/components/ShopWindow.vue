@@ -5,10 +5,22 @@
     </div>
 
     <div class="scroll-snap-card">
+
+      <!-- 프로필 이미지 아이템 3개-->
       <div class="slide image-products">
         <div class="image-item">
           <div></div>
         </div>
+
+        <div class="image-item">
+          <div></div>
+        </div>
+
+        <div class="image-item">
+          <div></div>
+        </div>
+
+
       </div>
       <div class="slide frame-products">
           <p class="tip">Scroll On Me</p>
@@ -55,11 +67,12 @@
 /* ------------- 프로필 이미지 상점 ------------- */
 .image-products {
   background-color: #f43f5e;
+  gap: 15px;
 }
 
-.card {
- width: 190px;
- height: 254px;
+.image-item {
+ width: 250px;
+ height: 250px;
  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.212);
  background: #fff;
  display: flex;
@@ -69,7 +82,7 @@
  transition: all .4s;
 }
 
-.card::before {
+.image-item::before {
  content: '---content---';
  letter-spacing: 0.2em;
  position: absolute;
@@ -80,7 +93,7 @@
  font-weight: 700;
 }
 
-.card div {
+.image-item div {
  width: 100%;
  height: 100%;
  border-radius: 20px;
@@ -91,7 +104,7 @@
  background-color: #fff;
 }
 
-.card:hover div {
+.image-item:hover div {
  transform: translateY(-30px);
 }
 
