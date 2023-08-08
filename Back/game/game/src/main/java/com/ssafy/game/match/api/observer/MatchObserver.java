@@ -18,12 +18,11 @@ public class MatchObserver implements Observer {
         try{
             List<Member> groupMemberList = Optional.of(matchService.getGroupMemberList()).get();
 
-            // ToDo Thread pool 관리!
             Thread thread = new Thread(
                     () -> matchService.sendMatchResult(groupMemberList)
             );
-
             thread.start();
+
         }catch (NullPointerException e){
             e.printStackTrace();
         }

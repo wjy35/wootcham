@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Repository
 public class GameSessionRepository {
-    Map<String, GameSession> sessions;
+    private Map<String, GameSession> sessions;
 
     public GameSessionRepository() {
         this.sessions = new HashMap<>();
@@ -18,7 +18,7 @@ public class GameSessionRepository {
         sessions.put(gameSession.getSessionId(),gameSession);
     }
 
-    public GameSession findGameSessionBySessionId(String sessionId){
+    public GameSession findBySessionId(String sessionId){
         return sessions.get(sessionId);
     }
 
