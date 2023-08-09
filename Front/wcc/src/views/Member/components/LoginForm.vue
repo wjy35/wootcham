@@ -119,7 +119,7 @@ export default {
         }
 
         return { state, login, forgotPw, signup };
-    },
+    }
 
 
         return { state, login, forgotPw, signup };
