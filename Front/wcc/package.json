@@ -23,7 +23,8 @@
     "vue": "^3.2.13",
     "vue-router": "^4.2.4",
     "vuex": "^4.1.0",
-    "vuex-persistedstate": "^4.1.0"
+    "vuex-persistedstate": "^4.1.0",
+    "webstomp-client": "^1.2.6"
   },
   "devDependencies": {
     "@babel/eslint-parser": "7.19.1",
