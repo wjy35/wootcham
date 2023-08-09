@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { reactive, onMounted } from 'vue'
+import { reactive } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -57,24 +57,12 @@ export default {
   },
   
   setup(){
-    const store = useStore();       // store 등록
-    
+    const store = useStore();
     const state = reactive({        // state 선언
-      userInfo: {
-
-      }
-    })
-
-    onMounted(() => state.form.userInfo, () => {
-
-    })
-
-    state.userInfo = store.getters['getUserInfo'];
-
-    console.log("userInfo", state.userInfo)
+            userInfo: store.getters['getUserInfo']
+        })
 
     return { state };
-
   },
 
   methods: {

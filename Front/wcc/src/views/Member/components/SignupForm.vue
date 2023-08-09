@@ -16,7 +16,7 @@
                 <input class="pw" type="password" placeholder="비밀번호" v-model="pwInput">
                 <span @click.prevent="togglePwPattern" class="pwRule">{{ pwWarning }}</span>
                 <p class="pwCondition" v-if="showPwPattern && pwWarning !== '사용 가능'">비밀번호는 8~16자의 영문 대소문자와 숫자, 특수문자를 사용하며,</p>
-                <p class="pwCondition" v-if="showPwPattern && pwWarning !== '사용 가능'">특수문자는 한 개 이상 포함되어야 합니다.</p>
+                <p class="pwCondition" v-if="showPwPattern && pwWarning !== '사용 가능'">특수문자와 영문자는 한 개 이상 포함되어야 합니다.</p>
             </div>
             <div class="pwCheckInput">
                 <input type="password" placeholder="비밀번호 확인" v-model="pwCheck">
@@ -38,7 +38,7 @@
                 </label>
             </div>
             
-            <SubmitButton value="회원가입" @click="signup"></SubmitButton>
+            <SubmitButton value="다음" @click="signup"></SubmitButton>
         </div>
         <CommonModal class="modal1" v-if="showRules">
             <h1>이 용 약 관</h1>
@@ -93,6 +93,8 @@
 <script>
 import SubmitButton from './UI/SubmitButton.vue';
 import CommonModal from './UI/CommonModal.vue';
+import api from '@/api'
+import NicknameFormVue from './NicknameForm.vue';
 
 const regPass = /^(?=.*[a-zA-Z])(?=.*[\W_]).{8,16}$/;
 
@@ -169,10 +171,25 @@ export default {
 
     methods: {
         signup() {
-            if (this.emailOk && this.authOk && this.pwCheckWarning === "일치" && this.agree) {
-                alert('회원가입 성공');
+            if(!this.emailOk){
+                alert('이메일을 확인해주세요.')
+            }else if(this.pwCheckWarning !== "일치"){
+                alert('비밀번호 확인이 일치하지 않습니다.')
+            } else if (!this.agree) {
+                alert('이용 약관에 동의해주세요.')
             } else {
-                alert('회원가입 실패');
+                this.$router.push({
+                    name: "nickname",
+                    state: {
+                        email: this.emailInput,
+                        password: this.pwInput
+                    }
+                })
+                // 회원가입 요청
+                // api.post('/member/join', {
+
+                // })
+                // alert('회원 가입 성공')
             }
         },
 
@@ -193,14 +210,18 @@ export default {
             if (this.emailAuth.length === 0) {
                 alert('인증 코드를 입력해주세요')
                 this.authOk = false;
-            } else if (this.emailAuth === "ssafy") {
-                alert('인증 완료')
-                this.authOk = true;
-                this.emailFinal = this.emailInput;
-                this.emailAuth = "";
-            } else {
-                alert('틀린 코드입니다.')
-                this.authOk = false;
+            }else{
+                api.post('/member/code', {
+                    email: this.emailInput,
+                    code: this.emailAuth
+                }).then(()=>{
+                    alert("인증 완료")
+                    this.authOk = true;
+                    this.emailFinal = this.emailInput;
+                    this.emailAuth = "";
+                }).catch(()=>{
+                    alert('코드가 올바르지 않습니다.')
+                })
             }
         },
 
@@ -215,18 +236,38 @@ export default {
         },
 
         emailCheck() {
+            console.log("emailCheck called............")
             if (this.emailInput.length === 0) {
                 alert('이메일을 입력해주세요.')
             } else if (!this.emailInput.includes('@')) {
                 alert('이메일 형식을 지켜주세요')
                 this.emailOk = false;
-            } else if (this.emailInput === 'ssafy@ssafy.com') {
-                alert('중복')
-                this.emailOk = false;
-            } else {
-                alert('사용 가능한 이메일입니다.')
-                this.emailOk = true;
+            } else{
+                // 이메일 중복 검사 요청
+                console.log(this.emailInput)
+                api.post('/member/email', {
+                    email: this.emailInput
+                })
+                .then(()=>{
+                    alert('사용 가능한 이메일입니다.')
+                    this.emailOk = true;
+                })
+                .catch(error => {
+                    if(error.response.status == 401){
+                        alert('이미 존재하는 이메일입니다.')
+                    }else if(error.response.status == 404){
+                        alert('일시적 오류입니다. 잠시 후 다시 시도해주세요.')
+                    }
+                })
             }
+
+                // } else if (this.emailInput === 'ssafy@ssafy.com') {
+            //     alert('중복')
+            //     this.emailOk = false;
+            // } else {
+            //     alert('사용 가능한 이메일입니다.')
+            //     this.emailOk = true;
+            // }
             this.authOk = false;
         }
     }
