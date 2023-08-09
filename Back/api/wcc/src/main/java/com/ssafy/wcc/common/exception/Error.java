@@ -27,6 +27,9 @@ public enum Error {
     NOT_ENOUGH_MONEY("돈이 부족합니다.", HttpStatus.BAD_REQUEST),
     COLLECTION_NOT_FOUND("해당 정보를 가진 사용자가 없습니다.", HttpStatus.NOT_FOUND),
     ITEM_NOT_PURCHASED("구매하지 않은 아이템입니다.", HttpStatus.BAD_REQUEST);
+
+
+
     private final String message;
     private final HttpStatus errorCode;
 

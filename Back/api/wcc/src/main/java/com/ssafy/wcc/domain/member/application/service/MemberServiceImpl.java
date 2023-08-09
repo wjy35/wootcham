@@ -110,7 +110,7 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-    public MemberInfoResponse memberInfoResponse(Long id) throws WCCException {
+    public MemberInfoResponse memberInfoResponse(Long id){
         logger.info("memberInfoResponse service 진입");
         Optional<Member> findMember = memberRepository.findById(id);
         if (findMember.isPresent()) {
@@ -121,13 +121,23 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean checkNickname(String nickname) throws WCCException {
+    public boolean checkNickname(String nickname){
         logger.info("checkNickname service 진입");
         long count = memberRepository.countByNickname(nickname);
         if(count == 0){
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String getMemberNickname(Long id){
+        logger.info("getMemberNickname service 진입");
+        Optional<String> nickname = memberRepository.findNicknameById(id);
+        if (nickname.isPresent()){
+            return nickname.get();
+        }
+        return null;
     }
 
 }

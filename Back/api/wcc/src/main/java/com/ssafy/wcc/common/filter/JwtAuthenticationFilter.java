@@ -38,7 +38,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             logger.info("유효한 토큰");
             String s = tokenService.getAccessTokenId("BlackList: " + token);
             if (s == null) {
-                logger.info("Black List에 등록된 토큰");
+                logger.info("Black List에 등록되지 않은 토큰");
                 // 토큰이 유효하면 토큰으로부터 유저 정보를 받아옵니다.
                 Authentication authentication = tokenService.getAuthentication(token);
                 // SecurityContext 에 Authentication 객체를 저장합니다.
