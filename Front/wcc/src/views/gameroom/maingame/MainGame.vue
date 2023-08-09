@@ -136,7 +136,7 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5000/';
 
-let interval;
+// let interval;
 
 export default {
     data() {
@@ -168,18 +168,18 @@ export default {
     },
     mounted() {
       this.joinSession();
-      setTimeout(() => {
-        interval = setInterval(() => {
-          // 5초 후부터 5초 간격으로 순서를 바꾸자
-          this.changeTurn();
-        }, 2000);
-      }, 2000);
+      // setTimeout(() => {
+      //   interval = setInterval(() => {
+      //     // 5초 후부터 5초 간격으로 순서를 바꾸자
+      //     this.changeTurn();
+      //   }, 2000);
+      // }, 2000);
       
     },
     unmounted() {
       this.disconnectScreen();
       this.leaveSession();
-      clearInterval(interval);
+      // clearInterval(interval);
     },
     methods: {
         sendMessage() {
