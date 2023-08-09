@@ -181,7 +181,6 @@ public class MatchService {
             for(Member groupMember : groupMemberList){
                 ConnectionProperties connectionProperties = new ConnectionProperties.Builder()
                         .role(OpenViduRole.PUBLISHER)
-                        .data(groupMember.getMemberId())
                         .build();
                 Connection connection = openviduSession.createConnection(connectionProperties);
 
