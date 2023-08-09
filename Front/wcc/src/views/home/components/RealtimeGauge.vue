@@ -38,7 +38,7 @@ export default {
   width: 40px;
 
   background-color: #42b883;
-  transition: width 0.3s;
+  transition: width 0.1s;
   border-radius: 10px 10px 0 0;
 }
 </style>

@@ -1,24 +1,23 @@
 <template>
-  <div class="content-window shadow">
-    <div class="content">
-      <div id="cameraZone">
-        <video id="video" autoplay></video>
+  <div class="start-window shadow">
+
+    <video id="video" autoplay></video>
+
+    <div class="notice-card shadow flex">
+      <div class="notice-card-content">
+        <!-- <p class="heading">WootCham Club</p> -->
+        <p class="para">카메라를 켜지 않으면 게임을 시작할 수 없습니다. <br> 하단 카메라 버튼을 눌러주세요.</p>
       </div>
-      <div class="notice-card shadow flex">
-        <div class="notice-card-content">
-          <!-- <p class="heading">WootCham Club</p> -->
-          <p class="para">카메라를 켜지 않으면 게임을 시작할 수 없습니다. <br> 하단 카메라 버튼을 눌러주세요.</p>
-        </div>
-        <!-- 실시간 웃음 정도 데이터 -->
-        <div class="laugh-o-meter">
-          <RealtimeGauge v-if='!showWarning' :data="realtimeData"/>
-          <p v-else>{{ warning }}</p>
-        </div>
+      <!-- 실시간 웃음 정도 데이터 -->
+      <div class="laugh-o-meter">
+        <RealtimeGauge v-if='!showWarning' :data="realtimeData"/>
+        <p v-else>{{ warning }}</p>
       </div>
+
 
     </div>
 
-    <div class="utility-bar" v-if='!cameraOn' @click="toggleCamera">
+    <div class="utility-bar" v-if='!ready' @click="toggleCamera">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" :stroke="cameraOn ? '#ffffff' : '#ff0000'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path v-if="cameraOn" d="M15.6 11.6L22 7v10l-6.4-4.5v-1zM4 5h9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7c0-1.1.9-2 2-2z" />
         <path v-else d="M2 2l19.8 19.8M15 15.7V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7c0-1.1.9-2 2-2h.3m5.4 0H13a2 2 0 0 1 2 2v3.3l1 1L22 7v10" />
@@ -30,6 +29,7 @@
 <script>
 import RealtimeGauge from './RealtimeGauge.vue';
 import * as faceapi from 'face-api.js';
+import { mapState } from 'vuex';
 
 export default {
   components: {
@@ -37,7 +37,6 @@ export default {
   },
   data() {
     return {
-      cameraOn: false,
       realtimeData: 50, // 실시간 데이터를 저장할 변수 (초기값 0)
       warning: '프레임에서 벗어났습니다.',
       showWarning: false,
@@ -50,7 +49,7 @@ export default {
   },
   methods: {
     toggleCamera() {
-      this.cameraOn = true;
+      this.$store.commit("toggleCamera")
       let video = document.getElementById('video');
       
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -85,30 +84,47 @@ export default {
       }, 500);
     },
 
-  }
+  },
+  computed: {
+        ...mapState(['cameraOn', 'gameReady'])
+  },
 }
 
 </script>
 
 <style scoped>
-.content-window {
+.start-window {
   position: relative;
-  
   background-color: #FFF2EA;
   display: flex;
   justify-content: center;
+  
+  height: calc(100vh - 150px);
+  width: 1000px;
+  margin: 70px 30px 0;
+  border-radius: 25px;
+  border: 3px solid #FFCDAD;
+  padding: 0;
 }
-.content-window::before {
+
+.start-window::before {
   content: '';
   position: absolute;
   top: 46%;
-  left: -28px;
+  left: -31px;
   width: 50px; 
   height: 50px; 
   background-image: url('@/assets/images/indicator.png');
   background-size: contain; 
   background-repeat: no-repeat; 
   background-color: transparent;
+}
+
+#video {
+  border-radius: 25px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* NOTICE CARD */
@@ -119,8 +135,8 @@ export default {
   
   justify-content: space-around;
   
-  width: 500px;
-  height: 200px;
+  width: 200px;
+  height: 400px;
   background: #FFF2EA;
   border: 5px solid #FFF2EA; 
   border-radius: 10px;

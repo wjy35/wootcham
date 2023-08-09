@@ -50,6 +50,7 @@ import NoticeWindow from './components/NoticeWindow.vue';
 import ShopWindow from './components/ShopWindow.vue';
 import RankingWindow from './components/RankingWindow.vue';
 import InfoWindow from './components/InfoWindow.vue';
+import { mapState } from 'vuex';
 
 export default {
     name: 'HomeView',
@@ -66,18 +67,23 @@ export default {
         return {
             headerText: "게임 시작하기", // 카메라가 켜지기 전까지 logout 버튼은 숨겨진다. 
             selectedScreen: 'StartWindowScreen', // 초기화면은 StartWindowScreen
+            showCameraModel: false,
+            cameraOn: false
         };
     },
     methods: {
-        // 카메라가 켜졌을 때 실행되는 로직 (카메라 사용 가능 여부 감지)
-        handleCameraOn() {
-            this.headerText = "게임 시작";
-        },
         // '게임 시작' 버튼이 누르면 '매칭중입니다' 표시 
-        handleStartGame() {
+        async handleStartGame() {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            stream.getTracks().forEach(track => track.stop()); // Release the camera
+            
+            this.cameraOn = true;
             this.headerText = "매칭중입니다";
-            // gameroom 으로
-            this.$router.push({name: "gameroom"});
+            // Navigate to gameroom
+            this.$router.push({ name: "homeview" });
+        },
+        toggleCameraModal() {
+            this.showCameraModal = !this.showCameraModal;
         },
         logout() {
             this.$router.push({name: "login"});
@@ -100,7 +106,10 @@ export default {
         selectInfo() {
             this.selectedScreen = 'InfoWindowScreen';
         },
-    }
+    },
+    computed: {
+        ...mapState(['cameraOn', 'gameReady'])
+    },
 };
 </script>
   

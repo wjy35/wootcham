@@ -18,12 +18,22 @@ export default createStore({
     accessToken: null,
     refreshToken: null,
     isValidToken: false,
+    cameraOn: false,
+    gameReady: false,
   },
 
   mutations: {
     setAccessToken(state, payload) {
       state.accessToken = payload;
     },
+
+    toggleCamera(state){
+      state.cameraOn = !state.cameraOn;
+    },
+
+    toggleGameReady (state){
+      state.gameReady = !state.gameReady;
+    }
   },
 
   getters: {
