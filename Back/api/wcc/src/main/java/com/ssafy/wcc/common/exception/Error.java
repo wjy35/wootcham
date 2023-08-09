@@ -29,7 +29,6 @@ public enum Error {
     ITEM_NOT_PURCHASED("구매하지 않은 아이템입니다.", HttpStatus.BAD_REQUEST);
 
 
-
     private final String message;
     private final HttpStatus errorCode;
 

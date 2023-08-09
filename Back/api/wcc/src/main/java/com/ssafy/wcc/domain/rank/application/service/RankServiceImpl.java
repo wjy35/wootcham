@@ -1,5 +1,6 @@
 package com.ssafy.wcc.domain.rank.application.service;
 
+import com.ssafy.wcc.common.exception.WCCException;
 import com.ssafy.wcc.domain.member.application.dto.response.MemberInfoResponse;
 import com.ssafy.wcc.domain.member.application.mapper.MemberMapper;
 import com.ssafy.wcc.domain.member.db.entity.Member;
@@ -21,13 +22,16 @@ public class RankServiceImpl implements RankService{
 
     @Transactional
     public List<MemberInfoResponse> getRank() throws RuntimeException {
-
-        List<Member> rankList = repository.findTop10ByOrderByPointDesc();
-        List<MemberInfoResponse> result = new ArrayList<>();
-        for(int i=0; i<rankList.size(); i++){
-            MemberInfoResponse memberInfoResponse = memberMapper.toMemberInfoResponse(rankList.get(i));
-            result.add(memberInfoResponse);
+        try{
+            List<Member> rankList = repository.findTop10ByOrderByPointDesc();
+            List<MemberInfoResponse> result = new ArrayList<>();
+            for(int i=0; i<rankList.size(); i++){
+                MemberInfoResponse memberInfoResponse = memberMapper.toMemberInfoResponse(rankList.get(i));
+                result.add(memberInfoResponse);
+            }
+            return result;
+        }catch (RuntimeException e){
+            throw new RuntimeException();
         }
-        return result;
     }
 }

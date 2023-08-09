@@ -22,7 +22,7 @@ public class ErrorResponse {
 
     public static ResponseEntity<ErrorResponse> toExceptionEntity(RuntimeException e){
         return ResponseEntity
-                .status(500)
+                .status(404)
                 .body(ErrorResponse.builder()
                         .isSuccess("false")
                         .build()

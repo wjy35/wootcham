@@ -22,21 +22,18 @@ public class RankController {
     private final RankService rankService;
 
     @PostMapping()
-    @ApiOperation(value="랭커 조회")
+    @ApiOperation(value = "랭커 조회")
     @ApiResponses({
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패"),
     })
     public ResponseEntity<Map<String, Object>> rank() {
         Map<String, Object> res = new HashMap<>();
-        try {
-            List<MemberInfoResponse> rankList= rankService.getRank();
-            res.put("isSuccess",true);
-            res.put("data", rankList);
-            return new ResponseEntity<>(res, HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+
+        List<MemberInfoResponse> rankList = rankService.getRank();
+        res.put("isSuccess", true);
+        res.put("data", rankList);
+        return new ResponseEntity<>(res, HttpStatus.OK);
 
     }
 }
