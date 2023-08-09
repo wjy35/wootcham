@@ -17,7 +17,7 @@ public class EmailRedisRepository {
     public void saveEmail(String email, String value, Long timeout) {
         ValueOperations<String, String> valueOperations = redisEmailTemplate.opsForValue();
         valueOperations.set(email, value);
-        redisEmailTemplate.expire(email, timeout, TimeUnit.MILLISECONDS);
+        redisEmailTemplate.expire(email, timeout, TimeUnit.SECONDS);
     }
 
     public String getEmailValue(String key) {

@@ -9,12 +9,14 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.Optional;
 
 @Mapper(componentModel = "spring")
 public interface MemberMapper {
     MemberMapper INSTANCE = Mappers.getMapper(MemberMapper.class);
 
-    public MemberInfoResponse toMemberInfoResponse(Member member);
+    @Mapping(source="report", target="report")
+    public MemberInfoResponse toMemberInfoResponse(Member member, Integer report);
 
     Member memberRequestToMember(MemberRequest request);
 

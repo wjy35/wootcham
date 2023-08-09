@@ -16,7 +16,7 @@ public class BlackListTokenRedisRepository {
     public void saveBlackListToken(String blackListToken, String value, Long timeout) {
         ValueOperations<String, String> valueOperations = redisBlackListTokenTemplate.opsForValue();
         valueOperations.set("BlackList: "+blackListToken, value);
-        redisBlackListTokenTemplate.expire("BlackList: "+blackListToken, timeout, TimeUnit.MILLISECONDS);
+        redisBlackListTokenTemplate.expire("BlackList: "+blackListToken, timeout, TimeUnit.SECONDS);
     }
 
     public String getBlackListTokenValue(String key) {

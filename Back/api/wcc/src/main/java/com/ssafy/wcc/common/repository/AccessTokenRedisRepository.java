@@ -16,7 +16,7 @@ public class AccessTokenRedisRepository {
     public void saveAccessToken(String accessToken, String value, Long timeout) {
         ValueOperations<String, String> valueOperations = redisAccessTemplate.opsForValue();
         valueOperations.set("AccessToken: " + accessToken, value);
-        redisAccessTemplate.expire("AccessToken: " + accessToken, timeout, TimeUnit.MILLISECONDS);
+        redisAccessTemplate.expire("AccessToken: " + accessToken, timeout, TimeUnit.SECONDS);
     }
 
     public String getAccessTokenValue(String key) {

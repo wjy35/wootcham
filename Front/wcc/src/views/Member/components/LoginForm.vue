@@ -15,7 +15,11 @@
 import { reactive, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { reactive, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import SubmitButton from './UI/SubmitButton.vue';
+import api from '@/api/index'
 import api from '@/api/index'
 
 export default {
@@ -44,6 +48,8 @@ export default {
                 state.form.emailInputemailCheck = false;
                 document.querySelector(".email-input").classList.add("warning");
             } else {
+                state.form.emailInputemailCheck = true;
+                document.querySelector(".email-input").classList.remove("warning");
                 state.form.emailInputemailCheck = true;
                 document.querySelector(".email-input").classList.remove("warning");
             }
@@ -98,14 +104,23 @@ export default {
         }
 
         const forgotPw = () => {
+        const forgotPw = () => {
             // FindPassword로 라우팅
+            router.push({ name: "findpw" })
+        }
             router.push({ name: "findpw" })
         }
 
         const signup = () => {
+        const signup = () => {
             // SignupForm으로 라우팅
             router.push({ name: "signup" })
+            router.push({ name: "signup" })
         }
+
+        return { state, login, forgotPw, signup };
+    },
+
 
         return { state, login, forgotPw, signup };
     },

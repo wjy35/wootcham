@@ -65,4 +65,6 @@ export default createStore({
   },
 
   actions: {},
+
+  actions: {},
 });
