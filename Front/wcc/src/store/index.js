@@ -1,20 +1,41 @@
-// import Vue from "vue";
-import Vuex from "vuex";
-import createPersistedState from "vuex-persistedstate";
-// module import
-import memberStore from "@/store/modules/memberStore";
-import gameStore from "@/store/modules/gameStore"
+import { createStore } from "vuex";
 
-// Vue.use(Vuex);
-
-export default new Vuex.Store({
-  modules: {
-    memberStore, gameStore
+export default createStore({
+  namespaced: true,
+  state: {
+    userInfo: {
+      id: "",
+      email: "",
+      password: "",
+      nickname: "",
+      point: "",
+      money: "",
+      admin: "", // 관리자: 0, 유저: 1
+      suspension_day: "",
+      Current_login: "",
+      profile_img: "",
+    },
+    accessToken: null,
+    refreshToken: null,
+    isValidToken: false,
+    cameraOn: false,
+    gameReady: false,
   },
-  plugins: [
-    createPersistedState({
-      // 브라우저 종료시 제거하기 위해 localStorage가 아닌 sessionStorage로 변경. (default: localStorage)
-      storage: sessionStorage,
-    }),
-  ],
+
+  mutations: {
+    setAccessToken(state, payload) {
+      state.accessToken = payload;
+    },
+  },
+
+  getters: {
+    getUserInfo(state) {
+      return state.userInfo;
+    },
+    getAccessToken(state) {
+      return state.accessToken;
+    },
+  },
+
+  actions: {},
 });

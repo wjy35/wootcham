@@ -25,24 +25,22 @@
                     <!-- 임시로 이미지 넣음-->
                     <img v-if="mainStreamManager === undefined" src="https://media.istockphoto.com/id/518360318/photo/crazy-horse.jpg?s=612x612&w=0&k=20&c=KP27AuWsogbIb1dRSqqwRn_ykPMqguJb7z2q3x9xr5A=" alt="">
                     <UserVideo v-else :stream-manager="mainStreamManager" videoType="screen"/>
-              
                     <!-- Progress Bar -->
                     <div class="loader">
                       <div></div>
                     </div>
-
-                    <div class="share-btn screenshare">
-                      <div class="sign">
-                        <img src="@/assets/images/stream.png" alt="">
-                      </div>
-                      <div class="text">화면 공유</div>
+                    <!-- 화면 공유 & 턴 종료 버튼 -->
+                    <div @click='connectScreen' class="share-btn screenshare">
+                        <div class="sign">
+                          <img src="@/assets/images/stream.png" alt="">
+                        </div>
+                        <div class="text">화면 공유</div>
                     </div>
-
-                    <div class="share-btn endterm">
-                      <div class="sign">
-                        <img src="@/assets/images/the-end.png" alt="">
-                      </div>
-                      <div class="text">턴 종료</div>
+                    <div @click="disconnectScreen" class="share-btn endterm">
+                        <div class="sign">
+                          <img src="@/assets/images/the-end.png" alt="">
+                        </div>
+                        <div class="text">턴 종료</div>
                     </div>
                   </div>
                 </div>
