@@ -16,4 +16,10 @@ public class GlobalExceptionHandler {
         log.info("error 발생: {}, {}", e.getError().getErrorCode(), e.getError().getMessage());
         return ErrorResponse.toResponseEntity(e);
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponse> handleException(RuntimeException e) {
+        log.info("Runtime error 발생");
+        return ErrorResponse.toExceptionEntity(e);
+    }
 }

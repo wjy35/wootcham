@@ -115,7 +115,7 @@ public class NoticeController {
             @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken,
             @RequestBody @ApiParam(value = "글 정보", required = true) NoticeRequest request
     ) {
-        log.info("updateNotice controller 진입");
+        log.info("updateNotice       controller 진입");
         Map<String, Object> res = new HashMap<>();
 
         noticeService.updateNotice(Long.parseLong(tokenService.getAccessTokenId(accessToken)), request);

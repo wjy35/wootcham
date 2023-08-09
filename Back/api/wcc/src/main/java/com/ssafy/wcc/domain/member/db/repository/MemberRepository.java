@@ -1,11 +1,10 @@
 package com.ssafy.wcc.domain.member.db.repository;
 
 import com.ssafy.wcc.domain.member.db.entity.Member;
-import com.ssafy.wcc.domain.member.db.entity.MemberItem;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long>{
@@ -14,12 +13,10 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
 
     Optional<Member> findByEmail(String email);
 
-    @Transactional
-    void deleteByEmail(String email);
-
-    @Override
-    Optional<Member> findById(Long id);
-
     Long countByNickname(String nickname);
 
+    @Query("SELECT m.nickname FROM Member m WHERE m.id = :memberId")
+    Optional<String> findNicknameById(@Param("memberId") Long userId);
+
+    String getMemberNickname(Long id);
 }
