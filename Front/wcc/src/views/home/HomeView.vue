@@ -10,7 +10,6 @@
 
             <div class="logout-btn">
                 <div @click="logout">Log Out</div>
-                <!-- 로그아웃 기능 추가하여야 함 -->
             </div>
         </header>
 
@@ -77,10 +76,16 @@ export default {
         handleStartGame() {
             this.headerText = "매칭중입니다";
             // gameroom 으로
-            this.$router.push({name: "gameroom"});
+            this.$router.push({ name: "gameroom" });
         },
         logout() {
-            this.$router.push({name: "login"});
+            // local storage 제거
+            localStorage.removeItem('access_token')
+            localStorage.removeItem('refresh_token')
+            // Store 초기화
+            this.$store.commit('initUserInfo');
+            // 로그인 화면으로 리다이렉트
+            this.$router.push({ name: "login" });
         },
         selectProfile() {
             this.selectedScreen = 'ProfileWindowScreen';

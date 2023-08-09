@@ -7,8 +7,7 @@
         <div class="top-section">
           <div class="border"></div>
           <div class="icons">
-            <div class="logo">
-               {{ username }}
+            <div class="logo" v-text = "state.userInfo.nickname">
             </div>
             <div class="social-media">
               WootCham
@@ -41,13 +40,22 @@
     </div>
   </div>
 </template>
-
 <script>
+import { reactive } from 'vue'
+import { useStore } from 'vuex'
+
 export default {
-  data(){
+  data() {
     return {
-      username: "username"
     };
+  },
+  setup(){
+    const store = useStore();
+    const state = reactive({        // state 선언
+            userInfo: store.getters['getUserInfo']
+        })
+
+    return { state };
   }
 }
 </script>
@@ -62,17 +70,17 @@ export default {
   position: absolute;
   top: 10%;
   left: -28px;
-  width: 50px; 
-  height: 50px; 
+  width: 50px;
+  height: 50px;
   background-image: url('@/assets/images/indicator.png');
-  background-size: contain; 
-  background-repeat: no-repeat; 
+  background-size: contain;
+  background-repeat: no-repeat;
   background-color: transparent;
 }
 
 .content {
   display: flex;
-  height: 100%; 
+  height: 100%;
   width: 100%;
 }
 
