@@ -1,0 +1,41 @@
+package com.ssafy.wcc.common.exception.dto;
+
+import com.ssafy.wcc.common.exception.WCCException;
+import lombok.Builder;
+import lombok.Getter;
+import org.springframework.http.ResponseEntity;
+
+
+@Getter
+@Builder
+public class ErrorResponse {
+    private final String isSuccess; // 실패 시 항상 false로 응답
+
+    public static ResponseEntity<ErrorResponse> toResponseEntity(WCCException e) {
+        System.out.println("44");
+        return ResponseEntity
+                .status(e.getError().getErrorCode())
+                .body(ErrorResponse.builder()
+                        .isSuccess("false")
+                        .build()
+                );
+    }
+
+    public static ResponseEntity<ErrorResponse> toExceptionEntity(RuntimeException e){
+        return ResponseEntity
+                .status(500)
+                .body(ErrorResponse.builder()
+                        .isSuccess("false")
+                        .build()
+                );
+    }
+
+    public static ResponseEntity<ErrorResponse> toTokenExceptionEntity(RuntimeException e){
+        return ResponseEntity
+                .status(401)
+                .body(ErrorResponse.builder()
+                        .isSuccess("false")
+                        .build()
+                );
+    }
+}

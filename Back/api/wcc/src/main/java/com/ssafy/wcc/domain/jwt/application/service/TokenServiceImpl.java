@@ -1,15 +1,15 @@
 package com.ssafy.wcc.domain.jwt.application.service;
 
+import com.ssafy.wcc.common.exception.CustomJwtExpiredException;
+import com.ssafy.wcc.common.exception.Error;
+import com.ssafy.wcc.common.exception.WCCException;
 import com.ssafy.wcc.common.repository.AccessTokenRedisRepository;
 import com.ssafy.wcc.common.repository.BlackListTokenRedisRepository;
 import com.ssafy.wcc.common.repository.EmailRedisRepository;
 import com.ssafy.wcc.common.repository.RefreshTokenRedisRepository;
 import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
 import com.ssafy.wcc.domain.member.db.entity.Member;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +25,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class TokenServiceImpl implements TokenService{
+public class TokenServiceImpl implements TokenService {
 
     private final CustomUserDetailService customUserDetailService;
     private final EmailRedisRepository emailRedisRepository;
@@ -48,19 +48,19 @@ public class TokenServiceImpl implements TokenService{
 
     @Override
     public String createRefreshToken(String id) {
-        String refreshToken = create("refresh_token", expireMin*5);
-        refreshTokenRedisRepository.saveRefreshToken(refreshToken, id, expireMin*5);
+        String refreshToken = create("refresh_token", expireMin * 5);
+        refreshTokenRedisRepository.saveRefreshToken(refreshToken, id, expireMin * 5);
         return refreshToken;
     }
 
     @Override
-    public void saveLogoutToken(String accessToken){
+    public void saveLogoutToken(String accessToken) {
         blackListTokenRedisRepository.saveBlackListToken(accessToken, "logout", this.getExpire(accessToken));
     }
 
 
     @Override
-    public Long getExpire(String accessToken){
+    public Long getExpire(String accessToken) {
         Date expiration = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(accessToken).getBody().getExpiration();
         // 현재 시간
         Long now = new Date().getTime();
@@ -83,7 +83,7 @@ public class TokenServiceImpl implements TokenService{
     }
 
     @Override
-    public String getAccessTokenId(String token){
+    public String getAccessTokenId(String token) {
         return accessTokenRedisRepository.getAccessTokenValue(token);
     }
 
@@ -103,7 +103,7 @@ public class TokenServiceImpl implements TokenService{
     }
 
     @Override
-    public void deleteRefreshToken(String refreshToken){
+    public void deleteRefreshToken(String refreshToken) {
         refreshTokenRedisRepository.deleteRefreshToken(refreshToken);
     }
 
@@ -121,19 +121,19 @@ public class TokenServiceImpl implements TokenService{
     }
 
     @Override
-    public boolean checkToken(String jwt) {
+    public boolean checkToken(String jwt) throws ExpiredJwtException {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt);
             return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ExpiredJwtException e) {
             return false;
         }
+
     }
 
     @Override
     public MemberLoginResponse makeMemberLoginResponse(String id) {
-        MemberLoginResponse response = new MemberLoginResponse(this.createAccessToken(id),this.createRefreshToken(id));
+        MemberLoginResponse response = new MemberLoginResponse(this.createAccessToken(id), this.createRefreshToken(id));
         return response;
     }
 
@@ -143,10 +143,10 @@ public class TokenServiceImpl implements TokenService{
     }
 
     @Override
-    public Authentication getAuthentication(String token) throws RuntimeException{
+    public Authentication getAuthentication(String token) throws RuntimeException {
 
         String id = this.getAccessTokenId(token);
-        Member m = Member.builder().id  (Long.parseLong(id)).build();
+        Member m = Member.builder().id(Long.parseLong(id)).build();
         UserDetails userDetails = m;
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 

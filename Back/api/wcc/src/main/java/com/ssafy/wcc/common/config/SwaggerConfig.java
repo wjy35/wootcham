@@ -23,12 +23,6 @@ public class SwaggerConfig {
         return getDocket("com.ssafy.wcc.domain.rank", "랭킹", Predicates.or(PathSelectors.regex("/rank.*")));
     }
 
-//    @Bean
-//    public Docket noticeApi(){
-//
-//        return getDocket("com.ssafy.wcc.domain.notice", "공지", Predicates.or(PathSelectors.regex("/notice.*")));
-//    }
-
     @Bean
     public Docket authApi(){
         return getDocket("com.ssafy.wcc.domain.jwt", "갱신", Predicates.or(PathSelectors.regex("/refresh")));
@@ -43,6 +37,11 @@ public class SwaggerConfig {
     @Bean
     public Docket memberApi() {
         return getDocket("com.ssafy.wcc.domain.member", "회원", Predicates.or(PathSelectors.regex("/member.*")));
+    }
+
+    @Bean
+    public Docket noticeApi(){
+        return getDocket("com.ssafy.wcc.domain.notice", "공지", Predicates.or(PathSelectors.regex("/notice.*")));
     }
 
 
