@@ -1,8 +1,6 @@
 package com.ssafy.wcc.domain.jwt.application.service;
 
-import com.ssafy.wcc.common.exception.CustomJwtExpiredException;
 import com.ssafy.wcc.common.exception.Error;
-import com.ssafy.wcc.common.exception.WCCException;
 import com.ssafy.wcc.common.repository.AccessTokenRedisRepository;
 import com.ssafy.wcc.common.repository.BlackListTokenRedisRepository;
 import com.ssafy.wcc.common.repository.EmailRedisRepository;
@@ -11,7 +9,9 @@ import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
 import com.ssafy.wcc.domain.member.db.entity.Member;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,13 +19,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TokenServiceImpl implements TokenService {
+
+    Logger logger = LoggerFactory.getLogger(TokenServiceImpl.class);
 
     private final CustomUserDetailService customUserDetailService;
     private final EmailRedisRepository emailRedisRepository;
@@ -121,15 +123,26 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public boolean checkToken(String jwt) throws ExpiredJwtException {
+    public boolean checkToken(String jwt){
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt);
             return true;
+        } catch (SignatureException e) {
+            log.info("SignatureException");
+            throw new JwtException(Error.WRONG_TYPE_TOKEN.getMessage());
+        } catch (MalformedJwtException e) {
+            log.info("MalformedJwtException");
+            throw new JwtException(Error.UNSUPPORTED_TOKEN.getMessage());
         } catch (ExpiredJwtException e) {
-            return false;
+            log.info("ExpiredJwtException");
+            throw new JwtException(Error.EXPIRED_TOKEN.getMessage());
+        } catch (IllegalArgumentException e) {
+            log.info("IllegalArgumentException");
+            throw new JwtException(Error.UNKNOWN_ERROR.getMessage());
         }
-
     }
+
+
 
     @Override
     public MemberLoginResponse makeMemberLoginResponse(String id) {

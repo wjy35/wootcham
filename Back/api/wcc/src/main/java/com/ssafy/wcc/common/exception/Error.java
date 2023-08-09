@@ -16,14 +16,18 @@ public enum Error {
     NO_SUCH_NOTICE("해당 아이디를 가진 공지사항이 없습니다.", HttpStatus.NOT_FOUND),
 
     // 토큰
-    TOKEN_EXPIRED("토큰이 만료되었습니다.",HttpStatus.UNAUTHORIZED);
+    TOKEN_EXPIRED("토큰이 만료되었습니다.",HttpStatus.UNAUTHORIZED),
+    UNKNOWN_ERROR("인증 토큰이 존재하지 않습니다.",HttpStatus.UNAUTHORIZED),
+    WRONG_TYPE_TOKEN("잘못된 토큰 정보입니다.",HttpStatus.UNAUTHORIZED),
+    EXPIRED_TOKEN("만료된 토큰 정보입니다.",HttpStatus.UNAUTHORIZED),
+    UNSUPPORTED_TOKEN("지원하지 않는 토큰 방식입니다.",HttpStatus.UNAUTHORIZED),
+    ACCESS_DENIED("알 수 없는 이유로 요청이 거절되었습니다.",HttpStatus.UNAUTHORIZED);
+
     private final String message;
     private final HttpStatus errorCode;
 
     Error(String message, HttpStatus errorCode) {
         this.message = message;
         this.errorCode = errorCode;
-        System.out.println("message = " + message);
-        System.out.println("errorCode = " + errorCode);
     }
 }
