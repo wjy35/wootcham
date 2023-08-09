@@ -18,10 +18,13 @@ export default createStore({
     accessToken: null,
     refreshToken: null,
     isValidToken: false,
-    mainStreamManager: ''
+    mainStreamManager: '',
+    client:null,
   },
-
   mutations: {
+    setClient(state, payload){
+      state.client = payload;
+    },
     setAccessToken(state, payload) {
       state.accessToken = payload;
     },
@@ -62,6 +65,9 @@ export default createStore({
     getAccessToken(state) {
       return state.accessToken;
     },
+    getClient(state){
+      return state.client;
+    }
   },
 
   actions: {},

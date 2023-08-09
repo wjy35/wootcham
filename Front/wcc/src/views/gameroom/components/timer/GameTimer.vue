@@ -34,17 +34,21 @@ const COLOR_CODES = {
     }
 };
 
-const TIME_LIMIT = 60;
+const TIME_LIMIT = 10;
 
 export default {
     name: 'GameRoomTimer',
     data() {
         return {
-            timePassed: 0,
             timerInterval: null
         };
     },
-
+  props: {
+    second: {
+      type: Number,
+      default: 0
+    },
+  },
     computed: {
         circleDasharray() {
             return `${(this.timeFraction * FULL_DASH_ARRAY).toFixed(0)} 283`;
@@ -56,7 +60,7 @@ export default {
         },
 
         timeLeft() {
-            return TIME_LIMIT - this.timePassed;
+            return TIME_LIMIT - this.second;
         },
 
         timeFraction() {
@@ -85,18 +89,10 @@ export default {
         }
     },
 
-    mounted() {
-        this.startTimer();
-    },
-
     methods: {
         onTimesUp() {
             clearInterval(this.timerInterval);
         },
-
-        startTimer() {
-            this.timerInterval = setInterval(() => (this.timePassed += 1), 1000);
-        }
     }
 };
 </script>
