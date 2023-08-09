@@ -145,10 +145,9 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5000/';
 
+// let interval;
+
 export default {
-  components:{
-    MainContent, MissionSelect, StandBy
-  },
   data() {
     return {
       showModal: false,

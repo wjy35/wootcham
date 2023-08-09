@@ -10,7 +10,7 @@
             <div class="rank-card">
                 <div class="rank-card-image">
                   <img src="@/assets/images/profile.png" alt="">
-                  <span class="report-icon" @click="showModal = true">
+                  <span class="report-icon" @click="toggleReport">
                     <img src="@/assets/images/report.png" alt="">
                   </span>
                 </div>
@@ -26,7 +26,7 @@
               <div class="rank-card">
                 <div class="rank-card-image">
                   <img src="@/assets/images/profile.png" alt="">
-                  <span class="report-icon" @click="showModal = true">
+                  <span class="report-icon" @click="toggleReport">
                     <img src="@/assets/images/report.png" alt="">
                   </span>
                 </div>
@@ -42,7 +42,7 @@
               <div class="rank-card">
                 <div class="rank-card-image">
                   <img src="@/assets/images/profile.png" alt="">
-                  <span class="report-icon" @click="showModal = true">
+                  <span class="report-icon" @click="toggleReport">
                     <img src="@/assets/images/report.png" alt="">
                   </span>
                 </div>
@@ -58,7 +58,7 @@
               <div class="rank-card">
                 <div class="rank-card-image">
                   <img src="@/assets/images/profile.png" alt="">
-                  <span class="report-icon" @click="showModal = true">
+                  <span class="report-icon" @click="toggleReport">
                     <img src="@/assets/images/report.png" alt="">
                   </span>
                 </div>
@@ -74,7 +74,7 @@
               <div class="rank-card">
                 <div class="rank-card-image">
                   <img src="@/assets/images/profile.png" alt="">
-                  <span class="report-icon" @click="showModal = true">
+                  <span class="report-icon" @click="toggleReport">
                     <img src="@/assets/images/report.png" alt="">
                   </span>
                 </div>
@@ -90,7 +90,7 @@
               <div class="rank-card">
                 <div class="rank-card-image">
                   <img src="@/assets/images/profile.png" alt="">
-                  <span class="report-icon" @click="showModal = true">
+                  <span class="report-icon" @click="toggleReport">
                     <img src="@/assets/images/report.png" alt="">
                   </span>
                 </div>
@@ -116,7 +116,7 @@
                       </div>
                       <div class="actions">
                         <button class="desactivate" type="button">신고하기</button>
-                        <button class="cancel" type="button" @click="showModal = false">취소하기</button>
+                        <button class="cancel" type="button" @click="toggleReport">취소하기</button>
                       </div>
                     </div>
                 </div>
@@ -159,6 +159,21 @@
                 <di class="gameend-option-two">홈으로 나가기</di>
             </div>
 
+            <div class="my-result">
+              <img class='game-result-icon' src="@/assets/images/profile.png" alt="">
+              <RealtimeGauge class="point-increase" data="50" back="#FFCDAD" bar="#F27059"></RealtimeGauge>
+              <p class="plus-point">+1000</p>
+              <p class="result-info">2500/5000<br><span class="level">골드1</span></p>
+            </div>
+
+            <div class="coin-result">
+              <p>축하합니다! 아래 보상을 획득했습니다.</p>
+              <div class="plus-coin">
+                <img class='coin' src="@/assets/images/coin.png">
+                <span class="coin-count">+150</span>
+              </div>
+            </div>
+
           </div>
       </div>
   
@@ -167,10 +182,12 @@
 </template>
 
 <script>
+import RealtimeGauge from '@/views/home/components/RealtimeGauge.vue';
+
 export default {
   name: "GameResult",
   components: {
-
+    RealtimeGauge
   },
   data() {
     return {
@@ -179,7 +196,7 @@ export default {
   },
   methods: {
     toggleReport() {
-      this.showReport = !this.showReport;
+      this.showModal = !this.showModal;
     }, 
     report() {
         // 신고 로직
@@ -283,6 +300,7 @@ header {
 
 .rank-card-image:hover .report-icon {
   display: block; 
+  cursor: pointer;
 }
 
 .rank-card-detail {
@@ -637,6 +655,7 @@ header {
     gap: 100px;
     display: flex;
     font-size: 5em;
+    margin-top: 2rem;
 }
 
 .gameend-option-one {
@@ -682,6 +701,80 @@ header {
 
 .gameend-option-two:active {
   opacity: 0.5;
+}
+
+.my-result {
+  width: 80%;
+  margin-top: 3rem;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+
+.game-result-icon {
+  width: calc(500px * 0.8 * 0.2);
+  height: calc(500px * 0.8 * 0.2);
+  position: absolute;
+  left: 0;
+  top: calc(500px * 0.8 * 0.05);
+  border-radius: calc(500px * 0.8 * 0.1);
+}
+
+.point-increase {
+  width: 60px;
+  height: calc(500px * 0.8 * 0.8);
+  transform: rotate( 90deg );
+  position: absolute;
+  top: calc(-500px * 0.8 * 0.2);
+  left: calc(500px * 0.8 * 0.55);
+}
+
+.plus-point {
+  color: #F27059;
+  position: absolute;
+  top: calc(-500px * 0.8 * 0.02);
+  left: calc(500px * 0.8 * 0.2);
+  text-align: left;
+  font-size: 2rem;
+}
+
+.result-info { 
+  position: absolute;
+  right: calc(-500px * 0.8 * 0.05);
+  top: calc(500px * 0.8 * 0.09);
+  text-align: right;
+  color: #F27059;
+}
+
+.coin-result {
+  margin-top: 9rem;
+  font-size: 1.5rem;
+  color: #714538;
+}
+
+.plus-coin {
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+}
+
+.coin {
+  width: auto;
+  height: 3rem;
+  margin-right: 0.5rem;
+}
+
+.coin-count {
+  color: #FAAD1B;
+  font-size: 2rem;
+}
+
+.level {
+  color: #714538;
+  font-size: 1.5rem;
+  margin: 0;
 }
 
 </style>
