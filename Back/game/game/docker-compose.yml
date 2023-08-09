@@ -9,6 +9,8 @@ services:
       - 6389:6389
     volumes:
       - /var/game_user_cache/:/data
+    networks:
+      - deploy
 
   game_cache:
     container_name: wcc_game_game_cache
@@ -17,6 +19,8 @@ services:
       - 6399:6399
     volumes:
       - /var/game_game_cache/:/data
+    networks:
+      - deploy
 
   app:
     container_name: wcc_game
@@ -26,4 +30,8 @@ services:
     depends_on:
       - user_cache
       - game_cache
-
+    networks:
+      - deploy
+networks:
+  deploy:
+    external: true
