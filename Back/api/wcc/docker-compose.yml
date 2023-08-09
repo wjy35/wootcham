@@ -9,6 +9,8 @@ services:
       - 6379:6379
     volumes:
       - /var/api_cache/:/data
+    networks:
+      - deploy
 
   app:
     container_name: wcc_api
@@ -17,4 +19,6 @@ services:
       - 8080:8080
     depends_on:
       - cache
+    networks:
+      - deploy
 
