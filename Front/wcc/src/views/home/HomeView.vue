@@ -5,7 +5,20 @@
             <a href="/home" class="logo">WootCham Club</a>
 
             <div class="header-center">
-                <span @click="handleStartGame">{{ headerText }}</span>
+                <!-- <span @click="handleStartGame">{{ headerText }}</span> -->
+                <span v-if="matchStatus===MatchStatus.READY" @click="handleStartGame"> 시작하기 </span>
+                <div v-if="matchStatus===MatchStatus.MATCHING">
+                    매칭중...
+                    <button @click="cancel">취소</button>
+                </div>
+
+                <div v-if="matchStatus===MatchStatus.MATCHED">
+                    <button @click="enter"> 수락</button>
+                    <button @click="cancel">거절</button>
+                </div>
+                <div v-if="matchStatus===MatchStatus.CREATED">
+                
+                </div>
             </div>
 
             <div class="logout-btn">
@@ -49,6 +62,8 @@ import NoticeWindow from './components/NoticeWindow.vue';
 import ShopWindow from './components/ShopWindow.vue';
 import RankingWindow from './components/RankingWindow.vue';
 import InfoWindow from './components/InfoWindow.vue';
+import * as Stomp from "webstomp-client";
+import {MatchStatus} from '@/match-status';
 
 export default {
     name: 'HomeView',
@@ -65,6 +80,13 @@ export default {
         return {
             headerText: "게임 시작하기", // 카메라가 켜지기 전까지 logout 버튼은 숨겨진다. 
             selectedScreen: 'StartWindowScreen', // 초기화면은 StartWindowScreen
+            client : null,
+            groupId:"",
+            memberId:"",
+            second: "",
+            matchStatus: MatchStatus.READY,
+            sessionId:"",
+            memberToken:"",    
         };
     },
     methods: {
@@ -74,9 +96,61 @@ export default {
         },
         // '게임 시작' 버튼이 누르면 '매칭중입니다' 표시 
         handleStartGame() {
-            this.headerText = "매칭중입니다";
-            // gameroom 으로
-            this.$router.push({ name: "gameroom" });
+            // this.headerText = "매칭중입니다";
+            this.matchStatus = MatchStatus.MATCHING;
+
+            this.client = Stomp.client(process.env.VUE_APP_MATCH_ENDPOINT_URL);
+            this.client.connect(
+                {},
+                () => {
+                    this.client.subscribe(
+                        "/user/queue/match",
+                        (frame) => {
+                            let response = JSON.parse(frame.body);
+                            if (response.success) {
+                                this.matchStatus = response.matchStatus;
+
+                                if (response.matchStatus === MatchStatus.MATCHED) {
+                                    if (response.second) {
+                                        this.second = response.second;
+                                    } else {
+                                        this.matchStatus = response.matchStatus;
+                                        this.memberId = response.memberId;
+                                        this.groupId = response.groupId;
+                                    }
+
+                                } else if (response.matchStatus === MatchStatus.CREATED) {
+                                    /**
+                                     * ToDo
+                                     * matchStatus 가 CREATED 상태가 되면 game page로 이동
+                                     * groupId, memberId 와 함께 넘어가야함
+                                     */
+                                    this.memberToken = response.memberToken;
+                                    this.sessionId = response.sessionId;
+
+                                }
+                            }
+                        },
+                        (error) => {
+                            /**
+                             * ToDo
+                             * 에러 처리
+                             * 인터넷 연결, 브라우저 오류 등의 문제로 소켓 연결 실패시 실행되는 callback
+                             */
+
+                            console.log(error);
+                        });
+                },
+                (error) => {
+                    /**
+                     * ToDo
+                     * 에러 처리
+                     * 인터넷 연결, 브라우저 오류 등의 문제로 소켓 연결 실패시 실행되는 callback
+                     */
+
+                    console.log(error)
+                },
+            )
         },
         logout() {
             // local storage 제거
@@ -105,6 +179,24 @@ export default {
         selectInfo() {
             this.selectedScreen = 'InfoWindowScreen';
         },
+        cancel(){
+            this.groupId = "";
+            this.memberId = "";
+            this.client.disconnect();
+            this.matchStatus = MatchStatus.READY;
+        },
+        enter() {
+            /**
+             * ToDo
+             * 수락 버튼을 누르면 수락 버튼을 꼭 비활성화 해주세요!
+             */
+            this.client.send(`/enter/${this.groupId}/${this.memberId}`);
+        },
+    },
+    computed: {
+        MatchStatus() {
+            return MatchStatus
+        }
     }
 };
 </script>
