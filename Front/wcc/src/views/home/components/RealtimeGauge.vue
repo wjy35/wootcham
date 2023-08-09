@@ -1,5 +1,5 @@
 <template>
-  <div class="gauge-container">
+  <div class="gauge-container" :style="containerStyle">
     <div class="gauge-bar" :style="gaugeStyle"></div>
   </div>
 </template>
@@ -10,14 +10,29 @@ export default {
     data: {
       type: Number,
       required: true
+    }, 
+    back: {
+      type: String
+    },
+    bar: {
+      type: String
     }
   },
   computed: {
     gaugeStyle() {
       const height = Math.min(100, Math.max(0, this.data)) + '%';
-      return {
-        height: height
-      };
+      if (this.bar) {
+        return { height: height, backgroundColor: this.bar };
+      } else {
+        return { height: height };
+      }
+    }, 
+    containerStyle() {
+      if (this.back) {
+        return { backgroundColor: this.back }
+      } else {
+        return {}
+      }
     }
   }
 };
@@ -36,9 +51,10 @@ export default {
 
 .gauge-bar {
   width: 40px;
-
   background-color: #42b883;
   transition: width 0.3s;
   border-radius: 10px 10px 0 0;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

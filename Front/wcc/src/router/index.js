@@ -1,8 +1,11 @@
 import LoginViewVue from "@/views/Member/LoginView.vue";
 import FindPasswordViewVue from "@/views/Member/FindPasswordView.vue";
 import NicknameViewVue from "@/views/Member/NicknameView.vue";
+import NicknameChangeViewVue from "@/views/Member/NicknameChangeView.vue";
+import PwChangeViewVue from "@/views/Member/PwChangeView.vue";
 import SignupViewVue from "@/views/Member/SignupView.vue";
 import WelcomeViewVue from "@/views/Member/WelcomeView.vue";
+import GoodbyeViewVue from "@/views/Member/GoodbyeView.vue";
 
 import HomeView from "@/views/home/HomeView.vue"
 
@@ -47,6 +50,11 @@ const routes = [
     component: WelcomeViewVue,
   },
   {
+    path: "/goodbye",
+    name: "goodbye", 
+    component: GoodbyeViewVue,
+  },
+  {
     path: "/findpw",
     name: "findpw",
     component: FindPasswordViewVue,
@@ -55,6 +63,16 @@ const routes = [
     path: "/nickname",
     name: "nickname",
     component: NicknameViewVue,
+  },
+  {
+    path: "/nicknamechange",
+    name: "nicknamechange",
+    component: NicknameChangeViewVue,
+  },
+  {
+    path: "/pwchange",
+    name: "pwchange",
+    component: PwChangeViewVue,
   },
   {
     path: "/signup",
