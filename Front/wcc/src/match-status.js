@@ -3,6 +3,7 @@ const MatchStatus={
     MATCHING : 1,
     MATCHED : 2,
     CREATED : 3,
+    DESTROYED : 4
 }
 
 export {MatchStatus};
