@@ -39,7 +39,7 @@ public class CollectionController {
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패"),
     })
-    public ResponseEntity<Map<String, Object>> collectionList( @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
+    public ResponseEntity<Map<String, Object>> collectionList(@RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
         Map<String, Object> res = new HashMap<>();
         String id = tokenService.getAccessTokenId(accessToken);
 
@@ -47,24 +47,24 @@ public class CollectionController {
             List<CollectionItem> list = collectionItemService.getCollectionList(Long.parseLong(id));
 
             JSONArray arr = new JSONArray();
-            for(int i=0; i<list.size(); i++){
+            for (int i = 0; i < list.size(); i++) {
                 JSONObject data = new JSONObject();
                 CollectionItem collectionItem = list.get(i);
-                data.put("id",collectionItem.getId());
-                data.put("type",collectionItem.getType());
-                data.put("name",collectionItem.getName());
-                data.put("price",collectionItem.getPrice());
-                data.put("description",collectionItem.getDescription());
-                data.put("wear",false);
-                data.put("buy",false);
-                for(int j=0; j<collectionItem.getMemberItems().size(); j++){
-                    if(collectionItem.getMemberItems().get(j).getMember().getId() == Long.parseLong(id)) {
-                        if(collectionItem.getMemberItems().get(j).isWear()){
-                            data.put("wear",true);
+                data.put("id", collectionItem.getId());
+                data.put("type", collectionItem.getType());
+                data.put("name", collectionItem.getName());
+                data.put("price", collectionItem.getPrice());
+                data.put("description", collectionItem.getDescription());
+                data.put("wear", false);
+                data.put("buy", false);
+                for (int j = 0; j < collectionItem.getMemberItems().size(); j++) {
+                    if (collectionItem.getMemberItems().get(j).getMember().getId() == Long.parseLong(id)) {
+                        if (collectionItem.getMemberItems().get(j).isWear()) {
+                            data.put("wear", true);
                         }
 
-                        if(collectionItem.getMemberItems().get(j).isBuy()){
-                            data.put("buy",true);
+                        if (collectionItem.getMemberItems().get(j).isBuy()) {
+                            data.put("buy", true);
                         }
                         data.put("ssss", collectionItem.getMemberItems().get(j).getMember().getId());
                     }
@@ -73,9 +73,9 @@ public class CollectionController {
                 arr.add(data);
             }
             res.put("isSuccess", true);
-            res.put("data",arr);
+            res.put("data", arr);
             return new ResponseEntity<>(res, HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -84,23 +84,20 @@ public class CollectionController {
     @PostMapping()
     @ApiOperation(value = "도감 아이템 구매")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "조회 성공"),
-            @ApiResponse(code = 404, message = "조회 실패"),
+            @ApiResponse(code = 200, message = "구매 성공"),
+            @ApiResponse(code = 400, message = "구매하지 않은 아이템"),
+            @ApiResponse(code = 404, message = "구매 실패"),
     })
-    public ResponseEntity<Map<String, Object>> buy(@RequestBody Map<String,Integer> collectionId, @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
+    public ResponseEntity<Map<String, Object>> buy(@RequestBody Map<String, Integer> collectionId, @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
 
         Map<String, Object> res = new HashMap<>();
 
         String id = tokenService.getAccessTokenId(accessToken);
 
-        try {
-            collectionItemService.buy(Long.parseLong(id),collectionId.get("collection_id"));
-            res.put("isSuccess",true);
-            return new ResponseEntity<>(res, HttpStatus.OK);
-        }catch (RuntimeException e){
-            res.put("isSuccess",false);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        collectionItemService.buy(Long.parseLong(id), collectionId.get("collection_id"));
+        res.put("isSuccess", true);
+        return new ResponseEntity<>(res, HttpStatus.OK);
+
     }
 
     @PutMapping()
@@ -109,20 +106,15 @@ public class CollectionController {
             @ApiResponse(code = 200, message = "착용 성공"),
             @ApiResponse(code = 404, message = "착용 실패"),
     })
-    public ResponseEntity<Map<String, Object>> wear(@RequestBody Map<String,Integer> collectionId, @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
+    public ResponseEntity<Map<String, Object>> wear(@RequestBody Map<String, Integer> collectionId, @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
 
         Map<String, Object> res = new HashMap<>();
 
         String id = tokenService.getAccessTokenId(accessToken);
 
-        try {
-            collectionItemService.wear(Long.parseLong(id),collectionId.get("collection_id"));
-            res.put("isSuccess",true);
-            return new ResponseEntity<>(res, HttpStatus.OK);
-        }catch (Exception e){
-            res.put("isSuccess",false);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        collectionItemService.wear(Long.parseLong(id), collectionId.get("collection_id"));
+        res.put("isSuccess", true);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
 }

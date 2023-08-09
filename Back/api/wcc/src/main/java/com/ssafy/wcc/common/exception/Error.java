@@ -21,8 +21,12 @@ public enum Error {
     WRONG_TYPE_TOKEN("잘못된 토큰 정보입니다.",HttpStatus.UNAUTHORIZED),
     EXPIRED_TOKEN("만료된 토큰 정보입니다.",HttpStatus.UNAUTHORIZED),
     UNSUPPORTED_TOKEN("지원하지 않는 토큰 방식입니다.",HttpStatus.UNAUTHORIZED),
-    ACCESS_DENIED("알 수 없는 이유로 요청이 거절되었습니다.",HttpStatus.UNAUTHORIZED);
+    ACCESS_DENIED("알 수 없는 이유로 요청이 거절되었습니다.",HttpStatus.UNAUTHORIZED),
 
+    // 아이템
+    NOT_ENOUGH_MONEY("돈이 부족합니다.", HttpStatus.BAD_REQUEST),
+    COLLECTION_NOT_FOUND("해당 정보를 가진 사용자가 없습니다.", HttpStatus.NOT_FOUND),
+    ITEM_NOT_PURCHASED("구매하지 않은 아이템입니다.", HttpStatus.BAD_REQUEST);
     private final String message;
     private final HttpStatus errorCode;
 

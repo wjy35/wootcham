@@ -35,4 +35,10 @@ public class MemberItem {
         this.member = member;
         this.collection = collection;
     }
+
+    @Builder
+    public MemberItem(boolean wear, boolean buy) {
+        this.wear = wear;
+        this.buy = buy;
+    }
 }
