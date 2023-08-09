@@ -15,11 +15,7 @@
 import { reactive, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { reactive, watch } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
 import SubmitButton from './UI/SubmitButton.vue';
-import api from '@/api/index'
 import api from '@/api/index'
 
 export default {
@@ -112,18 +108,12 @@ export default {
         }
 
         const signup = () => {
-        const signup = () => {
             // SignupForm으로 라우팅
-            router.push({ name: "signup" })
             router.push({ name: "signup" })
         }
 
         return { state, login, forgotPw, signup };
-    },
-
-
-        return { state, login, forgotPw, signup };
-    },
+    }
 
 }
 </script>
