@@ -21,4 +21,7 @@ services:
       - cache
     networks:
       - deploy
+networks:
+  deploy:
+    external: true
 
