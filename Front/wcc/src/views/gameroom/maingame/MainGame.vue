@@ -136,6 +136,8 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5000/';
 
+let interval;
+
 export default {
     data() {
       return {
@@ -166,10 +168,18 @@ export default {
     },
     mounted() {
       this.joinSession();
+      setTimeout(() => {
+        interval = setInterval(() => {
+          // 5초 후부터 5초 간격으로 순서를 바꾸자
+          this.changeTurn();
+        }, 2000);
+      }, 2000);
+      
     },
     unmounted() {
       this.disconnectScreen();
       this.leaveSession();
+      clearInterval(interval);
     },
     methods: {
         sendMessage() {
@@ -302,6 +312,61 @@ export default {
             });
             return response.data; // The token
         },
+
+        changeTurn() {
+          let p1 = document.getElementsByClassName('video-one');
+          for (let p of p1) {
+            p.classList.add('video-two');
+            console.log(p.classList)
+          }
+          let p2 = document.getElementsByClassName('video-two');
+          for (let p of p2) {
+            if (p.classList.contains('video-one')) {
+              p.classList.remove('video-one');
+            } else {
+              p.classList.add('video-three');
+            }
+            console.log(p.classList)
+          }
+          let p3 = document.getElementsByClassName('video-three');
+          for (let p of p3) {
+            if (p.classList.contains('video-two')) {
+              p.classList.remove('video-two');
+            } else {
+              p.classList.add('video-four');
+            }
+            console.log(p.classList)
+          }
+          let p4 = document.getElementsByClassName('video-four');
+          for (let p of p4) {
+            if (p.classList.contains('video-three')) {
+              p.classList.remove('video-three');
+            } else {
+              p.classList.add('video-five');
+            }
+            console.log(p.classList)
+          }
+          let p5 = document.getElementsByClassName('video-five');
+          for (let p of p5) {
+            if (p.classList.contains('video-four')) {
+              p.classList.remove('video-four');
+            } else {
+              p.classList.add('video-six');
+            }
+            console.log(p.classList)
+          }
+          let p6 = document.getElementsByClassName('video-six');
+          for (let p of p6) {
+            if (p.classList.contains('video-five')) {
+              p.classList.remove('video-five');
+            } else {
+              p.classList.add('video-one');
+              p.classList.remove('video-six');
+            }
+            console.log(p.classList)
+          }
+          
+        }
     },
     components: { UserVideo }
 }
