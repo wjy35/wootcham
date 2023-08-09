@@ -14,7 +14,7 @@
 import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
 import UserVideo from "../webcam/components/UserVideo.vue";
-import { mapState } from 'vuex';
+// import { mapState } from 'vuex';
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -29,7 +29,7 @@ export default {
         return {
             OVScreen: undefined,
             sessionScreen: undefined,
-            // mainStreamManager: undefined,
+            mainStreamManager: '',
 
             // Join form
             mySessionId: "SessionA",
@@ -40,7 +40,7 @@ export default {
     },
 
     computed: {
-        ...mapState({ main : state => state.gameStore.mainStreamManager } )
+        // ...mapState({ main : state => state.gameStore.mainStreamManager } )
     },
 
     // mounted: {
@@ -91,7 +91,7 @@ export default {
 					// });
                     this.sessionScreen.publish(publisher);
                     this.$store.commit('gameStore/SET_MAIN', publisher);
-					// this.mainStreamManager = publisher;
+					this.mainStreamManager = publisher;
 				}).catch((error => {
 					console.warn('There was an error connecting to the session:', error.code, error.message);
 				}));
@@ -105,7 +105,7 @@ export default {
             }
             this.$store.commit('gameStore/SET_MAIN', undefined);
             this.sessionScreen = undefined;
-            // this.mainStreamManager = undefined;
+            this.mainStreamManager = undefined;
             this.OVScreen = undefined;
         },
 
