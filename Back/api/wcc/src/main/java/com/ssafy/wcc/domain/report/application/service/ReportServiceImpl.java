@@ -2,11 +2,15 @@ package com.ssafy.wcc.domain.report.application.service;
 
 import com.ssafy.wcc.domain.member.db.entity.Member;
 import com.ssafy.wcc.domain.member.db.repository.MemberRepository;
+import com.ssafy.wcc.domain.notice.presentation.NoticeController;
 import com.ssafy.wcc.domain.report.application.dto.response.AllMemberResponse;
 import com.ssafy.wcc.domain.report.db.entity.Report;
 import com.ssafy.wcc.domain.report.db.entity.ReportPK;
 import com.ssafy.wcc.domain.report.db.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -17,15 +21,19 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ReportServiceImpl implements ReportService{
+
+    Logger logger = LoggerFactory.getLogger(NoticeController.class);
 
     private final ReportRepository reportRepository;
     private final MemberRepository memberRepository;
 
     @Override
     public void report(Long memberId) {
+        logger.info("report service 진입");
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar c = Calendar.getInstance();
@@ -55,7 +63,8 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
-    public List<AllMemberResponse> getList() {
+    public List<AllMemberResponse> getAllMemberList() {
+        logger.info("getAllMemberList service 진입");
         List<Member> memberList = memberRepository.findAll();
         List<AllMemberResponse> allMemberResponsesList = new ArrayList<>();
         for(int i=0; i<memberList.size(); i++){

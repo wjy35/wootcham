@@ -7,11 +7,15 @@ import com.ssafy.wcc.domain.jwt.application.service.TokenService;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
 import com.ssafy.wcc.domain.member.application.service.MemberItemService;
 import com.ssafy.wcc.domain.member.db.entity.MemberItem;
+import com.ssafy.wcc.domain.notice.presentation.NoticeController;
 import io.netty.handler.codec.json.JsonObjectDecoder;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +26,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Api(tags = "Collection 컨트롤러")
 @RestController
 @RequestMapping("/collection")
 @RequiredArgsConstructor
 @CrossOrigin("*")
 public class CollectionController {
+
+    Logger logger = LoggerFactory.getLogger(NoticeController.class);
 
     private final TokenService tokenService;
 
@@ -40,6 +47,8 @@ public class CollectionController {
             @ApiResponse(code = 404, message = "조회 실패"),
     })
     public ResponseEntity<Map<String, Object>> collectionList(@RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
+        logger.info("collectionList controller 진입");
+
         Map<String, Object> res = new HashMap<>();
         String id = tokenService.getAccessTokenId(accessToken);
 
@@ -89,6 +98,7 @@ public class CollectionController {
             @ApiResponse(code = 404, message = "구매 실패"),
     })
     public ResponseEntity<Map<String, Object>> buy(@RequestBody Map<String, Integer> collectionId, @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
+        logger.info("buy controller 진입");
 
         Map<String, Object> res = new HashMap<>();
 
@@ -107,6 +117,7 @@ public class CollectionController {
             @ApiResponse(code = 404, message = "착용 실패"),
     })
     public ResponseEntity<Map<String, Object>> wear(@RequestBody Map<String, Integer> collectionId, @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
+        logger.info("wear controller 진입");
 
         Map<String, Object> res = new HashMap<>();
 
