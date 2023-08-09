@@ -14,7 +14,7 @@
         <!-- 1번 박스 === video-one -->
         <div class="main video video-one shadow">
           <img v-if="streamManagers.length < 1" src="../../../assets/images/WCC_logo.png">
-          <UserVideo v-else :stream-manager="streamManagers[0]"/>
+          <UserVideo v-else :stream-manager="streamManagers[0]" :key="componentKey"/>
           <!--                <div v-if="streamManagers[0] !== undefined" class="video-username">{{ nickname(publisher) }}</div>-->
         </div>
 
@@ -75,35 +75,35 @@
         <!-- 5번 박스 -->
         <div class="main video video-two shadow">
           <img v-if="streamManagers.length<2" src="@/assets/images/WCC_logo.png">
-          <UserVideo v-else :stream-manager="streamManagers[1]"/>
+          <UserVideo v-else :stream-manager="streamManagers[1]"  :key="componentKey"/>
           <!--                <div v-if="subscribers[0] !== undefined" class="video-username">{{ nickname(subscribers[0]) }}</div>-->
         </div>
 
         <!-- 9번 박스 -->
         <div class="main video video-three shadow">
           <img v-if="streamManagers.length<3" src="@/assets/images/WCC_logo.png">
-          <UserVideo v-else :stream-manager="streamManagers[2]"/>
+          <UserVideo v-else :stream-manager="streamManagers[2]"  :key="componentKey"/>
           <!--                <div v-if="subscribers[1] !== undefined" class="video-username">{{ nickname(subscribers[1]) }}</div>-->
         </div>
 
         <!-- 10번 박스 -->
         <div class="main video video-four shadow">
           <img v-if="streamManagers.length<4" src="@/assets/images/WCC_logo.png">
-          <UserVideo v-else :stream-manager="streamManagers[3]"/>
+          <UserVideo v-else :stream-manager="streamManagers[3]"  :key="componentKey"/>
           <!--                <div v-if="subscribers[2] !== undefined" class="video-username">{{ nickname(subscribers[2]) }}</div>-->
         </div>
 
         <!-- 11번 박스 -->
         <div class="main video video-five shadow">
           <img v-if="streamManagers.length<5" src="@/assets/images/WCC_logo.png">
-          <UserVideo v-else :stream-manager="streamManagers[4]"/>
+          <UserVideo v-else :stream-manager="streamManagers[4]"  :key="componentKey"/>
           <!--                <div v-if="subscribers[3] !== undefined" class="video-username">{{ nickname(subscribers[3]) }}</div>-->
         </div>
 
         <!-- 12번 박스 -->
         <div class="main video video-six shadow">
           <img v-if="streamManagers.length<6" src="@/assets/images/WCC_logo.png">
-          <UserVideo v-else :stream-manager="streamManagers[5]"/>
+          <UserVideo v-else :stream-manager="streamManagers[5]"  :key="componentKey"/>
           <!--                <div v-if="subscribers[3] !== undefined" class="video-username">{{ nickname(subscribers[3]) }}</div>-->
         </div>
 
@@ -136,6 +136,7 @@ import MainContent from "../components/maincontent/MainContent.vue"
 import MissionSelect from "../components/maincontent/MissionSelect.vue"
 import StandBy from "../components/maincontent/StandBy.vue"
 import UserVideo from "@/views/gameroom/components/openvidu/UserVideo.vue";
+import {toRefs, watch} from "vue";
 
 
 // let interval;
@@ -143,12 +144,12 @@ import UserVideo from "@/views/gameroom/components/openvidu/UserVideo.vue";
 export default {
   name: 'MainGame',
   props: {
+    componentKey:0,
     gameStatus: Number,
     streamManagers: Array,
     memberTokens: Array,
     second:Number,
   },
-
   data() {
     return {
       showModal: false,
@@ -194,7 +195,7 @@ export default {
     UserVideo, MainContent,
     MissionSelect,
     StandBy
-  }
+  },
 }
 </script>
 
