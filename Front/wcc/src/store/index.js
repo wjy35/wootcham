@@ -18,7 +18,12 @@ export default createStore({
     accessToken: null,
     refreshToken: null,
     isValidToken: false,
+<<<<<<< HEAD
+    cameraOn: false,
+    gameReady: false,
+=======
     mainStreamManager: ''
+>>>>>>> 3bd06af955b4c4062baaf8ac760169905b27a2cc
   },
 
   mutations: {
