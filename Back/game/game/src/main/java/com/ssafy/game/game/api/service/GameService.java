@@ -2,6 +2,7 @@ package com.ssafy.game.game.api.service;
 
 import com.ssafy.game.game.api.request.LoadRequest;
 import com.ssafy.game.game.api.request.TopicRequest;
+import com.ssafy.game.game.api.request.UpSmileCountRequest;
 import com.ssafy.game.game.db.entity.GameMember;
 import com.ssafy.game.game.db.entity.GameSession;
 import com.ssafy.game.game.db.repository.GameMemberRepository;
@@ -23,10 +24,15 @@ public class GameService {
         GameSession gameSession = gameSessionRepository.findBySessionId(sessionId);
         gameSession.getGameMembers().put(gameMember.getMemberToken(), gameMember);
         gameSession.loadTopic(gameMember.getMemberToken());
+        gameSession.loadSmileCount(gameMember.getMemberToken());
     }
 
     public void pick(String sessionId, TopicRequest topicRequest){
         gameSessionRepository.findBySessionId(sessionId).pickTopic(topicRequest.getMemberToken(), topicRequest.getType(), topicRequest.getKeyword());
+    }
+
+    public void upSmileCount(UpSmileCountRequest upSmileCountRequest){
+        gameSessionRepository.findBySessionId(upSmileCountRequest.getSessionId()).upSmileCount(upSmileCountRequest.getMemberToken());
     }
 
     public void skipPreparePresent(String sessionId){
