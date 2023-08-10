@@ -66,7 +66,6 @@ public class MemberController{
             @ApiResponse(code = 200, message = "이메일 인증 메일 전송 성공"),
             @ApiResponse(code = 404, message = "사용 불가능한 이메일"),
     })
-
     public ResponseEntity<?> confirmEmail(@RequestBody EmailVerifyRequest email) throws MessagingException, UnsupportedEncodingException {
         Map<String, Object> resultMap = new HashMap<>();
 
