@@ -27,6 +27,7 @@ public class GameSession {
     private List<String> orderList;
     private boolean checkedSkipPreparedPresent;
     private boolean checkedSkipPresent;
+    private Map<String,Integer> smileCount;
 
     public GameSession(String sessionId) {
         this.sessionId = sessionId;
@@ -34,6 +35,7 @@ public class GameSession {
         this.topics = new HashMap<>();
         this.checkedSkipPreparedPresent = false;
         this.checkedSkipPresent = false;
+        this.smileCount = new HashMap<>();
     }
 
     public void pickTopic(String memberToken, Integer type, String keyword){
@@ -41,7 +43,13 @@ public class GameSession {
         // ToDo merge로 변경
     }
 
+    public void upSmileCount(String memberToken){
+        smileCount.replace(memberToken,smileCount.get(memberToken)+1);
+    }
+
     public void loadTopic(String memberToken){
         topics.put(memberToken,new Topic(0,"default"));
     }
+
+    public void loadSmileCount(String memberToken) { smileCount.put(memberToken,0); }
 }
