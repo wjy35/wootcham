@@ -7,5 +7,5 @@ import java.util.List;
 public interface ReportService {
     void report(Long memberId);
 
-    List<AllMemberResponse> getList();
+    List<AllMemberResponse> getAllMemberList();
 }

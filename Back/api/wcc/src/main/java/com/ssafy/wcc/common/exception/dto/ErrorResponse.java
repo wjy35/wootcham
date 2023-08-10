@@ -19,4 +19,14 @@ public class ErrorResponse {
                         .build()
                 );
     }
+
+    public static ResponseEntity<ErrorResponse> toExceptionEntity(RuntimeException e){
+        return ResponseEntity
+                .status(404)
+                .body(ErrorResponse.builder()
+                        .isSuccess("false")
+                        .build()
+                );
+    }
+
 }

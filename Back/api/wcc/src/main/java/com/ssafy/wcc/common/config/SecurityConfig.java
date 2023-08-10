@@ -1,6 +1,7 @@
 package com.ssafy.wcc.common.config;
 
 import com.ssafy.wcc.common.filter.JwtAuthenticationFilter;
+import com.ssafy.wcc.common.filter.JwtExceptionFilter;
 import com.ssafy.wcc.domain.jwt.application.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final TokenService tokenService;
+    private final JwtExceptionFilter jwtExceptionFilter;
 
     @Bean
     @Override
@@ -38,13 +40,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/refresh").permitAll()
-                .antMatchers("/member/**").permitAll()
+                .antMatchers("/member/login", "/member/join").permitAll()
                 .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll() // swagger 접속 허용
                 .antMatchers("**").authenticated()
-                .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class); //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .addFilterBefore(new JwtAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
+                .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class);
     }
 
 
