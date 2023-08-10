@@ -11,7 +11,7 @@ import HomeView from "@/views/home/HomeView.vue"
 
 import GameRoomVue from "@/views/gameroom/GameRoom.vue";
 import GamePrepareVue from "@/views/gameroom/prepare/GamePrepare.vue";
-import MainGameVue from "@/views/gameroom/maingame/MainGame.vue";
+// import MainGameVue from "@/views/gameroom/maingame/MainGame.vue";
 import GameResultVue from "@/views/gameroom/gameresult/GameResult.vue"
 
 import { createWebHistory, createRouter } from "vue-router";
@@ -96,11 +96,11 @@ const routes = [
     name: "gameprepare",
     component: GamePrepareVue,
   },
-  {
-    path: "/maingame",
-    name: "maingame",
-    component: MainGameVue,
-  },
+  // {
+  //   path: "/maingame",
+  //   name: "maingame",
+  //   component: MainGameVue,
+  // },
   {
     path: "/gameresult",
     name: "gameresult",

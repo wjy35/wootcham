@@ -121,6 +121,12 @@ export default {
   background-color: transparent;
 }
 
+#cameraZone #video {
+  width: 100%;
+  height: 70%;
+  border-radius: 15px;
+}
+
 /* NOTICE CARD */
 .notice-card {
   position: absolute;

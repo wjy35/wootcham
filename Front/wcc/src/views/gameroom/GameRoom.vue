@@ -38,14 +38,23 @@
             <div class="main main-content shadow">
               <div class="main-content-username">username</div>
               <div id="main-content-video">
-                <!-- 임시로 이미지 넣음-->
-                <!-- <img v-if="mainStreamManager === undefined" src="https://media.istockphoto.com/id/518360318/photo/crazy-horse.jpg?s=612x612&w=0&k=20&c=KP27AuWsogbIb1dRSqqwRn_ykPMqguJb7z2q3x9xr5A=" alt=""> -->
-                <!--                          <div v-if="streamManagers.length>0">-->
-                <!--                             <main-content></main-content>-->
-                <!--                             <mission-select></mission-select>-->
-                <!--                            <stand-by></stand-by>-->
-                <!--                          </div>-->
+                
+                <!-- 주제 선택 화면 대기 화면 분기 처리 -->
+                <div v-if="mainStreamManager === undefined">
+                  <!-- 주제 선택 화면 -->
+                  <!-- <div class="mission-select">
+                    <mission-select></mission-select>
+                  </div> -->
+
+                  <!-- 대기 화면 -->
+                  <!-- <div class="stand-by">
+                    <stand-by></stand-by>
+                  </div> -->
+              </div>
+
                 <UserVideo  :stream-manager="streamManagers[0]" :key="componentKey"/>
+                
+                
                 <!-- Progress Bar -->
                 <div class="loader">
                   <div></div>
@@ -151,11 +160,11 @@
 
 <script>
 import GameRoomPrepare from "@/views/gameroom/prepare/GamePrepare.vue";
-import MainGame from "@/views/gameroom/maingame/MainGame.vue";
 import {GameStatus} from "@/game-status";
 import {OpenVidu} from "openvidu-browser";
 import {mapState} from "vuex";
 import UserVideo from "@/views/gameroom/components/openvidu/UserVideo.vue";
+
 
 export default {
   name: 'GameRoom',
@@ -165,7 +174,7 @@ export default {
     },
     ...mapState(["client"])
   },
-  components: {UserVideo, MainGame, GameRoomPrepare},
+  components: {UserVideo, GameRoomPrepare},
   data() {
     return {
       gameStatus:GameStatus.WAIT_GAME_START,
@@ -461,6 +470,24 @@ header {
   to {
     transform: scaleX(1);
   }
+}
+
+/* Missiom Select */
+.presenter {
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+}
+
+/* standby */
+.standby {
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* ---------- SHARE BTN --------- */
