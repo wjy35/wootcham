@@ -34,7 +34,8 @@ public class GameProcessor implements Runnable{
 
     private void roundProcess(int round){
         roundSetting(round);
-        pickTopicType();
+
+//        pickTopicType();
         pickTopicKeyword();
 
         for(int i=0; i<gameSession.getOrderList().size(); i++){

@@ -2,6 +2,7 @@ package com.ssafy.game.game.api.controller;
 
 import com.ssafy.game.game.api.request.LoadRequest;
 import com.ssafy.game.game.api.request.TopicRequest;
+import com.ssafy.game.game.api.request.UpSmileCountRequest;
 import com.ssafy.game.game.api.service.GameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -34,6 +35,8 @@ public class GameController {
         gameService.skipPreparePresent(sessionId);
     }
 
-
-
+    @MessageMapping("/up")
+    void upSmileCount(@Payload UpSmileCountRequest upSmileCountRequest){
+        gameService.upSmileCount(upSmileCountRequest);
+    }
 }
