@@ -22,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,21 +64,17 @@ public class MemberController{
     @ApiOperation(value = "email 인증 중복 검사 및 인증번호 전송")
     @ApiResponses({
             @ApiResponse(code = 200, message = "이메일 인증 메일 전송 성공"),
+            @ApiResponse(code = 400, message = "이미 존재하는 이메일"),
             @ApiResponse(code = 404, message = "사용 불가능한 이메일"),
     })
     public ResponseEntity<?> confirmEmail(@RequestBody EmailVerifyRequest email) throws MessagingException, UnsupportedEncodingException {
         Map<String, Object> resultMap = new HashMap<>();
 
         // 이메일 중복 검사
-        if (memberService.checkEmail(email.getEmail())) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+       memberService.checkEmail(email.getEmail());
 
         // 인증 메일 전송
-        try {
-            emailService.sendMessage(email.getEmail());
-        } catch (IllegalArgumentException e) {
-            resultMap.put("isSuccess", false);
-            return new ResponseEntity<>(resultMap, HttpStatus.NOT_FOUND);
-        }
+        emailService.sendMessage(email.getEmail());
 
         resultMap.put("isSuccess", true);
         return new ResponseEntity<>(resultMap, HttpStatus.OK);

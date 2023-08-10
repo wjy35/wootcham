@@ -26,8 +26,11 @@ public enum Error {
     // 아이템
     NOT_ENOUGH_MONEY("돈이 부족합니다.", HttpStatus.BAD_REQUEST),
     COLLECTION_NOT_FOUND("해당 정보를 가진 사용자가 없습니다.", HttpStatus.NOT_FOUND),
-    ITEM_NOT_PURCHASED("구매하지 않은 아이템입니다.", HttpStatus.BAD_REQUEST);
+    ITEM_NOT_PURCHASED("구매하지 않은 아이템입니다.", HttpStatus.BAD_REQUEST),
 
+    // 이메일
+    EMAIL_SEND_FAILURE("이메일 전송에 실패하였습니다.", HttpStatus.NOT_FOUND),
+    DUPLICATE_EMAIL("이미 존재하는 이메일입니다.", HttpStatus.BAD_REQUEST);
 
     private final String message;
     private final HttpStatus errorCode;

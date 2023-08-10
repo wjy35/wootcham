@@ -1,4 +1,6 @@
 package com.ssafy.wcc.domain.member.application.service;
+import com.ssafy.wcc.common.exception.Error;
+import com.ssafy.wcc.common.exception.WCCException;
 import com.ssafy.wcc.common.repository.EmailRedisRepository;
 import com.ssafy.wcc.domain.member.application.dto.request.EmailVerifyRequest;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +40,7 @@ public class EmailServiceImpl implements EmailService {
             emailRedisRepository.setDataExpire(code, email, 60 * 5L); // 인증 코드 유효시간: 5분
             javaMailSender.send(message);
         } catch (MailException e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException();
+            throw new WCCException(Error.EMAIL_SEND_FAILURE);
         }
         return true;
     }
