@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'SharedScreen',
+  name: 'OtherFace',
 
   props: {
     streamManager: Object,
@@ -17,6 +17,9 @@ export default {
 </script>
 
 <style scoped>
-
+	video {
+		width: 100%;
+		height: auto;
+	}
 </style>
 

@@ -81,3 +81,15 @@
     color: #fff;
     font-size: 30px;
    }
+
+   /* 비디오 video */ 
+   .video {
+    border-radius: 25px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+   }
+
+   /* 발표자 비디오 이펙트 Presenter Video Effect */
+
+  

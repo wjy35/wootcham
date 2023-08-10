@@ -153,17 +153,17 @@
                 <div class="confetti-piece"></div>
               </div> -->
 
-            <!-- 버튼 -->
-            <div class="gameend-option-btn">
-                <div class="gameend-option-one">한 판 더하기</div>
-                <di class="gameend-option-two">홈으로 나가기</di>
-            </div>
+            
 
             <div class="my-result">
               <img class='game-result-icon' src="@/assets/images/profile.png" alt="">
-              <RealtimeGauge class="point-increase" data="50" back="#FFCDAD" bar="#F27059"></RealtimeGauge>
-              <p class="plus-point">+1000</p>
-              <p class="result-info">2500/5000<br><span class="level">골드1</span></p>
+              <div class='gauge'>
+                <div class="plus-point">+1000</div>
+                <div class='gauge-back'>
+                  <div class='gauge-data' :style="{ width: pointResult + '%'}"></div>
+                  <div class="result-info">2500/5000<br><span class="level">골드1</span></div>
+                </div>
+              </div>
             </div>
 
             <div class="coin-result">
@@ -174,6 +174,12 @@
               </div>
             </div>
 
+            <!-- 버튼 -->
+            <div class="gameend-option-btn">
+                <div class="gameend-option-one">한 판 더하기</div>
+                <di class="gameend-option-two">홈으로 나가기</di>
+            </div>
+
           </div>
       </div>
   
@@ -182,16 +188,16 @@
 </template>
 
 <script>
-import RealtimeGauge from '@/views/home/components/RealtimeGauge.vue';
 
 export default {
   name: "GameResult",
   components: {
-    RealtimeGauge
+    
   },
   data() {
     return {
       showModal: false,
+      pointResult: 95,
     }
   },
   methods: {
@@ -655,7 +661,7 @@ header {
     gap: 100px;
     display: flex;
     font-size: 5em;
-    margin-top: 2rem;
+    margin-top: 3rem;
 }
 
 .gameend-option-one {
@@ -680,7 +686,7 @@ header {
     width: 150px;
     height: 60px;
     border-radius: 25px;
-    background-image: linear-gradient(135deg, #feb692 0%, #ea5455 100%);
+    background-image: linear-gradient(135deg, #ea5455 0%, #feb692 100%);
     box-shadow: 0 20px 30px -6px rgba(238, 103, 97, 0.5);
     outline: none;
     cursor: pointer;
@@ -708,46 +714,67 @@ header {
   margin-top: 3rem;
   margin-left: auto;
   margin-right: auto;
-  position: relative;
+  display: flex;
+  justify-content: center;
 }
 
 .game-result-icon {
-  width: calc(500px * 0.8 * 0.2);
-  height: calc(500px * 0.8 * 0.2);
+  width: 25%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.gauge {
+  width: 70%;
+  margin-left: 5%;
+  height: 100%;
+}
+
+.gauge-back {
+  background-color: #FFCDAD;
+  height: 40px;
+  position: relative;
+  border-radius: 10px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.gauge-data {
+  background-color: #F27059;
+  height: 30px;
   position: absolute;
   left: 0;
-  top: calc(500px * 0.8 * 0.05);
-  border-radius: calc(500px * 0.8 * 0.1);
+  top: 5px;
+  border-radius: 10px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.result-info { 
+  position: absolute;
+  right: 5px;
+  top: -20px;
+  text-align: right;
+  color: #F27059;
 }
 
 .point-increase {
   width: 60px;
   height: calc(500px * 0.8 * 0.8);
   transform: rotate( 90deg );
-  position: absolute;
-  top: calc(-500px * 0.8 * 0.2);
-  left: calc(500px * 0.8 * 0.55);
 }
 
 .plus-point {
   color: #F27059;
-  position: absolute;
-  top: calc(-500px * 0.8 * 0.02);
-  left: calc(500px * 0.8 * 0.2);
   text-align: left;
   font-size: 2rem;
+  padding: 0;
 }
 
-.result-info { 
-  position: absolute;
-  right: calc(-500px * 0.8 * 0.05);
-  top: calc(500px * 0.8 * 0.09);
-  text-align: right;
-  color: #F27059;
-}
+
 
 .coin-result {
-  margin-top: 9rem;
+  margin-top: 3rem;
   font-size: 1.5rem;
   color: #714538;
 }
@@ -776,5 +803,6 @@ header {
   font-size: 1.5rem;
   margin: 0;
 }
+
 
 </style>

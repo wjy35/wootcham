@@ -45,15 +45,15 @@ export default {
   align-items: flex-end;;
 
   background-color: #f0f0f0;
-  border-radius: 10px;
+  border-radius: 25px 0 0 25px;
   overflow: hidden;
 }
 
 .gauge-bar {
   width: 40px;
   background-color: #42b883;
-  transition: width 0.3s;
-  border-radius: 10px 10px 0 0;
+  transition: width 5s;
+  border-radius: 20px 0px 0 20px;
   margin-left: auto;
   margin-right: auto;
 }

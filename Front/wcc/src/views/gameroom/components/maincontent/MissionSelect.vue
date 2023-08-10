@@ -1,185 +1,138 @@
 <template>
   <div class="mission-select">
-    
-    <p>미션은 {{ mission }} 으로 {{ keyword }} 하기 입니다.</p>
+    <p class="heading">
+      당신의 미션은 <span>{{ keyword }}</span>(으)로 <br>
+      <span>{{ mission }}</span> 하기 입니다.
+    </p>
 
-    <div class="use-mission">
-      <p>이 미션 사용하기</p>
+    <div class="radio-input-container">
+        <div class="radio-inputs use-mission">
+          <label class="radio">
+            <input type="radio" v-model="useMission" value="yes">
+            <span class="name">미션 사용하기</span>
+          </label>
+          <label class="radio">
+            <input type="radio" v-model="useMission" value="no">
+            <span class="name">미션 사용하지 않기</span>
+          </label>
+        </div>
 
-      <div class="wrapper">
-        <div class="option">
-          <input checked="" value="option1" name="btn" type="radio" class="input">
-          <div class="btn">
-            <span class="span">사용</span>
-          </div>
+        <div class="radio-inputs display-mission">
+          <label class="radio">
+            <input type="radio" v-model="displayMission" value="yes">
+            <span class="name">미션 표시하기</span>
+          </label>
+          <label class="radio">
+            <input type="radio" v-model="displayMission" value="no">
+            <span class="name">미션 표시하지 않기</span>
+          </label>
         </div>
-        <div class="option">
-          <input value="option2" name="btn" type="radio" class="input">
-          <div class="btn">
-            <span class="span">미사용</span>
-          </div>
-        </div>
-      </div>
-      
+
+        <button @click="goMainGame" class="shadow">
+          준비 완료!
+        </button>
     </div>
-    <div class="display-mission">
-      <p>미션을 표시하기</p>
-
-      <div class="wrapper">
-        <div class="option">
-          <input checked="" value="option1" name="btn" type="radio" class="input">
-          <div class="btn">
-            <span class="span">예</span>
-          </div>
-        </div>
-        <div class="option">
-          <input value="option2" name="btn" type="radio" class="input">
-          <div class="btn">
-            <span class="span">아니오</span>
-          </div>  
-        </div>
-      </div>
       
-    </div>
-
-    <button id-="submitButton" @click="goMainGame" class="shadow">
-      <span class="now">입장하기</span>
-      <span class="play">준비 완료!</span>
-    </button>
-    
   </div>
 </template>
 
 <script>
 export default {
-  data(){
+  data() {
     return {
-      mission: "노트북",
-      keyword: "삼행시"
-    }
+      mission: "삼행시",
+      keyword: "노트북",
+
+      useMission: "yes",
+      displayMission: "yes"
+    };
   }
-}
+};
 </script>
 
-<style>
+<style scoped>
 .mission-select {
-  width: 100%;
-  height: 100%;
-}
-
-.use-mission, .display-mission {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  padding: 20px;
 }
 
-.wrapper {
-  --font-color-dark: #fefefe;
-  --font-color-light: #111;
-  --bg-color: #111;
-  --main-color: #fefefe;
-  position: relative;
-  width: 250px;
-  height: 36px;
-  background-color: var(--bg-color);
-  border: 2px solid var(--main-color);
-  border-radius: 34px;
+.heading {
+  font-size: 2.5em;
+  font-weight: 100;
+  color: #FFCDAD;
+  text-shadow: 1px 1px 2px #FF432A;
+}
+.heading span {
+  color: #f27059;
+}
+
+.radio-input-container {
   display: flex;
-  flex-direction: row;
-  box-shadow: 4px 4px var(--main-color);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.option {
-  width: 80.5px;
-  height: 28px;
+
+.radio-inputs {
   position: relative;
-  top: 2px;
-  left: 2px;
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 0.5rem;
+  background-color: #EEE;
+  box-sizing: border-box;
+  box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
+  padding: 0.25rem;
+  margin: 1em;
+  width: 300px;
+  font-size: 14px;
 }
 
-.input {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  appearance: none;
+.radio-inputs .radio {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.radio-inputs .radio input {
+  display: none;
+}
+
+.radio-inputs .radio .name {
+  display: flex;
   cursor: pointer;
-}
-
-.btn {
-  width: 100%;
-  height: 100%;
-  background-color: var(--bg-color);
-  border-radius: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.span {
-  color: var(--font-color-dark);
-}
-
-.input:checked + .btn {
-  background-color: var(--main-color);
-}
-
-.input:checked + .btn .span {
-  color: var(--font-color-light);
-}
-
-/* 플레이 버튼 */ 
-button {
-  display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 0.5rem;
+  border: none;
+  padding: .5rem 0;
+  color: rgba(51, 65, 85, 1);
+  transition: all .15s ease-in-out;
+}
 
-    width: 180px;
-    height: 40px;
-
-  gap: 10px;
-  padding: 0 10px;
-  color: white;
-  text-shadow: 2px 2px rgb(116, 116, 116);
-  text-transform: uppercase;
-  border: solid 2px #FFF2EA;
-  letter-spacing: 1px;
+.radio-inputs .radio input:checked + .name {
+  background-color: #fff;
   font-weight: 600;
-  font-size: 17px;
-  background-color: #F27059;
-  border-radius: 50px;
+}
 
-  position: absolute;
-    left: 44%;
-    bottom: -15%;
-  overflow: hidden;
-  transition: all .5s ease;
+/* 완료 버튼 */
+button {
+ color: #fff;
+ font-size: 17px;
+ background-color: #f27059;
+ border: 1px solid #f39c12;
+ border-radius: 5px;
+ padding: 7px;
+ box-shadow: 0px 6px 0px #FF432A;
+ transition: all .1s;
 }
 
 button:active {
-  transform: scale(.9);
-  transition: all 100ms ease;
-}
-
-.play {
-  transition: all .5s ease;
-  transition-delay: 300ms;
-}
-
-.now {
-  position: absolute;
-  left: 0;
-  transform: translateX(-100%);
-  transition: all .5s ease;
-  z-index: 2;
-}
-
-button:hover .now {
-  transform: translateX(10px);
-  transition-delay: 300ms;
-}
-
-button:hover .play {
-  transform: translateX(200%);
-  transition-delay: 300ms;
+ box-shadow: 0px 2px 0px #d35400;
+ position: relative;
+ top: 2px;
 }
 </style>

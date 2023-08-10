@@ -1,29 +1,28 @@
 <template>
-  <div class="content-window shadow">
-    <div class="content">
-      <div id="cameraZone">
-        <video id="video" autoplay></video>
-      </div>
-      <div class="notice-card shadow flex">
-        <div class="notice-card-content">
-          <!-- <p class="heading">WootCham Club</p> -->
-          <p class="para">카메라를 켜지 않으면 게임을 시작할 수 없습니다. <br> 하단 카메라 버튼을 눌러주세요.</p>
-        </div>
-        <!-- 실시간 웃음 정도 데이터 -->
-        <div class="laugh-o-meter">
-          <RealtimeGauge v-if='!showWarning' :data="realtimeData"/>
-          <p v-else>{{ warning }}</p>
-        </div>
-      </div>
+  <div class="start-window shadow">
+  
+    <RealtimeGauge :data="realtimeData"/>
 
+    <video id="video" autoplay>
+          <!-- 실시간 웃음 정도 데이터 -->
+          <div class="laugh-meter"></div>
+    </video>
+
+    <div v-if='!cameraOn' class="notice-card shadow flex">
+      <div class="notice-card-content">
+        <!-- <p class="heading">WootCham Club</p> -->
+        <p class="para">하단 카메라 버튼을 눌러서 웃음 감지가 잘 작동하는지 확인해주세요.</p>
+        <p class="para-important">좌측 게이지에 정보가 표시됩니다.</p>
+      </div>
     </div>
 
-    <div class="utility-bar" v-if='!ready' @click="toggleCamera">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" :stroke="ready ? '#ffffff' : '#ff0000'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path v-if="ready" d="M15.6 11.6L22 7v10l-6.4-4.5v-1zM4 5h9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7c0-1.1.9-2 2-2z" />
+    <div class="utility-bar" @click="toggleCamera">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" :stroke="cameraOn ? '#ffffff' : '#ff0000'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path v-if="cameraOn" d="M15.6 11.6L22 7v10l-6.4-4.5v-1zM4 5h9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7c0-1.1.9-2 2-2z" />
         <path v-else d="M2 2l19.8 19.8M15 15.7V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7c0-1.1.9-2 2-2h.3m5.4 0H13a2 2 0 0 1 2 2v3.3l1 1L22 7v10" />
       </svg>
     </div>
+
   </div>
 </template>
 
@@ -84,9 +83,9 @@ export default {
         try {
           const detections = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
           if (detections === undefined) {
-            this.showWarning = true;
+            // this.showWarning = true;
           } else {
-            this.showWarning = false;
+            // this.showWarning = false;
             this.realtimeData = detections.expressions.happy * 100;
           }
         } catch(err) {
@@ -101,18 +100,25 @@ export default {
 </script>
 
 <style scoped>
-.content-window {
+.start-window {
   position: relative;
-  
   background-color: #FFF2EA;
   display: flex;
   justify-content: center;
+  
+  height: calc(100vh - 150px);
+  width: 1000px;
+  margin: 70px 30px 0;
+  border-radius: 25px;
+  border: 3px solid #FFCDAD;
+  padding: 0;
 }
-.content-window::before {
+
+.start-window::before {
   content: '';
   position: absolute;
   top: 46%;
-  left: -28px;
+  left: -31px;
   width: 50px; 
   height: 50px; 
   background-image: url('@/assets/images/indicator.png');
@@ -121,22 +127,25 @@ export default {
   background-color: transparent;
 }
 
-#cameraZone #video {
+#video {
+  border-radius: 0 25px 25px 0;
   width: 100%;
-  height: 70%;
-  border-radius: 15px;
+  height: 100%;
+  object-fit: cover;
+  position: relative;
 }
 
 /* NOTICE CARD */
 .notice-card {
   position: absolute;
-  bottom: 60px;
-  right: 20px;
+  bottom: 70px;
+  right: 10px;
   
-  justify-content: space-around;
+  align-items: center;
+  justify-content: center;
   
-  width: 500px;
-  height: 200px;
+  width: 300px;
+  height: 150px;
   background: #FFF2EA;
   border: 5px solid #FFF2EA; 
   border-radius: 10px;
@@ -149,7 +158,6 @@ export default {
   justify-content: center;
   align-items: center;
   
-  gap: 1em;
   height: 100%;
   transition: transform 0.4s ease;
 }
@@ -157,9 +165,7 @@ export default {
 .notice-card:hover .notice-card-content {
   transform: scale(0.96);
 }
-.laugh-o-meter {
-  padding: 5px 0 3px;
-}
+
 
 .heading {
   color: #FF7B27;
@@ -179,6 +185,15 @@ export default {
   text-align: center;
 }
 
+.para-important {
+  color: #FF7B27;
+  font-family: Noto Sans;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 1000;
+  text-align: center;
+}
+
 /* UTILITY BAR */
 .utility-bar {
   height: 7%; 
@@ -192,6 +207,8 @@ export default {
 
   padding: 0.6em 1.1em;
   background-color: #63687B;
+
+  border-top: 1px solid white;
   border-radius: 0 0 25px 25px; 
   gap: 0.4rem;
 
@@ -224,5 +241,4 @@ export default {
 .upper {
   z-index: -1;
 }
-
 </style>

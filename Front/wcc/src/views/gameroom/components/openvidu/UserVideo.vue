@@ -1,24 +1,24 @@
 <template>
   <div class="userVideo">
     <MyFace v-if="isMyFace" :stream-manager="streamManager"/>
-    <SharedScreen v-else :stream-manager="streamManager"/>
+    <OtherFace v-else :stream-manager="streamManager"/>
   </div>
 </template>
 
 <script>
 import MyFace from "@/views/gameroom/components/openvidu/MyFace.vue";
-import SharedScreen from "@/views/gameroom/components/openvidu/SharedScreen.vue";
+import OtherFace from "@/views/gameroom/components/openvidu/OtherFace.vue";
 
 export default {
   name: 'UserVideo',
   components: {
-    SharedScreen,
+    OtherFace,
     MyFace,
   },
   props: {
     isMyFace: {
       type: Boolean,
-      default: true
+      default: false
     },
     streamManager: Object
   },

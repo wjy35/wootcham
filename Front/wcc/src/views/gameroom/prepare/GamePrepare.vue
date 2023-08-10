@@ -7,7 +7,7 @@
 
     <!-- HEADER -->
     <header>
-      <div class="header-center">2라운드 코미디 미션 정하기</div>
+      <div class="header-center">{{ round + 1 }}라운드 코미디 미션 정하기</div>
       <div class="getout-btn"></div>
     </header>
 
@@ -98,6 +98,7 @@ export default {
     GameRoomTimer
   },
   props: {
+    round: Number,
     second: {
       type: Number,
       default: 0

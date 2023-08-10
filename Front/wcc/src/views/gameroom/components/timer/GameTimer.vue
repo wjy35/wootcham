@@ -34,7 +34,7 @@ const COLOR_CODES = {
     }
 };
 
-const TIME_LIMIT = 10;
+const TIME_LIMIT = 30;
 
 export default {
     name: 'GameRoomTimer',

@@ -92,7 +92,7 @@ export default {
 /* ------------------------- PROFILE IMAGE --------------------------- */
 .profile-image-container {
   width: 155px;
-  height: 170px;
+  height: 160px;
   margin: 5x 0 1px;
 
   background: #FFF2EA;

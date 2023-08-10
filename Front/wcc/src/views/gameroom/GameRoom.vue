@@ -1,24 +1,38 @@
 <template>
 
-  <template v-if="gameStatus===GameStatus.WAIT_GAME_START">
-    <div>
-      <p> 로딩 화면 입니다</p>
-      <p>{{sessionId}}</p>
-      <p>{{memberId}}</p>
-      <p>{{memberToken}}</p>
-      <p>{{second}}</p>
+  <div v-if="gameStatus===GameStatus.WAIT_GAME_START">
+
+    <div class="loading-screen">
+      <div class="loading-screen-loader">
+        Loading
+      </div>
+      <div class="loadingspinner">
+        <div id="square1"></div>
+        <div id="square2"></div>
+        <div id="square3"></div>
+        <div id="square4"></div>
+        <div id="square5"></div>
+      </div>
+
+      <p class="second">{{second}}</p>
+      
     </div>
-  </template>
+  
+      <!-- <p>{{sessionId}}</p>
+      <p>{{memberId}}</p>
+      <p>{{memberToken}}</p> -->
 
-  <template v-else-if="gameStatus===GameStatus.PICK_TOPIC_KEYWORD || gameStatus===GameStatus.PICK_TOPIC_TYPE">
-    <game-room-prepare :second="second"></game-room-prepare>
-  </template>
+  </div>
 
-  <template v-else>
+  <div v-else-if="gameStatus===GameStatus.PICK_TOPIC_KEYWORD">
+    <game-room-prepare :round="round" :second="second"></game-room-prepare>
+  </div>
+
+  <div v-else>
       <div class="inner">
         <!-- HEADER -->
         <header>
-          <div class="header-center">{{ game - round }} 라운드 {{ second }}</div>
+          <div class="header-center">{{ round + 1 }} 라운드 {{ second }}</div>
           <button class="Btn" @click="showModal = true">
             <img src="@/assets/images/getout.png" class="sign" alt="나가기" style="width: 24px;">
             <div class="text">게임 나가기</div>
@@ -30,30 +44,27 @@
             <!-- 1번 박스 === video-one -->
             <div class="main video video-one shadow">
               <img v-if="streamManagers.length < 1" src="@/assets/images/WCC_logo.png">
-              <UserVideo v-else :stream-manager="streamManagers[0]" :key="componentKey"/>
+              <UserVideo v-else :isMyFace="memberToken===memberTokens[0]"  :stream-manager="streamManagers[0]" :key="componentKey"/>
               <!--                <div v-if="streamManagers[0] !== undefined" class="video-username">{{ nickname(publisher) }}</div>-->
             </div>
 
-            <!--         2, 3, 6, 7번 박스 === Main Content -->
+            <!-- 2, 3, 6, 7번 박스 === Main Content -->
             <div class="main main-content shadow">
               <div class="main-content-username">username</div>
               <div id="main-content-video">
                 
-                <!-- 주제 선택 화면 대기 화면 분기 처리 -->
-                <div v-if="mainStreamManager === undefined">
-                  <!-- 주제 선택 화면 -->
-                  <!-- <div class="mission-select">
+
+                <!-- 발표자 화면 -->
+                <div v-if="memberToken===tellerToken">            
+                    <!-- <UserVideo  :stream-manager="streamManagers[0]" :key="componentKey"/> -->
                     <mission-select></mission-select>
-                  </div> -->
-
+                </div>
+                <div v-else class="stand-by">
                   <!-- 대기 화면 -->
-                  <!-- <div class="stand-by">
-                    <stand-by></stand-by>
-                  </div> -->
-              </div>
+                  <!-- <stand-by></stand-by> -->
 
-                <UserVideo  :stream-manager="streamManagers[0]" :key="componentKey"/>
-                
+                  <!-- 주제 선택 화면 -->
+                </div>                
                 
                 <!-- Progress Bar -->
                 <div class="loader">
@@ -100,35 +111,35 @@
             <!-- 5번 박스 -->
             <div class="main video video-two shadow">
               <img v-if="streamManagers.length<2" src="@/assets/images/WCC_logo.png">
-              <UserVideo v-else :stream-manager="streamManagers[1]" :key="componentKey" />
+              <UserVideo v-else :isMyFace="memberToken===memberTokens[1]"   :stream-manager="streamManagers[1]" :key="componentKey" />
               <!--                <div v-if="subscribers[0] !== undefined" class="video-username">{{ nickname(subscribers[0]) }}</div>-->
             </div>
 
             <!-- 9번 박스 -->
             <div class="main video video-three shadow">
               <img v-if="streamManagers.length<3" src="@/assets/images/WCC_logo.png">
-              <UserVideo v-else :stream-manager="streamManagers[2]" :key="componentKey" />
+              <UserVideo v-else :isMyFace="memberToken===memberTokens[2]"  :stream-manager="streamManagers[2]" :key="componentKey" />
               <!--                <div v-if="subscribers[1] !== undefined" class="video-username">{{ nickname(subscribers[1]) }}</div>-->
             </div>
 
             <!-- 10번 박스 -->
             <div class="main video video-four shadow">
               <img v-if="streamManagers.length<4" src="@/assets/images/WCC_logo.png">
-              <UserVideo v-else :stream-manager="streamManagers[3]" :key="componentKey" />
+              <UserVideo v-else :isMyFace="memberToken===memberTokens[3]" :stream-manager="streamManagers[3]" :key="componentKey" />
               <!--                <div v-if="subscribers[2] !== undefined" class="video-username">{{ nickname(subscribers[2]) }}</div>-->
             </div>
 
             <!-- 11번 박스 -->
             <div class="main video video-five shadow">
               <img v-if="streamManagers.length<5" src="@/assets/images/WCC_logo.png">
-              <UserVideo v-else :stream-manager="streamManagers[4]" :key="componentKey" />
+              <UserVideo v-else :isMyFace="memberToken===memberTokens[4]"  :stream-manager="streamManagers[4]" :key="componentKey" />
               <!--                <div v-if="subscribers[3] !== undefined" class="video-username">{{ nickname(subscribers[3]) }}</div>-->
             </div>
 
             <!-- 12번 박스 -->
             <div class="main video video-six shadow">
               <img v-if="streamManagers.length<6" src="@/assets/images/WCC_logo.png">
-              <UserVideo v-else :stream-manager="streamManagers[5]" :key="componentKey" />
+              <UserVideo v-else :isMyFace="memberToken===memberTokens[5]"  :stream-manager="streamManagers[5]" :key="componentKey" />
               <!--                <div v-if="subscribers[3] !== undefined" class="video-username">{{ nickname(subscribers[3]) }}</div>-->
             </div>
 
@@ -154,7 +165,7 @@
 
 
       </div>
-  </template>
+  </div>
 </template>
 
 
@@ -165,16 +176,24 @@ import {OpenVidu} from "openvidu-browser";
 import {mapState} from "vuex";
 import UserVideo from "@/views/gameroom/components/openvidu/UserVideo.vue";
 
+// import StandBy from '@/views/gameroom/components/maincontent/StandBy.vue';
+import MissionSelect from '@/views/gameroom/components/maincontent/MissionSelect.vue';
+
 
 export default {
   name: 'GameRoom',
+  components: {
+    UserVideo, 
+    GameRoomPrepare, 
+    // StandBy,
+    MissionSelect
+  },
   computed: {
     GameStatus() {
       return GameStatus
     },
     ...mapState(["client"])
   },
-  components: {UserVideo, GameRoomPrepare},
   data() {
     return {
       gameStatus:GameStatus.WAIT_GAME_START,
@@ -187,8 +206,10 @@ export default {
       mainStreamManager: undefined,
       streamManagers:[],
       memberTokens:[],
-      flag:true,
-      componentKey:0,
+      flag:false,
+      componentKey:0, 
+      round: "",
+      tellerToken:"",
     }
   },
   mounted() {
@@ -259,6 +280,7 @@ export default {
                 }
                 this.streamManagers = orderStreamManagers;
                 this.memberTokens = orderMemberTokens;
+                this.round = gameResponse.round;
               }else if(this.gameStatus===GameStatus.PREPARE_PRESENT){
                 if(this.flag){
                   this.streamManagers.push(this.streamManagers.shift());
@@ -266,6 +288,7 @@ export default {
                   this.componentKey += this.componentKey+1;
                   this.flag = false;
                 }
+                this.tellerToken = gameResponse.tellerToken;
               }else if(this.gameStatus===GameStatus.PRESENT){
                 this.flag = true;
               }
@@ -333,7 +356,8 @@ header {
 
   padding: 60px 15px 0;
   border: 3px solid #FFCDAD;
-  background-color: #FFCDAD;
+  /* background-color: #FFCDAD; */
+  background-color: rgba(0, 0, 0, 0.7); /* 배경색 및 투명도 설정 */
 
   display: flex; /* Add this line */
   justify-content: center; /* Add this line */
@@ -349,7 +373,7 @@ header {
 
   gap: 10px;
   border: 3px solid #FFCDAD;
-  background-color: #FFCDAD;
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .video-one {
@@ -472,7 +496,7 @@ header {
   }
 }
 
-/* Missiom Select */
+/* 미션 선택 Mission Select */
 .presenter {
   position: relative;
 
@@ -481,7 +505,7 @@ header {
   align-items: center;  
 }
 
-/* standby */
+/* 스탠드바이 standby */
 .standby {
   position: relative;
 
@@ -866,5 +890,309 @@ header {
 /* button click effect*/
 .Btn:active {
   transform: translate(2px, 2px);
+}
+
+/* 로딩창 Loading Screen */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* 배경색 및 투명도 설정 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* 다른 요소들 위에 나타나도록 설정 */
+}
+
+.loading-screen-loader {
+  font-size: 2.5rem;
+  font-family: sans-serif;
+  font-variant: small-caps;
+  font-weight: 900;
+  background: conic-gradient(
+    #dff2ae 0 25%,
+    #ff904f 25% 50%,
+    #feefe7 50% 75%,
+    #ffde2b 75%
+  );
+  background-size: 200% 200%;
+  animation: animateBackground 4.5s ease-in-out infinite;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+@keyframes animateBackground {
+  25% {
+    background-position: 0 100%;
+  } 
+
+  50% {
+    background-position: 100% 100%;
+  }
+
+  75% {
+    background-position: 100% 0%;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.loading-screen .second {
+  color: darkorange;
+  font-size: 2em;
+}
+
+
+.loadingspinner {
+  --square: 26px;
+  --offset: 30px;
+  --duration: 2.4s;
+  --delay: 0.2s;
+  --timing-function: ease-in-out;
+  --in-duration: 0.4s;
+  --in-delay: 0.1s;
+  --in-timing-function: ease-out;
+  width: calc( 3 * var(--offset) + var(--square));
+  height: calc( 2 * var(--offset) + var(--square));
+  padding: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.loadingspinner div {
+  display: inline-block;
+  background: darkorange;
+    /*background: var(--text-color);*/
+    /*box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);*/
+  border: none;
+  border-radius: 2px;
+  width: var(--square);
+  height: var(--square);
+  position: absolute;
+  padding: 0px;
+  margin: 0px;
+  font-size: 6pt;
+  color: black;
+}
+
+.loadingspinner #square1 {
+  left: calc( 0 * var(--offset) );
+  top: calc( 0 * var(--offset) );
+  animation: square1 var(--duration) var(--delay) var(--timing-function) infinite,
+               squarefadein var(--in-duration) calc(1 * var(--in-delay)) var(--in-timing-function) both;
+}
+
+.loadingspinner #square2 {
+  left: calc( 0 * var(--offset) );
+  top: calc( 1 * var(--offset) );
+  animation: square2 var(--duration) var(--delay) var(--timing-function) infinite,
+              squarefadein var(--in-duration) calc(1 * var(--in-delay)) var(--in-timing-function) both;
+}
+
+.loadingspinner #square3 {
+  left: calc( 1 * var(--offset) );
+  top: calc( 1 * var(--offset) );
+  animation: square3 var(--duration) var(--delay) var(--timing-function) infinite,
+               squarefadein var(--in-duration) calc(2 * var(--in-delay)) var(--in-timing-function) both;
+}
+
+.loadingspinner #square4 {
+  left: calc( 2 * var(--offset) );
+  top: calc( 1 * var(--offset) );
+  animation: square4 var(--duration) var(--delay) var(--timing-function) infinite,
+               squarefadein var(--in-duration) calc(3 * var(--in-delay)) var(--in-timing-function) both;
+}
+
+.loadingspinner #square5 {
+  left: calc( 3 * var(--offset) );
+  top: calc( 1 * var(--offset) );
+  animation: square5 var(--duration) var(--delay) var(--timing-function) infinite,
+               squarefadein var(--in-duration) calc(4 * var(--in-delay)) var(--in-timing-function) both;
+}
+
+@keyframes square1 {
+  0% {
+    left: calc( 0 * var(--offset) );
+    top: calc( 0 * var(--offset) );
+  }
+
+  8.333% {
+    left: calc( 0 * var(--offset) );
+    top: calc( 1 * var(--offset) );
+  }
+
+  100% {
+    left: calc( 0 * var(--offset) );
+    top: calc( 1 * var(--offset) );
+  }
+}
+
+@keyframes square2 {
+  0% {
+    left: calc( 0 * var(--offset) );
+    top: calc( 1 * var(--offset) );
+  }
+
+  8.333% {
+    left: calc( 0 * var(--offset) );
+    top: calc( 2 * var(--offset) );
+  }
+
+  16.67% {
+    left: calc( 1 * var(--offset) );
+    top: calc( 2 * var(--offset) );
+  }
+
+  25.00% {
+    left: calc( 1 * var(--offset) );
+    top: calc( 1 * var(--offset) );
+  }
+
+  83.33% {
+    left: calc( 1 * var(--offset) );
+    top: calc( 1 * var(--offset) );
+  }
+
+  91.67% {
+    left: calc( 1 * var(--offset) );
+    top: calc( 0 * var(--offset) );
+  }
+
+  100% {
+    left: calc( 0 * var(--offset) );
+    top: calc( 0 * var(--offset) );
+  }
+}
+
+@keyframes square3 {
+  0%,100% {
+    left: calc( 1 * var(--offset) );
+    top: calc( 1 * var(--offset) );
+  }
+
+  16.67% {
+    left: calc( 1 * var(--offset) );
+    top: calc( 1 * var(--offset) );
+  }
+
+  25.00% {
+    left: calc( 1 * var(--offset) );
+    top: calc( 0 * var(--offset) );
+  }
+
+  33.33% {
+    left: calc( 2 * var(--offset) );
+    top: calc( 0 * var(--offset) );
+  }
+
+  41.67% {
+    left: calc( 2 * var(--offset) );
+    top: calc( 1 * var(--offset) );
+  }
+
+  66.67% {
+    left: calc( 2 * var(--offset) );
+    top: calc( 1 * var(--offset) );
+  }
+
+  75.00% {
+    left: calc( 2 * var(--offset) );
+    top: calc( 2 * var(--offset) );
+  }
+
+  83.33% {
+    left: calc( 1 * var(--offset) );
+    top: calc( 2 * var(--offset) );
+  }
+
+  91.67% {
+    left: calc( 1 * var(--offset) );
+    top: calc( 1 * var(--offset) );
+  }
+}
+
+@keyframes square4 {
+  0% {
+    left: calc( 2 * var(--offset) );
+    top: calc( 1 * var(--offset) );
+  }
+
+  33.33% {
+    left: calc( 2 * var(--offset) );
+    top: calc( 1 * var(--offset) );
+  }
+
+  41.67% {
+    left: calc( 2 * var(--offset) );
+    top: calc( 2 * var(--offset) );
+  }
+
+  50.00% {
+    left: calc( 3 * var(--offset) );
+    top: calc( 2 * var(--offset) );
+  }
+
+  58.33% {
+    left: calc( 3 * var(--offset) );
+    top: calc( 1 * var(--offset) );
+  }
+
+  100% {
+    left: calc( 3 * var(--offset) );
+    top: calc( 1 * var(--offset) );
+  }
+}
+
+@keyframes square5 {
+  0% {
+    left: calc( 3 * var(--offset) );
+    top: calc( 1 * var(--offset) );
+  }
+
+  50.00% {
+    left: calc( 3 * var(--offset) );
+    top: calc( 1 * var(--offset) );
+  }
+
+  58.33% {
+    left: calc( 3 * var(--offset) );
+    top: calc( 0 * var(--offset) );
+  }
+
+  66.67% {
+    left: calc( 2 * var(--offset) );
+    top: calc( 0 * var(--offset) );
+  }
+
+  75.00% {
+    left: calc( 2 * var(--offset) );
+    top: calc( 1 * var(--offset) );
+  }
+
+  100% {
+    left: calc( 2 * var(--offset) );
+    top: calc( 1 * var(--offset) );
+  }
+}
+
+@keyframes squarefadein {
+  0% {
+    transform: scale(0.75);
+    opacity: 0.0;
+  }
+
+  100% {
+    transform: scale(1.0);
+    opacity: 1.0;
+  }
 }
 </style>
