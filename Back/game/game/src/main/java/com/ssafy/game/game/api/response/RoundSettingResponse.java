@@ -7,12 +7,14 @@ import java.util.List;
 
 @Getter
 @Setter
-public class GameOrderResponse {
+public class RoundSettingResponse {
     private int gameStatus;
     private List<String> order;
+    private int round;
 
-    public GameOrderResponse(int gameStatus, List<String> order) {
-        this.gameStatus = gameStatus;
+    public RoundSettingResponse(List<String> order,int round) {
+        this.gameStatus = GameStatus.ROUND_SETTING;
         this.order = order;
+        this.round = round;
     }
 }

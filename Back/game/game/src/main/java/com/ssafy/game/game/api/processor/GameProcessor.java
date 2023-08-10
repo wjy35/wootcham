@@ -3,7 +3,6 @@ package com.ssafy.game.game.api.processor;
 import com.ssafy.game.common.GameSessionSetting;
 import com.ssafy.game.game.api.response.*;
 import com.ssafy.game.game.db.entity.GameSession;
-import com.ssafy.game.game.db.entity.Topic;
 import com.ssafy.game.match.common.GameSetting;
 import com.ssafy.game.util.MessageSender;
 import java.util.ArrayList;
@@ -27,13 +26,13 @@ public class GameProcessor implements Runnable{
         waitGameLoad();
         waitGameStart();
 
-        for(int i=0; i<GameSetting.ROUND_COUNT; i++){
-            round();
+        for(int round=0; round<GameSetting.ROUND_COUNT; round++){
+            roundProcess(round);
         }
     }
 
-    private void round(){
-        orderGameMember();
+    private void roundProcess(int round){
+        roundSetting(round);
         pickTopicType();
         pickTopicKeyword();
 
@@ -117,11 +116,11 @@ public class GameProcessor implements Runnable{
         }
     }
 
-    private void orderGameMember(){
+    private void roundSetting(int round){
         List<String> shuffledGameMemberTokenList = getShuffledGameMemberTokenList();
         gameSession.setOrderList(shuffledGameMemberTokenList);
-
-        createAndsendGameMemberOrderResponse(shuffledGameMemberTokenList);
+        RoundSettingResponse roundSettingResponse = new RoundSettingResponse(shuffledGameMemberTokenList,round);
+        sendRoundSettingResponse(roundSettingResponse);
     }
 
     private List<String> getShuffledGameMemberTokenList(){
@@ -171,8 +170,8 @@ public class GameProcessor implements Runnable{
         sender.sendObjectToAll(gameDestination,gameStatusResponse);
     }
 
-    private void createAndsendGameMemberOrderResponse(List<String> order){
-        sender.sendObjectToAll(gameDestination,new GameOrderResponse(GameStatus.ORDER_GAMEMEMBER,order));
+    private void sendRoundSettingResponse(RoundSettingResponse roundSettingResponsee){
+        sender.sendObjectToAll(gameDestination,roundSettingResponsee);
     }
 
     private boolean allMemberLoadGame(){
