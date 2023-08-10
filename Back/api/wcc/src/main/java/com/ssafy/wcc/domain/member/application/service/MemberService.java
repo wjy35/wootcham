@@ -17,7 +17,7 @@ public interface MemberService {
     public void memberDelete(String Id);
 
     public void memberUpdate(MemberRequest memberRequest, String id);
-    public boolean checkEmail(String email);
+    public void checkEmail(String email);
 
     public MemberInfoResponse memberInfoResponse(Long id);
 
