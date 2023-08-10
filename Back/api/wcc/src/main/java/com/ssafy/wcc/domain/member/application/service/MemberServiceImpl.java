@@ -136,9 +136,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean checkEmail(String email) {
+    public void checkEmail(String email) {
         logger.info("checkEmail service 진입");
-        return memberRepository.existsByEmail(email);
+        if(memberRepository.existsByEmail(email)){
+            throw new WCCException(Error.DUPLICATE_EMAIL);
+        }
     }
 
 
