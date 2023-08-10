@@ -1,6 +1,7 @@
 package com.ssafy.wcc.domain.jwt.application.service;
 
 import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,7 @@ public interface TokenService {
 
     public Map<String, Object> checkAndGetClaims(String jwt);
 
-    public boolean checkToken(String jwt);
+    public boolean checkToken(String jwt) throws ExpiredJwtException;
 
     public MemberLoginResponse makeMemberLoginResponse(String id);
 
