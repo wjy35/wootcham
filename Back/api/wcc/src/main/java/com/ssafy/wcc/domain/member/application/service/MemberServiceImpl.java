@@ -20,7 +20,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +55,7 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(member);
         Optional<Member> findMember = memberRepository.findByEmail(member.getEmail());
         List<CollectionItem> collectionItemList = collectionItemRepository.findAll();
-        for(int i=0; i<collectionItemList.size(); i++){
+        for (int i = 0; i < collectionItemList.size(); i++) {
             MemberItemPK memberItemPK = MemberItemPK.builder().memberId(findMember.get().getId()).collectionId(collectionItemList.get(i).getId()).build();
             Optional<CollectionItem> collectionItem = collectionItemRepository.findById(memberItemPK.getCollectionId());
             MemberItem memberItem = MemberItem.builder().buy(false).wear(false).memberItemPK(memberItemPK).member(findMember.get()).collection(collectionItem.get()).build();
@@ -71,14 +74,29 @@ public class MemberServiceImpl implements MemberService {
         if (!encoder.matches(loginInfo.getPassword(), findMember.get().getPassword())) {
             throw new WCCException(Error.PASSWORD_NOT_MATCH);
         }
-        if(findMember.get().getSuspensionDay() != null){
+        if (findMember.get().getSuspensionDay() != null) {
             LocalDate date1 = findMember.get().getSuspensionDay();
             LocalDate date2 = LocalDate.now();
-            if(date1.compareTo(date2) >= 0){
+            if (date1.compareTo(date2) >= 0) {
                 throw new WCCException(Error.SUSPENDED_USER);
             }
         }
+        
+        LocalDate currentTime = this.getCurrentTime();
+        Member member = findMember.get();
+        member.setCurrentLogin(currentTime);
+        memberRepository.save(member);
+
         return findMember.get().getId();
+    }
+
+    public LocalDate getCurrentTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        String today = sdf.format(c.getTime());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(today, formatter);
+        return date;
     }
 
     @Override
@@ -88,7 +106,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void memberUpdate(MemberRequest memberRequest, String id) throws WCCException{
+    public void memberUpdate(MemberRequest memberRequest, String id) throws WCCException {
         logger.info("memberUpdate service 진입");
         Optional<Member> member = memberRepository.findById(Long.parseLong(id));
         if (member.isPresent()) {
@@ -97,7 +115,7 @@ public class MemberServiceImpl implements MemberService {
             member.get().setNickname(memberRequest.getNickname());
             member.get().setPassword(securePassword);
             memberRepository.save(member.get());
-        }else{
+        } else {
             throw new WCCException(Error.USER_NOT_FOUND);
         }
     }
@@ -110,7 +128,7 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-    public MemberInfoResponse memberInfoResponse(Long id){
+    public MemberInfoResponse memberInfoResponse(Long id) {
         logger.info("memberInfoResponse service 진입");
         Optional<Member> findMember = memberRepository.findById(id);
         if (findMember.isPresent()) {
@@ -121,20 +139,20 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean checkNickname(String nickname){
+    public boolean checkNickname(String nickname) {
         logger.info("checkNickname service 진입");
         long count = memberRepository.countByNickname(nickname);
-        if(count == 0){
+        if (count == 0) {
             return true;
         }
         return false;
     }
 
     @Override
-    public String getMemberNickname(Long id){
+    public String getMemberNickname(Long id) {
         logger.info("getMemberNickname service 진입");
         Optional<String> nickname = memberRepository.findNicknameById(id);
-        if (nickname.isPresent()){
+        if (nickname.isPresent()) {
             return nickname.get();
         }
         return null;
