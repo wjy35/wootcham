@@ -3,6 +3,7 @@ package com.ssafy.game.game.api.processor;
 import com.ssafy.game.common.GameSessionSetting;
 import com.ssafy.game.game.api.response.*;
 import com.ssafy.game.game.db.entity.GameSession;
+import com.ssafy.game.game.db.entity.Topic;
 import com.ssafy.game.match.common.GameSetting;
 import com.ssafy.game.util.MessageSender;
 import java.util.ArrayList;

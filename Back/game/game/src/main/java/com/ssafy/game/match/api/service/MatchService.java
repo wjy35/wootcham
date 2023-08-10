@@ -50,7 +50,7 @@ public class MatchService {
     public void createMatchMemberByMemberId(String memberId){
         Member matchMember = new Member(memberId);
 
-        matchMemberQueue.offer(matchMember);
+        this.matchMemberQueue.offer(matchMember);
         this.matchMemberSession.insertMember(matchMember);
     }
 
@@ -58,8 +58,8 @@ public class MatchService {
         this.matchMemberSession.deleteMemberByMemberId(memberId);
     }
 
-    public boolean matchable(){
-        if(matchMemberQueue.size()<GameSetting.MAX_GAMEMEMBER_COUNT) return false;
+    public synchronized boolean matchable(){
+        if(this.matchMemberQueue.size()<GameSetting.MAX_GAMEMEMBER_COUNT) return false;
 
         return true;
     }
@@ -180,8 +180,7 @@ public class MatchService {
         try {
             for(Member groupMember : groupMemberList){
                 ConnectionProperties connectionProperties = new ConnectionProperties.Builder()
-                        .role(OpenViduRole.SUBSCRIBER)
-                        .data(groupMember.getMemberId())
+                        .role(OpenViduRole.PUBLISHER)
                         .build();
                 Connection connection = openviduSession.createConnection(connectionProperties);
 

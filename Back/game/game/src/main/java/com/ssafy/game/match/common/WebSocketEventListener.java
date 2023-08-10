@@ -14,6 +14,7 @@ public class WebSocketEventListener {
 
     @EventListener
     void disconnectSession(SessionDisconnectEvent event){
+        System.out.println("diconnect");
         matchService.deleteMatchMemberByMemberId(event.getSessionId());
     }
 }
