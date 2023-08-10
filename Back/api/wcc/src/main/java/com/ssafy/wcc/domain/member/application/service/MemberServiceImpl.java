@@ -74,29 +74,44 @@ public class MemberServiceImpl implements MemberService {
         if (!encoder.matches(loginInfo.getPassword(), findMember.get().getPassword())) {
             throw new WCCException(Error.PASSWORD_NOT_MATCH);
         }
+        System.out.println(findMember.get().getSuspensionDay());
         if (findMember.get().getSuspensionDay() != null) {
-            LocalDate date1 = findMember.get().getSuspensionDay();
-            LocalDate date2 = LocalDate.now();
-            if (date1.compareTo(date2) >= 0) {
-                throw new WCCException(Error.SUSPENDED_USER);
-            }
+            this.checkSuspendedMember(findMember);
         }
-        
-        LocalDate currentTime = this.getCurrentTime();
-        Member member = findMember.get();
-        member.setCurrentLogin(currentTime);
-        memberRepository.save(member);
+
+        this.updateCurrentLogin(findMember);
 
         return findMember.get().getId();
     }
 
+    @Override
     public LocalDate getCurrentTime() {
+        logger.info("getCurrentTime service 진입");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar c = Calendar.getInstance();
         String today = sdf.format(c.getTime());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(today, formatter);
         return date;
+    }
+
+    @Override
+    public void updateCurrentLogin(Optional<Member> findMember){
+        logger.info("updateCurrentLogin service 진입");
+        LocalDate currentTime = this.getCurrentTime();
+        Member member = findMember.get();
+        member.setCurrentLogin(currentTime);
+        memberRepository.save(member);
+    }
+
+    @Override
+    public void checkSuspendedMember(Optional<Member> findMember){
+        logger.info("checkSuspendedMember service 진입");
+        LocalDate date1 = findMember.get().getSuspensionDay();
+        LocalDate date2 = LocalDate.now();
+        if (date1.compareTo(date2) >= 0) {
+            throw new WCCException(Error.SUSPENDED_USER);
+        }
     }
 
     @Override
