@@ -6,6 +6,7 @@ import PwChangeViewVue from "@/views/Member/PwChangeView.vue";
 import SignupViewVue from "@/views/Member/SignupView.vue";
 import WelcomeViewVue from "@/views/Member/WelcomeView.vue";
 import GoodbyeViewVue from "@/views/Member/GoodbyeView.vue";
+import AdminHome from '@/views/admin/AdminHome.vue'
 
 import HomeView from "@/views/home/HomeView.vue"
 
@@ -105,6 +106,11 @@ const routes = [
     path: "/gameresult",
     name: "gameresult",
     component: GameResultVue,
+  },
+  {
+    path: "/admin",
+    name: "admin",
+    component: AdminHome,
   },
 
 ];

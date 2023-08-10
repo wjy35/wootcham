@@ -94,7 +94,7 @@
 import SubmitButton from './UI/SubmitButton.vue';
 import CommonModal from './UI/CommonModal.vue';
 import api from '@/api'
-import NicknameFormVue from './NicknameForm.vue';
+// import NicknameFormVue from './NicknameForm.vue';
 
 const regPass = /^(?=.*[a-zA-Z])(?=.*[\W_]).{8,16}$/;
 

@@ -99,13 +99,13 @@ export default {
             })
         }
 
-        const forgotPw = () => {
+        // const forgotPw = () => {
         const forgotPw = () => {
             // FindPassword로 라우팅
             router.push({ name: "findpw" })
         }
-            router.push({ name: "findpw" })
-        }
+        //     router.push({ name: "findpw" })
+        // }
 
         const signup = () => {
             // SignupForm으로 라우팅
