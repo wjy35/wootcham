@@ -30,6 +30,8 @@ public class GameProcessor implements Runnable{
         for(int round=0; round<GameSetting.ROUND_COUNT; round++){
             roundProcess(round);
         }
+
+        System.out.println("gameSession.getSmileCount() = " + gameSession.getSmileCount());
     }
 
     private void roundProcess(int round){
