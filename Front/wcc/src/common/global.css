@@ -82,14 +82,58 @@
     font-size: 30px;
    }
 
-   /* 비디오 video */ 
-   .video {
-    border-radius: 25px;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+   .text-shadow {
+    text-shadow: 2px 2px 4px #FF432A;
    }
 
-   /* 발표자 비디오 이펙트 Presenter Video Effect */
+   /* -------- 비디오 VIDEO -------- */
+  .video {
+    border: 1px solid #FFF2EA;
+    border-radius: 15px;
 
-  
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .video-username {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    z-index: 99;
+
+    color: white;
+  }
+
+  /* 비디오 영역 내 들어가는 웃참 이미지 */
+  .video img {
+    width: 150px;
+  }
+
+   /* 발표자 비디오 이펙트 Presenter Video Effect */
+   .video-effect {
+    border: 3px groove transparent;
+    animation: border-shine 0.5s infinite;
+  }
+
+  @keyframes border-shine {
+    0%, 100% {
+      border-color: transparent;
+      filter: brightness(1);
+    }
+    25% {
+      border-color: #FF432A;
+      filter: brightness(1.2);
+    }
+    50% {
+      border-color: #FFCDAD;
+      filter: brightness(1.2);
+    }
+  }

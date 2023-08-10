@@ -14,7 +14,8 @@
         </button>
 
         <template v-if="matchStatus === MatchStatus.MATCHED">
-          <button @click.once="enter" id="test">수락</button>
+          <button @click.once="enter" v-if='!acceptStatus' class='info ask-accept text-shadow' id="test">수락하기</button>
+          <button v-if='acceptStatus' class='info text-shadow'>다른 플레이어의 수락을 기다리는 중</button>
           <!-- <button @click="cancel">거절</button> -->
           <!-- <button v-if="!this.acceptStatus" @click="cancel">수락</button>
               <button v-else @click="cancel" disabled>수락</button>
@@ -301,6 +302,51 @@ header {
   padding: 5px;
   overflow-y: hidden;
   height: 100vh;
+}
+
+.info {
+  margin-right: 25px;
+}
+
+.ask-accept {
+  animation: beat 1s infinite;
+}
+
+.ask-accept::before, .ask-accept::after {
+  animation: coldblue 1s infinite;
+}
+
+.ask-accept::before {
+  transform: rotate(-45deg);
+  transform-origin: 0 100%;
+}
+
+.ask-accept::after {
+  transform: rotate(45deg);
+  transform-origin: 100% 100%;
+}
+
+@keyframes beat {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes coldblue {
+  0%, 100% {
+    background-color: rgb(255, 255, 255);
+  }
+
+  50% {
+    background-color: rgb(198, 23, 23);
+  }
 }
 </style>
   
