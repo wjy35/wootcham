@@ -5,6 +5,8 @@ import com.ssafy.wcc.domain.notice.db.entity.Notice;
 import com.ssafy.wcc.domain.record.db.entity.Record;
 import com.ssafy.wcc.domain.report.db.entity.Report;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,6 +21,7 @@ import java.util.List;
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"email", "nickname"})})
 @RequiredArgsConstructor
+@DynamicInsert
 public class Member extends BaseEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +35,13 @@ public class Member extends BaseEntity implements UserDetails {
     @Column(nullable = false, length = 20)
     private String nickname;
 
+    @ColumnDefault("0")
     private Integer point;
+
+    @ColumnDefault("0")
     private Integer money;
+
+    @ColumnDefault("1")
     private Integer admin;
 
     @Column(name = "suspension_day")
@@ -46,6 +54,7 @@ public class Member extends BaseEntity implements UserDetails {
     private List<Report> reports = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+
     private List<Record> records = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
@@ -53,19 +62,6 @@ public class Member extends BaseEntity implements UserDetails {
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<MemberItem> memberItems = new ArrayList<>();
-
-//    @Builder
-//    public Member(long id, String email, String password, String nickname, int point, int money, int admin, int suspensionDay, LocalDate currentLogin) {
-//        this.id = id;
-//        this.email = email;
-//        this.password = password;
-//        this.nickname = nickname;
-//        this.point = point;
-//        this.money = money;
-//        this.admin = admin;
-//        this.suspensionDay = suspensionDay;
-//        this.currentLogin = currentLogin;
-//    }
 
     @Builder
     public Member(Long id, String email, String password, String nickname, Integer point, Integer money, Integer admin, LocalDate suspensionDay, LocalDate currentLogin, List<Report> reports, List<Record> records, List<Notice> notices, List<MemberItem> memberItems) {
@@ -82,18 +78,6 @@ public class Member extends BaseEntity implements UserDetails {
         this.records = records;
         this.notices = notices;
         this.memberItems = memberItems;
-    }
-
-    public void updateCurrentLogin() {
-        this.currentLogin = LocalDate.now();
-    }
-
-    public void updateNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public void updatePassword(String password) {
-        this.password = password;
     }
 
     @Override
