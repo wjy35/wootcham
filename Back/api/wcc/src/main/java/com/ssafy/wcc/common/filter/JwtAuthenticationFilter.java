@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
@@ -30,6 +31,12 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         logger.info("memberInfoResponse service 진입");
+
+        if("OPTIONS".equalsIgnoreCase(((HttpServletRequest)request).getMethod())) {
+            ((HttpServletResponse)response).setStatus(HttpServletResponse.SC_OK);
+            return;
+        }
+
         // 헤더에서 accessToken을 받아옵니다.
         String token = tokenService.resolveToken((HttpServletRequest) request);
 
@@ -45,6 +52,9 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
+
+
+
         chain.doFilter(request, response);
     }
 }
