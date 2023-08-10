@@ -17,6 +17,4 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
 
     @Query("SELECT m.nickname FROM Member m WHERE m.id = :memberId")
     Optional<String> findNicknameById(@Param("memberId") Long userId);
-
-    String getMemberNickname(Long id);
 }
