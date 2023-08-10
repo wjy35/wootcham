@@ -39,10 +39,4 @@ public class MatchController {
     void enter(@DestinationVariable String groupId,@DestinationVariable String memberId){
         matchService.enterGame(groupId, memberId);
     }
-
-    @SubscribeMapping("/topic/test")
-    @SendTo("/topic/test")
-    String test(){
-        return "test success";
-    }
 }
