@@ -1,7 +1,7 @@
 <template>
     <div class="userVideo" v-if="streamManager">
-        <OvVideo v-if="!isMyVideo" :stream-manager="streamManager"/>
-        <MyOvVideo v-else :stream-manager="streamManager"/>
+        <OvVideo v-if="!isMyVideo" :stream-manager="streamManager" />
+        <MyOvVideo v-else :stream-manager="streamManager" />
         <!-- <div><p>{{ clientData }}</p></div> -->
     </div>
 </template>
@@ -29,7 +29,7 @@ export default {
     },
 
     computed: {
-        clientData () {
+        clientData() {
             const { clientData } = this.getConnectionData();
             return clientData;
         },
@@ -43,7 +43,7 @@ export default {
     },
 
     methods: {
-        getConnectionData () {
+        getConnectionData() {
             const { connection } = this.streamManager.stream;
             return JSON.parse(connection.data);
         },
@@ -52,9 +52,9 @@ export default {
 </script>
 
 <style scoped>
-    .userVideo {
-        width: 100%;
-        height: 100%;
-    }
+.userVideo {
+    width: 100%;
+    height: 100%;
+}
 </style>
     

@@ -1,7 +1,7 @@
 <template>
   <div class="userVideo">
-    <MyFace v-if="isMyFace" :stream-manager="streamManager"/>
-    <OtherFace v-else :stream-manager="streamManager"/>
+    <MyFace v-if="isMyFace" :stream-manager="streamManager" />
+    <OtherFace v-else :stream-manager="streamManager" />
   </div>
 </template>
 

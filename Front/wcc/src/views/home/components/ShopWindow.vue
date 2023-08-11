@@ -1,6 +1,6 @@
 <template>
   <div class="content-window shadow">
-    <div class="banner"> 
+    <div class="banner">
       <img src="@/assets/images/shop_banner.png" alt="explain_banner">
     </div>
 
@@ -23,10 +23,10 @@
 
       </div>
       <div class="slide frame-products">
-          <p class="tip">Scroll On Me</p>
+        <p class="tip">Scroll On Me</p>
       </div>
       <div class="slide naming-products">
-          <p class="tip">Scroll On Me</p>
+        <p class="tip">Scroll On Me</p>
       </div>
 
     </div>
@@ -51,11 +51,11 @@
   position: absolut-e;
   top: 67%;
   left: -28px;
-  width: 50px; 
-  height: 50px; 
+  width: 50px;
+  height: 50px;
   background-image: url('@/assets/images/indicator.png');
-  background-size: contain; 
-  background-repeat: no-repeat; 
+  background-size: contain;
+  background-repeat: no-repeat;
   background-color: transparent;
 }
 
@@ -71,41 +71,41 @@
 }
 
 .image-item {
- width: 250px;
- height: 250px;
- box-shadow: 0 10px 10px rgba(0, 0, 0, 0.212);
- background: #fff;
- display: flex;
- border-radius: 20px;
- justify-content: center;
- position: relative;
- transition: all .4s;
+  width: 250px;
+  height: 250px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.212);
+  background: #fff;
+  display: flex;
+  border-radius: 20px;
+  justify-content: center;
+  position: relative;
+  transition: all .4s;
 }
 
 .image-item::before {
- content: '---content---';
- letter-spacing: 0.2em;
- position: absolute;
- bottom: 8px;
- left: 20px;
- color: rgb(51, 51, 51);
- font-size: 0.8em;
- font-weight: 700;
+  content: '---content---';
+  letter-spacing: 0.2em;
+  position: absolute;
+  bottom: 8px;
+  left: 20px;
+  color: rgb(51, 51, 51);
+  font-size: 0.8em;
+  font-weight: 700;
 }
 
 .image-item div {
- width: 100%;
- height: 100%;
- border-radius: 20px;
- box-shadow: 0 0 10px rgba(0, 0, 0, 0.212);
- cursor: pointer;
- z-index: 10;
- transition: all .4s;
- background-color: #fff;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.212);
+  cursor: pointer;
+  z-index: 10;
+  transition: all .4s;
+  background-color: #fff;
 }
 
 .image-item:hover div {
- transform: translateY(-30px);
+  transform: translateY(-30px);
 }
 
 /* ------------- 프레임 상점 ------------- */

@@ -1,5 +1,3 @@
-// import router from "@/router";
-import {} from "@/api/game"
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 
