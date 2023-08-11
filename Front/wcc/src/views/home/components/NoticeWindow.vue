@@ -12,10 +12,18 @@
           </div>
       </div>
       <div class="slide two">
-          <p class="tip">Scroll On Me</p>
+        <div class="item">
+            <div class="notice-date">{{ noticeDate }}</div>
+            <div class="notice-heading">{{ noticeTitle }}</div>
+            <div class="notice-content">{{ noticeContent }}</div>
+          </div>
       </div>
       <div class="slide three">
-          <p class="tip">Scroll On Me</p>
+        <div class="item">
+            <div class="notice-date">{{ noticeDate }}</div>
+            <div class="notice-heading">{{ noticeTitle }}</div>
+            <div class="notice-content">{{ noticeContent }}</div>
+          </div>
       </div>
     </div>
 
@@ -92,11 +100,11 @@ export default {
 }
 
 .two {
-  background-color: #3b82f6;
+  background-color: #ece8e1;
 }
 
 .three {
-  background-color: #22c55e;
+  background-color: #ece8e1;
 }
 
 .scroll-snap-card {
@@ -131,11 +139,12 @@ export default {
   font-weight: 400;
   padding: 20px 30px;
   cursor: pointer;
-  transition: font-size 0.5s ease, transform 1s ease;
+  transition: font-size 0.5s ease, transform 1s ease, color 1s ease;
 }
 
 .scroll-snap-card .slide .item .notice-heading:hover {
   transform: scale(1.1); 
+  color: #ff6547;
 }
 
 .scroll-snap-card .slide .item .notice-content {

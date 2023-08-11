@@ -19,6 +19,9 @@
   border-radius: 15px;
   display: flex;
   flex-direction: column ;
+  position: relative;
+  justify-content: center;
+  align-items: center;
 }
 
 .standby p {

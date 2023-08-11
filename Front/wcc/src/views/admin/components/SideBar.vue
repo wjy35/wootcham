@@ -7,7 +7,7 @@
         <!-- 프로필 이미지 & 게임 포인트 -->
         <div class="profile-image-container">
           <div class="profile-image">
-            <img src="@/assets/images/profile.png" alt="">
+            <img src="@/assets/images/admin.png" alt="">
           </div>
           <div class="point-button">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">

@@ -43,10 +43,14 @@
           <div class="gridlayout">
 
             <!-- 1번 박스 === video-one -->
-            <div class="video video-one shadow" :class="{'video-effect': isPresenter}">
-              <img v-if="streamManagers.length < 1" src="@/assets/images/WCC_logo.png">
-              <UserVideo v-else :isMyFace="memberToken===memberTokens[0]"  :stream-manager="streamManagers[0]" :key="componentKey"/>
-              <!-- <div v-if="streamManagers[0] !== undefined" class="video-username">{{ nickname(publisher) }}</div>-->
+            <div class="video video-one shadow" :class="{ 'video-effect': isLaugh }">
+                <div class="video-card" :class="{'stop':noLaugh}">
+                  <UserVideo 
+                    :isMyFace="memberToken===memberTokens[0]"  
+                    :stream-manager="streamManagers[0]" 
+                  />
+                </div>
+                <!-- <div v-if="streamManagers[0] !== undefined" class="video-username">{{ nickname(publisher) }}</div>-->
             </div>
 
             <!-- 2, 3, 6, 7번 박스 === Main Content -->
@@ -58,13 +62,19 @@
                 <!-- 발표자 화면 -->
                 <div v-if="memberToken===tellerToken">            
                     <!-- <UserVideo  :stream-manager="streamManagers[0]" :key="componentKey"/> -->
-                    <mission-select></mission-select>
+                    
+                    <!-- 주제 선택 화면 -->
+                    <!-- <mission-select></mission-select> -->
+
+                    <!-- 카운트다운 화면 -->
+                    <count-down></count-down>
                 </div>
                 <div v-else class="stand-by">
+
                   <!-- 대기 화면 -->
                   <!-- <stand-by></stand-by> -->
 
-                  <!-- 주제 선택 화면 -->
+
                 </div>                
                 
                 <!-- Progress Bar -->
@@ -178,16 +188,17 @@ import {mapState} from "vuex";
 import UserVideo from "@/views/gameroom/components/openvidu/UserVideo.vue";
 
 // import StandBy from '@/views/gameroom/components/maincontent/StandBy.vue';
-import MissionSelect from '@/views/gameroom/components/maincontent/MissionSelect.vue';
-
+// import MissionSelect from '@/views/gameroom/components/maincontent/MissionSelect.vue';
+import CountDown from '@/views/gameroom/components/maincontent/CountDown.vue';
 
 export default {
   name: 'GameRoom',
   components: {
     UserVideo, 
-    GameRoomPrepare, 
+    GameRoomPrepare,
     // StandBy,
-    MissionSelect
+    CountDown,
+    // MissionSelect
   },
   computed: {
     GameStatus() {
@@ -212,7 +223,8 @@ export default {
       round: "",
       tellerToken:"",
 
-      isPresenter: true
+      noLaugh: false,
+      laugh: []
     }
   },
   mounted() {
@@ -467,15 +479,6 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;  
-}
-
-/* 스탠드바이 standby */
-.standby {
-  position: relative;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 /* ---------- SHARE BTN --------- */

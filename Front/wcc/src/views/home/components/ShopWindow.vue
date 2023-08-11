@@ -5,28 +5,48 @@
     </div>
 
     <div class="scroll-snap-card">
-
       <!-- 프로필 이미지 아이템 3개-->
       <div class="slide image-products">
+        <div class="heading"></div>
         <div class="image-item">
-          <div></div>
+          <div class="coin flex text-shadow">
+            <img src="@/assets/images/coin.png" style="width: 20px; height: 20px">
+            500
+          </div>
         </div>
-
         <div class="image-item">
-          <div></div>
+          <div class="coin flex text-shadow">
+            <img src="@/assets/images/coin.png" style="width: 20px; height: 20px">
+            700
+          </div>
         </div>
-
         <div class="image-item">
-          <div></div>
+          <div class="coin flex text-shadow">
+            <img src="@/assets/images/coin.png" style="width: 20px; height: 20px">
+            1000
+          </div>
         </div>
-
-
       </div>
+
+      <!-- 프레임 아이템 3개-->
       <div class="slide frame-products">
-          <p class="tip">Scroll On Me</p>
+
+
       </div>
+
+      <!-- 휘장 아이템 3개 -->
       <div class="slide naming-products">
-          <p class="tip">Scroll On Me</p>
+        <div class="image-item">
+          <div></div>
+        </div>
+
+        <div class="image-item">
+          <div></div>
+        </div>
+
+        <div class="image-item">
+          <div></div>
+        </div>
       </div>
 
     </div>
@@ -70,30 +90,32 @@
   gap: 15px;
 }
 
-.image-item {
+.image-products .image-item {
  width: 250px;
  height: 250px;
  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.212);
  background: #fff;
  display: flex;
  border-radius: 20px;
+ align-items: center;
  justify-content: center;
  position: relative;
  transition: all .4s;
 }
 
-.image-item::before {
- content: '---content---';
+.image-products .image-item::before {
  letter-spacing: 0.2em;
  position: absolute;
- bottom: 8px;
- left: 20px;
+ bottom: 5px;
+ left: 100px;
  color: rgb(51, 51, 51);
- font-size: 0.8em;
+
+ font-family: Luckiest Guy;
+ font-size: 1em;
  font-weight: 700;
 }
 
-.image-item div {
+.image-products .image-item div {
  width: 100%;
  height: 100%;
  border-radius: 20px;
@@ -101,23 +123,56 @@
  cursor: pointer;
  z-index: 10;
  transition: all .4s;
- background-color: #fff;
+ background-color: lightcyan;
 }
 
-.image-item:hover div {
+.image-products .image-item:hover div {
  transform: translateY(-30px);
+}
+
+/* 첫 번째 image-item */
+.image-products .image-item:nth-child(1) div {
+  background-image: url("@/assets/images/profile_low.jpg");
+  background-size: cover;
+}
+
+.image-products .image-item:nth-child(1)::before {
+  content: "Lucky"
+}
+
+/* 두 번째 image-item */
+.image-products .image-item:nth-child(2) div {
+  background-image: url("@/assets/images/profile_mid.jpg");
+  background-size: cover;
+}
+
+.image-products .image-item:nth-child(2)::before {
+  content: "Shady"
+}
+
+/* 세 번째 image-item */
+.image-products .image-item:nth-child(3) div {
+  background-image: url("@/assets/images/profile_high.jpg");
+  background-size: cover;
+}
+
+.image-products .image-item:nth-child(3)::before {
+  content: "Crazy"
 }
 
 /* ------------- 프레임 상점 ------------- */
 .frame-products {
   background-color: #3b82f6;
+  gap: 15px;
 }
 
 /* ------------- 휘장 상점 ------------- */
 .naming-products {
   background-color: #22c55e;
+  gap: 15px;
 }
 
+/* COMMON COMPONENTS 공통 컴포넌트 */
 .scroll-snap-card {
   height: 100%;
   width: 100%;
@@ -139,5 +194,12 @@
   font-size: 1em;
   color: white;
   font-weight: 700;
+}
+
+/* COIN 코인 */
+.coin {
+  color: white;
+  padding: 10px;
+  gap: 5px;
 }
 </style>

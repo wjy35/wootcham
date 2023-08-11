@@ -9,7 +9,7 @@
           <div class="ranking-modal shadow">
             <div class="rank-card">
                 <div class="rank-card-image">
-                  <img src="@/assets/images/profile.png" alt="">
+                  <img src="@/assets/images/profile.jpg" alt="">
                   <span class="report-icon" @click="toggleReport">
                     <img src="@/assets/images/report.png" alt="">
                   </span>
@@ -25,7 +25,7 @@
 
               <div class="rank-card">
                 <div class="rank-card-image">
-                  <img src="@/assets/images/profile.png" alt="">
+                  <img src="@/assets/images/profile.jpg" alt="">
                   <span class="report-icon" @click="toggleReport">
                     <img src="@/assets/images/report.png" alt="">
                   </span>
@@ -41,7 +41,7 @@
 
               <div class="rank-card">
                 <div class="rank-card-image">
-                  <img src="@/assets/images/profile.png" alt="">
+                  <img src="@/assets/images/profile.jpg" alt="">
                   <span class="report-icon" @click="toggleReport">
                     <img src="@/assets/images/report.png" alt="">
                   </span>
@@ -57,7 +57,7 @@
 
               <div class="rank-card">
                 <div class="rank-card-image">
-                  <img src="@/assets/images/profile.png" alt="">
+                  <img src="@/assets/images/profile.jpg" alt="">
                   <span class="report-icon" @click="toggleReport">
                     <img src="@/assets/images/report.png" alt="">
                   </span>
@@ -73,7 +73,7 @@
 
               <div class="rank-card">
                 <div class="rank-card-image">
-                  <img src="@/assets/images/profile.png" alt="">
+                  <img src="@/assets/images/profile.jpg" alt="">
                   <span class="report-icon" @click="toggleReport">
                     <img src="@/assets/images/report.png" alt="">
                   </span>
@@ -89,7 +89,7 @@
 
               <div class="rank-card">
                 <div class="rank-card-image">
-                  <img src="@/assets/images/profile.png" alt="">
+                  <img src="@/assets/images/profile.jpg" alt="">
                   <span class="report-icon" @click="toggleReport">
                     <img src="@/assets/images/report.png" alt="">
                   </span>
@@ -156,7 +156,7 @@
             
 
             <div class="my-result">
-              <img class='game-result-icon' src="@/assets/images/profile.png" alt="">
+              <img class='game-result-icon' src="@/assets/images/profile.jpg" alt="">
               <div class='gauge'>
                 <div class="plus-point">+1000</div>
                 <div class='gauge-back'>
