@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll() // swagger 접속 허용
                 .antMatchers("**").authenticated()
                 .and()
-                .cors().configurationSource(corsConfigurationSource())
+                .cors()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
                 .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class);
@@ -64,9 +64,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("https://wootcham.com");
-        config.setAllowedMethods(Arrays.asList("HEAD","POST","GET", "OPTIONS"));
-        config.setAllowedHeaders(Arrays.asList("*"));
+        config.addAllowedOrigin("*");
+        config.addAllowedMethod("*");
+        config.addAllowedHeader("*");
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
