@@ -1,7 +1,7 @@
 <template>
   <div class="mission-select">
     <p class="heading">
-      당신의 미션은 <span>{{ keyword }}</span>(으)로 <br>
+      당신의 미션은 <span>{{ keyword }}</span> 키워드로 <br>
       <span>{{ mission }}</span> 하기 입니다.
     </p>
 
@@ -56,8 +56,13 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 100vh;
-  padding: 20px;
+  
+  padding: 8px;
+  width: 98%;
+  height: 400px;
+  margin: 3px 0 3px 1px;
+  background-color: #FEE9E1;
+  border-radius: 15px;
 }
 
 .heading {
@@ -110,6 +115,7 @@ export default {
   border: none;
   padding: .5rem 0;
   color: rgba(51, 65, 85, 1);
+  font-weight: 200;
   transition: all .15s ease-in-out;
 }
 
@@ -120,14 +126,15 @@ export default {
 
 /* 완료 버튼 */
 button {
- color: #fff;
- font-size: 17px;
- background-color: #f27059;
- border: 1px solid #f39c12;
- border-radius: 5px;
- padding: 7px;
- box-shadow: 0px 6px 0px #FF432A;
- transition: all .1s;
+  width: 300px;
+  color: #d35400;
+  font-size: 20px;
+  background-color: #FFCDAD;
+  border: 1px inset #f39c12;
+  border-radius: 15px;
+  padding: 7px;
+  box-shadow: 0px 6px 0px #FF432A;
+  transition: all .1s;
 }
 
 button:active {

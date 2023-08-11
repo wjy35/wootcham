@@ -82,14 +82,100 @@
     font-size: 30px;
    }
 
-   /* 비디오 video */ 
-   .video {
-    border-radius: 25px;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+   .text-shadow {
+    text-shadow: 2px 2px 4px #FF432A;
    }
 
-   /* 발표자 비디오 이펙트 Presenter Video Effect */
+   /* -------- 비디오 VIDEO -------- */
+  /* .video {
+    border: 1px solid #FFF2EA;
+    border-radius: 15px;
 
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  } */
+
+  /* 비디오 영역 내 들어가는 username */
+  .video-username {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    z-index: 99;
+
+    color: white;
+    /* font-size: 1em; */
+  }
+
+  /* 비디오 영역 내 들어가는 웃참 로고 이미지 */
+  .video img {
+    width: 150px;
+  }
+
+  /* 비디오 영역 */
+  .video {
+    border: 1px solid #FFF2EA;
+    border-radius: 20px;
+
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+   .video::before {
+    content: '';
+    position: absolute;
+    width: 100px;
+    background-image: linear-gradient(180deg, rgb(0, 183, 255), rgb(255, 48, 255));
+    height: 200%;
+    animation: rotBGimg 3s linear infinite;
+    transition: all 0.2s linear;
+   }
+
+   @keyframes rotBGimg {
+    from {
+      transform: rotate(0deg);
+    }
   
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .video::after {
+    content: '';
+    position: absolute;
+    background: #07182E;
+    inset: 5px;
+    border-radius: 15px;
+  }  
+
+  .video-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+
+    border: 5px solid transparent;
+    border-radius: 20px;
+
+    z-index: 99;
+  }
+
+  .stop {
+    border: 5px solid white;
+  }

@@ -1,107 +1,107 @@
 <template>
   <div class="inner">
-    <!-- HEADER -->
-    <header>
-      <div class="header-center">게임이 종료되었습니다.</div>
-    </header>
+      <!-- HEADER -->
+      <header>
+          <div class="header-center">게임이 종료되었습니다.</div>
+      </header>
+      
+      <div class="main-container">
+          <div class="ranking-modal shadow">
+            <div class="rank-card">
+                <div class="rank-card-image">
+                  <img src="@/assets/images/profile.jpg" alt="">
+                  <span class="report-icon" @click="toggleReport">
+                    <img src="@/assets/images/report.png" alt="">
+                  </span>
+                </div>
+                <div class="rank-card-detail">
+                  <div class="rank-heading">#1</div>
+                  <div class="rank-info">
+                    <div class="rank-username">verylonglongbigbigusername</div>
+                    <div class="rank-pts-earned">+ 250</div>
+                  </div>
+                </div>
+              </div>
 
-    <div class="main-container">
-      <div class="ranking-modal shadow">
-        <div class="rank-card">
-          <div class="rank-card-image">
-            <img src="@/assets/images/profile.png" alt="">
-            <span class="report-icon" @click="toggleReport">
-              <img src="@/assets/images/report.png" alt="">
-            </span>
-          </div>
-          <div class="rank-card-detail">
-            <div class="rank-heading">#1</div>
-            <div class="rank-info">
-              <div class="rank-username">verylonglongbigbigusername</div>
-              <div class="rank-pts-earned">+ 250</div>
-            </div>
-          </div>
-        </div>
+              <div class="rank-card">
+                <div class="rank-card-image">
+                  <img src="@/assets/images/profile.jpg" alt="">
+                  <span class="report-icon" @click="toggleReport">
+                    <img src="@/assets/images/report.png" alt="">
+                  </span>
+                </div>
+                <div class="rank-card-detail">
+                  <div class="rank-heading">#2</div>
+                  <div class="rank-info">
+                    <div class="rank-username">verylonglongbigbigusername</div>
+                    <div class="rank-pts-earned">+ 250</div>
+                  </div>
+                </div>
+              </div>
 
-        <div class="rank-card">
-          <div class="rank-card-image">
-            <img src="@/assets/images/profile.png" alt="">
-            <span class="report-icon" @click="toggleReport">
-              <img src="@/assets/images/report.png" alt="">
-            </span>
-          </div>
-          <div class="rank-card-detail">
-            <div class="rank-heading">#2</div>
-            <div class="rank-info">
-              <div class="rank-username">verylonglongbigbigusername</div>
-              <div class="rank-pts-earned">+ 250</div>
-            </div>
-          </div>
-        </div>
+              <div class="rank-card">
+                <div class="rank-card-image">
+                  <img src="@/assets/images/profile.jpg" alt="">
+                  <span class="report-icon" @click="toggleReport">
+                    <img src="@/assets/images/report.png" alt="">
+                  </span>
+                </div>
+                <div class="rank-card-detail">
+                  <div class="rank-heading">#3</div>
+                  <div class="rank-info">
+                    <div class="rank-username">verylonglongbigbigusername</div>
+                    <div class="rank-pts-earned">+ 250</div>
+                  </div>
+                </div>
+              </div>
 
-        <div class="rank-card">
-          <div class="rank-card-image">
-            <img src="@/assets/images/profile.png" alt="">
-            <span class="report-icon" @click="toggleReport">
-              <img src="@/assets/images/report.png" alt="">
-            </span>
-          </div>
-          <div class="rank-card-detail">
-            <div class="rank-heading">#3</div>
-            <div class="rank-info">
-              <div class="rank-username">verylonglongbigbigusername</div>
-              <div class="rank-pts-earned">+ 250</div>
-            </div>
-          </div>
-        </div>
+              <div class="rank-card">
+                <div class="rank-card-image">
+                  <img src="@/assets/images/profile.jpg" alt="">
+                  <span class="report-icon" @click="toggleReport">
+                    <img src="@/assets/images/report.png" alt="">
+                  </span>
+                </div>
+                <div class="rank-card-detail">
+                  <div class="rank-heading">#4</div>
+                  <div class="rank-info">
+                    <div class="rank-username">verylonglongbigbigusername</div>
+                    <div class="rank-pts-earned">+ 250</div>
+                  </div>
+                </div>
+              </div>
 
-        <div class="rank-card">
-          <div class="rank-card-image">
-            <img src="@/assets/images/profile.png" alt="">
-            <span class="report-icon" @click="toggleReport">
-              <img src="@/assets/images/report.png" alt="">
-            </span>
-          </div>
-          <div class="rank-card-detail">
-            <div class="rank-heading">#4</div>
-            <div class="rank-info">
-              <div class="rank-username">verylonglongbigbigusername</div>
-              <div class="rank-pts-earned">+ 250</div>
-            </div>
-          </div>
-        </div>
+              <div class="rank-card">
+                <div class="rank-card-image">
+                  <img src="@/assets/images/profile.jpg" alt="">
+                  <span class="report-icon" @click="toggleReport">
+                    <img src="@/assets/images/report.png" alt="">
+                  </span>
+                </div>
+                <div class="rank-card-detail">
+                  <div class="rank-heading">#5</div>
+                  <div class="rank-info">
+                    <div class="rank-username">verylonglongbigbigusername</div>
+                    <div class="rank-pts-earned">+ 250</div>
+                  </div>
+                </div>
+              </div>
 
-        <div class="rank-card">
-          <div class="rank-card-image">
-            <img src="@/assets/images/profile.png" alt="">
-            <span class="report-icon" @click="toggleReport">
-              <img src="@/assets/images/report.png" alt="">
-            </span>
-          </div>
-          <div class="rank-card-detail">
-            <div class="rank-heading">#5</div>
-            <div class="rank-info">
-              <div class="rank-username">verylonglongbigbigusername</div>
-              <div class="rank-pts-earned">+ 250</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="rank-card">
-          <div class="rank-card-image">
-            <img src="@/assets/images/profile.png" alt="">
-            <span class="report-icon" @click="toggleReport">
-              <img src="@/assets/images/report.png" alt="">
-            </span>
-          </div>
-          <div class="rank-card-detail">
-            <div class="rank-heading">#6</div>
-            <div class="rank-info">
-              <div class="rank-username">verylonglongbigbigusername</div>
-              <div class="rank-pts-earned">+ 250</div>
-            </div>
-          </div>
-        </div>
+              <div class="rank-card">
+                <div class="rank-card-image">
+                  <img src="@/assets/images/profile.jpg" alt="">
+                  <span class="report-icon" @click="toggleReport">
+                    <img src="@/assets/images/report.png" alt="">
+                  </span>
+                </div>
+                <div class="rank-card-detail">
+                  <div class="rank-heading">#6</div>
+                  <div class="rank-info">
+                    <div class="rank-username">verylonglongbigbigusername</div>
+                    <div class="rank-pts-earned">+ 250</div>
+                  </div>
+                </div>
+              </div>
 
         <!-- 유저 신고 모달창 -->
         <div v-if="showModal" class="modal">
@@ -155,16 +155,16 @@
 
 
 
-        <div class="my-result">
-          <img class='game-result-icon' src="@/assets/images/profile.png" alt="">
-          <div class='gauge'>
-            <div class="plus-point">+1000</div>
-            <div class='gauge-back'>
-              <div class='gauge-data' :style="{ width: pointResult + '%' }"></div>
-              <div class="result-info">2500/5000<br><span class="level">골드1</span></div>
+            <div class="my-result">
+              <img class='game-result-icon' src="@/assets/images/profile.jpg" alt="">
+              <div class='gauge'>
+                <div class="plus-point">+1000</div>
+                <div class='gauge-back'>
+                  <div class='gauge-data' :style="{ width: pointResult + '%'}"></div>
+                  <div class="result-info">2500/5000<br><span class="level">골드1</span></div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
         <div class="coin-result">
           <p>축하합니다! 아래 보상을 획득했습니다.</p>

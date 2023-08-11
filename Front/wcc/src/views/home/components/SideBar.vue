@@ -7,7 +7,7 @@
       <!-- 프로필 이미지 & 게임 포인트 -->
       <div class="profile-image-container">
         <div class="profile-image">
-          <img src="@/assets/images/profile.png" alt="">
+          <img src="@/assets/images/profile.jpg" alt="">
         </div>
         <div class="point-button">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
@@ -101,7 +101,7 @@ export default {
 <style scoped>
 /* ------------------------- PROFILE IMAGE --------------------------- */
 .profile-image-container {
-  width: 155px;
+  width: 140px;
   height: 160px;
   margin: 5x 0 1px;
 

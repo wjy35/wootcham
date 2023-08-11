@@ -142,8 +142,8 @@ export default {
 .notice-card {
   position: absolute;
   bottom: 70px;
-  right: 10px;
-
+  right: 30px;
+  
   align-items: center;
   justify-content: center;
 
