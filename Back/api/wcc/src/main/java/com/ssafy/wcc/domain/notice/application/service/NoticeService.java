@@ -12,7 +12,7 @@ public interface NoticeService {
 
     public List<NoticeResponse> getNoticeListForUsers(long id) throws WCCException;
 
-    public List<NoticeForAdminResponse> getNoticeListForAdmin(long id, int pageNo) throws WCCException;
+    public List<NoticeForAdminResponse> getNoticeListForAdmin(long id) throws WCCException;
 
     public NoticeResponse getNoticeDetail(long memberId, long noticeId) throws WCCException;
 

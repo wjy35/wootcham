@@ -38,24 +38,12 @@ public class NoticeRepositorySupport extends QuerydslRepositorySupport {
                 .fetch();
     }
 
-    public List<Notice> listNoticeForAdmin(int pageNo) {
+    public List<Notice> listNoticeForAdmin() {
         return jpaQueryFactory.select(Projections.bean(Notice.class, notice.id, notice.subject, notice.date))
                 .from(notice)
-                .offset((pageNo - 1) * 7)
-                .limit(7)
                 .fetch();
     }
-
-//    public List<Notice> listNoticeForAdmin(Pageable pageable) {
-//        List<Notice> notice = jpaQueryFactory
-//                .select(Projections.bean(Notice.class, notice.id, notice.subject, notice.date))
-//                .from(notice);
-//
-//        long cnt = notice.fetchCount();
-//        List<Notice> res = getQuerydsl().applyPagination(pageable, notice).fetch();
-//
-//    }
-
+    
     public Optional<Notice> getNoticeDetail(long noticeId) {
         return Optional.ofNullable(jpaQueryFactory.select(Projections.bean(Notice.class, notice.subject, notice.content, notice.date))
                 .from(notice)

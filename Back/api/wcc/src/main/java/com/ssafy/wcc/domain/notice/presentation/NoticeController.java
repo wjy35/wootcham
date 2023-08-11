@@ -57,13 +57,12 @@ public class NoticeController {
             @ApiResponse(code = 404, message = "공지사항 조회 실패"),
     })
     public ResponseEntity<?> listNoticeForAdmin(
-            @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken,
-            @RequestParam(value = "pg", required = false, defaultValue = "1") @ApiParam(value = "페이지 번호", required = false) int pageNo
+            @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken
     ) {
         log.info("listNoticeForAdmin controller 진입");
         Map<String, Object> res = new HashMap<>();
 
-        List<NoticeForAdminResponse> list = noticeService.getNoticeListForAdmin(Long.parseLong(tokenService.getAccessTokenId(accessToken)), pageNo);
+        List<NoticeForAdminResponse> list = noticeService.getNoticeListForAdmin(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
         res.put("isSuccess", true);
         res.put("data", list);
         return new ResponseEntity<>(res, HttpStatus.OK);
