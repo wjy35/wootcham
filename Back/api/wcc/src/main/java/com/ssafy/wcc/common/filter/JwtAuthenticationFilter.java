@@ -34,6 +34,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
         if("OPTIONS".equalsIgnoreCase(((HttpServletRequest)request).getMethod())) {
             ((HttpServletResponse)response).setStatus(HttpServletResponse.SC_OK);
+            chain.doFilter(request, response);
             return;
         }
 
