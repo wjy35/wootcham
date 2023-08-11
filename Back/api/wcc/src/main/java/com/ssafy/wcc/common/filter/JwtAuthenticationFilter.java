@@ -41,9 +41,9 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         String token = tokenService.resolveToken((HttpServletRequest) request);
 
         logger.info(token);
-        logger.info(request.toString());
         logger.info("소문자"+((HttpServletRequest) request).getHeader("access_token"));
         logger.info("대문자"+((HttpServletRequest) request).getHeader("accessToken"));
+        logger.info("대문자2"+((HttpServletRequest) request).getHeader("AccessToken"));
         // 유효한 토큰인지 확인합니다.
         if (token != null && tokenService.checkToken(token)) {
             logger.info("유효한 토큰");

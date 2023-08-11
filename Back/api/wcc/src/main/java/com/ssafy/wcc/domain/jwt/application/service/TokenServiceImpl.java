@@ -167,7 +167,7 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public String resolveToken(HttpServletRequest request) {
         logger.info("resolveToken service 진입");
-        return request.getHeader("access_token");
+        return request.getHeader("Access_token");
     }
 
     @Override
