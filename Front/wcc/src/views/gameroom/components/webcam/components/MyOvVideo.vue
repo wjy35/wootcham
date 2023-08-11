@@ -27,41 +27,41 @@ export default {
 		}
 	},
 
-	mounted () {
+	mounted() {
 		cam = document.getElementById("myVideo");
 		Promise.all([
 			faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
 			faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
 			faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
 			faceapi.nets.faceExpressionNet.loadFromUri('/models')
-			]).then(navigator.mediaDevices
-				.getUserMedia({ video: true })
-				.then(function (stream) {
-					cam.srcObject = stream;
-				})
-				.catch(function (err) {
+		]).then(navigator.mediaDevices
+			.getUserMedia({ video: true })
+			.then(function (stream) {
+				cam.srcObject = stream;
+			})
+			.catch(function (err) {
 				console.log(err);
-				})
+			})
 		)
 		this.streamManager.addVideoElement(cam);
 		this.startDetect();
 	},
 
-	updated () {
+	updated() {
 		cam = document.getElementById("myVideo");
 		Promise.all([
 			faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
 			faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
 			faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
 			faceapi.nets.faceExpressionNet.loadFromUri('/models')
-			]).then(navigator.mediaDevices
-				.getUserMedia({ video: true })
-				.then(function (stream) {
-					cam.srcObject = stream;
-				})
-				.catch(function (err) {
+		]).then(navigator.mediaDevices
+			.getUserMedia({ video: true })
+			.then(function (stream) {
+				cam.srcObject = stream;
+			})
+			.catch(function (err) {
 				console.log(err);
-				})
+			})
 		)
 		this.streamManager.addVideoElement(cam);
 		this.startDetect();
@@ -101,8 +101,8 @@ export default {
 };
 </script>
 <style scoped>
-	video {
-		width: 100%;
-		height: auto;
-	}
+video {
+	width: 100%;
+	height: auto;
+}
 </style>

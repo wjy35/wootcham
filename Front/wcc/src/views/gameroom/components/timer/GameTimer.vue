@@ -43,12 +43,12 @@ export default {
             timerInterval: null
         };
     },
-  props: {
-    second: {
-      type: Number,
-      default: 0
+    props: {
+        second: {
+            type: Number,
+            default: 0
+        },
     },
-  },
     computed: {
         circleDasharray() {
             return `${(this.timeFraction * FULL_DASH_ARRAY).toFixed(0)} 283`;

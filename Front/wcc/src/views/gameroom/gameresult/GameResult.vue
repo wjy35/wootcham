@@ -103,35 +103,35 @@
                 </div>
               </div>
 
-              <!-- 유저 신고 모달창 -->
-              <div v-if="showModal" class="modal">
-                  <div class="modal-card">
-                    <div class="header">
-                      <img src="@/assets/images/report.png" alt="">
-                      <div class="content">
-                        <span class="title">속임수, 부정행위, 괴롭힘을 저지르는 불건전 행위 플레이어 신고</span>
-                        <p class="message">선택한 유저를 신고합니다. 
-                          신고가 이루어지면 웃참클럽 시스템에서 해당 게임을 확인하여 
-                          페널티 적용 여부를 결정합니다.</p>
-                      </div>
-                      <div class="actions">
-                        <button class="desactivate" type="button">신고하기</button>
-                        <button class="cancel" type="button" @click="toggleReport">취소하기</button>
-                      </div>
-                    </div>
-                </div>
+        <!-- 유저 신고 모달창 -->
+        <div v-if="showModal" class="modal">
+          <div class="modal-card">
+            <div class="header">
+              <img src="@/assets/images/report.png" alt="">
+              <div class="content">
+                <span class="title">속임수, 부정행위, 괴롭힘을 저지르는 불건전 행위 플레이어 신고</span>
+                <p class="message">선택한 유저를 신고합니다.
+                  신고가 이루어지면 웃참클럽 시스템에서 해당 게임을 확인하여
+                  페널티 적용 여부를 결정합니다.</p>
               </div>
-
-            
-          </div>
-
-          <div class="result-summary-modal shadow">
-
-            <div class="banner"> 
-              <img src="@/assets/images/game_result_banner.png" alt="explain_banner">
+              <div class="actions">
+                <button class="desactivate" type="button">신고하기</button>
+                <button class="cancel" type="button" @click="toggleReport">취소하기</button>
+              </div>
             </div>
+          </div>
+        </div>
 
-              <!-- <div class="confetti">
+
+      </div>
+
+      <div class="result-summary-modal shadow">
+
+        <div class="banner">
+          <img src="@/assets/images/game_result_banner.png" alt="explain_banner">
+        </div>
+
+        <!-- <div class="confetti">
                 <div class="confetti-piece"></div>
                 <div class="confetti-piece"></div>
                 <div class="confetti-piece"></div>
@@ -153,7 +153,7 @@
                 <div class="confetti-piece"></div>
               </div> -->
 
-            
+
 
             <div class="my-result">
               <img class='game-result-icon' src="@/assets/images/profile.jpg" alt="">
@@ -166,23 +166,23 @@
               </div>
             </div>
 
-            <div class="coin-result">
-              <p>축하합니다! 아래 보상을 획득했습니다.</p>
-              <div class="plus-coin">
-                <img class='coin' src="@/assets/images/coin.png">
-                <span class="coin-count">+150</span>
-              </div>
-            </div>
-
-            <!-- 버튼 -->
-            <div class="gameend-option-btn">
-                <div class="gameend-option-one">한 판 더하기</div>
-                <di class="gameend-option-two">홈으로 나가기</di>
-            </div>
-
+        <div class="coin-result">
+          <p>축하합니다! 아래 보상을 획득했습니다.</p>
+          <div class="plus-coin">
+            <img class='coin' src="@/assets/images/coin.png">
+            <span class="coin-count">+150</span>
           </div>
+        </div>
+
+        <!-- 버튼 -->
+        <div class="gameend-option-btn">
+          <div class="gameend-option-one">한 판 더하기</div>
+          <di class="gameend-option-two">홈으로 나가기</di>
+        </div>
+
       </div>
-  
+    </div>
+
 
   </div>
 </template>
@@ -192,7 +192,7 @@
 export default {
   name: "GameResult",
   components: {
-    
+
   },
   data() {
     return {
@@ -203,9 +203,9 @@ export default {
   methods: {
     toggleReport() {
       this.showModal = !this.showModal;
-    }, 
+    },
     report() {
-        // 신고 로직
+      // 신고 로직
     }
   }
 }
@@ -220,7 +220,7 @@ header {
   width: 100%;
   background-color: #F27059;
   z-index: 999;
-  
+
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -249,25 +249,25 @@ header {
   position: relative;
   height: 100vh;
   overflow: hidden;
-  
+
   padding: 60px 15px 0;
   border: 3px solid #FFCDAD;
   background-color: #FFCDAD;
 
-  display: flex; 
-  justify-content: center; 
+  display: flex;
+  justify-content: center;
   align-items: center;
   gap: 30px;
 }
 
-/* ------------ 랭킹 ------------ */ 
+/* ------------ 랭킹 ------------ */
 .ranking-modal {
   position: relative;
-	width: 500px;
-	height: 570px;
-  
-	background-color: #FFF2EA;
-	border-radius: 15px;
+  width: 500px;
+  height: 570px;
+
+  background-color: #FFF2EA;
+  border-radius: 15px;
   padding: 10px;
 
   display: flex;
@@ -285,7 +285,7 @@ header {
   width: 100%;
 }
 
-.rank-card-image img{
+.rank-card-image img {
   width: 60px;
   height: 60px;
   margin: 0 10px 0 10px;
@@ -305,7 +305,7 @@ header {
 }
 
 .rank-card-image:hover .report-icon {
-  display: block; 
+  display: block;
   cursor: pointer;
 }
 
@@ -443,14 +443,14 @@ header {
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
-/* ------- 게임 결과 요약 ------- */ 
+/* ------- 게임 결과 요약 ------- */
 .result-summary-modal {
-	background-color: #FFF2EA;
-	width: 500px;
-	height: 570px;
+  background-color: #FFF2EA;
+  width: 500px;
+  height: 570px;
 
   border: 3px solid #F27059;
-	border-radius: 15px;
+  border-radius: 15px;
 
   display: flex;
   flex-direction: column;
@@ -649,55 +649,57 @@ header {
   from {
     opacity: 0;
   }
+
   50% {
     opacity: 1;
   }
+
   to {
     transform: translateY(200px);
   }
 }
 
 .gameend-option-btn {
-    gap: 100px;
-    display: flex;
-    font-size: 5em;
-    margin-top: 3rem;
+  gap: 100px;
+  display: flex;
+  font-size: 5em;
+  margin-top: 3rem;
 }
 
 .gameend-option-one {
-    width: 150px;
-    height: 60px;
-    border-radius: 25px;
-    background-image: linear-gradient(135deg, #feb692 0%, #ea5455 100%);
-    box-shadow: 0 20px 30px -6px rgba(238, 103, 97, 0.5);
-    cursor: pointer;
-    
-    border: none;
-    font-size: 24px;
-    color: white;
+  width: 150px;
+  height: 60px;
+  border-radius: 25px;
+  background-image: linear-gradient(135deg, #feb692 0%, #ea5455 100%);
+  box-shadow: 0 20px 30px -6px rgba(238, 103, 97, 0.5);
+  cursor: pointer;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  border: none;
+  font-size: 24px;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .gameend-option-two {
-    transition: all 0.3s ease-in-out;
-    width: 150px;
-    height: 60px;
-    border-radius: 25px;
-    background-image: linear-gradient(135deg, #ea5455 0%, #feb692 100%);
-    box-shadow: 0 20px 30px -6px rgba(238, 103, 97, 0.5);
-    outline: none;
-    cursor: pointer;
-    
-    border: none;
-    font-size: 24px;
-    color: white;
+  transition: all 0.3s ease-in-out;
+  width: 150px;
+  height: 60px;
+  border-radius: 25px;
+  background-image: linear-gradient(135deg, #ea5455 0%, #feb692 100%);
+  box-shadow: 0 20px 30px -6px rgba(238, 103, 97, 0.5);
+  outline: none;
+  cursor: pointer;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  border: none;
+  font-size: 24px;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .gameend-option-two:hover {
@@ -750,7 +752,7 @@ header {
   border-bottom-left-radius: 0;
 }
 
-.result-info { 
+.result-info {
   position: absolute;
   right: 5px;
   top: -20px;
@@ -761,7 +763,7 @@ header {
 .point-increase {
   width: 60px;
   height: calc(500px * 0.8 * 0.8);
-  transform: rotate( 90deg );
+  transform: rotate(90deg);
 }
 
 .plus-point {
@@ -803,6 +805,4 @@ header {
   font-size: 1.5rem;
   margin: 0;
 }
-
-
 </style>
