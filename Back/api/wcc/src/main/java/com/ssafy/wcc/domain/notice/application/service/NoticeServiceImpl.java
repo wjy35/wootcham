@@ -48,11 +48,11 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public List<NoticeForAdminResponse> getNoticeListForAdmin(long id) throws WCCException {
+    public List<NoticeForAdminResponse> getNoticeListForAdmin(long id, int pageNo) throws WCCException {
         logger.info("getNoticeListForAdmin service 진입");
         checkMember(id, 0);
 
-        List<Notice> noticeList = noticeRepositorySupport.listNoticeForAdmin();
+        List<Notice> noticeList = noticeRepositorySupport.listNoticeForAdmin(pageNo);
         return noticeList.stream()
                 .map(n -> noticeMapper.toNoticeListResponse(n))
                 .collect(Collectors.toList());
