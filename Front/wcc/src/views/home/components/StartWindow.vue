@@ -11,7 +11,7 @@
       <div class="laugh-meter"></div>
     </video>
 
-    <div v-if='!cameraOn' class="notice-card shadow flex">
+    <div v-if='cameraOn' class="notice-card shadow flex">
       <div class="notice-card-content">
         <!-- <p class="heading">WootCham Club</p> -->
         <p class="para">하단 카메라 버튼을 눌러서 웃음 감지가 잘 작동하는지 확인해주세요.</p>
@@ -43,7 +43,7 @@ export default {
   },
   data() {
     return {
-      // cameraOn: false,
+      cameraOn: true,
       realtimeData: 50, // 실시간 데이터를 저장할 변수 (초기값 0)
       warning: '프레임에서 벗어났습니다.',
       showWarning: false,
@@ -67,6 +67,8 @@ export default {
       console.log(this.ready)
       this.$store.commit('gameStore/SET_READY');
       let video = document.getElementById('video');
+
+      this.cameraOn = !this.cameraOn
 
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         alert('사용 가능한 카메라가 없습니다.');
@@ -257,6 +259,7 @@ export default {
   z-index: -1;
 }
 
+/* 로고 흔드는 효과 */
 @keyframes shake {
   0%, 100% {
     transform: translateX(0);

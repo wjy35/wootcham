@@ -183,7 +183,7 @@ export default {
 }
 
 /* ---------- FRAME 프로필 테두리 아이템 ------------ */
-/* 첫 번째 image-item */
+/* 첫 번째 FRAME-item */
 .frame-products .frame-item:nth-child(1) div {
   background-image: url("@/assets/images/profile.jpg");
   background-size: cover;
@@ -192,7 +192,7 @@ export default {
 .frame-products .frame-item:nth-child(1)::before {
   content: "BRONZE"
 }
-/* 두 번째 image-item */
+/* 두 번째 FRAME-item */
 .frame-products .frame-item:nth-child(2) div {
   background-image: url("@/assets/images/profile.jpg");
   background-size: cover;
@@ -201,7 +201,7 @@ export default {
 .frame-products .frame-item:nth-child(2)::before {
   content: "SILVER"
 }
-/* 세 번째 image-item */
+/* 세 번째 FRAME-item */
 .frame-products .frame-item:nth-child(3) div {
   background-image: url("@/assets/images/profile.jpg");
   background-size: cover;
@@ -212,25 +212,58 @@ export default {
 }
 
 /* ---------- 닉네임 뱃지 아이템 ------------ */
-/* 첫 번째 image-item */
+/* 첫 번째 BADGE-item */
 .badge-products .badge-item:nth-child(1) span {
-  border: 10px inset red;
+  width: 150px;
+  height: 50px;
+  border: 7px inset tomato;
   border-radius: 15px;
+  color: #020715;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 80px;
+  margin-left: -15px;
 }
 .badge-products .badge-item:nth-child(1)::before {
   content: "RED"
 }
-/* 두 번째 image-item */
+
+/* 두 번째 BADGE-item */
 .badge-products .badge-item:nth-child(2) span {
-  border: 10px inset midnightblue;
+  width: 150px;
+  height: 50px;
+  border: 10px inset goldenrod;
+  border-radius: 15px;
+  color: #020715;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 80px;
+  margin-left: -17px;
 }
 .badge-products .badge-item:nth-child(2)::before {
-  content: "BLUE"
+  content: "GOLD"
 }
-/* 세 번째 image-item */
+
+/* 세 번째 BADGE-item */
 .badge-products .badge-item:nth-child(3) span {
-  border: 10px inset black;
+  width: 150px;
+  height: 50px;
+  border: 10px inset #374151;
   border-radius: 15px;
+  color: #020715;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 80px;
+  margin-left: -20px;
 }
 .badge-products .badge-item:nth-child(3)::before {
   content: "BLACK"
@@ -341,6 +374,10 @@ export default {
  z-index: 10;
  transition: all .4s;
  background-color: lightcyan;
+}
+
+.badge-item div {
+  background-color: #FFF2EA;
 }
 
 .image-item:hover div, .frame-item:hover div, .badge-item:hover div {
