@@ -55,7 +55,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         // 유효한 토큰인지 확인합니다.
         if (token != null && tokenService.checkToken(token)) {
             logger.info("유효한 토큰");
-            String s = tokenService.getAccessTokenId("BlackList: " + token);
+            String s = tokenService.getBlackListTokenId(token);
             if (s == null) {
                 logger.info("Black List에 등록되지 않은 토큰");
                 // 토큰이 유효하면 토큰으로부터 유저 정보를 받아옵니다.

@@ -44,16 +44,14 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public String createAccessToken(String id) {
         logger.info("createAccessToken service 진입");
-        String accessToken = create("access_token", expireMin);
-        accessTokenRedisRepository.saveAccessToken(accessToken, id, expireMin);
+        String accessToken = create("accessToken", id, expireMin);
         return accessToken;
     }
 
     @Override
     public String createRefreshToken(String id) {
         logger.info("createRefreshToken service 진입");
-        String refreshToken = create("refresh_token", expireMin * 5);
-        refreshTokenRedisRepository.saveRefreshToken(refreshToken, id, expireMin * 5);
+        String refreshToken = create("refreshToken", id, expireMin * 5);
         return refreshToken;
     }
 
@@ -67,17 +65,18 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public Long getExpire(String accessToken) {
         logger.info("getExpire service 진입");
+        System.out.println(accessToken);
         Date expiration = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(accessToken).getBody().getExpiration();
-        // 현재 시간
         Long now = new Date().getTime();
         return (expiration.getTime() - now);
     }
 
     @Override
-    public String create(String subject, long expireMin) {
+    public String create(String subject, String id, long expireMin) {
         logger.info("create service 진입");
         Claims claims = Jwts.claims()
                 .setSubject(subject)
+                .setId(id)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expireMin));
 
@@ -90,21 +89,9 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public String getAccessTokenId(String token) {
-        logger.info("getAccessTokenId service 진입");
-        return accessTokenRedisRepository.getAccessTokenValue(token);
-    }
-
-    @Override
     public String getBlackListTokenId(String token) {
         logger.info("getBlackListTokenId service 진입");
         return blackListTokenRedisRepository.getBlackListTokenValue(token);
-    }
-
-    @Override
-    public String getRefreshTokenId(String token) {
-        logger.info("getRefreshTokenId service 진입");
-        return refreshTokenRedisRepository.getRefreshTokenValue(token);
     }
 
     @Override
@@ -128,10 +115,10 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public Map<String, Object> checkAndGetClaims(String jwt) {
+    public String getIdByToken(String jwt) {
         logger.info("checkAndGetClaims service 진입");
         Jws<Claims> claims = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt);
-        return claims.getBody();
+        return claims.getBody().getId();
     }
 
     @Override
@@ -155,29 +142,26 @@ public class TokenServiceImpl implements TokenService {
         }
     }
 
-
-
     @Override
     public MemberLoginResponse makeMemberLoginResponse(String id) {
         logger.info("makeMemberLoginResponse service 진입");
-        MemberLoginResponse response = new MemberLoginResponse(this.createAccessToken(id), this.createRefreshToken(id));
+        MemberLoginResponse response = new MemberLoginResponse( this.createAccessToken(id), this.createRefreshToken(id));
         return response;
     }
 
     @Override
     public String resolveToken(HttpServletRequest request) {
         logger.info("resolveToken service 진입");
-        return request.getHeader("access_token");
+        return request.getHeader("Authorization");
     }
 
     @Override
     public Authentication getAuthentication(String token) throws RuntimeException {
         logger.info("getAuthentication service 진입");
-        String id = this.getAccessTokenId(token);
+        String id = this.getIdByToken(token);
         Member m = Member.builder().id(Long.parseLong(id)).build();
         UserDetails userDetails = m;
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-
     }
 
 }
