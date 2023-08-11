@@ -19,6 +19,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -37,10 +38,20 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             chain.doFilter(request, response);
             return;
         }
-
         // 헤더에서 accessToken을 받아옵니다.
         String token = tokenService.resolveToken((HttpServletRequest) request);
 
+        Enumeration<String> headerNames = ((HttpServletRequest) request).getHeaderNames();
+        StringBuilder headers = new StringBuilder();
+
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            String headerValue = ((HttpServletRequest) request).getHeader(headerName);
+            headers.append(headerName).append(": ").append(headerValue).append("\n");
+        }
+
+        logger.info(headers.toString());
+        logger.info("대문자"+((HttpServletRequest) request).getHeader("Access-Token"));
         // 유효한 토큰인지 확인합니다.
         if (token != null && tokenService.checkToken(token)) {
             logger.info("유효한 토큰");
