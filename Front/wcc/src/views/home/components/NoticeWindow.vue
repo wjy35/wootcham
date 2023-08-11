@@ -5,11 +5,11 @@
 
     <div class="scroll-snap-card">
       <div class="slide one">
-          <div class="item">
-            <div class="notice-date">{{ noticeDate }}</div>
-            <div class="notice-heading">{{ noticeTitle }}</div>
-            <div class="notice-content">{{ noticeContent }}</div>
-          </div>
+        <div class="item">
+          <div class="notice-date">{{ noticeDate }}</div>
+          <div class="notice-heading">{{ noticeTitle }}</div>
+          <div class="notice-content">{{ noticeContent }}</div>
+        </div>
       </div>
       <div class="slide two">
         <div class="item">
@@ -27,13 +27,12 @@
       </div>
     </div>
 
-    </div>
-        
+  </div>
 </template>
 
 <script>
 export default {
-  data(){
+  data() {
     return {
       noticeTitle: "웃참클럽 1주년 기념 이벤트 공지",
       noticeDate: "2023-07-23",
@@ -57,11 +56,11 @@ export default {
   position: absolute;
   top: 56.5%;
   left: -28px;
-  width: 50px; 
-  height: 50px; 
+  width: 50px;
+  height: 50px;
   background-image: url('@/assets/images/indicator.png');
-  background-size: contain; 
-  background-repeat: no-repeat; 
+  background-size: contain;
+  background-repeat: no-repeat;
   background-color: transparent;
 }
 
@@ -76,11 +75,12 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
 .season::before {
   position: absolute;
   width: 150%;
   height: 40px;
-  background-image: linear-gradient(45deg, #ff6547 0%, #ffb144  51%, #ff7053  100%);
+  background-image: linear-gradient(45deg, #ff6547 0%, #ffb144 51%, #ff7053 100%);
   transform: rotate(-45deg) translateY(-20px);
   display: flex;
   align-items: center;
@@ -91,7 +91,7 @@ export default {
   color: #fff;
   font-weight: 300;
   letter-spacing: 0.1em;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.23);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.23);
 }
 
 /* 메인 콘텐츠 */
@@ -157,6 +157,6 @@ export default {
 }
 
 .scroll-snap-card .slide .item .notice-content:hover {
-  transform: scale(1.1); 
+  transform: scale(1.1);
 }
 </style>

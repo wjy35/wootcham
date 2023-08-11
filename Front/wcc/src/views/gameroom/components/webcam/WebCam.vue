@@ -70,13 +70,15 @@ export default {
             mySessionId: "SessionA",
             myUserName: "Participant" + Math.floor(Math.random() * 100),
         };
-        
+
     },
 
     computed: {
-        ...mapState({ myPublisher : state => state.gameStore.myPublisher,
+        ...mapState({
+            myPublisher: state => state.gameStore.myPublisher,
             messageList: state => state.gameStore.messageList,
-            userName: state => state.gameStore.userName })
+            userName: state => state.gameStore.userName
+        })
     },
 
     beforeMount() {
@@ -242,5 +244,4 @@ export default {
 </script>
 
 <style>
-@import url('./WebCam.css');
-</style>
+@import url('./WebCam.css');</style>

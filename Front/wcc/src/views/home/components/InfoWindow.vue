@@ -1,22 +1,21 @@
 <template>
   <div class="content-window shadow">
-    <div class="banner"> 
+    <div class="banner">
       <img src="@/assets/images/explain_banner.png" alt="explain_banner">
     </div>
 
     <div class="scroll-snap-card">
       <div class="slide red">
-          <p class="tip">Scroll On Me</p>
+        <p class="tip">Scroll On Me</p>
       </div>
       <div class="slide blue">
-          <p class="tip">Scroll On Me</p>
+        <p class="tip">Scroll On Me</p>
       </div>
       <div class="slide green">
-          <p class="tip">Scroll On Me</p>
+        <p class="tip">Scroll On Me</p>
       </div>
     </div>
   </div>
-
 </template>
 
 <style scoped>
@@ -33,11 +32,11 @@
   position: absolute;
   top: 88%;
   left: -28px;
-  width: 50px; 
-  height: 50px; 
+  width: 50px;
+  height: 50px;
   background-image: url('@/assets/images/indicator.png');
-  background-size: contain; 
-  background-repeat: no-repeat; 
+  background-size: contain;
+  background-repeat: no-repeat;
   background-color: transparent;
 }
 
