@@ -20,6 +20,9 @@ export default createStore({
     isValidToken: false,
     mainStreamManager: '',
     client:null,
+
+    notices: [],
+    userList: [],
   },
   mutations: {
     setClient(state, payload){
@@ -53,6 +56,12 @@ export default createStore({
     },
     setUserPoint(state, payload){
       state.userInfo.point = payload;
+    },
+    setNotices(state, notices) {
+      state.notices = notices;
+    },
+    setUserList(state, userList) {
+      state.userList = userList;
     }
   },
 

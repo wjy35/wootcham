@@ -3,12 +3,11 @@
     <header>
       <a href="/home" class="logo">WootCham Club</a>
       <span class="admin-page">관리자 페이지</span>
-      <button>로그아웃</button>
+      <button @click="logout">로그아웃</button>
     </header>
     <div class='main-container'>
-      <SideBar @selectNoticeList="selectNoticeList" @selectUserList="selectUserList"/>
-      <NoticeList v-if='currentPage === "Notice"'/>
-      <UserList v-if='currentPage === "UserList"'/>
+      <SideBar/>
+      <NoticeList/>
     </div>
   </div>
 </template>
@@ -23,8 +22,18 @@ export default {
   },
   data() {
     return {
-      currentPage: 'Notice'
     }
+  },
+  methods: {
+    logout() {
+      // // local storage 제거
+      // localStorage.removeItem('access_token')
+      // localStorage.removeItem('refresh_token')
+      // // Store 초기화
+      // this.$store.commit('initUserInfo');
+      // // 로그인 화면으로 리다이렉트
+      // this.$router.push({name: "login"});
+    },
   }
 }
 </script>

@@ -2,76 +2,115 @@
     <div class='notice-list'>
         <h1>공 지 사 항</h1>
         <div class='notices'>
-            <ul v-for='n in selectedNotice' :key=n.index>
+            <div class='notice head'>
+                <div class='index center'>번호</div>
+                <div class='title center'>제목</div>
+                <div class='date center'>작성일</div>
+            </div>
+            <ul v-for='n in selectedNotice' :key=n.id>
                 <li class='notice'>
-                    <div class='index'>{{ n.index }}</div>
-                    <div class='title'>{{ n.title }}</div>
+                    <div class='index'>{{ n.id }}</div>
+                    <div class='title' @click='noticeDetail(n.id)'>{{ n.title }}</div>
                     <div class='date'>{{ n.date }}</div>
                 </li>
             </ul>
         </div>
         <div class='pagi-nation'>
-            <div class='page' v-if='startPage > 1'><span @click='movePage(1)' class='page-num'>&#60;&#60;</span></div>
+            <div class='page' v-if='startPage > 1'><span @click='movePage(startPage - 1)' class='page-num'>&#60;&#60;</span></div>
             <div class='page' v-for='index in 5' :key='index'>
-                <span class='current' v-if='index + startPage - 1 >= 1 && index + startPage - 1 <= endPage && index + startPage - 1 === startPage'>{{ index + startPage - 1 }}</span>
-                <span class='page-num' v-else-if='index + startPage - 1 >= 1 && index + startPage - 1 <= endPage' @click='movePage(index + startPage - 1)'>{{ index + startPage - 1 }}</span>
+                <span class='current' v-if='index + startPage - 1 === currentPage'>{{ currentPage }}</span>
+                <span class='page-num' v-else-if='index + startPage - 1 <= endPage' @click='movePage(index + startPage - 1)'>{{ index + startPage - 1 }}</span>
             </div>
-            <div class='page' v-if='endPage < totalPage'><span @click='movePage(totalPage)' class='page-num'>&#62;&#62;</span></div>
+            <div class='page' v-if='endPage < totalPage'><span @click='movePage(endPage + 1)' class='page-num'>&#62;&#62;</span></div>
         </div>
-        <button>공지 작성하기</button>
+        <div class='button-area'>
+            <SubmitButton @click='noticeCreate' class='notice-create' value='공지 작성하기'></SubmitButton>
+        </div>
     </div>
 </template>
 <script>
+import SubmitButton from '@/views/Member/components/UI/SubmitButton.vue';
+import { mapState } from 'vuex';
+import api from '@/api/index'
+
 export default {
     name: 'NoticeList',
+    components: {
+        SubmitButton,
+    },
     data() {
         return {
-            notice: [
-                {index: 1, title: '공지사항1', date: '2023-08-10'},
-                {index: 2, title: '공지사항2', date: '2023-08-10'},
-                {index: 3, title: '공지사항3', date: '2023-08-10'},
-                {index: 4, title: '공지사항4', date: '2023-08-10'},
-                {index: 5, title: '공지사항5', date: '2023-08-10'},
-                {index: 6, title: '공지사항6', date: '2023-08-10'},
-                {index: 7, title: '공지사항7', date: '2023-08-10'},
-                {index: 8, title: '공지사항8', date: '2023-08-10'},
-                {index: 9, title: '공지사항9', date: '2023-08-10'},
-                {index: 10, title: '공지사항10', date: '2023-08-10'},
-                {index: 11, title: '공지사항10', date: '2023-08-10'},
-                {index: 12, title: '공지사항10', date: '2023-08-10'},
-                {index: 13, title: '공지사항10', date: '2023-08-10'},
-                {index: 14, title: '공지사항10', date: '2023-08-10'},
+            noticeList: [
+                {id: 1, title: '공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1', content: '공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1', date: '2023-08-10'},
+                {id: 2, title: '공지사항2공지사항2공지사항2공지사항2공지사항2공지사항2공지사항2공지사항2공지사항2공지사항2공지사항2', date: '2023-08-10'},
+                {id: 3, title: '공지사항3공지사항3공지사항3공지사항3공지사항3공지사항3공지사항3공지사항3공지사항3공지사항3공지사항3', date: '2023-08-10'},
+                {id: 4, title: '공지사항4공지사항4공지사항4공지사항4공지사항4공지사항4공지사항4공지사항4공지사항4공지사항4공지사항4', date: '2023-08-10'},
+                {id: 5, title: '공지사항5공지사항5공지사항5공지사항5공지사항5공지사항5공지사항5공지사항5공지사항5공지사항5공지사항5', date: '2023-08-10'},
+                {id: 6, title: '공지사항6', date: '2023-08-10'},
+                {id: 7, title: '공지사항7', date: '2023-08-10'},
+                {id: 8, title: '공지사항8', date: '2023-08-10'},
+                {id: 9, title: '공지사항9', date: '2023-08-10'},
+                {id: 10, title: '공지사항10', date: '2023-08-10'},
+                {id: 11, title: '공지사항10', date: '2023-08-10'},
+                {id: 12, title: '공지사항10', date: '2023-08-10'},
+                {id: 13, title: '공지사항10', date: '2023-08-10'},
+                {id: 14, title: '공지사항10', date: '2023-08-10'},
             ],
-            pageno: 1,
-            pagination: 2,
+            pagination: 5,
+            currentPage: 1,
             startPage: 1,
-            endPage: 5,
+            endPage: 0,
             totalPage: 0,
             selectedNotice: [],
         }
     },
+    computed: {
+        ...mapState(["notices"]),
+    },
     mounted() {
-        this.totalPage = this.notice.length / this.pagination;
+        // notices 받아오기
+        this.$store.commit('setNotices', this.noticeList);
+        // api.defaults.headers["access_token"] = localStorage.getItem("access_token");
+        // api.get('/notice/list').then(({data}) => {
+        //     this.$store.commit('setNotices', data);
+        // })
+        this.totalPage = Math.floor(this.notices.length / this.pagination) + 1;
+        if (this.totalPage <= this.startPage + 4) {
+            this.endPage = this.totalPage;
+        } else {
+            this.endPage = this.startPage + 4;
+        }
         for (let i = 0; i < this.pagination; i++) {
-            if (this.notice.length >= i + 1) {
-                this.selectedNotice.push(this.notice[i]);
+            if (this.notices.length >= i + 1) {
+                this.selectedNotice.push(this.notices[i]);
             }
         }
     },
     methods: {
         movePage(index) {
             this.selectedNotice = [];
-            this.startPage = index;
-            if (index + 4 <= this.totalPage) {
-                this.endPage = index + 4;
+            if (index < 1) {
+                this.currentPage = 1;
+            } else {
+                this.currentPage = index;
+            }
+            this.startPage = Math.floor((this.currentPage - 1) / 5) * 5 + 1;
+            if (this.startPage + 4 <= this.totalPage) {
+                this.endPage = this.startPage + 4;
             } else {
                 this.endPage = this.totalPage;
             }
-            for (let i = (index - 1) * this.pagination; i < index * this.pagination; i++) {
-                if (this.notice.length >= i + 1) {
-                    this.selectedNotice.push(this.notice[i]);
+            for (let i = (this.currentPage - 1) * this.pagination; i < this.currentPage * this.pagination; i++) {
+                if (this.notices.length >= i + 1) {
+                    this.selectedNotice.push(this.notices[i]);
                 }
             }
+        },
+        noticeCreate() {
+            this.$router.push({ name: 'noticecreate' })
+        },
+        noticeDetail(id) {
+            this.$router.push({ name: 'noticedetail', params: { id: id }});
         }
     }
 }
@@ -79,8 +118,6 @@ export default {
 <style scoped>
     .notice-list {
         background-color: #FFF2EA;
-        /* display: flex;
-        justify-content: center; */
         text-align: center;
         
         height: calc(100vh - 150px);
@@ -91,29 +128,48 @@ export default {
         padding: 0;
     }
 
+    h1 {
+        margin-top: 2rem;
+    }
     .notices {
-        width: 80%;
-        background-color: white;
+        width: 90%;
+        margin-top: 2rem;
         margin-left: auto;
         margin-right: auto;
-        font-size: 1.5rem;
+        padding: 0.5rem;
+        font-size: 1rem;
+        font-family: 'Noto Sans KR', sans-serif;
+        background-color: white;
+        border-left: 5px solid #F8837A;
+        clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
     }
 
     .notice {
         display: flex;
         justify-content: center;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        height: 1.5rem;
     }
+
     
     .index {
         width: 10%;
+        text-align: center;
     }
     
     .title {
-        width: 60%;
+        width: 70%;
+        text-align: left;
+        overflow: hidden;
+    }
+    li .title:hover {
+        cursor: pointer;
+        text-decoration: underline;
     }
 
     .date {
-        width: 30%;
+        width: 20%;
     }
     .page {
         display: inline-block;
@@ -126,6 +182,7 @@ export default {
     }
 
     .pagi-nation {
+        margin-top: 2rem;
         margin-left: auto;
         margin-right: auto;
     }
@@ -146,4 +203,27 @@ export default {
         font-size: 1.5rem;
         background-color: white;
     }
+    .notice-create {
+        width: auto;
+        background-color: #FFCDAD;
+        color: #F8837A;
+        font-size: 1.5rem;
+    }
+
+    .button-area {
+        width: 90%;
+        display: flex;
+        justify-content: end;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .head {
+        padding-left: 32px;
+        font-weight: bolder;
+        margin-bottom: 1rem;
+    }
+
 </style>
