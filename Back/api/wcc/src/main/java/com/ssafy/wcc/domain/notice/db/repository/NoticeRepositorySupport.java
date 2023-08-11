@@ -1,10 +1,13 @@
 package com.ssafy.wcc.domain.notice.db.repository;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.wcc.domain.notice.application.dto.request.NoticeRequest;
 import com.ssafy.wcc.domain.notice.db.entity.Notice;
 import com.ssafy.wcc.domain.notice.db.entity.QNotice;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
@@ -35,11 +38,23 @@ public class NoticeRepositorySupport extends QuerydslRepositorySupport {
                 .fetch();
     }
 
-    public List<Notice> listNoticeForAdmin() {
+    public List<Notice> listNoticeForAdmin(int pageNo) {
         return jpaQueryFactory.select(Projections.bean(Notice.class, notice.id, notice.subject, notice.date))
                 .from(notice)
+                .offset((pageNo - 1) * 7)
+                .limit(7)
                 .fetch();
     }
+
+//    public List<Notice> listNoticeForAdmin(Pageable pageable) {
+//        List<Notice> notice = jpaQueryFactory
+//                .select(Projections.bean(Notice.class, notice.id, notice.subject, notice.date))
+//                .from(notice);
+//
+//        long cnt = notice.fetchCount();
+//        List<Notice> res = getQuerydsl().applyPagination(pageable, notice).fetch();
+//
+//    }
 
     public Optional<Notice> getNoticeDetail(long noticeId) {
         return Optional.ofNullable(jpaQueryFactory.select(Projections.bean(Notice.class, notice.subject, notice.content, notice.date))
