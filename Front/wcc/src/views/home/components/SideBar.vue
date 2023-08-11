@@ -11,32 +11,27 @@
         </div>
         <div class="point-button">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
-              <path d="m18 0 8 12 10-8-4 20H4L0 4l10 8 8-12z"></path>
+            <path d="m18 0 8 12 10-8-4 20H4L0 4l10 8 8-12z"></path>
           </svg>
-          <span v-text="state.userInfo.point"></span>
+          <span v-text="state.rankPoint"></span>
         </div>
       </div>
 
-      <div class="username" v-text="state.userInfo.nickname">
+      <div class="username" v-text="state.nickname">
       </div>
     </div>
 
     <div class="sidebar-menus">
       <div>
-        <div @click="selectStart"
-            class="start-button sidebar-menu">게임 시작
+        <div @click="selectStart" class="start-button sidebar-menu">게임 시작
         </div>
-        <div @click="selectNotice"
-          class="-button sidebar-menu">공지
+        <div @click="selectNotice" class="-button sidebar-menu">공지
         </div>
-        <div @click="selectShop"  
-              class="shop-button sidebar-menu">도감
+        <div @click="selectShop" class="shop-button sidebar-menu">도감
         </div>
-        <div @click="selectRanking" 
-              class="ranking-button sidebar-menu">랭킹
+        <div @click="selectRanking" class="ranking-button sidebar-menu">랭킹
         </div>
-        <div @click="selectInfo" 
-              class="info-button sidebar-menu">설명
+        <div @click="selectInfo" class="info-button sidebar-menu">설명
         </div>
       </div>
     </div>
@@ -46,27 +41,42 @@
 <script>
 import { reactive } from 'vue'
 import { useStore } from 'vuex'
+import api from '@/api'
 
 export default {
-  data(){
+  data() {
     return {
-      username: "username",
-      gamepoint: "1000",
       activeMenuItem: ''
     };
   },
-  
-  setup(){
+  setup() {
     const store = useStore();
+
+    //사용자 정보 읽어와서 state에 저장
+    console.log(localStorage.getItem("access_token"))
+    api.defaults.headers["Authorization"] = localStorage.getItem("access_token")
+    const point = "";
+    api.post(`/member`)
+      .then(({ data }) => {
+        console.log("회원 정보 조회 성공...............")
+        console.log("data: ", data.data)
+        store.commit('setUserNickname', data.data.nickname)
+        this.point = data.data.point;
+      })
+      .catch(error => {
+        alert(error.message)
+        console.log(error.response)
+      })
     const state = reactive({        // state 선언
-            userInfo: store.getters['getUserInfo']
-        })
+      nickName: store.getters['getUserNickname'],
+      rankPoint: point
+    })
 
     return { state };
   },
 
   methods: {
-    selectProfile(){
+    selectProfile() {
       this.$emit('selectProfile');
     },
     selectStart() {
@@ -134,13 +144,14 @@ export default {
   font-weight: bold;
   border-radius: 0 0 30px 30px;
   text-shadow: 2px 2px 3px rgb(136 0 136 / 50%);
-  
+
   background: linear-gradient(15deg, #880088, #aa2068, #cc3f47, #de6f3d, #f09f33, #de6f3d, #cc3f47, #aa2068, #880088) no-repeat;
   background-size: 300%;
   background-position: left center;
   transition: background .3s ease;
   color: #FFCDAD;
 }
+
 .point-button svg {
   width: 18px;
   fill: #f09f33;
@@ -160,11 +171,11 @@ export default {
 .username {
   margin-top: 20px;
   color: #FF7B27;
-    text-shadow: 2px 2px 4px #FFCDAD;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
+  text-shadow: 2px 2px 4px #FFCDAD;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 /* -------------- SIDEBAR SETTINGS ------------- */
@@ -172,7 +183,7 @@ export default {
   width: 275px;
   height: 80%;
   margin: 70px 30px 0;
-  
+
   border-radius: 20px;
   border: 5px solid #FFCDAD;
   background: #FFF2EA;
@@ -189,10 +200,11 @@ export default {
 }
 
 .sidebar-info {
-  flex: 40%; /* 사이드바 높이의 40% 차지 */
+  flex: 40%;
+  /* 사이드바 높이의 40% 차지 */
   display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
   justify-content: center;
   cursor: pointer;
 
@@ -200,11 +212,11 @@ export default {
 }
 
 .sidebar-menus {
-  flex: 40%; 
+  flex: 40%;
   display: flex;
   flex-direction: column;
-  align-items: center; 
-  justify-content: center; 
+  align-items: center;
+  justify-content: center;
 }
 
 .sidebar-menu {
@@ -236,6 +248,7 @@ export default {
   background-color: #FF7B27;
   color: #ffffff;
 }
+
 .sidebar-menu:focus,
 .sidebar-menu:active {
   background-color: #ffffff;

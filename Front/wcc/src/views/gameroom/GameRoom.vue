@@ -1,6 +1,5 @@
 <template>
-
-  <div v-if="gameStatus===GameStatus.WAIT_GAME_START">
+  <div v-if="gameStatus === GameStatus.WAIT_GAME_START">
 
     <div class="loading-screen">
       <div class="loading-screen-loader">
@@ -14,30 +13,30 @@
         <div id="square5"></div>
       </div>
 
-      <p class="second">{{second}}</p>
-      
+      <p class="second">{{ second }}</p>
+
     </div>
-  
-      <!-- <p>{{sessionId}}</p>
+
+    <!-- <p>{{sessionId}}</p>
       <p>{{memberId}}</p>
       <p>{{memberToken}}</p> -->
 
   </div>
 
-  <div v-else-if="gameStatus===GameStatus.PICK_TOPIC_KEYWORD">
+  <div v-else-if="gameStatus === GameStatus.PICK_TOPIC_KEYWORD">
     <game-room-prepare :round="round" :second="second"></game-room-prepare>
   </div>
 
   <div v-else>
-      <div class="inner">
-        <!-- HEADER -->
-        <header>
-          <div class="header-center">{{ round + 1 }} 라운드 {{ second }}</div>
-          <button class="Btn" @click="showModal = true">
-            <img src="@/assets/images/getout.png" class="sign" alt="나가기" style="width: 24px;">
-            <div class="text">게임 나가기</div>
-          </button>
-        </header>
+    <div class="inner">
+      <!-- HEADER -->
+      <header>
+        <div class="header-center">{{ round + 1 }} 라운드 {{ second }}</div>
+        <button class="Btn" @click="showModal = true">
+          <img src="@/assets/images/getout.png" class="sign" alt="나가기" style="width: 24px;">
+          <div class="text">게임 나가기</div>
+        </button>
+      </header>
 
         <div class="main-container">
           <div class="gridlayout">
@@ -82,21 +81,21 @@
                   <div></div>
                 </div>
 
-                <div class="share-btn screenshare">
-                  <div class="sign">
-                    <img src="@/assets/images/stream.png" alt="">
-                  </div>
-                  <div class="text">화면 공유</div>
+              <div class="share-btn screenshare">
+                <div class="sign">
+                  <img src="@/assets/images/stream.png" alt="">
                 </div>
+                <div class="text">화면 공유</div>
+              </div>
 
-                <div class="share-btn endterm">
-                  <div class="sign">
-                    <img src="@/assets/images/the-end.png" alt="">
-                  </div>
-                  <div class="text">턴 종료</div>
+              <div class="share-btn endterm">
+                <div class="sign">
+                  <img src="@/assets/images/the-end.png" alt="">
                 </div>
+                <div class="text">턴 종료</div>
               </div>
             </div>
+          </div>
 
             <!-- 4, 8번 박스 === chat-card -->
             <div class="chat-card shadow">
@@ -111,13 +110,13 @@
                 </ul>
               </div>
 
-              <div class="input-container shadow">
-                <input placeholder="메시지를 입력해주세요." type="text" class="input" v-model="message" @keyup.enter="sendMessage">
-                <button @click="sendMessage" class="invite-btn" type="button">
-                  SEND
-                </button>
-              </div>
+            <div class="input-container shadow">
+              <input placeholder="메시지를 입력해주세요." type="text" class="input" v-model="message" @keyup.enter="sendMessage">
+              <button @click="sendMessage" class="invite-btn" type="button">
+                SEND
+              </button>
             </div>
+          </div>
 
             <!-- 5번 박스 -->
             <div class="video video-two shadow">
@@ -154,37 +153,37 @@
               <!--                <div v-if="subscribers[3] !== undefined" class="video-username">{{ nickname(subscribers[3]) }}</div>-->
             </div>
 
-            <!-- <img src="@/assets/images/WCC_logo.png"> -->
-          </div>
+          <!-- <img src="@/assets/images/WCC_logo.png"> -->
+        </div>
 
-          <!-- 모달 창 -->
-          <div v-if="showModal" class="modal">
-            <div class="modal-content">
-              <p>게임을 나가시겠습니까?</p>
-              <div class="modal-content-warning">
-                <div>지금 게임을 <span>무단으로 </span> 나가면 <br>
-                  <span>100포인트</span>를 잃게 됩니다. 그래도 나가시겠습니까?
-                </div>
+        <!-- 모달 창 -->
+        <div v-if="showModal" class="modal">
+          <div class="modal-content">
+            <p>게임을 나가시겠습니까?</p>
+            <div class="modal-content-warning">
+              <div>지금 게임을 <span>무단으로 </span> 나가면 <br>
+                <span>100포인트</span>를 잃게 됩니다. 그래도 나가시겠습니까?
               </div>
-              <div class="modal-content-btn">
-                <div @click="exitGame">나가기</div>
-                <button @click="showModal = false" class="goback-btn">돌아가기</button>
-              </div>
+            </div>
+            <div class="modal-content-btn">
+              <div @click="exitGame">나가기</div>
+              <button @click="showModal = false" class="goback-btn">돌아가기</button>
             </div>
           </div>
         </div>
-
-
       </div>
+
+
+    </div>
   </div>
 </template>
 
 
 <script>
 import GameRoomPrepare from "@/views/gameroom/prepare/GamePrepare.vue";
-import {GameStatus} from "@/game-status";
-import {OpenVidu} from "openvidu-browser";
-import {mapState} from "vuex";
+import { GameStatus } from "@/game-status";
+import { OpenVidu } from "openvidu-browser";
+import { mapState } from "vuex";
 import UserVideo from "@/views/gameroom/components/openvidu/UserVideo.vue";
 
 // import StandBy from '@/views/gameroom/components/maincontent/StandBy.vue';
@@ -208,18 +207,18 @@ export default {
   },
   data() {
     return {
-      gameStatus:GameStatus.WAIT_GAME_START,
-      second:"",
+      gameStatus: GameStatus.WAIT_GAME_START,
+      second: "",
       memberId: localStorage.getItem("memberId"),
       sessionId: localStorage.getItem("sessionId"),
       memberToken: localStorage.getItem("memberToken"),
       OV: undefined,
       session: undefined,
       mainStreamManager: undefined,
-      streamManagers:[],
-      memberTokens:[],
-      flag:false,
-      componentKey:0, 
+      streamManagers: [],
+      memberTokens: [],
+      flag: false,
+      componentKey: 0,
       round: "",
       tellerToken:"",
 
@@ -235,13 +234,13 @@ export default {
       this.OV = new OpenVidu();
       this.session = this.OV.initSession();
 
-      this.session.on("streamCreated", ({stream}) => {
+      this.session.on("streamCreated", ({ stream }) => {
         let subscribeStreamManager = this.session.subscribe(stream);
         this.streamManagers.push(subscribeStreamManager);
         this.memberTokens.push(JSON.parse(subscribeStreamManager.stream.connection.data).clientData);
       });
 
-      this.session.on("streamDestroyed", ({stream}) => {
+      this.session.on("streamDestroyed", ({ stream }) => {
         const index = this.subscribers.indexOf(stream.streamManager, 0);
         if (index >= 0) {
           this.subscribers.splice(index, 1);
@@ -271,58 +270,58 @@ export default {
         this.session.publish(publisherStreamManager);
 
         this.client.subscribe(
-            `/topic/game/${this.sessionId}`,
-            (frame)=>{
-              console.log(frame);
-              let gameResponse = JSON.parse(frame.body);
-              this.gameStatus = gameResponse.gameStatus;
-              this.second = gameResponse.second;
+          `/topic/game/${this.sessionId}`,
+          (frame) => {
+            console.log(frame);
+            let gameResponse = JSON.parse(frame.body);
+            this.gameStatus = gameResponse.gameStatus;
+            this.second = gameResponse.second;
 
-              if(this.gameStatus===GameStatus.ORDER_GAMEMEMBER){
-                console.log(gameResponse.order);
-                console.log(this.memberTokens);
+            if (this.gameStatus === GameStatus.ORDER_GAMEMEMBER) {
+              console.log(gameResponse.order);
+              console.log(this.memberTokens);
 
-                let orderStreamManagers=[];
-                let orderMemberTokens=[];
+              let orderStreamManagers = [];
+              let orderMemberTokens = [];
 
-                for(let orderMemberToken of gameResponse.order){
-                  for(let i=0; i<this.memberTokens.length; i++){
-                    if(orderMemberToken===this.memberTokens[i]){
-                      orderStreamManagers.push(this.streamManagers[i]);
-                      orderMemberTokens.push(orderMemberToken);
-                    }
+              for (let orderMemberToken of gameResponse.order) {
+                for (let i = 0; i < this.memberTokens.length; i++) {
+                  if (orderMemberToken === this.memberTokens[i]) {
+                    orderStreamManagers.push(this.streamManagers[i]);
+                    orderMemberTokens.push(orderMemberToken);
                   }
                 }
-                this.streamManagers = orderStreamManagers;
-                this.memberTokens = orderMemberTokens;
-                this.round = gameResponse.round;
-              }else if(this.gameStatus===GameStatus.PREPARE_PRESENT){
-                if(this.flag){
-                  this.streamManagers.push(this.streamManagers.shift());
-                  this.memberTokens.push(this.memberTokens.shift());
-                  this.componentKey += this.componentKey+1;
-                  this.flag = false;
-                }
-                this.tellerToken = gameResponse.tellerToken;
-              }else if(this.gameStatus===GameStatus.PRESENT){
-                this.flag = true;
               }
-              //
-              // if(gameResponse.tellerToken){
-              //   this.tellerToken = gameResponse.tellerToken;
-              // }
-              //
-              // if(gameResponse.topic){
-              //   this.topic = gameResponse.topic;
-              // }
-            },
-            (error)=>{
-              console.log(error);
-            },
+              this.streamManagers = orderStreamManagers;
+              this.memberTokens = orderMemberTokens;
+              this.round = gameResponse.round;
+            } else if (this.gameStatus === GameStatus.PREPARE_PRESENT) {
+              if (this.flag) {
+                this.streamManagers.push(this.streamManagers.shift());
+                this.memberTokens.push(this.memberTokens.shift());
+                this.componentKey += this.componentKey + 1;
+                this.flag = false;
+              }
+              this.tellerToken = gameResponse.tellerToken;
+            } else if (this.gameStatus === GameStatus.PRESENT) {
+              this.flag = true;
+            }
+            //
+            // if(gameResponse.tellerToken){
+            //   this.tellerToken = gameResponse.tellerToken;
+            // }
+            //
+            // if(gameResponse.topic){
+            //   this.topic = gameResponse.topic;
+            // }
+          },
+          (error) => {
+            console.log(error);
+          },
         );
 
       }).catch((error) => {
-            console.log("There was an error connecting to the session:", error.code, error.message);
+        console.log("There was an error connecting to the session:", error.code, error.message);
       });
 
     }
@@ -374,9 +373,12 @@ header {
   /* background-color: #FFCDAD; */
   background-color: #504C4C; /* 배경색 및 투명도 설정 */
 
-  display: flex; /* Add this line */
-  justify-content: center; /* Add this line */
-  align-items: center; /* Add this line */
+  display: flex;
+  /* Add this line */
+  justify-content: center;
+  /* Add this line */
+  align-items: center;
+  /* Add this line */
 }
 
 .gridlayout {
@@ -478,7 +480,7 @@ header {
 
   display: flex;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
 }
 
 /* ---------- SHARE BTN --------- */
@@ -695,7 +697,7 @@ header {
   border-radius: 8px;
 }
 
-.input-container input:placeholder-shown ~ .invite-btn {
+.input-container input:placeholder-shown~.invite-btn {
   pointer-events: none;
   background-color: gray;
   opacity: 0.5;
@@ -864,12 +866,14 @@ header {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* 배경색 및 투명도 설정 */
+  background-color: rgba(0, 0, 0, 0.7);
+  /* 배경색 및 투명도 설정 */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 9999; /* 다른 요소들 위에 나타나도록 설정 */
+  z-index: 9999;
+  /* 다른 요소들 위에 나타나도록 설정 */
 }
 
 .loading-screen-loader {
@@ -877,12 +881,10 @@ header {
   font-family: sans-serif;
   font-variant: small-caps;
   font-weight: 900;
-  background: conic-gradient(
-    #dff2ae 0 25%,
-    #ff904f 25% 50%,
-    #feefe7 50% 75%,
-    #ffde2b 75%
-  );
+  background: conic-gradient(#dff2ae 0 25%,
+      #ff904f 25% 50%,
+      #feefe7 50% 75%,
+      #ffde2b 75%);
   background-size: 200% 200%;
   animation: animateBackground 4.5s ease-in-out infinite;
   color: transparent;
@@ -893,7 +895,7 @@ header {
 @keyframes animateBackground {
   25% {
     background-position: 0 100%;
-  } 
+  }
 
   50% {
     background-position: 100% 100%;
@@ -924,8 +926,8 @@ header {
   --in-duration: 0.4s;
   --in-delay: 0.1s;
   --in-timing-function: ease-out;
-  width: calc( 3 * var(--offset) + var(--square));
-  height: calc( 2 * var(--offset) + var(--square));
+  width: calc(3 * var(--offset) + var(--square));
+  height: calc(2 * var(--offset) + var(--square));
   padding: 0px;
   margin-left: auto;
   margin-right: auto;
@@ -937,8 +939,8 @@ header {
 .loadingspinner div {
   display: inline-block;
   background: darkorange;
-    /*background: var(--text-color);*/
-    /*box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);*/
+  /*background: var(--text-color);*/
+  /*box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);*/
   border: none;
   border-radius: 2px;
   width: var(--square);
@@ -951,202 +953,204 @@ header {
 }
 
 .loadingspinner #square1 {
-  left: calc( 0 * var(--offset) );
-  top: calc( 0 * var(--offset) );
+  left: calc(0 * var(--offset));
+  top: calc(0 * var(--offset));
   animation: square1 var(--duration) var(--delay) var(--timing-function) infinite,
-               squarefadein var(--in-duration) calc(1 * var(--in-delay)) var(--in-timing-function) both;
+    squarefadein var(--in-duration) calc(1 * var(--in-delay)) var(--in-timing-function) both;
 }
 
 .loadingspinner #square2 {
-  left: calc( 0 * var(--offset) );
-  top: calc( 1 * var(--offset) );
+  left: calc(0 * var(--offset));
+  top: calc(1 * var(--offset));
   animation: square2 var(--duration) var(--delay) var(--timing-function) infinite,
-              squarefadein var(--in-duration) calc(1 * var(--in-delay)) var(--in-timing-function) both;
+    squarefadein var(--in-duration) calc(1 * var(--in-delay)) var(--in-timing-function) both;
 }
 
 .loadingspinner #square3 {
-  left: calc( 1 * var(--offset) );
-  top: calc( 1 * var(--offset) );
+  left: calc(1 * var(--offset));
+  top: calc(1 * var(--offset));
   animation: square3 var(--duration) var(--delay) var(--timing-function) infinite,
-               squarefadein var(--in-duration) calc(2 * var(--in-delay)) var(--in-timing-function) both;
+    squarefadein var(--in-duration) calc(2 * var(--in-delay)) var(--in-timing-function) both;
 }
 
 .loadingspinner #square4 {
-  left: calc( 2 * var(--offset) );
-  top: calc( 1 * var(--offset) );
+  left: calc(2 * var(--offset));
+  top: calc(1 * var(--offset));
   animation: square4 var(--duration) var(--delay) var(--timing-function) infinite,
-               squarefadein var(--in-duration) calc(3 * var(--in-delay)) var(--in-timing-function) both;
+    squarefadein var(--in-duration) calc(3 * var(--in-delay)) var(--in-timing-function) both;
 }
 
 .loadingspinner #square5 {
-  left: calc( 3 * var(--offset) );
-  top: calc( 1 * var(--offset) );
+  left: calc(3 * var(--offset));
+  top: calc(1 * var(--offset));
   animation: square5 var(--duration) var(--delay) var(--timing-function) infinite,
-               squarefadein var(--in-duration) calc(4 * var(--in-delay)) var(--in-timing-function) both;
+    squarefadein var(--in-duration) calc(4 * var(--in-delay)) var(--in-timing-function) both;
 }
 
 @keyframes square1 {
   0% {
-    left: calc( 0 * var(--offset) );
-    top: calc( 0 * var(--offset) );
+    left: calc(0 * var(--offset));
+    top: calc(0 * var(--offset));
   }
 
   8.333% {
-    left: calc( 0 * var(--offset) );
-    top: calc( 1 * var(--offset) );
+    left: calc(0 * var(--offset));
+    top: calc(1 * var(--offset));
   }
 
   100% {
-    left: calc( 0 * var(--offset) );
-    top: calc( 1 * var(--offset) );
+    left: calc(0 * var(--offset));
+    top: calc(1 * var(--offset));
   }
 }
 
 @keyframes square2 {
   0% {
-    left: calc( 0 * var(--offset) );
-    top: calc( 1 * var(--offset) );
+    left: calc(0 * var(--offset));
+    top: calc(1 * var(--offset));
   }
 
   8.333% {
-    left: calc( 0 * var(--offset) );
-    top: calc( 2 * var(--offset) );
+    left: calc(0 * var(--offset));
+    top: calc(2 * var(--offset));
   }
 
   16.67% {
-    left: calc( 1 * var(--offset) );
-    top: calc( 2 * var(--offset) );
+    left: calc(1 * var(--offset));
+    top: calc(2 * var(--offset));
   }
 
   25.00% {
-    left: calc( 1 * var(--offset) );
-    top: calc( 1 * var(--offset) );
+    left: calc(1 * var(--offset));
+    top: calc(1 * var(--offset));
   }
 
   83.33% {
-    left: calc( 1 * var(--offset) );
-    top: calc( 1 * var(--offset) );
+    left: calc(1 * var(--offset));
+    top: calc(1 * var(--offset));
   }
 
   91.67% {
-    left: calc( 1 * var(--offset) );
-    top: calc( 0 * var(--offset) );
+    left: calc(1 * var(--offset));
+    top: calc(0 * var(--offset));
   }
 
   100% {
-    left: calc( 0 * var(--offset) );
-    top: calc( 0 * var(--offset) );
+    left: calc(0 * var(--offset));
+    top: calc(0 * var(--offset));
   }
 }
 
 @keyframes square3 {
-  0%,100% {
-    left: calc( 1 * var(--offset) );
-    top: calc( 1 * var(--offset) );
+
+  0%,
+  100% {
+    left: calc(1 * var(--offset));
+    top: calc(1 * var(--offset));
   }
 
   16.67% {
-    left: calc( 1 * var(--offset) );
-    top: calc( 1 * var(--offset) );
+    left: calc(1 * var(--offset));
+    top: calc(1 * var(--offset));
   }
 
   25.00% {
-    left: calc( 1 * var(--offset) );
-    top: calc( 0 * var(--offset) );
+    left: calc(1 * var(--offset));
+    top: calc(0 * var(--offset));
   }
 
   33.33% {
-    left: calc( 2 * var(--offset) );
-    top: calc( 0 * var(--offset) );
+    left: calc(2 * var(--offset));
+    top: calc(0 * var(--offset));
   }
 
   41.67% {
-    left: calc( 2 * var(--offset) );
-    top: calc( 1 * var(--offset) );
+    left: calc(2 * var(--offset));
+    top: calc(1 * var(--offset));
   }
 
   66.67% {
-    left: calc( 2 * var(--offset) );
-    top: calc( 1 * var(--offset) );
+    left: calc(2 * var(--offset));
+    top: calc(1 * var(--offset));
   }
 
   75.00% {
-    left: calc( 2 * var(--offset) );
-    top: calc( 2 * var(--offset) );
+    left: calc(2 * var(--offset));
+    top: calc(2 * var(--offset));
   }
 
   83.33% {
-    left: calc( 1 * var(--offset) );
-    top: calc( 2 * var(--offset) );
+    left: calc(1 * var(--offset));
+    top: calc(2 * var(--offset));
   }
 
   91.67% {
-    left: calc( 1 * var(--offset) );
-    top: calc( 1 * var(--offset) );
+    left: calc(1 * var(--offset));
+    top: calc(1 * var(--offset));
   }
 }
 
 @keyframes square4 {
   0% {
-    left: calc( 2 * var(--offset) );
-    top: calc( 1 * var(--offset) );
+    left: calc(2 * var(--offset));
+    top: calc(1 * var(--offset));
   }
 
   33.33% {
-    left: calc( 2 * var(--offset) );
-    top: calc( 1 * var(--offset) );
+    left: calc(2 * var(--offset));
+    top: calc(1 * var(--offset));
   }
 
   41.67% {
-    left: calc( 2 * var(--offset) );
-    top: calc( 2 * var(--offset) );
+    left: calc(2 * var(--offset));
+    top: calc(2 * var(--offset));
   }
 
   50.00% {
-    left: calc( 3 * var(--offset) );
-    top: calc( 2 * var(--offset) );
+    left: calc(3 * var(--offset));
+    top: calc(2 * var(--offset));
   }
 
   58.33% {
-    left: calc( 3 * var(--offset) );
-    top: calc( 1 * var(--offset) );
+    left: calc(3 * var(--offset));
+    top: calc(1 * var(--offset));
   }
 
   100% {
-    left: calc( 3 * var(--offset) );
-    top: calc( 1 * var(--offset) );
+    left: calc(3 * var(--offset));
+    top: calc(1 * var(--offset));
   }
 }
 
 @keyframes square5 {
   0% {
-    left: calc( 3 * var(--offset) );
-    top: calc( 1 * var(--offset) );
+    left: calc(3 * var(--offset));
+    top: calc(1 * var(--offset));
   }
 
   50.00% {
-    left: calc( 3 * var(--offset) );
-    top: calc( 1 * var(--offset) );
+    left: calc(3 * var(--offset));
+    top: calc(1 * var(--offset));
   }
 
   58.33% {
-    left: calc( 3 * var(--offset) );
-    top: calc( 0 * var(--offset) );
+    left: calc(3 * var(--offset));
+    top: calc(0 * var(--offset));
   }
 
   66.67% {
-    left: calc( 2 * var(--offset) );
-    top: calc( 0 * var(--offset) );
+    left: calc(2 * var(--offset));
+    top: calc(0 * var(--offset));
   }
 
   75.00% {
-    left: calc( 2 * var(--offset) );
-    top: calc( 1 * var(--offset) );
+    left: calc(2 * var(--offset));
+    top: calc(1 * var(--offset));
   }
 
   100% {
-    left: calc( 2 * var(--offset) );
-    top: calc( 1 * var(--offset) );
+    left: calc(2 * var(--offset));
+    top: calc(1 * var(--offset));
   }
 }
 
@@ -1160,5 +1164,4 @@ header {
     transform: scale(1.0);
     opacity: 1.0;
   }
-}
-</style>
+}</style>

@@ -14,17 +14,8 @@
     <!-- CONTENT -->
     <div class="game-room-prepare-container">
       <div class="game-room-prepare-modal">
-        <img
-            src="@/assets/images/game_prepare_banner.png"
-            class="banner_image"
-            alt="Game_Prepare_Banner"
-            width="400"
-        >
-        <img
-            src="@/assets/images/laughter_icon.png"
-            class="laughter_icon" alt="Game_Prepare_Banner"
-            width="300"
-        >
+        <img src="@/assets/images/game_prepare_banner.png" class="banner_image" alt="Game_Prepare_Banner" width="400">
+        <img src="@/assets/images/laughter_icon.png" class="laughter_icon" alt="Game_Prepare_Banner" width="300">
 
         <div class="mission_choose">
           <!-- 미션 대주제 정하기 -->
@@ -32,14 +23,12 @@
             <span class="mission_subject_title">분류</span>
             <!-- <b-form-select class="w-25" v-model="selected" :options="options"></b-form-select> -->
             <div class="mission_subject_option">
-              <select class="form-select form-select-lg shadow"
-                      style="font-size: 0.5em;
+              <select class="form-select form-select-lg shadow" style="font-size: 0.5em;
 																			color:#714538; 
 																			width:12em; 
 																			text-align: center;
 																			border: none;
-																			border-radius: 15px;"
-                      aria-label="Default select example">
+																			border-radius: 15px;" aria-label="Default select example">
                 <option selected>분류 선택</option>
                 <option value="nonsense">넌센스</option>
                 <option value="dance">막춤</option>
@@ -53,25 +42,14 @@
           <!-- 미션 키워드 정하기 -->
           <div class="mission_keyword">
             <span class="mission_keyword_title">키워드</span>
-            <input
-                type="text"
-                class="mission_keyword_content shadow"
-                :value="selectedKeyword"
-                readonly
-                style="border-radius: 15px;"
-            >
+            <input type="text" class="mission_keyword_content shadow" :value="selectedKeyword" readonly
+              style="border-radius: 15px;">
             <div class="dice-container">
-													<span class="dice-tooltip">
-															랜덤으로 키워드를 정할 수 있습니다.
-													</span>
-              <img
-                  type="button"
-                  @click="rollKeyword"
-                  src="@/assets/images/dice.png"
-                  class="dice-icon"
-                  alt="Game_Prepare_Banner"
-                  width="100"
-              >
+              <span class="dice-tooltip">
+                랜덤으로 키워드를 정할 수 있습니다.
+              </span>
+              <img type="button" @click="rollKeyword" src="@/assets/images/dice.png" class="dice-icon"
+                alt="Game_Prepare_Banner" width="100">
             </div>
           </div>
 
@@ -115,7 +93,7 @@ export default {
       this.selectedKeyword = keywords[Math.floor(Math.random() * keywords.length)];
     },
     goMainGame() {
-      this.$router.push({name: 'maingame'})
+      this.$router.push({ name: 'maingame' })
     }
   },
 }
@@ -278,13 +256,24 @@ header {
 }
 
 @keyframes shake {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(0);
   }
-  10%, 30%, 50%, 70%, 90% {
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
     transform: translateX(-5px);
   }
-  20%, 40%, 60%, 80% {
+
+  20%,
+  40%,
+  60%,
+  80% {
     transform: translateX(5px);
   }
 }

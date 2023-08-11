@@ -1,74 +1,45 @@
 import { createStore } from "vuex";
 
+import gameStore from "./modules/gameStore";
+
 export default createStore({
   namespaced: true,
+  modules: {
+    gameStore,
+  },
   state: {
-    userInfo: {
-      id: "",
-      email: "",
-      password: "",
-      nickname: "",
-      point: "",
-      money: "",
-      admin: "", // 관리자: 0, 유저: 1
-      suspension_day: "",
-      Current_login: "",
-      profile_img: "",
-    },
-    accessToken: null,
-    refreshToken: null,
+    userNickname: "",
+    accessToken: "",
+    refreshToken: "",
     isValidToken: false,
-    mainStreamManager: '',
-    client:null,
+    mainStreamManager: "",
+    client: "",
   },
   mutations: {
-    setClient(state, payload){
+    setClient(state, payload) {
       state.client = payload;
     },
     setAccessToken(state, payload) {
+      console.log("setAccessToken Called................payload: ", payload);
       state.accessToken = payload;
     },
-    initUserInfo(state){
-      state.userInfo = {
-        id: "",
-        email: "",
-        password: "",
-        nickname: "",
-        point: "",
-        money: "",
-        admin: "", // 관리자: 0, 유저: 1
-        suspension_day: "",
-        current_login: "",
-        profile_img: "",
-      };
+    initUserInfo(state) {
+      state.userNickname = "";
     },
-    setUserEmail(state, payload){
-      state.userInfo.email = payload;
+    setUserNickname(state, payload) {
+      state.userNickname = payload;
     },
-    setUserMoney(state, payload){
-      state.userInfo.money = payload;
-    },
-    setUserNickname(state, payload){
-      state.userInfo.nickname = payload;
-    },
-    setUserPoint(state, payload){
-      state.userInfo.point = payload;
-    }
   },
-
   getters: {
-    getUserInfo(state) {
-      console.log("getuserinfo called............")
-      console.log("userInfo: ", state.userInfo);
-      return state.userInfo;
+    getUserNickname(state) {
+      return state.userNickname;
     },
     getAccessToken(state) {
+      console.log("setAccessToken Called................");
       return state.accessToken;
     },
-    getClient(state){
+    getClient(state) {
       return state.client;
-    }
+    },
   },
-
-  actions: {},
 });
