@@ -29,7 +29,7 @@ public class RankController {
 
     private final RankService rankService;
 
-    @PostMapping()
+    @GetMapping
     @ApiOperation(value = "랭커 조회")
     @ApiResponses({
             @ApiResponse(code = 200, message = "조회 성공"),
