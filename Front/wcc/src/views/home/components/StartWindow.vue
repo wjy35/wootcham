@@ -1,6 +1,9 @@
 <template>
   <div class="start-window shadow">
 
+    <div class="home-logo">
+      <img src="@/assets/logo.png" alt="" style="width: 300px;">
+    </div>
     <RealtimeGauge :data="realtimeData" />
 
     <video id="video" autoplay>
@@ -108,6 +111,7 @@ export default {
   background-color: #FFF2EA;
   display: flex;
   justify-content: center;
+  align-items: center;
 
   height: calc(100vh - 150px);
   width: 1000px;
@@ -138,11 +142,19 @@ export default {
   position: relative;
 }
 
+.home-logo img {
+  position: absolute;
+  right: 350px;
+  bottom: 80px;
+  animation: shake 2s infinite;
+}
+
+
 /* NOTICE CARD */
 .notice-card {
   position: absolute;
-  bottom: 70px;
-  right: 30px;
+  bottom: 150px;
+  right: 38px;
   
   align-items: center;
   justify-content: center;
@@ -243,4 +255,20 @@ export default {
 
 .upper {
   z-index: -1;
-}</style>
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px) rotate(-5deg);
+  }
+  50% {
+    transform: translateX(5px) rotate(5deg);
+  }
+  75% {
+    transform: translateX(-5px) rotate(-5deg);
+  }
+}
+</style>
