@@ -55,6 +55,7 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(member);
         Optional<Member> findMember = memberRepository.findByEmail(member.getEmail());
         List<CollectionItem> collectionItemList = collectionItemRepository.findAll();
+
         for (int i = 0; i < collectionItemList.size(); i++) {
             MemberItemPK memberItemPK = MemberItemPK.builder().memberId(findMember.get().getId()).collectionId(collectionItemList.get(i).getId()).build();
             Optional<CollectionItem> collectionItem = collectionItemRepository.findById(memberItemPK.getCollectionId());
