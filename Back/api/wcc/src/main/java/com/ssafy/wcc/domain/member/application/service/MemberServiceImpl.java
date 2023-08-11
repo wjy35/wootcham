@@ -64,7 +64,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Long memberLogin(MemberloginRequest loginInfo) throws WCCException {
+    public Member memberLogin(MemberloginRequest loginInfo) throws WCCException {
         logger.info("memberLogin service 진입");
         Optional<Member> findMember = memberRepository.findByEmail(loginInfo.getEmail());
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -74,14 +74,13 @@ public class MemberServiceImpl implements MemberService {
         if (!encoder.matches(loginInfo.getPassword(), findMember.get().getPassword())) {
             throw new WCCException(Error.PASSWORD_NOT_MATCH);
         }
-        System.out.println(findMember.get().getSuspensionDay());
         if (findMember.get().getSuspensionDay() != null) {
             this.checkSuspendedMember(findMember);
         }
 
         this.updateCurrentLogin(findMember);
 
-        return findMember.get().getId();
+        return findMember.get();
     }
 
     @Override

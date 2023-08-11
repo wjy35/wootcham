@@ -35,6 +35,8 @@ public class ReportController {
 
     private final TokenService tokenService;
 
+    private String id;
+
     @PostMapping()
     @ApiOperation(value = "해당 유저 신고")
     @ApiResponses({
@@ -57,11 +59,11 @@ public class ReportController {
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패"),
     })
-    public ResponseEntity<Map<String,Object>> memberList(@RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
+    public ResponseEntity<Map<String,Object>> memberList(@RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken) {
         logger.info("memberList controller 진입");
 
         Map<String, Object> resultMap = new HashMap<>();
-        String id = tokenService.getAccessTokenId(accessToken);
+        id = tokenService.getIdByToken(accessToken);
         List<AllMemberResponse> memberResponseList = reportService.getAllMemberList();
 
         JSONArray arr = new JSONArray();

@@ -14,17 +14,19 @@ public class AccessTokenRedisRepository {
     private final RedisTemplate<String, String> redisAccessTemplate;
 
     public void saveAccessToken(String accessToken, String value, Long timeout) {
+        System.out.println("히히");
         ValueOperations<String, String> valueOperations = redisAccessTemplate.opsForValue();
         valueOperations.set("AccessToken: " + accessToken, value);
         redisAccessTemplate.expire("AccessToken: " + accessToken, timeout, TimeUnit.MILLISECONDS);
     }
 
     public String getAccessTokenValue(String key) {
+        System.out.println("key = " + key);
         ValueOperations<String, String> valueOperations = redisAccessTemplate.opsForValue();
         return valueOperations.get("AccessToken: " + key);
     }
 
-    public void deleteAccessToken(String accessToken) {
+    public void deleteAcessToken(String accessToken) {
         redisAccessTemplate.delete(accessToken);
     }
 }

@@ -12,7 +12,7 @@ public interface MemberService {
 
     public void memberSignUp(MemberRequest signupInfo);
 
-    public Long memberLogin(MemberloginRequest loginInfo);
+    public Member memberLogin(MemberloginRequest loginInfo);
 
     public void memberDelete(String Id);
 
