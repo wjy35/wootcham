@@ -10,7 +10,7 @@ export default {
     data: {
       type: Number,
       required: true
-    }, 
+    },
     back: {
       type: String
     },
@@ -26,7 +26,7 @@ export default {
       } else {
         return { height: height };
       }
-    }, 
+    },
     containerStyle() {
       if (this.back) {
         return { backgroundColor: this.back }
@@ -42,7 +42,8 @@ export default {
 .gauge-container {
   height: 100%;
   display: flex;
-  align-items: flex-end;;
+  align-items: flex-end;
+  ;
 
   background-color: #f0f0f0;
   border-radius: 25px 0 0 25px;

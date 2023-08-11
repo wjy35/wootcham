@@ -1,5 +1,5 @@
 <template>
-  <video id="myFace" autoplay/>
+	<video id="myFace" autoplay />
 </template>
 
 
@@ -10,53 +10,53 @@ let cam;
 let interval;
 
 export default {
-  name: 'MyFace',
+	name: 'MyFace',
 
-  props: {
-    streamManager: Object,
-  },
-  data() {
+	props: {
+		streamManager: Object,
+	},
+	data() {
 		return {
 			laughCount: 0,
 			outOfFrame: 0,
 		}
 	},
 
-	mounted () {
+	mounted() {
 		cam = document.getElementById("myFace");
 		Promise.all([
 			faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
 			faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
 			faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
 			faceapi.nets.faceExpressionNet.loadFromUri('/models')
-			]).then(navigator.mediaDevices
-				.getUserMedia({ video: true })
-				.then(function (stream) {
-					cam.srcObject = stream;
-				})
-				.catch(function (err) {
+		]).then(navigator.mediaDevices
+			.getUserMedia({ video: true })
+			.then(function (stream) {
+				cam.srcObject = stream;
+			})
+			.catch(function (err) {
 				console.log(err);
-				})
+			})
 		)
 		this.streamManager.addVideoElement(cam);
 		this.startDetect();
 	},
 
-	updated () {
+	updated() {
 		cam = document.getElementById("myFace");
 		Promise.all([
 			faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
 			faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
 			faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
 			faceapi.nets.faceExpressionNet.loadFromUri('/models')
-			]).then(navigator.mediaDevices
-				.getUserMedia({ video: true })
-				.then(function (stream) {
-					cam.srcObject = stream;
-				})
-				.catch(function (err) {
+		]).then(navigator.mediaDevices
+			.getUserMedia({ video: true })
+			.then(function (stream) {
+				cam.srcObject = stream;
+			})
+			.catch(function (err) {
 				console.log(err);
-				})
+			})
 		)
 		this.streamManager.addVideoElement(cam);
 		this.startDetect();
@@ -98,7 +98,7 @@ export default {
 
 <style scoped>
 video {
-  width: 100%;
-  height: auto;
+	width: 100%;
+	height: auto;
 }
 </style>

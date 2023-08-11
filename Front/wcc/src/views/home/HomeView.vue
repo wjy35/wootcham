@@ -34,26 +34,26 @@
     <!-- CONTENT -->
     <div class="main-container">
       <SideBar @selectProfile="selectProfile" @selectStart="selectStart" @selectNotice="selectNotice"
-               @selectShop="selectShop" @selectRanking="selectRanking" @selectInfo="selectInfo"/>
+        @selectShop="selectShop" @selectRanking="selectRanking" @selectInfo="selectInfo" />
 
       <!-- Conditional rendering based on the selectedScreen data -->
       <div v-if="selectedScreen === 'ProfileWindowScreen'">
-        <ProfileWindow/>
+        <ProfileWindow />
       </div>
       <div v-if="selectedScreen === 'StartWindowScreen'">
-        <StartWindow/>
+        <StartWindow />
       </div>
       <div v-else-if="selectedScreen === 'NoticeWindowScreen'">
-        <NoticeWindow/>
+        <NoticeWindow />
       </div>
       <div v-else-if="selectedScreen === 'ShopWindowScreen'">
-        <ShopWindow/>
+        <ShopWindow />
       </div>
       <div v-else-if="selectedScreen === 'RankingWindowScreen'">
-        <RankingWindow/>
+        <RankingWindow />
       </div>
       <div v-else-if="selectedScreen === 'InfoWindowScreen'">
-        <InfoWindow/>
+        <InfoWindow />
       </div>
     </div>
   </div>
@@ -68,8 +68,8 @@ import ShopWindow from './components/ShopWindow.vue';
 import RankingWindow from './components/RankingWindow.vue';
 import InfoWindow from './components/InfoWindow.vue';
 import * as Stomp from "webstomp-client";
-import {MatchStatus} from '@/match-status';
-import {mapMutations} from "vuex";
+import { MatchStatus } from '@/match-status';
+import { mapMutations } from "vuex";
 
 export default {
   name: 'HomeView',
@@ -109,62 +109,62 @@ export default {
       this.client = Stomp.client(process.env.VUE_APP_MATCH_ENDPOINT_URL);
       this.setClient(this.client);
       this.client.connect(
-          {},
-          () => {
-            this.client.subscribe(
-                "/user/queue/match",
-                (frame) => {
-                  let response = JSON.parse(frame.body);
-                  if (response.success) {
+        {},
+        () => {
+          this.client.subscribe(
+            "/user/queue/match",
+            (frame) => {
+              let response = JSON.parse(frame.body);
+              if (response.success) {
+                this.matchStatus = response.matchStatus;
+
+                if (response.matchStatus === MatchStatus.MATCHED) {
+                  if (response.second) {
+                    this.second = response.second;
+                  } else {
                     this.matchStatus = response.matchStatus;
-
-                    if (response.matchStatus === MatchStatus.MATCHED) {
-                      if (response.second) {
-                        this.second = response.second;
-                      } else {
-                        this.matchStatus = response.matchStatus;
-                        this.memberId = response.memberId;
-                        this.groupId = response.groupId;
-                      }
-
-                    } else if (response.matchStatus === MatchStatus.CREATED) {
-
-                      this.memberToken = response.memberToken;
-                      this.sessionId = response.sessionId;
-
-                      localStorage.setItem("memberToken", this.memberToken);
-                      localStorage.setItem("sessionId", this.sessionId);
-                      localStorage.setItem("memberId", this.memberId);
-                      this.$router.push({name: "gameroom"});
-
-                    } else if (response.matchStatus === MatchStatus.DESTROYED) {
-                      this.matchStatus = MatchStatus.READY;
-
-                      // ToDo 연속 뇌절 금지 만들기   // Destroyed 될때마다 count를 올려주고 일정 count가 되면 일정 시간동안 게임시작 잠그기
-                      console.log("");
-
-                    }
+                    this.memberId = response.memberId;
+                    this.groupId = response.groupId;
                   }
-                },
-                (error) => {
-                  /**
-                   * ToDo
-                   * 에러 처리
-                   * 인터넷 연결, 브라우저 오류 등의 문제로 소켓 연결 실패시 실행되는 callback
-                   */
 
-                  console.log(error);
-                });
-          },
-          (error) => {
-            /**
-             * ToDo
-             * 에러 처리
-             * 인터넷 연결, 브라우저 오류 등의 문제로 소켓 연결 실패시 실행되는 callback
-             */
+                } else if (response.matchStatus === MatchStatus.CREATED) {
 
-            console.log(error)
-          },
+                  this.memberToken = response.memberToken;
+                  this.sessionId = response.sessionId;
+
+                  localStorage.setItem("memberToken", this.memberToken);
+                  localStorage.setItem("sessionId", this.sessionId);
+                  localStorage.setItem("memberId", this.memberId);
+                  this.$router.push({ name: "gameroom" });
+
+                } else if (response.matchStatus === MatchStatus.DESTROYED) {
+                  this.matchStatus = MatchStatus.READY;
+
+                  // ToDo 연속 뇌절 금지 만들기   // Destroyed 될때마다 count를 올려주고 일정 count가 되면 일정 시간동안 게임시작 잠그기
+                  console.log("");
+
+                }
+              }
+            },
+            (error) => {
+              /**
+               * ToDo
+               * 에러 처리
+               * 인터넷 연결, 브라우저 오류 등의 문제로 소켓 연결 실패시 실행되는 callback
+               */
+
+              console.log(error);
+            });
+        },
+        (error) => {
+          /**
+           * ToDo
+           * 에러 처리
+           * 인터넷 연결, 브라우저 오류 등의 문제로 소켓 연결 실패시 실행되는 callback
+           */
+
+          console.log(error)
+        },
       )
     },
     logout() {
@@ -174,7 +174,7 @@ export default {
       // Store 초기화
       this.$store.commit('initUserInfo');
       // 로그인 화면으로 리다이렉트
-      this.$router.push({name: "login"});
+      this.$router.push({ name: "login" });
     },
     selectProfile() {
       this.selectedScreen = 'ProfileWindowScreen';
