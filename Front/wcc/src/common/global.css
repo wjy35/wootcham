@@ -1,0 +1,95 @@
+#app {
+    font-family: 'Black Han Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100vh;
+  }
+  
+  #inner {
+    position: relative;
+    min-width: 1500px; 
+    margin: 0 auto;
+  }
+  
+  
+  /* 버튼 (공통 컴포넌트) */
+  #submitButton {
+    width: 100%;
+    color: white;
+    font-size: 2rem; 
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 5px 5px 5px gray;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+  }
+  
+  #submitButton:hover {
+    box-shadow: 5px 5px 5px black;
+    cursor: pointer;
+  }
+  
+  
+   /* 스크롤바 스타일링 */
+  ::-webkit-scrollbar {
+    width: 0.1px;
+    height: 7px;
+  }
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: black;
+  }
+  /* 핸들 */
+  ::-webkit-scrollbar-thumb {
+    background: #FFCDAD; 
+    border-radius: 5px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #FFCDAD; 
+  }
+  
+  /* 홈 컨텐츠 화면*/
+  .content-window {
+    position: relative;
+  
+    height: calc(100vh - 150px);
+    width: 1000px;
+    margin: 70px 30px 0;
+    border-radius: 25px;
+    border: 3px solid #FFCDAD;
+    padding: 30px;
+  }
+  
+  /* 박스에 그림자 효과를 줍니다 */
+  .shadow {
+    box-shadow: inset 0 -3em 3em rgba(0,0,0,0.1),
+                0 0  0 2px rgb(190, 190, 190),
+                0.3em 0.3em 1em rgba(0,0,0,0.3);
+   }
+
+   /* 빠른 flex */
+   .flex {
+    display: flex;
+   }
+
+   .cursor-pointer {
+    cursor: pointer;
+   }
+
+   .material-icons {
+    color: #fff;
+    font-size: 30px;
+   }
+
+   /* 비디오 video */ 
+   .video {
+    border-radius: 25px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+   }
+
+   /* 발표자 비디오 이펙트 Presenter Video Effect */
+
+  
