@@ -32,7 +32,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class MemberController{
 
     Logger logger = LoggerFactory.getLogger(MemberController.class);
@@ -125,6 +124,7 @@ public class MemberController{
         Member member = memberService.memberLogin(loginInfo);
         MemberLoginResponse memberLoginResponse = tokenService.makeMemberLoginResponse(String.valueOf(member.getId()));
         res.put("isSuccess", true);
+        res.put("admin",member.getAdmin());
         res.put("accessToken", memberLoginResponse.getAccessToken());
         res.put("refreshToken", memberLoginResponse.getRefreshToken());
 
@@ -194,7 +194,6 @@ public class MemberController{
         memberService.memberDelete(id);
         res.put("isSuccess", true);
         return new ResponseEntity<>(res, HttpStatus.OK);
-
     }
 
     @PostMapping("/nickname")

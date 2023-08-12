@@ -31,7 +31,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/collection")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class CollectionController {
 
     Logger logger = LoggerFactory.getLogger(NoticeController.class);

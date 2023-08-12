@@ -1,10 +1,8 @@
 package com.ssafy.wcc.domain.jwt.application.service;
 
 import com.ssafy.wcc.common.exception.Error;
-import com.ssafy.wcc.common.repository.AccessTokenRedisRepository;
-import com.ssafy.wcc.common.repository.BlackListTokenRedisRepository;
+import com.ssafy.wcc.common.repository.TokenRedisRepository;
 import com.ssafy.wcc.common.repository.EmailRedisRepository;
-import com.ssafy.wcc.common.repository.RefreshTokenRedisRepository;
 import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
 import com.ssafy.wcc.domain.member.db.entity.Member;
 import io.jsonwebtoken.*;
@@ -20,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -29,11 +26,8 @@ public class TokenServiceImpl implements TokenService {
 
     Logger logger = LoggerFactory.getLogger(TokenServiceImpl.class);
 
-    private final CustomUserDetailService customUserDetailService;
     private final EmailRedisRepository emailRedisRepository;
-    private final AccessTokenRedisRepository accessTokenRedisRepository;
-    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
-    private final BlackListTokenRedisRepository blackListTokenRedisRepository;
+    private final TokenRedisRepository tokenRedisRepository;
 
     @Value("${jwt.salt}")
     private String salt;
@@ -52,13 +46,14 @@ public class TokenServiceImpl implements TokenService {
     public String createRefreshToken(String id) {
         logger.info("createRefreshToken service 진입");
         String refreshToken = create("refreshToken", id, expireMin * 5);
+        tokenRedisRepository.saveToken(refreshToken, id, expireMin * 5);
         return refreshToken;
     }
 
     @Override
     public void saveLogoutToken(String accessToken) {
         logger.info("saveLogoutToken service 진입");
-        blackListTokenRedisRepository.saveBlackListToken(accessToken, "logout", this.getExpire(accessToken));
+        tokenRedisRepository.saveToken(accessToken, "logout", this.getExpire(accessToken));
     }
 
 
@@ -89,21 +84,16 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public String getBlackListTokenId(String token) {
-        logger.info("getBlackListTokenId service 진입");
-        return blackListTokenRedisRepository.getBlackListTokenValue(token);
+    public String getToken(String token) {
+        logger.info("getToken service 진입");
+        return tokenRedisRepository.getTokenValue(token);
     }
+
 
     @Override
     public String getEmailData(String token) {
         logger.info("getEmailData service 진입");
         return emailRedisRepository.getEmailValue(token);
-    }
-
-    @Override
-    public void deleteRefreshToken(String refreshToken) {
-        logger.info("deleteRefreshToken service 진입");
-        refreshTokenRedisRepository.deleteRefreshToken(refreshToken);
     }
 
     @Override
