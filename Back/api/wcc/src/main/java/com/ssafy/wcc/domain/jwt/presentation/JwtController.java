@@ -1,5 +1,7 @@
 package com.ssafy.wcc.domain.jwt.presentation;
 
+import com.ssafy.wcc.common.exception.Error;
+import com.ssafy.wcc.common.exception.WCCException;
 import com.ssafy.wcc.domain.jwt.application.service.TokenService;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
 import com.ssafy.wcc.domain.member.application.service.MemberServiceImpl;
@@ -21,7 +23,6 @@ import java.util.Map;
 @RestController
 @RequestMapping
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class JwtController {
 
     Logger logger = LoggerFactory.getLogger(MemberServiceImpl.class);
@@ -39,6 +40,9 @@ public class JwtController {
         Map<String, Object> res = new HashMap<>();
         if (tokenService.checkToken(refreshToken)) {
             String id = tokenService.getIdByToken(refreshToken);
+
+            if(id == null) throw new WCCException(Error.UNKNOWN_ERROR);
+
             String newAccessToken = tokenService.createAccessToken(id);
             res.put("isSuccess", true);
             res.put("accessToken", newAccessToken);
