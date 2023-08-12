@@ -32,7 +32,7 @@ public interface TokenService {
     public void deleteRefreshToken(String refreshToken);
 
 //    public String getAccessTokenId(String token);
-    public String getBlackListTokenId(String token);
+    public String getToken(String token);
 //    public String getRefreshTokenId(String token);
 
     public String getEmailData(String token);

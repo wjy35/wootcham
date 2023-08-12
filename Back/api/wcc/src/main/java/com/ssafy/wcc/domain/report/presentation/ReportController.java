@@ -26,7 +26,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/report")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class ReportController {
 
     Logger logger = LoggerFactory.getLogger(NoticeController.class);

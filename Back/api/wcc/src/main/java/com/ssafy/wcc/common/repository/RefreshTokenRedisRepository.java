@@ -21,10 +21,10 @@ public class RefreshTokenRedisRepository {
 
     public String getRefreshTokenValue(String key) {
         ValueOperations<String, String> valueOperations = redisRefreshTokenTemplate.opsForValue();
-        return valueOperations.get("RefreshToken: "+key);
+        return valueOperations.get(key);
     }
 
     public void deleteRefreshToken(String refreshToken) {
-        redisRefreshTokenTemplate.delete("RefreshToken: "+refreshToken);
+        redisRefreshTokenTemplate.delete(refreshToken);
     }
 }

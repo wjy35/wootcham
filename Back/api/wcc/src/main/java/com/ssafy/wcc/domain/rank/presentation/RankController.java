@@ -22,7 +22,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/rank")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class RankController {
 
     Logger logger = LoggerFactory.getLogger(NoticeController.class);
