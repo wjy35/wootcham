@@ -1,6 +1,7 @@
 package com.ssafy.wcc.domain.jwt.application.service;
 
 import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +11,7 @@ public interface TokenService {
     public String createAccessToken(String id);
     public String createRefreshToken(String id);
 
-    public String create(String subject, long expireMin);
+    public String create(String subject, String id, long expireMin);
 
     public void saveLogoutToken(String accessToken);
 
@@ -18,9 +19,9 @@ public interface TokenService {
 
     public byte[] generateKey();
 
-    public Map<String, Object> checkAndGetClaims(String jwt);
+    public String getIdByToken(String jwt);
 
-    public boolean checkToken(String jwt);
+    public boolean checkToken(String jwt) throws ExpiredJwtException;
 
     public MemberLoginResponse makeMemberLoginResponse(String id);
 
@@ -30,9 +31,9 @@ public interface TokenService {
 
     public void deleteRefreshToken(String refreshToken);
 
-    public String getAccessTokenId(String token);
+//    public String getAccessTokenId(String token);
     public String getBlackListTokenId(String token);
-    public String getRefreshTokenId(String token);
+//    public String getRefreshTokenId(String token);
 
     public String getEmailData(String token);
 }

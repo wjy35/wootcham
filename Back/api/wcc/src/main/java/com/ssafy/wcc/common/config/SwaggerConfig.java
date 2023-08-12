@@ -19,9 +19,31 @@ public class SwaggerConfig {
     // http://localhost:8080/swagger-ui.html
 
     @Bean
+    public Docket rankApi(){
+        return getDocket("com.ssafy.wcc.domain.rank", "랭킹", Predicates.or(PathSelectors.regex("/rank.*")));
+    }
+
+    @Bean
+    public Docket authApi(){
+        return getDocket("com.ssafy.wcc.domain.jwt", "갱신", Predicates.or(PathSelectors.regex("/refresh")));
+    }
+
+    @Bean
+    public Docket collectionApi(){
+        return getDocket("com.ssafy.wcc.domain.collection", "아이템", Predicates.or(PathSelectors.regex("/collection.*")));
+    }
+
+
+    @Bean
     public Docket memberApi() {
         return getDocket("com.ssafy.wcc.domain.member", "회원", Predicates.or(PathSelectors.regex("/member.*")));
     }
+
+    @Bean
+    public Docket noticeApi(){
+        return getDocket("com.ssafy.wcc.domain.notice", "공지", Predicates.or(PathSelectors.regex("/notice.*")));
+    }
+
 
     public Docket getDocket(String base, String groupName, Predicate<String> predicate) {
         return new Docket(DocumentationType.SWAGGER_2).groupName(groupName).select()

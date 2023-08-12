@@ -1,17 +1,17 @@
 package com.ssafy.wcc.domain.jwt.application.service;
 
+import com.ssafy.wcc.common.exception.Error;
 import com.ssafy.wcc.common.repository.AccessTokenRedisRepository;
 import com.ssafy.wcc.common.repository.BlackListTokenRedisRepository;
 import com.ssafy.wcc.common.repository.EmailRedisRepository;
 import com.ssafy.wcc.common.repository.RefreshTokenRedisRepository;
 import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
 import com.ssafy.wcc.domain.member.db.entity.Member;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,13 +19,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-public class TokenServiceImpl implements TokenService{
+public class TokenServiceImpl implements TokenService {
+
+    Logger logger = LoggerFactory.getLogger(TokenServiceImpl.class);
 
     private final CustomUserDetailService customUserDetailService;
     private final EmailRedisRepository emailRedisRepository;
@@ -41,36 +43,40 @@ public class TokenServiceImpl implements TokenService{
 
     @Override
     public String createAccessToken(String id) {
-        String accessToken = create("access-token", expireMin);
-        accessTokenRedisRepository.saveAccessToken(accessToken, id, expireMin);
+        logger.info("createAccessToken service 진입");
+        String accessToken = create("accessToken", id, expireMin);
         return accessToken;
     }
 
     @Override
     public String createRefreshToken(String id) {
-        String refreshToken = create("refresh-token", expireMin*5);
-        refreshTokenRedisRepository.saveRefreshToken(refreshToken, id, expireMin*5);
+        logger.info("createRefreshToken service 진입");
+        String refreshToken = create("refreshToken", id, expireMin * 5);
         return refreshToken;
     }
 
     @Override
-    public void saveLogoutToken(String accessToken){
+    public void saveLogoutToken(String accessToken) {
+        logger.info("saveLogoutToken service 진입");
         blackListTokenRedisRepository.saveBlackListToken(accessToken, "logout", this.getExpire(accessToken));
     }
 
 
     @Override
-    public Long getExpire(String accessToken){
+    public Long getExpire(String accessToken) {
+        logger.info("getExpire service 진입");
+        System.out.println(accessToken);
         Date expiration = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(accessToken).getBody().getExpiration();
-        // 현재 시간
         Long now = new Date().getTime();
         return (expiration.getTime() - now);
     }
 
     @Override
-    public String create(String subject, long expireMin) {
+    public String create(String subject, String id, long expireMin) {
+        logger.info("create service 진입");
         Claims claims = Jwts.claims()
                 .setSubject(subject)
+                .setId(id)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expireMin));
 
@@ -83,78 +89,79 @@ public class TokenServiceImpl implements TokenService{
     }
 
     @Override
-    public String getAccessTokenId(String token){
-        return accessTokenRedisRepository.getAccessTokenValue(token);
-    }
-
-    @Override
     public String getBlackListTokenId(String token) {
+        logger.info("getBlackListTokenId service 진입");
         return blackListTokenRedisRepository.getBlackListTokenValue(token);
     }
 
     @Override
-    public String getRefreshTokenId(String token) {
-        return refreshTokenRedisRepository.getRefreshTokenValue(token);
-    }
-
-    @Override
     public String getEmailData(String token) {
+        logger.info("getEmailData service 진입");
         return emailRedisRepository.getEmailValue(token);
     }
 
     @Override
-    public void deleteRefreshToken(String refreshToken){
+    public void deleteRefreshToken(String refreshToken) {
+        logger.info("deleteRefreshToken service 진입");
         refreshTokenRedisRepository.deleteRefreshToken(refreshToken);
     }
 
     @Override
     public byte[] generateKey() {
+        logger.info("generateKey service 진입");
         byte[] key = null;
         key = salt.getBytes();
         return key;
     }
 
     @Override
-    public Map<String, Object> checkAndGetClaims(String jwt) {
+    public String getIdByToken(String jwt) {
+        logger.info("checkAndGetClaims service 진입");
         Jws<Claims> claims = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt);
-        return claims.getBody();
+        return claims.getBody().getId();
     }
 
     @Override
-    public boolean checkToken(String jwt) {
+    public boolean checkToken(String jwt){
+        logger.info("checkToken service 진입");
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt);
             return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+        } catch (SignatureException e) {
+            log.info("SignatureException");
+            throw new JwtException(Error.WRONG_TYPE_TOKEN.getMessage());
+        } catch (MalformedJwtException e) {
+            log.info("MalformedJwtException");
+            throw new JwtException(Error.UNSUPPORTED_TOKEN.getMessage());
+        } catch (ExpiredJwtException e) {
+            log.info("ExpiredJwtException");
+            throw new JwtException(Error.EXPIRED_TOKEN.getMessage());
+        } catch (IllegalArgumentException e) {
+            log.info("IllegalArgumentException");
+            throw new JwtException(Error.UNKNOWN_ERROR.getMessage());
         }
     }
 
     @Override
     public MemberLoginResponse makeMemberLoginResponse(String id) {
-        MemberLoginResponse response = new MemberLoginResponse(this.createAccessToken(id),this.createRefreshToken(id));
+        logger.info("makeMemberLoginResponse service 진입");
+        MemberLoginResponse response = new MemberLoginResponse( this.createAccessToken(id), this.createRefreshToken(id));
         return response;
     }
 
     @Override
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("access-token");
+        logger.info("resolveToken service 진입");
+        return request.getHeader("Authorization");
     }
 
     @Override
-    public Authentication getAuthentication(String token) {
-        String id = this.getAccessTokenId(token);
-        Member m = Member.builder().id  (Long.parseLong(id)).build();
+    public Authentication getAuthentication(String token) throws RuntimeException {
+        logger.info("getAuthentication service 진입");
+        String id = this.getIdByToken(token);
+        Member m = Member.builder().id(Long.parseLong(id)).build();
         UserDetails userDetails = m;
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
-
-//    @Override
-//    public String getEmail(String token){
-//      return (String)Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(token).getBody().get("email");
-//    }
-//
-
 
 }
