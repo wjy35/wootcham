@@ -124,6 +124,7 @@ public class MemberController{
         Member member = memberService.memberLogin(loginInfo);
         MemberLoginResponse memberLoginResponse = tokenService.makeMemberLoginResponse(String.valueOf(member.getId()));
         res.put("isSuccess", true);
+        res.put("admin",member.getAdmin());
         res.put("accessToken", memberLoginResponse.getAccessToken());
         res.put("refreshToken", memberLoginResponse.getRefreshToken());
 
