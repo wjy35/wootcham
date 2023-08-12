@@ -1,14 +1,15 @@
 package com.ssafy.game.game.api.processor;
 
 import com.ssafy.game.common.GameSessionSetting;
+import com.ssafy.game.game.api.dto.RankPointChange;
 import com.ssafy.game.game.api.response.*;
 import com.ssafy.game.game.db.entity.GameSession;
-import com.ssafy.game.game.db.entity.Topic;
 import com.ssafy.game.match.common.GameSetting;
 import com.ssafy.game.util.MessageSender;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GameProcessor implements Runnable{
@@ -36,14 +37,64 @@ public class GameProcessor implements Runnable{
 
     private void roundProcess(int round){
         roundSetting(round);
-
-//        pickTopicType();
-        pickTopicKeyword();
+        pickTopic();
 
         for(int i=0; i<gameSession.getOrderList().size(); i++){
             preparePresent(i);
             present(i);
             System.out.println("gameSession.getTopics() = " + gameSession.getTopics());
+        }
+
+        reflectRank();
+    }
+
+    private void reflectRank(){
+        List<RankPointChange> rankPointChangeList = getRankPointChangeList();
+
+        sendGameStatusResponse(new ReflectRankResponse(rankPointChangeList));
+    }
+
+
+    private List<RankPointChange> getRankPointChangeList(){
+        updateDisconnectGameMemberSmileCount();
+
+        Integer smileSum = 0;
+
+        for(Integer smileCount: gameSession.getSmileCount().values()){
+            smileSum += smileCount;
+        }
+        Integer smileAvg = smileSum/gameSession.getGameMembers().size();
+
+        List<Map.Entry<String,Integer>> smileCountEntryList =  new ArrayList<>(gameSession.getSmileCount().entrySet());
+        smileCountEntryList.sort(new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return o1.getValue().compareTo(o2.getValue());
+            }
+        });
+
+        List<RankPointChange> rankPointChangeList = new ArrayList<>();
+
+        for(int rank=1; rank<= smileCountEntryList.size(); rank++){
+            rankPointChangeList.add(
+                    new RankPointChange(
+                            smileCountEntryList.get(rank).getKey(),
+                            smileCountEntryList.get(rank).getValue()-smileAvg+rank)
+            );
+        }
+
+        return rankPointChangeList;
+    }
+
+    private void updateDisconnectGameMemberSmileCount() {
+        List<Map.Entry<String, LocalDateTime>> disconnectTimeEntryList = new ArrayList<>(gameSession.getDisconnectTime().entrySet());
+
+        for (Map.Entry<String, LocalDateTime> disconnectTimeEntry : disconnectTimeEntryList) {
+            gameSession.updateSmileCount(
+                    disconnectTimeEntry.getKey(),
+                    ((int) Duration.between(
+                            disconnectTimeEntry.getValue(),
+                            LocalDateTime.now()).toMillis()) / (GameSessionSetting.SMILE_COUNT_CHECK_INTERVAL_SECOND * 1000));
         }
     }
 
@@ -90,24 +141,9 @@ public class GameProcessor implements Runnable{
         }
     }
 
-    private void pickTopicKeyword(){
-        int second = GameSessionSetting.MAX_PICK_TOPIC_KEYWORD_SECOND;
-        GameStatusResponse gameStatusResponse = new GameStatusResponse(GameStatus.PICK_TOPIC_KEYWORD,second);
-
-        try{
-            while(second-->0){
-                gameStatusResponse.setSecond(second);
-                sendGameStatusResponse(gameStatusResponse);
-                Thread.sleep(1000);
-            }
-        }catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void pickTopicType(){
-        int second = GameSessionSetting.MAX_PICK_TOPIC_TYPE_SECOND;
-        GameStatusResponse gameStatusResponse = new GameStatusResponse(GameStatus.PICK_TOPIC_TYPE,second);
+    private void pickTopic(){
+        int second = GameSessionSetting.MAX_PICK_TOPIC_SECOND;
+        GameStatusResponse gameStatusResponse = new GameStatusResponse(GameStatus.PICK_TOPIC,second);
 
         try{
             while(second-->0){

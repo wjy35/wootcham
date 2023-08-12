@@ -1,9 +1,14 @@
 package com.ssafy.game.game.db.entity;
 
 
+import com.ssafy.game.common.GameSessionSetting;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +33,7 @@ public class GameSession {
     private boolean checkedSkipPreparedPresent;
     private boolean checkedSkipPresent;
     private Map<String,Integer> smileCount;
+    private Map<String, LocalDateTime> disconnectTime;
 
     public GameSession(String sessionId) {
         this.sessionId = sessionId;
@@ -36,6 +42,7 @@ public class GameSession {
         this.checkedSkipPreparedPresent = false;
         this.checkedSkipPresent = false;
         this.smileCount = new HashMap<>();
+        this.disconnectTime = new HashMap<>();
     }
 
     public void pickTopic(String memberToken, Integer type, String keyword){
@@ -44,7 +51,7 @@ public class GameSession {
     }
 
     public void upSmileCount(String memberToken){
-        smileCount.replace(memberToken,smileCount.get(memberToken)+1);
+        updateSmileCount(memberToken,1);
     }
 
     public void loadTopic(String memberToken){
@@ -52,4 +59,19 @@ public class GameSession {
     }
 
     public void loadSmileCount(String memberToken) { smileCount.put(memberToken,0); }
+
+    public void updateSmileCount(String memberToken,int count){
+        // ToDo merge 로 변경
+        smileCount.replace(memberToken,smileCount.get(memberToken)+count);
+    }
+
+    public void disconnect(String memberToken){
+        disconnectTime.put(memberToken,LocalDateTime.now());
+    }
+
+    public void reconnect(String memberToken){
+        int count = ((int)Duration.between(disconnectTime.get(memberToken),LocalDateTime.now()).toMillis())/ (GameSessionSetting.SMILE_COUNT_CHECK_INTERVAL_SECOND * 1000);
+        disconnectTime.remove(memberToken);
+        updateSmileCount(memberToken,count);
+    }
 }
