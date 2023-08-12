@@ -29,11 +29,7 @@ public interface TokenService {
 
     public Authentication getAuthentication(String token);
 
-    public void deleteRefreshToken(String refreshToken);
-
-//    public String getAccessTokenId(String token);
     public String getToken(String token);
-//    public String getRefreshTokenId(String token);
 
     public String getEmailData(String token);
 }

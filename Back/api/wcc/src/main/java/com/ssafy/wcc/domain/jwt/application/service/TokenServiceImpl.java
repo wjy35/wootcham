@@ -1,10 +1,8 @@
 package com.ssafy.wcc.domain.jwt.application.service;
 
 import com.ssafy.wcc.common.exception.Error;
-import com.ssafy.wcc.common.repository.AccessTokenRedisRepository;
 import com.ssafy.wcc.common.repository.TokenRedisRepository;
 import com.ssafy.wcc.common.repository.EmailRedisRepository;
-import com.ssafy.wcc.common.repository.RefreshTokenRedisRepository;
 import com.ssafy.wcc.domain.member.application.dto.response.MemberLoginResponse;
 import com.ssafy.wcc.domain.member.db.entity.Member;
 import io.jsonwebtoken.*;
@@ -28,10 +26,7 @@ public class TokenServiceImpl implements TokenService {
 
     Logger logger = LoggerFactory.getLogger(TokenServiceImpl.class);
 
-    private final CustomUserDetailService customUserDetailService;
     private final EmailRedisRepository emailRedisRepository;
-    private final AccessTokenRedisRepository accessTokenRedisRepository;
-    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
     private final TokenRedisRepository tokenRedisRepository;
 
     @Value("${jwt.salt}")
@@ -65,6 +60,7 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public Long getExpire(String accessToken) {
         logger.info("getExpire service 진입");
+        System.out.println(accessToken);
         Date expiration = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(accessToken).getBody().getExpiration();
         Long now = new Date().getTime();
         return (expiration.getTime() - now);
@@ -98,12 +94,6 @@ public class TokenServiceImpl implements TokenService {
     public String getEmailData(String token) {
         logger.info("getEmailData service 진입");
         return emailRedisRepository.getEmailValue(token);
-    }
-
-    @Override
-    public void deleteRefreshToken(String refreshToken) {
-        logger.info("deleteRefreshToken service 진입");
-        refreshTokenRedisRepository.deleteRefreshToken(refreshToken);
     }
 
     @Override

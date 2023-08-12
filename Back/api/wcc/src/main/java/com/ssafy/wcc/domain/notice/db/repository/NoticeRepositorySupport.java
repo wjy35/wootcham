@@ -1,10 +1,13 @@
 package com.ssafy.wcc.domain.notice.db.repository;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.wcc.domain.notice.application.dto.request.NoticeRequest;
 import com.ssafy.wcc.domain.notice.db.entity.Notice;
 import com.ssafy.wcc.domain.notice.db.entity.QNotice;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 

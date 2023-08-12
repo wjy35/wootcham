@@ -52,7 +52,7 @@ public class ReportController {
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
-    @PostMapping("/member")
+    @GetMapping ("/member")
     @ApiOperation(value = "전체 유저 조회")
     @ApiResponses({
             @ApiResponse(code = 200, message = "조회 성공"),
