@@ -4,7 +4,7 @@ import axios from "axios";
 export default axios.create({
   // baseURL: "https://i9a604.p.ssafy.io",
   // baseURL: "http://localhost:8080",
-  baseURL: 'http://wootcham.com/api',
+  baseURL: 'https://wootcham.com/api',
   headers: {
     "Content-type": "application/json",
   },

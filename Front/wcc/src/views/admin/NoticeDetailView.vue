@@ -33,11 +33,11 @@ export default {
   mounted() {
     const pathName = new URL(document.location).pathname.split("/");
     const id = pathName[pathName.length - 1];
-    this.notice = this.$store.state.notices[parseInt(id) - 1];
+    // this.notice = this.$store.state.notices[parseInt(id) - 1];
     // api.defaults.headers["access_token"] = localStorage.getItem("access_token");
-    // api.get('/notice/detail', { id: parseInt(id) }).then(({data}) => {
-    //     this.notice = data;
-    // })
+    api.get('/notice/detail', { id: parseInt(id) }).then(({data}) => {
+        this.notice = data;
+    })
   },
   methods: {
     updateNotice() {

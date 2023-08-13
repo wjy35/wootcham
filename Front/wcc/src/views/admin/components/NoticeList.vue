@@ -69,11 +69,11 @@ export default {
     },
     mounted() {
         // notices 받아오기
-        this.$store.commit('setNotices', this.noticeList);
-        // api.defaults.headers["access_token"] = localStorage.getItem("access_token");
-        // api.get('/notice/list').then(({data}) => {
-        //     this.$store.commit('setNotices', data);
-        // })
+        // this.$store.commit('setNotices', this.noticeList);
+        api.defaults.headers["access_token"] = localStorage.getItem("access_token");
+        api.get('/notice/list').then(({data}) => {
+            this.$store.commit('setNotices', data);
+        })
         this.totalPage = Math.floor(this.notices.length / this.pagination) + 1;
         if (this.totalPage <= this.startPage + 4) {
             this.endPage = this.totalPage;

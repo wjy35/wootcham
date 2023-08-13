@@ -53,28 +53,28 @@ export default {
                 this.submit = false;
                 return;
             }
-            // if (this.type === 'update') {
-            //     api.defaults.headers["access_token"] = localStorage.getItem("access_token");
-            //     api.put('/notice', {
-            //         id: this.notice.id,
-            //         subject: this.title,
-            //         content: this.content,                    
-            //     }).then(() => {
-            //         this.$router.push({name: 'admin'});
-            //     }).catch((err) => {
-            //         alert('공지사항 수정에 실패했습니다. ' + err);
-            //     })
-            // } else {
-            //     api.defaults.headers["access_token"] = localStorage.getItem("access_token");
-            //     api.post('/notice', {
-            //         subject: this.title,
-            //         content: this.content,                    
-            //     }).then(() => {
-            //         this.$router.push({name: 'admin'});
-            //     }).catch((err) => {
-            //         alert('공지사항 작성에 실패했습니다. ' + err);
-            //     })
-            // }
+            if (this.type === 'update') {
+                api.defaults.headers["access_token"] = localStorage.getItem("access_token");
+                api.put('/notice', {
+                    id: this.notice.id,
+                    subject: this.title,
+                    content: this.content,                    
+                }).then(() => {
+                    this.$router.push({name: 'admin'});
+                }).catch((err) => {
+                    alert('공지사항 수정에 실패했습니다. ' + err);
+                })
+            } else {
+                api.defaults.headers["access_token"] = localStorage.getItem("access_token");
+                api.post('/notice', {
+                    subject: this.title,
+                    content: this.content,                    
+                }).then(() => {
+                    this.$router.push({name: 'admin'});
+                }).catch((err) => {
+                    alert('공지사항 작성에 실패했습니다. ' + err);
+                })
+            }
         },
         noticeList() {
             this.$router.push({name: 'admin'})

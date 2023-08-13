@@ -64,11 +64,11 @@ export default {
         ...mapState(["userList"]),
     },
     mounted() {
-        // api.defaults.headers["access_token"] = localStorage.getItem("access_token");
-        // api.get('/report/member').then(({data}) => {
-        //     this.$store.commit('setUserList', data);
-        // })
-        this.$store.commit('setUserList', this.users);
+        api.defaults.headers["access_token"] = localStorage.getItem("access_token");
+        api.get('/report/member').then(({data}) => {
+            this.$store.commit('setUserList', data);
+        })
+        // this.$store.commit('setUserList', this.users);
         this.totalPage = Math.floor(this.userList.length / this.pagination) + 1;
         if (this.totalPage <= this.startPage + 4) {
             this.endPage = this.totalPage;
