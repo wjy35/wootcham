@@ -13,11 +13,11 @@
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
             <path d="m18 0 8 12 10-8-4 20H4L0 4l10 8 8-12z"></path>
           </svg>
-          <span v-text="state.rankPoint"></span>
+          <span v-text="this.point"></span>
         </div>
       </div>
 
-      <div class="username" v-text="state.nickname">
+      <div class="username" v-text="this.nickname">
       </div>
     </div>
 
@@ -39,40 +39,32 @@
 </template>
 
 <script>
-import { reactive } from 'vue'
-import { useStore } from 'vuex'
 import api from '@/api'
 
 export default {
   data() {
     return {
+      point: '',
+      nickname: '',
       activeMenuItem: ''
     };
   },
-  setup() {
-    const store = useStore();
 
-    //사용자 정보 읽어와서 state에 저장
-    console.log(localStorage.getItem("accessToken"))
+  created() {
     api.defaults.headers["Authorization"] = localStorage.getItem("accessToken")
-    const point = "";
     api.post(`/member`)
       .then(({ data }) => {
         console.log("회원 정보 조회 성공...............")
         console.log("data: ", data.data)
-        store.commit('setUserNickname', data.data.nickname)
+        console.log("data.point: ", data.data.point)
+        this.$store.commit('setUserNickname', data.data.nickname)
         this.point = data.data.point;
+        this.nickname = data.data.nickname;
+        this.$emit('user-rankpoint', this.point);
       })
       .catch(error => {
         alert(error.message)
-        console.log(error.response)
       })
-    const state = reactive({        // state 선언
-      nickName: store.getters['getUserNickname'],
-      rankPoint: point
-    })
-
-    return { state };
   },
 
   methods: {

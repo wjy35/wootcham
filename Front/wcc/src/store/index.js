@@ -25,6 +25,8 @@ export default createStore({
     },
     initUserInfo(state) {
       state.userNickname = "";
+      state.accessToken = "";
+      state.refreshToken = "";
     },
     setUserNickname(state, payload) {
       state.userNickname = payload;

@@ -8,15 +8,15 @@
         <div class="img"></div>
 
         <!-- 유저네임 -->
-        <span class="text-shadow">{{ username }}</span>
+        <span class="text-shadow">{{ this.nickname }}</span>
 
-        <p class="info">골드 4 220p</p>
+        <p class="info"> {{ this.point }} p</p>
         <p class="info">32위 (상위 15%)</p>
 
         <div class="profile-btns">
-          <button>닉네임 수정하기</button>
-          <button>비밀번호 변경하기</button>
-          <div>회원 탈퇴하기</div>
+          <button @click.prevent="changeNickname">닉네임 수정하기</button>
+          <button @click.prevent="changePw">비밀번호 변경하기</button>
+          <div @click.prevent="deleteUser">회원 탈퇴하기</div>
         </div>
 
 
@@ -47,22 +47,36 @@
   </div>
 </template>
 <script>
-import { reactive } from 'vue'
-import { useStore } from 'vuex'
+import api from "@/api"
 
 export default {
   data() {
     return {
-      username: "username",
+      nickname: "",
+      point: "",
     };
   },
-  setup() {
-    const store = useStore();
-    const state = reactive({        // state 선언
-      nickname: store.getters['getUserNickname']
-    })
-
-    return { state };
+  created() {
+    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken")
+    api.post(`/member`)
+      .then(({ data }) => {
+        this.point = data.data.point;
+        this.nickname = data.data.nickname;
+      })
+      .catch(error => {
+        alert(error.message)
+      })
+  },
+  methods:{
+    changeNickname(){
+      this.$router.push({name: "nicknamechange"})
+    },
+    changePw(){
+      this.$router.push({name: "pwchange"})
+    },
+    deleteUser(){
+      this.$router.push({name: "goodbye"})
+    }
   }
 }
 </script>
