@@ -11,7 +11,7 @@
                     <input type="password" placeholder="새로운 비밀번호 확인" v-model="newPwCheck">
                     <p class="warningtext" v-if="warning2">비밀번호가 일치하지 않습니다.</p>
                 </div>
-                <SubmitButton class='button back' @click="back" value="돌아가기"></SubmitButton>
+                <SubmitButton class='button back' @click.prevent="back" value="돌아가기"></SubmitButton>
                 <SubmitButton class='button' @click="pwChange" value="변경하기"></SubmitButton>
             </form>
         </div>
@@ -90,7 +90,7 @@ export default {
 
     methods: {
         back() {
-
+            this.$router.go(-1);
         },
         pwChange() {
             // 셋 중 하나라도 공백이거나 warning이 활성화되어 있을 시 되돌려놓기

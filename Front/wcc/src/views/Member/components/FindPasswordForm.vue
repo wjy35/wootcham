@@ -22,6 +22,7 @@
 </template>
 <script>
 import SubmitButton from './UI/SubmitButton.vue';
+import api from '@/api'
 
 export default {
     name: 'FindPasswordForm',
@@ -36,16 +37,21 @@ export default {
     },
     methods: {
         findPw() {
-            if (this.emailInput === 'ssafy@ssafy.com') {
-                alert('가입하신 이메일로 임시 비밀번호를 전송했습니다.');
-                this.modalVisible = true; // show modal
-            } else if (!this.emailInput.includes('@')) {
-                alert('올바른 이메일이 아닙니다.');
-                this.emailInput = "";
-            } else {
-                alert('존재하지 않는 이메일입니다');
-                this.emailInput = "";
+            if(!this.emailInput.includes('@')){
+                alert('올바른 이메일을 입력해주세요.')
+            }else{
+                // api.
             }
+            // if (this.emailInput === 'ssafy@ssafy.com') {
+            //     alert('가입하신 이메일로 임시 비밀번호를 전송했습니다.');
+            //     this.modalVisible = true; // show modal
+            // } else if (!this.emailInput.includes('@')) {
+            //     alert('올바른 이메일이 아닙니다.');
+            //     this.emailInput = "";
+            // } else {
+            //     alert('존재하지 않는 이메일입니다');
+            //     this.emailInput = "";
+            // }
         },
         goLogin(){
             this.$router.push('/');

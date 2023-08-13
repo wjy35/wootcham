@@ -53,8 +53,8 @@ export default {
     const store = useStore();
 
     //사용자 정보 읽어와서 state에 저장
-    console.log(localStorage.getItem("access_token"))
-    api.defaults.headers["Authorization"] = localStorage.getItem("access_token")
+    console.log(localStorage.getItem("accessToken"))
+    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken")
     const point = "";
     api.post(`/member`)
       .then(({ data }) => {
