@@ -106,7 +106,7 @@ export default {
   margin: 5x 0 1px;
 
   background: #FFF2EA;
-  border-radius: 40px;
+  border-radius: 25px;
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.123);
   display: flex;
   flex-direction: column;
@@ -124,6 +124,7 @@ export default {
   width: 150px;
   height: 150px;
 
+  border: 3px solid white;
   border-radius: 30px 30px 0 0;
   box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.329);
 }
@@ -133,13 +134,13 @@ export default {
 /* --------------- PROFILE POINT ------------- */
 .point-button {
   width: 150px;
-  margin-top: -5px;
+  margin-top: 0;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  padding: 0.2em 1.5em;
+  padding: 0.2em 3em;
   gap: 0.4rem;
   font-weight: bold;
   border-radius: 0 0 30px 30px;

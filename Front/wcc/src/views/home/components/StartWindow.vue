@@ -1,6 +1,9 @@
 <template>
   <div class="start-window shadow">
 
+    <div class="home-logo">
+      <img src="@/assets/logo.png" alt="" style="width: 300px;">
+    </div>
     <RealtimeGauge :data="realtimeData" />
 
     <video id="video" autoplay>
@@ -8,7 +11,7 @@
       <div class="laugh-meter"></div>
     </video>
 
-    <div v-if='!cameraOn' class="notice-card shadow flex">
+    <div v-if='cameraOn' class="notice-card shadow flex">
       <div class="notice-card-content">
         <!-- <p class="heading">WootCham Club</p> -->
         <p class="para">하단 카메라 버튼을 눌러서 웃음 감지가 잘 작동하는지 확인해주세요.</p>
@@ -40,7 +43,7 @@ export default {
   },
   data() {
     return {
-      // cameraOn: false,
+      cameraOn: true,
       realtimeData: 50, // 실시간 데이터를 저장할 변수 (초기값 0)
       warning: '프레임에서 벗어났습니다.',
       showWarning: false,
@@ -64,6 +67,8 @@ export default {
       console.log(this.ready)
       this.$store.commit('gameStore/SET_READY');
       let video = document.getElementById('video');
+
+      this.cameraOn = !this.cameraOn
 
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         alert('사용 가능한 카메라가 없습니다.');
@@ -108,6 +113,7 @@ export default {
   background-color: #FFF2EA;
   display: flex;
   justify-content: center;
+  align-items: center;
 
   height: calc(100vh - 150px);
   width: 1000px;
@@ -138,11 +144,19 @@ export default {
   position: relative;
 }
 
+.home-logo img {
+  position: absolute;
+  right: 350px;
+  bottom: 80px;
+  animation: shake 2s infinite;
+}
+
+
 /* NOTICE CARD */
 .notice-card {
   position: absolute;
-  bottom: 70px;
-  right: 30px;
+  bottom: 150px;
+  right: 38px;
   
   align-items: center;
   justify-content: center;
@@ -243,4 +257,21 @@ export default {
 
 .upper {
   z-index: -1;
-}</style>
+}
+
+/* 로고 흔드는 효과 */
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px) rotate(-5deg);
+  }
+  50% {
+    transform: translateX(5px) rotate(5deg);
+  }
+  75% {
+    transform: translateX(-5px) rotate(-5deg);
+  }
+}
+</style>

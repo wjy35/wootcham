@@ -9,7 +9,7 @@
         <span v-if="matchStatus === MatchStatus.READY" @click="handleStartGame"> 시작하기 </span>
 
 
-        <button v-if="matchStatus === MatchStatus.MATCHING" @click="cancel">
+        <button v-if="matchStatus === MatchStatus.MATCHING" @click="cancel" class="text-shadow">
           매칭 취소
         </button>
 
