@@ -27,13 +27,13 @@
     },
     methods: {
       logout() {
-        // // local storage 제거
-        // localStorage.removeItem('access_token')
-        // localStorage.removeItem('refresh_token')
-        // // Store 초기화
-        // this.$store.commit('initUserInfo');
-        // // 로그인 화면으로 리다이렉트
-        // this.$router.push({name: "login"});
+        // local storage 제거
+        localStorage.removeItem('access_token')
+        localStorage.removeItem('refresh_token')
+        // Store 초기화
+        this.$store.commit('initUserInfo');
+        // 로그인 화면으로 리다이렉트
+        this.$router.push({ name: "login" });
       },
     }
   }

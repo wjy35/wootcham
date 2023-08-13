@@ -54,7 +54,7 @@ export default {
                 return;
             }
             if (this.type === 'update') {
-                api.defaults.headers["access_token"] = localStorage.getItem("access_token");
+                api.defaults.headers["access_token"] = localStorage.getItem("accessToken");
                 api.put('/notice', {
                     id: this.notice.id,
                     subject: this.title,
@@ -65,7 +65,7 @@ export default {
                     alert('공지사항 수정에 실패했습니다. ' + err);
                 })
             } else {
-                api.defaults.headers["access_token"] = localStorage.getItem("access_token");
+                api.defaults.headers["access-token"] = localStorage.getItem("accessToken");
                 api.post('/notice', {
                     subject: this.title,
                     content: this.content,                    

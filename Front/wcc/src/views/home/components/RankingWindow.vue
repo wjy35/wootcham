@@ -1,6 +1,6 @@
 <template>
   <div class="content-window shadow">
-    <div class="banner"> 
+    <div class="banner">
       <img src="@/assets/images/ranking_banner.png" alt="explain_banner">
     </div>
 
@@ -33,11 +33,11 @@
   position: absolute;
   top: 78%;
   left: -28px;
-  width: 50px; 
-  height: 50px; 
+  width: 50px;
+  height: 50px;
   background-image: url('@/assets/images/indicator.png');
-  background-size: contain; 
-  background-repeat: no-repeat; 
+  background-size: contain;
+  background-repeat: no-repeat;
   background-color: transparent;
 }
 </style>

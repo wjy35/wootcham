@@ -40,22 +40,7 @@ export default {
     },
     data() {
         return {
-            noticeList: [
-                {id: 1, title: '공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1', content: '공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1공지사항1', date: '2023-08-10'},
-                {id: 2, title: '공지사항2공지사항2공지사항2공지사항2공지사항2공지사항2공지사항2공지사항2공지사항2공지사항2공지사항2', date: '2023-08-10'},
-                {id: 3, title: '공지사항3공지사항3공지사항3공지사항3공지사항3공지사항3공지사항3공지사항3공지사항3공지사항3공지사항3', date: '2023-08-10'},
-                {id: 4, title: '공지사항4공지사항4공지사항4공지사항4공지사항4공지사항4공지사항4공지사항4공지사항4공지사항4공지사항4', date: '2023-08-10'},
-                {id: 5, title: '공지사항5공지사항5공지사항5공지사항5공지사항5공지사항5공지사항5공지사항5공지사항5공지사항5공지사항5', date: '2023-08-10'},
-                {id: 6, title: '공지사항6', date: '2023-08-10'},
-                {id: 7, title: '공지사항7', date: '2023-08-10'},
-                {id: 8, title: '공지사항8', date: '2023-08-10'},
-                {id: 9, title: '공지사항9', date: '2023-08-10'},
-                {id: 10, title: '공지사항10', date: '2023-08-10'},
-                {id: 11, title: '공지사항10', date: '2023-08-10'},
-                {id: 12, title: '공지사항10', date: '2023-08-10'},
-                {id: 13, title: '공지사항10', date: '2023-08-10'},
-                {id: 14, title: '공지사항10', date: '2023-08-10'},
-            ],
+            noticeList: [],
             pagination: 5,
             currentPage: 1,
             startPage: 1,
@@ -69,11 +54,10 @@ export default {
     },
     mounted() {
         // notices 받아오기
-        // this.$store.commit('setNotices', this.noticeList);
-        api.defaults.headers["access_token"] = localStorage.getItem("access_token");
+        api.defaults.headers["access_token"] = localStorage.getItem("accessToken");
         api.get('/notice/list').then(({data}) => {
-            this.$store.commit('setNotices', data);
-        })
+            this.$store.commit('setNotices', data.data);
+        }).catch((err) => console.log(err))
         this.totalPage = Math.floor(this.notices.length / this.pagination) + 1;
         if (this.totalPage <= this.startPage + 4) {
             this.endPage = this.totalPage;

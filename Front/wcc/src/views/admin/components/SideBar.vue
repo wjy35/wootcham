@@ -11,9 +11,6 @@
           </div>
           <p>admin</p>
         </div>
-  
-        <div class="username" v-text="state.userInfo.nickname">
-        </div>
       </div>
   
       <div class="sidebar-menus">

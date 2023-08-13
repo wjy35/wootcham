@@ -7,7 +7,7 @@
         <div class="top-section">
           <div class="border"></div>
           <div class="icons">
-            <div class="logo" v-text = "state.userInfo.nickname">
+            <div class="logo" v-text="state.userInfo.nickname">
             </div>
             <div class="social-media">
               WootCham
@@ -49,11 +49,11 @@ export default {
     return {
     };
   },
-  setup(){
+  setup() {
     const store = useStore();
     const state = reactive({        // state 선언
-            userInfo: store.getters['getUserInfo']
-        })
+      userInfo: store.getters['getUserInfo']
+    })
 
     return { state };
   }

@@ -34,8 +34,8 @@ export default {
     const pathName = new URL(document.location).pathname.split("/");
     const id = pathName[pathName.length - 1];
     // this.notice = this.$store.state.notices[parseInt(id) - 1];
-    // api.defaults.headers["access_token"] = localStorage.getItem("access_token");
-    api.get('/notice/detail', { id: parseInt(id) }).then(({data}) => {
+    api.defaults.headers["access_token"] = localStorage.getItem("accessToken");
+    api.get('/notice/detail', { params: { id: id }} ).then(({data}) => {
         this.notice = data;
     })
   },
@@ -44,13 +44,13 @@ export default {
       this.update = true;
     },
     logout() {
-      // // local storage 제거
-      // localStorage.removeItem('access_token')
-      // localStorage.removeItem('refresh_token')
-      // // Store 초기화
-      // this.$store.commit('initUserInfo');
-      // // 로그인 화면으로 리다이렉트
-      // this.$router.push({name: "login"});
+      // local storage 제거
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('refresh_token')
+      // Store 초기화
+      this.$store.commit('initUserInfo');
+      // 로그인 화면으로 리다이렉트
+      this.$router.push({name: "login"});
     },
   }
 }

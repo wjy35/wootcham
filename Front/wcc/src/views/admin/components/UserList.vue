@@ -4,16 +4,24 @@
     <div class="users">
         <div class='user head'>
             <div class='index center'>번호</div>
+            <div class='type center'>유형</div>
             <div class='nickname center'>닉네임</div>
             <div class='email center'>이메일</div>
+            <div class="point center">포인트</div>
+            <div class="money center">머니</div>
+            <div class="report center">리폿</div>
+            <div class="susp center">susp</div>
         </div>
-        <ul v-for='u in selectedUser' :key=u.index>
-            <li class="user">
-                <div class="index">{{ u.index }}</div>
-                <div class="nickname">{{ u.nickname }}</div>
-                <div class="email">{{ u.email }}</div>
-            </li>
-        </ul>
+        <div v-for='u in selectedUser' :key='u.id' class="user">
+            <div class="index">{{ u.id }}</div>
+            <div class="type">{{ u.admin === 1 ? '' : '관리자' }}</div>
+            <div class="nickname">{{ u.nickname }}</div>
+            <div class="email">{{ u.email }}</div>
+            <div class="point">{{ u.point }}</div>
+            <div class="money">{{ u.money }}</div>
+            <div class="report">{{ u.report_count }}</div>
+            <div class="susp">{{ !u.suspension_date ? '' : u.suspension_date }}</div>
+        </div>
     </div>
     <div class='pagi-nation'>
         <div class='page' v-if='startPage > 1'><span @click='movePage(startPage - 1)' class='page-num'>&#60;&#60;</span></div>
@@ -34,24 +42,7 @@ export default {
     name: 'UserList',
     data() {
         return {
-            users: [
-                {index: 1, nickname: 'yaong1', email: 'yaong@naver.com'},
-                {index: 2, nickname: 'yaong2', email: 'yaong@naver.com'},
-                {index: 3, nickname: 'yaong3', email: 'yaong@naver.com'},
-                {index: 4, nickname: 'yaong4', email: 'yaong@naver.com'},
-                {index: 5, nickname: 'yaong5', email: 'yaong@naver.com'},
-                {index: 6, nickname: 'yaong6', email: 'yaong@naver.com'},
-                {index: 7, nickname: 'yaong7', email: 'yaong@naver.com'},
-                {index: 8, nickname: 'yaong8', email: 'yaong@naver.com'},
-                {index: 9, nickname: 'yaong9', email: 'yaong@naver.com'},
-                {index: 10, nickname: 'yaong9', email: 'yaong@naver.com'},
-                {index: 11, nickname: 'yaong9', email: 'yaong@naver.com'},
-                {index: 12, nickname: 'yaong9', email: 'yaong@naver.com'},
-                {index: 13, nickname: 'yaong9', email: 'yaong@naver.com'},
-                {index: 14, nickname: 'yaong9', email: 'yaong@naver.com'},
-                {index: 15, nickname: 'yaong9', email: 'yaong@naver.com'},
-                {index: 16, nickname: 'yaong9', email: 'yaong@naver.com'},
-            ],
+            users: [],
             pagination: 7,
             currentPage: 1,
             startPage: 1,
@@ -64,11 +55,10 @@ export default {
         ...mapState(["userList"]),
     },
     mounted() {
-        api.defaults.headers["access_token"] = localStorage.getItem("access_token");
+        api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
         api.get('/report/member').then(({data}) => {
-            this.$store.commit('setUserList', data);
-        })
-        // this.$store.commit('setUserList', this.users);
+            this.$store.commit('setUserList', data.data);
+        }).catch((err) => console.log(err))
         this.totalPage = Math.floor(this.userList.length / this.pagination) + 1;
         if (this.totalPage <= this.startPage + 4) {
             this.endPage = this.totalPage;
@@ -136,18 +126,41 @@ export default {
     }
 
     .index {
+        width: 9%;
+        text-align: center;
+    }
+
+    .type {
         width: 10%;
         text-align: center;
     }
     
     .nickname {
-        width: 40%;
-        text-align: left;
+        width: 15%;
     }
 
     .email {
-        width: 50%;
-        text-align: left;
+        width: 30%;
+    }
+
+    .point {
+        width: 8%;
+        text-align: center;
+    }
+
+    .money { 
+        width: 8%;
+        text-align: center;
+    }
+
+    .report {
+        width: 5%;
+        text-align: center;
+    }
+    
+    .susp {
+        width: 15%;
+        text-align: center;
     }
 
     .user {
@@ -156,14 +169,11 @@ export default {
         margin-top: 0.5rem;
         margin-bottom: 0.5rem;
         height: 1.5rem;
+        text-align: left;
     }
 
-    .center {
-        text-align: center;
-    }
 
     .head {
-        padding-left: 32px;
         font-weight: bolder;
         margin-bottom: 1rem;
     }
