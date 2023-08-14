@@ -59,7 +59,14 @@ public class MemberServiceImpl implements MemberService {
         for (int i = 0; i < collectionItemList.size(); i++) {
             MemberItemPK memberItemPK = MemberItemPK.builder().memberId(findMember.get().getId()).collectionId(collectionItemList.get(i).getId()).build();
             Optional<CollectionItem> collectionItem = collectionItemRepository.findById(memberItemPK.getCollectionId());
-            MemberItem memberItem = MemberItem.builder().buy(false).wear(false).memberItemPK(memberItemPK).member(findMember.get()).collection(collectionItem.get()).build();
+            MemberItem memberItem;
+            if(collectionItem.get().getId() == 1) { // 기본 프로필 설정
+                memberItem = MemberItem.builder().buy(true).wear(true).memberItemPK(memberItemPK).member(findMember.get()).collection(collectionItem.get()).build();
+            } else if(collectionItem.get().getId() == 6) { // 관리자 프로필은 건너띄기
+                continue;
+            }else {
+                memberItem = MemberItem.builder().buy(false).wear(false).memberItemPK(memberItemPK).member(findMember.get()).collection(collectionItem.get()).build();
+            }
             memberItemRepository.save(memberItem);
         }
     }
@@ -153,7 +160,17 @@ public class MemberServiceImpl implements MemberService {
         logger.info("memberInfoResponse service 진입");
         Optional<Member> findMember = memberRepository.findById(id);
         if (findMember.isPresent()) {
-            MemberInfoResponse memberInfoResponse = memberMapper.toMemberInfoResponse(findMember.get());
+            // 사용 중인 아이템 가져오기
+            String url = collectionItemRepository.getCurrentItemImage(findMember.get().getId(), 1).toString();
+
+            MemberInfoResponse memberInfoResponse = MemberInfoResponse.builder()
+                    .email(findMember.get().getEmail())
+                    .nickname(findMember.get().getNickname())
+                    .point(findMember.get().getPoint())
+                    .money(findMember.get().getMoney())
+                    .profileImg(url)
+                    .build();
+
             return memberInfoResponse;
         }
         throw new WCCException(Error.USER_NOT_FOUND);
