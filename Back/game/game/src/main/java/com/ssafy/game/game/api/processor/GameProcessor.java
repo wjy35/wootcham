@@ -51,6 +51,7 @@ public class GameProcessor implements Runnable{
     private void reflectRank(){
         List<RankPointChange> rankPointChangeList = getRankPointChangeList();
 
+        System.out.println("rankPointChangeList = " + rankPointChangeList);
         sendGameStatusResponse(new ReflectRankResponse(rankPointChangeList));
     }
 
@@ -78,8 +79,8 @@ public class GameProcessor implements Runnable{
         for(int rank=1; rank<= smileCountEntryList.size(); rank++){
             rankPointChangeList.add(
                     new RankPointChange(
-                            smileCountEntryList.get(rank).getKey(),
-                            smileCountEntryList.get(rank).getValue()-smileAvg+rank)
+                            smileCountEntryList.get(rank-1).getKey(),
+                            smileCountEntryList.get(rank-1).getValue()-smileAvg+(10-rank))
             );
         }
 

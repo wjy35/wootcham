@@ -37,6 +37,7 @@ public class GameController {
 
     @MessageMapping("/up")
     void upSmileCount(@Payload UpSmileCountRequest upSmileCountRequest){
+        System.out.println("upSmileCountRequest = " + upSmileCountRequest);
         gameService.upSmileCount(upSmileCountRequest);
     }
 }
