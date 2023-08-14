@@ -2,6 +2,7 @@ package com.ssafy.wcc.domain.collection.application.service;
 
 import com.ssafy.wcc.common.exception.Error;
 import com.ssafy.wcc.common.exception.WCCException;
+import com.ssafy.wcc.domain.collection.application.dto.response.CollectionResponse;
 import com.ssafy.wcc.domain.collection.db.entity.CollectionItem;
 import com.ssafy.wcc.domain.collection.db.repository.CollectionItemRepository;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberItemRequest;
@@ -17,6 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,10 +36,42 @@ public class CollectionItemServiceImpl implements CollectionItemService {
     final private MemberRepository memberRepository;
 
     @Override
-    public List<CollectionItem> getCollectionList(Long id) {
+    public List<CollectionResponse> getCollectionList(Long id) throws WCCException {
         logger.info("getCollectionList service 진입");
         List<CollectionItem> collectionItemList = collectionItemRepository.findAll();
-        return collectionItemList;
+        List<CollectionResponse> responses = new ArrayList<>();
+
+        for (int i = 0; i < collectionItemList.size(); ++i) {
+            CollectionItem collectionItem = collectionItemList.get(i);
+            if (collectionItem.getId() == 6) continue; // 관리자 프로필은 건너띄기
+
+            // 착용, 구매 여부 확인
+            boolean wear = false;
+            boolean buy = false;
+            for (int j = 0; j < collectionItem.getMemberItems().size(); j++) {
+                if (collectionItem.getMemberItems().get(j).getMember().getId() == id) {
+                    if (collectionItem.getMemberItems().get(j).isWear()) wear = true;
+                    if (collectionItem.getMemberItems().get(j).isBuy()) buy = true;
+                }
+            }
+
+            // 해당 아이템의 이미지 url 가져오기
+            StringBuilder url = new StringBuilder();
+            url.append(collectionItem.getUrl());
+
+            CollectionResponse response = CollectionResponse.builder()
+                    .id(collectionItem.getId())
+                    .type(collectionItem.getType())
+                    .name(collectionItem.getName())
+                    .price(collectionItem.getPrice())
+                    .description(collectionItem.getDescription())
+                    .wear(wear)
+                    .buy(buy)
+                    .url(url.toString())
+                    .build();
+            responses.add(response);
+        }
+        return responses;
     }
 
     @Override
