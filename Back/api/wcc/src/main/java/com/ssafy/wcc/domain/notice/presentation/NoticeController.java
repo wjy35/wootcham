@@ -39,12 +39,12 @@ public class NoticeController {
             @ApiResponse(code = 404, message = "공지사항 조회 실패"),
     })
     public ResponseEntity<?> listNoticeForUsers(
-            @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken
+            @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken
     ) {
         logger.info("listNoticeForUsers controller 진입");
         Map<String, Object> res = new HashMap<>();
 
-        List<NoticeResponse> list = noticeService.getNoticeListForUsers(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
+        List<NoticeResponse> list = noticeService.getNoticeListForUsers(Long.parseLong(tokenService.getIdByToken(accessToken)));
         res.put("isSuccess", true);
         res.put("data", list);
         return new ResponseEntity<>(res, HttpStatus.OK);
@@ -57,31 +57,31 @@ public class NoticeController {
             @ApiResponse(code = 404, message = "공지사항 조회 실패"),
     })
     public ResponseEntity<?> listNoticeForAdmin(
-            @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken
+            @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken
     ) {
         log.info("listNoticeForAdmin controller 진입");
         Map<String, Object> res = new HashMap<>();
 
-        List<NoticeForAdminResponse> list = noticeService.getNoticeListForAdmin(Long.parseLong(tokenService.getAccessTokenId(accessToken)));
+        List<NoticeForAdminResponse> list = noticeService.getNoticeListForAdmin(Long.parseLong(tokenService.getIdByToken(accessToken)));
         res.put("isSuccess", true);
         res.put("data", list);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
-    @GetMapping("/detail")
+    @PostMapping("/detail")
     @ApiOperation("관리자. 공지 상세보기")
     @ApiResponses({
             @ApiResponse(code = 200, message = "공지사항 상세보기 성공"),
             @ApiResponse(code = 404, message = "공지사항 상세보기 실패"),
     })
     public ResponseEntity<?> noticeDetail(
-            @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken,
+            @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken,
             @RequestBody @ApiParam(value = "글 아이디", required = true) NoticeRequest request
     ) {
         log.info("noticeDetail controller 진입");
         Map<String, Object> res = new HashMap<>();
 
-        NoticeResponse notice = noticeService.getNoticeDetail(Long.parseLong(tokenService.getAccessTokenId(accessToken)), request.getId());
+        NoticeResponse notice = noticeService.getNoticeDetail(Long.parseLong(tokenService.getIdByToken(accessToken)), request.getId());
         res.put("isSuccess", true);
         res.put("data", notice);
         return new ResponseEntity<>(res, HttpStatus.OK);
@@ -94,13 +94,13 @@ public class NoticeController {
             @ApiResponse(code = 404, message = "공지사항 상세보기 실패"),
     })
     public ResponseEntity<?> registerNotice(
-            @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken,
+            @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken,
             @RequestBody @ApiParam(value = "글 정보", required = true) NoticeRequest request
     ) {
         log.info("registerNotice controller 진입");
         Map<String, Object> res = new HashMap<>();
 
-        noticeService.registerNotice(Long.parseLong(tokenService.getAccessTokenId(accessToken)), request);
+        noticeService.registerNotice(Long.parseLong(tokenService.getIdByToken(accessToken)), request);
         res.put("isSuccess", true);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
@@ -112,13 +112,13 @@ public class NoticeController {
             @ApiResponse(code = 404, message = "공지사항 수정 실패"),
     })
     public ResponseEntity<?> updateNotice(
-            @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken,
+            @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken,
             @RequestBody @ApiParam(value = "글 정보", required = true) NoticeRequest request
     ) {
-        log.info("updateNotice       controller 진입");
+        log.info("updateNotice controller 진입");
         Map<String, Object> res = new HashMap<>();
 
-        noticeService.updateNotice(Long.parseLong(tokenService.getAccessTokenId(accessToken)), request);
+        noticeService.updateNotice(Long.parseLong(tokenService.getIdByToken(accessToken)), request);
         res.put("isSuccess", true);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }

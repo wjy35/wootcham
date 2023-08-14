@@ -31,7 +31,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/collection")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class CollectionController {
 
     Logger logger = LoggerFactory.getLogger(NoticeController.class);
@@ -40,17 +39,18 @@ public class CollectionController {
 
     private final CollectionItemService collectionItemService;
 
+    private String id;
     @GetMapping
     @ApiOperation(value = "도감 조회")
     @ApiResponses({
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패"),
     })
-    public ResponseEntity<Map<String, Object>> collectionList(@RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
+    public ResponseEntity<Map<String, Object>> collectionList(@RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken) {
         logger.info("collectionList controller 진입");
 
         Map<String, Object> res = new HashMap<>();
-        String id = tokenService.getAccessTokenId(accessToken);
+        id = tokenService.getIdByToken(accessToken);
 
         try {
             List<CollectionItem> list = collectionItemService.getCollectionList(Long.parseLong(id));
@@ -97,12 +97,12 @@ public class CollectionController {
             @ApiResponse(code = 400, message = "구매하지 않은 아이템"),
             @ApiResponse(code = 404, message = "구매 실패"),
     })
-    public ResponseEntity<Map<String, Object>> buy(@RequestBody Map<String, Integer> collectionId, @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
+    public ResponseEntity<Map<String, Object>> buy(@RequestBody Map<String, Integer> collectionId, @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken) {
         logger.info("buy controller 진입");
 
         Map<String, Object> res = new HashMap<>();
 
-        String id = tokenService.getAccessTokenId(accessToken);
+        id = tokenService.getIdByToken(accessToken);
 
         collectionItemService.buy(Long.parseLong(id), collectionId.get("collection_id"));
         res.put("isSuccess", true);
@@ -116,12 +116,12 @@ public class CollectionController {
             @ApiResponse(code = 200, message = "착용 성공"),
             @ApiResponse(code = 404, message = "착용 실패"),
     })
-    public ResponseEntity<Map<String, Object>> wear(@RequestBody Map<String, Integer> collectionId, @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken) {
+    public ResponseEntity<Map<String, Object>> wear(@RequestBody Map<String, Integer> collectionId, @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken) {
         logger.info("wear controller 진입");
 
         Map<String, Object> res = new HashMap<>();
 
-        String id = tokenService.getAccessTokenId(accessToken);
+        id = tokenService.getIdByToken(accessToken);
 
         collectionItemService.wear(Long.parseLong(id), collectionId.get("collection_id"));
         res.put("isSuccess", true);

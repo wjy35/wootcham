@@ -1,5 +1,7 @@
 package com.ssafy.wcc.domain.jwt.presentation;
 
+import com.ssafy.wcc.common.exception.Error;
+import com.ssafy.wcc.common.exception.WCCException;
 import com.ssafy.wcc.domain.jwt.application.service.TokenService;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
 import com.ssafy.wcc.domain.member.application.service.MemberServiceImpl;
@@ -21,7 +23,6 @@ import java.util.Map;
 @RestController
 @RequestMapping
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class JwtController {
 
     Logger logger = LoggerFactory.getLogger(MemberServiceImpl.class);
@@ -34,17 +35,18 @@ public class JwtController {
             @ApiResponse(code = 200, message = "갱신 성공"),
             @ApiResponse(code = 404, message = "갱신 실패")
     })
-    public ResponseEntity<Map<String, Object>> refreshToken(@RequestHeader("refresh_token") @ApiParam(value = "refresh_token", required = true) String refreshToken) {
+    public ResponseEntity<Map<String, Object>> refreshToken(@RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String refreshToken) {
         logger.info("refreshToken service 진입");
         Map<String, Object> res = new HashMap<>();
         if (tokenService.checkToken(refreshToken)) {
-            if (tokenService.getRefreshTokenId(refreshToken) != null) {
-                String id = tokenService.getRefreshTokenId(refreshToken);
-                String newAccessToken = tokenService.createAccessToken(id);
-                res.put("isSuccess", true);
-                res.put("access_token", newAccessToken);
-                return new ResponseEntity<>(res, HttpStatus.OK);
-            }
+            String id = tokenService.getIdByToken(refreshToken);
+
+            if(id == null) throw new WCCException(Error.UNKNOWN_ERROR);
+
+            String newAccessToken = tokenService.createAccessToken(id);
+            res.put("isSuccess", true);
+            res.put("accessToken", newAccessToken);
+            return new ResponseEntity<>(res, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

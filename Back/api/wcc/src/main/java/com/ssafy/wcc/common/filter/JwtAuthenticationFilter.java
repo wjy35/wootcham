@@ -41,32 +41,23 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         // 헤더에서 accessToken을 받아옵니다.
         String token = tokenService.resolveToken((HttpServletRequest) request);
 
-        Enumeration<String> headerNames = ((HttpServletRequest) request).getHeaderNames();
-        StringBuilder headers = new StringBuilder();
-
-        while (headerNames.hasMoreElements()) {
-            String headerName = headerNames.nextElement();
-            String headerValue = ((HttpServletRequest) request).getHeader(headerName);
-            headers.append(headerName).append(": ").append(headerValue).append("\n");
-        }
-
-        logger.info(headers.toString());
-        logger.info("대문자"+((HttpServletRequest) request).getHeader("Access-Token"));
+        logger.info("token {}",token);
         // 유효한 토큰인지 확인합니다.
         if (token != null && tokenService.checkToken(token)) {
             logger.info("유효한 토큰");
-            String s = tokenService.getAccessTokenId("BlackList: " + token);
+            String s = tokenService.getToken(token);
             if (s == null) {
                 logger.info("Black List에 등록되지 않은 토큰");
                 // 토큰이 유효하면 토큰으로부터 유저 정보를 받아옵니다.
                 Authentication authentication = tokenService.getAuthentication(token);
                 // SecurityContext 에 Authentication 객체를 저장합니다.
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                logger.info("로그인 완료");
             }
         }
-
-
-
+        
+        if (token == null) logger.info("유효하지 않은 접근");
+        logger.info("dofilter 접근");
         chain.doFilter(request, response);
     }
 }
