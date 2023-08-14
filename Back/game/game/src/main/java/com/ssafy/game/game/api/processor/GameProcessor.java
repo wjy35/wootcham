@@ -152,7 +152,7 @@ public class GameProcessor implements Runnable{
                 sendGameStatusResponse(gameStatusResponse);
 
                 if(gameSession.getPickedGameMembers().size()==GameSetting.MAX_GAMEMEMBER_COUNT) return;
-                
+                System.out.println("gameSession size = " + gameSession.getPickedGameMembers().size());
                 Thread.sleep(1000);
             }
         }catch (InterruptedException e) {
