@@ -41,6 +41,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         // 헤더에서 accessToken을 받아옵니다.
         String token = tokenService.resolveToken((HttpServletRequest) request);
 
+        logger.info("token {}",token);
         // 유효한 토큰인지 확인합니다.
         if (token != null && tokenService.checkToken(token)) {
             logger.info("유효한 토큰");
@@ -54,9 +55,9 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                 logger.info("로그인 완료");
             }
         }
-
-
-
+        
+        if (token == null) logger.info("유효하지 않은 접근");
+        logger.info("dofilter 접근");
         chain.doFilter(request, response);
     }
 }
