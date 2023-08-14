@@ -126,9 +126,13 @@ public class MemberServiceImpl implements MemberService {
         Optional<Member> member = memberRepository.findById(Long.parseLong(id));
         if (member.isPresent()) {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            String securePassword = encoder.encode(memberRequest.getPassword());
-            member.get().setNickname(memberRequest.getNickname());
-            member.get().setPassword(securePassword);
+            if (memberRequest.getPassword() != null) { // 비밀번호 변경을 요청하는 경우
+                String securePassword = encoder.encode(memberRequest.getPassword());
+                member.get().setPassword(securePassword);
+            }
+            if (memberRequest.getNickname() != null) { // 닉네임 변경을 요청하는 경우
+                member.get().setNickname(memberRequest.getNickname());
+            }
             memberRepository.save(member.get());
         } else {
             throw new WCCException(Error.USER_NOT_FOUND);
