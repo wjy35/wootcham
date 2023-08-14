@@ -1,6 +1,7 @@
 package com.ssafy.game.game.api.service;
 
 import com.ssafy.game.game.api.request.LoadRequest;
+import com.ssafy.game.game.api.request.SkipPickTopicRequest;
 import com.ssafy.game.game.api.request.TopicRequest;
 import com.ssafy.game.game.api.request.UpSmileCountRequest;
 import com.ssafy.game.game.db.entity.GameMember;
@@ -39,8 +40,9 @@ public class GameService {
         gameSessionRepository.findBySessionId(sessionId).setCheckedSkipPreparedPresent(true);
     }
 
-    public void skipPickTopic(String sessionId,String memberToken){
-        System.out.println("gameSessionRepository.findBySessionId(sessionId) = " + gameSessionRepository.findBySessionId(sessionId));
-        gameSessionRepository.findBySessionId(sessionId).addPickedGameMembers(memberToken);
+    public void skipPickTopic(SkipPickTopicRequest skipPickTopicRequest){
+        gameSessionRepository
+                .findBySessionId(skipPickTopicRequest.getSessionId())
+                .addPickedGameMembers(skipPickTopicRequest.getMemberToken());
     }
 }

@@ -1,6 +1,7 @@
 package com.ssafy.game.game.api.controller;
 
 import com.ssafy.game.game.api.request.LoadRequest;
+import com.ssafy.game.game.api.request.SkipPickTopicRequest;
 import com.ssafy.game.game.api.request.TopicRequest;
 import com.ssafy.game.game.api.request.UpSmileCountRequest;
 import com.ssafy.game.game.api.service.GameService;
@@ -30,11 +31,10 @@ public class GameController {
         gameService.pick(sessionId,topicRequest);
     }
 
-    @MessageMapping("/skip/pick/{sessionId}/{memberToken}")
-    void skipPick(@DestinationVariable String sessionId,@DestinationVariable String memberToken){
-        System.out.println("sessionId = " + sessionId);
-        System.out.println("memberToken = " + memberToken);
-        gameService.skipPickTopic(sessionId,memberToken);
+    @MessageMapping("/skip/pick")
+    void skipPick(@Payload SkipPickTopicRequest skipPickTopicRequest){
+        System.out.println("skipPickTopicRequest = " + skipPickTopicRequest);
+        gameService.skipPickTopic(skipPickTopicRequest);
     }
     @MessageMapping("/skip/prepare/{sessionId}")
     void skipPrepare(@DestinationVariable String sessionId){
