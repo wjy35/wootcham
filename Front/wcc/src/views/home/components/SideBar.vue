@@ -52,10 +52,11 @@ export default {
 
   created() {
     api.defaults.headers["Authorization"] = localStorage.getItem("accessToken")
+    // api.defaults.headers["Authorization"] = "123";
     api.post(`/member`)
       .then(({ data }) => {
         console.log("회원 정보 조회 성공...............")
-        console.log("data: ", data.data)
+        console.log("data: ", data)
         console.log("data.point: ", data.data.point)
         this.$store.commit('setUserNickname', data.data.nickname)
         this.point = data.data.point;
@@ -63,7 +64,7 @@ export default {
         this.$emit('user-rankpoint', this.point);
       })
       .catch(error => {
-        alert(error.message)
+        console.log(error.message)
       })
   },
 

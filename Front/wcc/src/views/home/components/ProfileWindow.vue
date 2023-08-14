@@ -31,11 +31,12 @@
         <table>
           <thead>
             <tr>
-              <th>No.</th>
-              <th>점수</th>
-              <th>획득 포인트</th>
+              <th>등수</th>
+              <th>시작 시간</th>
+              <th>종료 시간</th>
               <th>웃은 횟수</th>
-              <th>경과 시간</th>
+              <th>포인트 변경</th>
+              <th>머니 획득</th>
             </tr>
           </thead>
           <tbody>
@@ -54,6 +55,13 @@ export default {
     return {
       nickname: "",
       point: "",
+      records:{
+        rank: "",
+        start: "",
+        end: "",
+        change_point: "",
+
+      }
     };
   },
   created() {
@@ -64,7 +72,7 @@ export default {
         this.nickname = data.data.nickname;
       })
       .catch(error => {
-        alert(error.message)
+        console.log(error.message)
       })
   },
   methods:{

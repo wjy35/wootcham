@@ -26,7 +26,7 @@ export default {
         goodbye() {
             // 탈퇴
             api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
-            api.delete()
+            api.delete("/member")
             .then(()=>{
                 alert("탈퇴 성공")
                 this.$router.push({name: 'login'})

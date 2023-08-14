@@ -182,7 +182,7 @@ export default {
         this.$router.push({ name: "login" });
       }).catch(error=>{
         console.log(error.response)
-        alert("일시적 오류입니다. 잠시 후 다시 시도해주세요.")
+        // alert("일시적 오류입니다. 잠시 후 다시 시도해주세요.")
       })
     },
     selectProfile() {
