@@ -1,5 +1,6 @@
 package com.ssafy.wcc.domain.topic.db.entity;
 
+import com.ssafy.wcc.domain.member.db.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -19,4 +20,9 @@ public class Topic {
     public Topic(TopicPK topicPK) {
         this.topicPK = topicPK;
     }
+
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "type")
+    @MapsId("type")
+    TopicTypeDetail topicTypeDetail;
 }

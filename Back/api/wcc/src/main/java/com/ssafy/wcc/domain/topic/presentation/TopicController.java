@@ -44,5 +44,4 @@ public class TopicController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
-
 }
