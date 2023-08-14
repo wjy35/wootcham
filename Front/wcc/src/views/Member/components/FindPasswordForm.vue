@@ -22,7 +22,7 @@
 </template>
 <script>
 import SubmitButton from './UI/SubmitButton.vue';
-import api from '@/api'
+// import api from '@/api'
 
 export default {
     name: 'FindPasswordForm',

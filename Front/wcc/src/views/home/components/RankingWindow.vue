@@ -6,21 +6,36 @@
 
     <div class="content">
 
-      <div class="ranking-modal shadow">
-            <div class="rank-card">
-              <div class="rank-card-image">
-                <img src="@/assets/images/profile.jpg" alt="">
-              </div>
-              <div class="rank-card-detail">
-                <div class="rank-heading">#1</div>
-                <div class="rank-info">
-                  <div class="rank-username">{{ username }}</div>
-                  <div class="rank-pts-earned">{{ stats }}</div>
-                </div>
-              </div>
+      <div class="ranking-modal-left shadow">
+        <div class="rank-card" v-for="(r, i) in rankersLeft" :key="i">
+          <div class="rank-card-image">
+            <img src="@/assets/images/profile.jpg" alt="">
+          </div>
+          <div class="rank-card-detail">
+            <div class="rank-heading" >#{{ i + 1 }}</div>
+            <div class="rank-info">
+              <div class="rank-username">{{ r.nickname }}</div>
+              <div class="rank-pts-earned">{{ r.point }}</div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="ranking-modal-right shadow" v-if="rankersRight.length > 0">
+        <div class="rank-card" v-for="(r, i) in rankersRight" :key="i">
+          <div class="rank-card-image">
+            <img src="@/assets/images/profile.jpg" alt="">
+          </div>
+          <div class="rank-card-detail">
+            <div class="rank-heading">#{{ left + i + 1 }}</div>
+            <div class="rank-info">
+              <div class="rank-username">{{ r.nickname }}</div>
+              <div class="rank-pts-earned">{{ r.point }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="rank-card">
+            <!-- <div class="rank-card">
               <div class="rank-card-image">
                 <img src="@/assets/images/profile.jpg" alt="">
               </div>
@@ -70,11 +85,11 @@
                   <div class="rank-pts-earned">{{ stats }}</div>
                 </div>
               </div>
-            </div>
+            </div> -->
 
-            <div class="caption"> * 글로벌 TOP5 랭킹입니다. </div>
+            <!-- <div class="caption"> * 글로벌 TOP5 랭킹입니다. </div> -->
             
-          </div>
+          
 
     </div>
 
@@ -82,12 +97,34 @@
 </template>
 
 <script>
+import api from '@/api/index'
+
 export default {
   data(){
     return {
-      username: "username example",
-      stats: "5000",
+      rankersLeft: [],
+      rankersRight: [],
+      left: 0,
     };
+  },
+  created() {
+    // notices 받아오기
+    let token = localStorage.getItem("accessToken");
+    api.get('/rank', { headers : { 'Authorization': token }}).then(({data}) => {
+      console.log(data.data.length)
+      if (data.data.length < 6) {
+        this.rankersLeft = data.data;
+      } else {
+        let left = parseInt(data.data.length / 2);
+        this.left = left;
+        for (let i = 0; i < left; i++) {
+          this.rankersLeft.push(data.data[i])
+        }
+        for (let i = left; i < data.data.length; i++) {
+          this.rankersRight.push(data.data[i])
+        }
+      }
+    }).catch((err) => console.log(err))
   },
 }
 </script>
@@ -99,7 +136,11 @@ export default {
   flex-direction: column;
   align-items: center;
 }
-
+.content {
+  display: flex;
+  justify-content: center;
+  width: 95%;
+}
 .banner img {
   width: 350px;
   margin-top: -60px;
@@ -119,7 +160,7 @@ export default {
 }
 
 /* ------------ 랭킹 ------------ */ 
-.ranking-modal {
+.ranking-modal-left, .ranking-modal-right {
   position: relative;
 	width: 500px;
 	height: 440px;
@@ -130,17 +171,20 @@ export default {
 
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   gap: 10px;
 }
 
 .rank-card {
-  flex: 1;
+  /* flex: auto; */
   background-color: #F27059;
   border-radius: 15px;
 
   display: flex;
   align-items: center;
   width: 100%;
+  height: 20%;
+  /* margin-bottom: 10px; */
 }
 
 .rank-card-image img{

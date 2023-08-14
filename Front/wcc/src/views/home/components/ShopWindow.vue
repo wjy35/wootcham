@@ -3,19 +3,29 @@
     <div class="banner">
       <img src="@/assets/images/shop_banner.png" alt="explain_banner">
     </div>
+    <!-- <div>
+      <div v-for="i in items" :key="i.id">
+        <p>{{ i.description }}</p>
+        <p>{{ i.url }}</p>
+        <img class='itemImg' :src='i.url'>
+      </div>
+    </div> -->
+
 
     <div class="scroll-snap-card">
       <!-- 프로필 이미지 아이템 3개-->
       <div class="slide">
         <div class="heading">Profile Image Items</div>
         <div class="image-products">
-          <div class="image-item" @click="toggleBuy">
+          <div class="image-item" @click="toggleBuy" v-for="i in items" :key='i.id'>
             <div class="coin flex text-shadow">
-              <img src="@/assets/images/coin.png" style="width: 20px; height: 20px">
-              500
+              <img class='itemImg' :src='i.url'>
             </div>
+            <!-- <img src="@/assets/images/coin.png" style="width: 20px; height: 20px"> -->
+            <p class="desc">{{ i.description }} </p>          
+
           </div>
-          <div class="image-item" @click="toggleBuy">
+          <!-- <div class="image-item" @click="toggleBuy">
             <div class="coin flex text-shadow">
               <img src="@/assets/images/coin.png" style="width: 20px; height: 20px">
               700
@@ -26,7 +36,7 @@
               <img src="@/assets/images/coin.png" style="width: 20px; height: 20px">
               1000
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -110,17 +120,27 @@
 </template>
 
 <script>
+import api from '@/api/index'
+// import axios from 'axios'
+
 export default {
   data() {
     return {
       showModal: false,
+      items: [],
     }
   },
   methods: {
     toggleBuy(){
       this.showModal = !this.showModal
     }
-  }
+  },
+  created() {
+    let token = localStorage.getItem("accessToken");
+    api.get('/collection', {headers : { 'Authorization': token }}).then(({data}) => {
+      this.items = data.data.slice(0, 3);
+    }).catch((err) => console.log(err))
+  },
 }
 </script>
 
@@ -158,29 +178,29 @@ export default {
 
 /* ---------- IMAGE 프로필 이미지 아이템 ------------ */
 /* 첫 번째 image-item */
-.image-products .image-item:nth-child(1) div {
+/* .image-products .image-item:nth-child(1) div {
   background-image: url("@/assets/images/profile_low.jpg");
   background-size: cover;
-}
-.image-products .image-item:nth-child(1)::before {
-  content: "Lucky"
-}
+} */
+/* .image-products .image-item:nth-child(1)::before {
+  content: 'LUCKY'
+} */
 /* 두 번째 image-item */
-.image-products .image-item:nth-child(2) div {
+/* .image-products .image-item:nth-child(2) div {
   background-image: url("@/assets/images/profile_mid.jpg");
   background-size: cover;
-}
-.image-products .image-item:nth-child(2)::before {
+} */
+/* .image-products .image-item:nth-child(2)::before {
   content: "Shady"
-}
+} */
 /* 세 번째 image-item */
-.image-products .image-item:nth-child(3) div {
+/* .image-products .image-item:nth-child(3) div {
   background-image: url("@/assets/images/profile_high.jpg");
   background-size: cover;
-}
-.image-products .image-item:nth-child(3)::before {
+} */
+/* .image-products .image-item:nth-child(3)::before {
   content: "Crazy"
-}
+} */
 
 /* ---------- FRAME 프로필 테두리 아이템 ------------ */
 /* 첫 번째 FRAME-item */
@@ -313,6 +333,7 @@ export default {
   color: white;
   padding: 10px;
   gap: 5px;
+  z-index: 2;
 }
 
 /* ------------- 공통 컴포넌트 (상점 아이템) ------------- */
@@ -325,6 +346,7 @@ export default {
   width: 100%;
   height: 100%;
   border-radius: 15px;
+  overflow-x: auto;
 }
 
 .image-item, .frame-item {
@@ -382,6 +404,11 @@ export default {
 
 .image-item:hover div, .frame-item:hover div, .badge-item:hover div {
  transform: translateY(-30px);
+}
+
+.itemImg {
+  width: 100%;
+  height: 100%;
 }
 
 /* -------- 상품 구매 모달창 (Item Buy Modal) ----------- */
@@ -481,5 +508,11 @@ export default {
   50% {
     box-shadow: 0px 0px 10px rgba(255, 215, 0, 0.5);
   }
+}
+
+.desc {
+  position: absolute;
+  bottom: 0;
+  color: black;
 }
 </style>
