@@ -24,7 +24,7 @@
   </div>
 
   <div v-else-if="gameStatus === GameStatus.PICK_TOPIC_KEYWORD">
-    <game-room-prepare :round="round" :second="second"></game-room-prepare>
+    <game-room-prepare :round="round" :second="second" :memberToken="memberToken" :sessionId="sessionId"></game-room-prepare>
   </div>
 
   <div v-else>
