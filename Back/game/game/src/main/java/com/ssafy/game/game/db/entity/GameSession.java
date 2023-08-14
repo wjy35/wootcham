@@ -42,6 +42,7 @@ public class GameSession {
         this.checkedSkipPresent = false;
         this.smileCount = new HashMap<>();
         this.disconnectTime = new HashMap<>();
+        this.pickedGameMembers = new HashSet<>();
     }
 
     public void clearPickedGameMembers(){

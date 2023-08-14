@@ -1,6 +1,5 @@
 package com.ssafy.game.game.api.controller;
 
-import com.ssafy.game.game.api.request.LoadRequest;
 import com.ssafy.game.game.api.request.SkipPickTopicRequest;
 import com.ssafy.game.game.api.request.TopicRequest;
 import com.ssafy.game.game.api.request.UpSmileCountRequest;
@@ -33,7 +32,6 @@ public class GameController {
 
     @MessageMapping("/skip/pick")
     void skipPick(@Payload SkipPickTopicRequest skipPickTopicRequest){
-        System.out.println("skipPickTopicRequest = " + skipPickTopicRequest);
         gameService.skipPickTopic(skipPickTopicRequest);
     }
     @MessageMapping("/skip/prepare/{sessionId}")
@@ -43,7 +41,6 @@ public class GameController {
 
     @MessageMapping("/up")
     void upSmileCount(@Payload UpSmileCountRequest upSmileCountRequest){
-        System.out.println("upSmileCountRequest = " + upSmileCountRequest);
         gameService.upSmileCount(upSmileCountRequest);
     }
 }
