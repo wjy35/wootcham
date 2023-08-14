@@ -40,6 +40,7 @@ public class GameService {
     }
 
     public void skipPickTopic(String sessionId,String memberToken){
+        System.out.println("gameSessionRepository.findBySessionId(sessionId) = " + gameSessionRepository.findBySessionId(sessionId));
         gameSessionRepository.findBySessionId(sessionId).addPickedGameMembers(memberToken);
     }
 }
