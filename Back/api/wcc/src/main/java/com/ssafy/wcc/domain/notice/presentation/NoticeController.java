@@ -68,7 +68,7 @@ public class NoticeController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
-    @GetMapping("/detail")
+    @PostMapping("/detail")
     @ApiOperation("관리자. 공지 상세보기")
     @ApiResponses({
             @ApiResponse(code = 200, message = "공지사항 상세보기 성공"),
