@@ -5,9 +5,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -23,7 +25,9 @@ public class Record {
     @Column(name = "change_money")
     private int changeMoney;
 
-    private LocalDate end;
+    private Date end;
+
+    private Date start;
 
     private int rankPoint;
 
