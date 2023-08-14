@@ -38,4 +38,8 @@ public class GameService {
     public void skipPreparePresent(String sessionId){
         gameSessionRepository.findBySessionId(sessionId).setCheckedSkipPreparedPresent(true);
     }
+
+    public void skipPickTopic(String sessionId,String memberToken){
+        gameSessionRepository.findBySessionId(sessionId).addPickedGameMembers(memberToken);
+    }
 }

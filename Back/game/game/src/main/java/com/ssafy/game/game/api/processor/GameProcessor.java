@@ -145,11 +145,14 @@ public class GameProcessor implements Runnable{
     private void pickTopic(){
         int second = GameSessionSetting.MAX_PICK_TOPIC_SECOND;
         GameStatusResponse gameStatusResponse = new GameStatusResponse(GameStatus.PICK_TOPIC,second);
-
+        gameSession.clearPickedGameMembers();
         try{
             while(second-->0){
                 gameStatusResponse.setSecond(second);
                 sendGameStatusResponse(gameStatusResponse);
+
+                if(gameSession.getPickedGameMembers().size()==GameSetting.MAX_GAMEMEMBER_COUNT) return;
+                
                 Thread.sleep(1000);
             }
         }catch (InterruptedException e) {

@@ -9,9 +9,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 @Setter
@@ -30,6 +28,7 @@ public class GameSession {
      */
     private Map<String,Topic> topics;
     private List<String> orderList;
+    private Set<String> pickedGameMembers;
     private boolean checkedSkipPreparedPresent;
     private boolean checkedSkipPresent;
     private Map<String,Integer> smileCount;
@@ -45,6 +44,13 @@ public class GameSession {
         this.disconnectTime = new HashMap<>();
     }
 
+    public void clearPickedGameMembers(){
+        this.pickedGameMembers = new HashSet<>();
+    }
+
+    public void addPickedGameMembers(String memberToken) {
+        this.pickedGameMembers.add(memberToken);
+    }
     public void pickTopic(String memberToken, Integer type, String keyword){
         topics.get(memberToken).setTopic(type, keyword);
         // ToDo merge로 변경

@@ -30,9 +30,12 @@ public class GameController {
         gameService.pick(sessionId,topicRequest);
     }
 
+    @MessageMapping("/skip/pick/{sessionId}/{memberToken}")
+    void skipPick(@DestinationVariable String sesssionId,@DestinationVariable String memberToken){
+        gameService.skipPickTopic(sesssionId,memberToken);
+    }
     @MessageMapping("/skip/prepare/{sessionId}")
     void skipPrepare(@DestinationVariable String sessionId){
-        System.out.println("skip prepare ssessionId = " + sessionId);
         gameService.skipPreparePresent(sessionId);
     }
 
