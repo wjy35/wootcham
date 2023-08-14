@@ -21,6 +21,7 @@ public interface CollectionItemRepository extends JpaRepository<CollectionItem, 
                     "from member_item \n" +
                     "where member_id = :memberId and wear = 1)",
             nativeQuery = true)
-    // itemType: 1-프로필, 2-휘장, 3-테두리
+    // type: 1-프로필, 2-휘장, 3-테두리
+    // 현재 착용 중인 타입의 아이템 이미지 url을 가져온다.
     public String getCurrentItemImage(@Param("memberId") Long memberId, @Param("type") Integer type);
 }
