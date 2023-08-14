@@ -43,7 +43,7 @@ public class NoticeRepositorySupport extends QuerydslRepositorySupport {
                 .from(notice)
                 .fetch();
     }
-
+    
     public Optional<Notice> getNoticeDetail(long noticeId) {
         return Optional.ofNullable(jpaQueryFactory.select(Projections.bean(Notice.class, notice.subject, notice.content, notice.date))
                 .from(notice)
