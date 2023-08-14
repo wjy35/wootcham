@@ -10,7 +10,7 @@
             <ul v-for='n in selectedNotice' :key=n.id>
                 <li class='notice'>
                     <div class='index'>{{ n.id }}</div>
-                    <div class='title' @click='noticeDetail(n.id)'>{{ n.title }}</div>
+                    <div class='title' @click='noticeDetail(n.id)'>{{ n.subject }}</div>
                     <div class='date'>{{ n.date }}</div>
                 </li>
             </ul>
@@ -40,7 +40,6 @@ export default {
     },
     data() {
         return {
-            noticeList: [],
             pagination: 5,
             currentPage: 1,
             startPage: 1,
@@ -52,23 +51,28 @@ export default {
     computed: {
         ...mapState(["notices"]),
     },
-    mounted() {
+    created() {
         // notices 받아오기
-        api.defaults.headers["access_token"] = localStorage.getItem("accessToken");
-        api.get('/notice/list').then(({data}) => {
+        let token = localStorage.getItem("accessToken");
+        api.get('/notice/list', { headers : { 'Authorization': token }}).then(({data}) => {
             this.$store.commit('setNotices', data.data);
-        }).catch((err) => console.log(err))
-        this.totalPage = Math.floor(this.notices.length / this.pagination) + 1;
-        if (this.totalPage <= this.startPage + 4) {
-            this.endPage = this.totalPage;
-        } else {
-            this.endPage = this.startPage + 4;
-        }
-        for (let i = 0; i < this.pagination; i++) {
-            if (this.notices.length >= i + 1) {
-                this.selectedNotice.push(this.notices[i]);
+        }).then(() => {
+            this.totalPage = Math.floor(this.notices.length / this.pagination) + 1;
+            if (this.totalPage <= this.startPage + 4) {
+                this.endPage = this.totalPage;
+            } else {
+                this.endPage = this.startPage + 4;
             }
-        }
+            let newList = []
+            for (let i = 0; i < this.pagination; i++) {
+                if (this.notices.length >= i + 1) {
+                    newList.push(this.notices[i]);
+                }
+            }
+            this.selectedNotice = newList;
+        }).catch((err) => console.log(err))
+
+        
     },
     methods: {
         movePage(index) {

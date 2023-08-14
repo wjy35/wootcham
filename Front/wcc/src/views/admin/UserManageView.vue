@@ -16,7 +16,7 @@
   import UserList from './components/UserList.vue';
 
   export default {
-    name: 'AdminHome',
+    name: 'UserManage',
     components: {
       SideBar, UserList
     },

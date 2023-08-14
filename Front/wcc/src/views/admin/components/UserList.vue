@@ -10,7 +10,7 @@
             <div class="point center">포인트</div>
             <div class="money center">머니</div>
             <div class="report center">리폿</div>
-            <div class="susp center">susp</div>
+            <div class="susp center">정지 종료일</div>
         </div>
         <div v-for='u in selectedUser' :key='u.id' class="user">
             <div class="index">{{ u.id }}</div>
@@ -54,22 +54,23 @@ export default {
     computed: {
         ...mapState(["userList"]),
     },
-    mounted() {
-        api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
-        api.get('/report/member').then(({data}) => {
+    beforeMount() {
+        let token = localStorage.getItem("accessToken");
+        api.get('/report/member', { headers : { 'Authorization': token }}).then(({data}) => {
             this.$store.commit('setUserList', data.data);
-        }).catch((err) => console.log(err))
-        this.totalPage = Math.floor(this.userList.length / this.pagination) + 1;
-        if (this.totalPage <= this.startPage + 4) {
-            this.endPage = this.totalPage;
-        } else {
-            this.endPage = this.startPage + 4;
-        }
-        for (let i = 0; i < this.pagination; i++) {
-            if (this.userList.length >= i + 1) {
-                this.selectedUser.push(this.userList[i]);
+        }).then(() => {
+            this.totalPage = Math.floor(this.userList.length / this.pagination) + 1;
+            if (this.totalPage <= this.startPage + 4) {
+                this.endPage = this.totalPage;
+            } else {
+                this.endPage = this.startPage + 4;
             }
-        }
+            for (let i = 0; i < this.pagination; i++) {
+                if (this.userList.length >= i + 1) {
+                    this.selectedUser.push(this.userList[i]);
+                }
+            }
+        }).catch((err) => console.log(err))
     },
     methods: {
         movePage(index) {

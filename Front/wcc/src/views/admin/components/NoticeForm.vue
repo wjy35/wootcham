@@ -32,6 +32,7 @@ export default {
     },
     data() {
         return {
+            id: '',
             title: '',
             content: '',
             value: '작성',
@@ -41,7 +42,8 @@ export default {
 
     mounted() {
         if (this.type === 'update') {
-            this.title = this.notice.title;
+            this.id = this.notice.id;
+            this.title = this.notice.subject;
             this.content = this.notice.content;
             this.value = '수정';
         }
@@ -54,22 +56,22 @@ export default {
                 return;
             }
             if (this.type === 'update') {
-                api.defaults.headers["access_token"] = localStorage.getItem("accessToken");
+                let token = localStorage.getItem("accessToken");
                 api.put('/notice', {
-                    id: this.notice.id,
+                    id: this.id,
                     subject: this.title,
                     content: this.content,                    
-                }).then(() => {
+                }, { headers: { 'Authorization' : token }}).then(() => {
                     this.$router.push({name: 'admin'});
                 }).catch((err) => {
                     alert('공지사항 수정에 실패했습니다. ' + err);
                 })
             } else {
-                api.defaults.headers["access-token"] = localStorage.getItem("accessToken");
+                let token = localStorage.getItem("accessToken");
                 api.post('/notice', {
                     subject: this.title,
                     content: this.content,                    
-                }).then(() => {
+                }, { headers: { 'Authorization' : token }}).then(() => {
                     this.$router.push({name: 'admin'});
                 }).catch((err) => {
                     alert('공지사항 작성에 실패했습니다. ' + err);

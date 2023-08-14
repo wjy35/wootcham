@@ -2,7 +2,7 @@
   <div class="notice-detail">
     <h1>공 지 사 항</h1>
     <div class="notice-zone">
-      <p>{{ notice.title }}</p>
+      <p>{{ notice.subject }}</p>
       <p class="content">{{ notice.content }}</p>
       <p class="date">{{ notice.date }}</p>
       <div class="button-area">
