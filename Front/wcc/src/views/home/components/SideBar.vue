@@ -13,11 +13,11 @@
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
             <path d="m18 0 8 12 10-8-4 20H4L0 4l10 8 8-12z"></path>
           </svg>
-          <span v-text="state.rankPoint"></span>
+          <span v-text="this.point"></span>
         </div>
       </div>
 
-      <div class="username" v-text="state.nickname">
+      <div class="username" v-text="this.nickname">
       </div>
     </div>
 
@@ -39,40 +39,32 @@
 </template>
 
 <script>
-import { reactive } from 'vue'
-import { useStore } from 'vuex'
 import api from '@/api'
 
 export default {
   data() {
     return {
+      point: '',
+      nickname: '',
       activeMenuItem: ''
     };
   },
-  setup() {
-    const store = useStore();
 
-    //사용자 정보 읽어와서 state에 저장
-    console.log(localStorage.getItem("access_token"))
-    api.defaults.headers["Authorization"] = localStorage.getItem("access_token")
-    const point = "";
+  created() {
+    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken")
     api.post(`/member`)
       .then(({ data }) => {
         console.log("회원 정보 조회 성공...............")
         console.log("data: ", data.data)
-        store.commit('setUserNickname', data.data.nickname)
+        console.log("data.point: ", data.data.point)
+        this.$store.commit('setUserNickname', data.data.nickname)
         this.point = data.data.point;
+        this.nickname = data.data.nickname;
+        this.$emit('user-rankpoint', this.point);
       })
       .catch(error => {
         alert(error.message)
-        console.log(error.response)
       })
-    const state = reactive({        // state 선언
-      nickName: store.getters['getUserNickname'],
-      rankPoint: point
-    })
-
-    return { state };
   },
 
   methods: {
@@ -106,7 +98,7 @@ export default {
   margin: 5x 0 1px;
 
   background: #FFF2EA;
-  border-radius: 40px;
+  border-radius: 25px;
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.123);
   display: flex;
   flex-direction: column;
@@ -124,6 +116,7 @@ export default {
   width: 150px;
   height: 150px;
 
+  border: 3px solid white;
   border-radius: 30px 30px 0 0;
   box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.329);
 }
@@ -133,13 +126,13 @@ export default {
 /* --------------- PROFILE POINT ------------- */
 .point-button {
   width: 150px;
-  margin-top: -5px;
+  margin-top: 0;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  padding: 0.2em 1.5em;
+  padding: 0.2em 3em;
   gap: 0.4rem;
   font-weight: bold;
   border-radius: 0 0 30px 30px;

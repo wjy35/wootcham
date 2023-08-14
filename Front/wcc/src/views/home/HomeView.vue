@@ -9,7 +9,7 @@
         <span v-if="matchStatus === MatchStatus.READY" @click="handleStartGame"> 시작하기 </span>
 
 
-        <button v-if="matchStatus === MatchStatus.MATCHING" @click="cancel">
+        <button v-if="matchStatus === MatchStatus.MATCHING" @click="cancel" class="text-shadow">
           매칭 취소
         </button>
 
@@ -70,6 +70,7 @@ import InfoWindow from './components/InfoWindow.vue';
 import * as Stomp from "webstomp-client";
 import { MatchStatus } from '@/match-status';
 import { mapMutations } from "vuex";
+import api from "@/api"
 
 export default {
   name: 'HomeView',
@@ -168,13 +169,21 @@ export default {
       )
     },
     logout() {
-      // local storage 제거
-      localStorage.removeItem('access_token')
-      localStorage.removeItem('refresh_token')
-      // Store 초기화
-      this.$store.commit('initUserInfo');
-      // 로그인 화면으로 리다이렉트
-      this.$router.push({ name: "login" });
+      api.defaults.headers["Authorization"] = localStorage.getItem('accessToken');
+      api.post("/member/logout")
+      .then(() => {
+        alert("로그아웃 성공!")
+        // local storage 제거
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('refreshToken')
+        // Store 초기화
+        this.$store.commit('initUserInfo');
+        // 로그인 화면으로 리다이렉트
+        this.$router.push({ name: "login" });
+      }).catch(error=>{
+        console.log(error.response)
+        alert("일시적 오류입니다. 잠시 후 다시 시도해주세요.")
+      })
     },
     selectProfile() {
       this.selectedScreen = 'ProfileWindowScreen';
