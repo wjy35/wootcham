@@ -160,7 +160,17 @@ public class MemberServiceImpl implements MemberService {
         logger.info("memberInfoResponse service 진입");
         Optional<Member> findMember = memberRepository.findById(id);
         if (findMember.isPresent()) {
-            MemberInfoResponse memberInfoResponse = memberMapper.toMemberInfoResponse(findMember.get());
+            // 사용 중인 아이템 가져오기
+            String url = collectionItemRepository.getCurrentItemImage(findMember.get().getId(), 1).toString();
+
+            MemberInfoResponse memberInfoResponse = MemberInfoResponse.builder()
+                    .email(findMember.get().getEmail())
+                    .nickname(findMember.get().getNickname())
+                    .point(findMember.get().getPoint())
+                    .money(findMember.get().getMoney())
+                    .profileImg(url)
+                    .build();
+
             return memberInfoResponse;
         }
         throw new WCCException(Error.USER_NOT_FOUND);
