@@ -41,8 +41,8 @@ public class GameProcessor implements Runnable{
 
         for(int i=0; i<gameSession.getOrderList().size(); i++){
             preparePresent(i);
+            countDown();
             present(i);
-            System.out.println("gameSession.getTopics() = " + gameSession.getTopics());
         }
 
         reflectRank();
@@ -114,6 +114,21 @@ public class GameProcessor implements Runnable{
                 if(gameSession.isCheckedSkipPreparedPresent()){
                     return;
                 }
+
+                Thread.sleep(1000);
+            }
+        }catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void countDown(){
+        int second = GameSessionSetting.COUNT_DOWN_SECOND;
+        GameStatusResponse gameStatusResponse = new GameStatusResponse(GameStatus.COUNT_DOWN,second);
+        try{
+            while(second-->0){
+                gameStatusResponse.setSecond(second);
+                sendGameStatusResponse(gameStatusResponse);
 
                 Thread.sleep(1000);
             }
