@@ -39,7 +39,7 @@ public class NoticeController {
             @ApiResponse(code = 404, message = "공지사항 조회 실패"),
     })
     public ResponseEntity<?> listNoticeForUsers(
-            @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken
+            @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken
     ) {
         logger.info("listNoticeForUsers controller 진입");
         Map<String, Object> res = new HashMap<>();
@@ -57,7 +57,7 @@ public class NoticeController {
             @ApiResponse(code = 404, message = "공지사항 조회 실패"),
     })
     public ResponseEntity<?> listNoticeForAdmin(
-            @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken
+            @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken
     ) {
         log.info("listNoticeForAdmin controller 진입");
         Map<String, Object> res = new HashMap<>();
@@ -75,7 +75,7 @@ public class NoticeController {
             @ApiResponse(code = 404, message = "공지사항 상세보기 실패"),
     })
     public ResponseEntity<?> noticeDetail(
-            @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken,
+            @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken,
             @RequestBody @ApiParam(value = "글 아이디", required = true) NoticeRequest request
     ) {
         log.info("noticeDetail controller 진입");
@@ -94,7 +94,7 @@ public class NoticeController {
             @ApiResponse(code = 404, message = "공지사항 상세보기 실패"),
     })
     public ResponseEntity<?> registerNotice(
-            @RequestHeader("access_token") @ApiParam(value = "access_token", required = true) String accessToken,
+            @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken,
             @RequestBody @ApiParam(value = "글 정보", required = true) NoticeRequest request
     ) {
         log.info("registerNotice controller 진입");
@@ -115,7 +115,7 @@ public class NoticeController {
             @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken,
             @RequestBody @ApiParam(value = "글 정보", required = true) NoticeRequest request
     ) {
-        log.info("updateNotice       controller 진입");
+        log.info("updateNotice controller 진입");
         Map<String, Object> res = new HashMap<>();
 
         noticeService.updateNotice(Long.parseLong(tokenService.getIdByToken(accessToken)), request);

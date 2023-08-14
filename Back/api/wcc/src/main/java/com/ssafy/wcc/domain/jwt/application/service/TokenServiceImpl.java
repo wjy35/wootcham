@@ -106,7 +106,7 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public String getIdByToken(String jwt) {
-        logger.info("checkAndGetClaims service 진입");
+        logger.info("getIdByToken service 진입");
         Jws<Claims> claims = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt);
         return claims.getBody().getId();
     }
