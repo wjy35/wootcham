@@ -59,7 +59,14 @@ public class MemberServiceImpl implements MemberService {
         for (int i = 0; i < collectionItemList.size(); i++) {
             MemberItemPK memberItemPK = MemberItemPK.builder().memberId(findMember.get().getId()).collectionId(collectionItemList.get(i).getId()).build();
             Optional<CollectionItem> collectionItem = collectionItemRepository.findById(memberItemPK.getCollectionId());
-            MemberItem memberItem = MemberItem.builder().buy(false).wear(false).memberItemPK(memberItemPK).member(findMember.get()).collection(collectionItem.get()).build();
+            MemberItem memberItem;
+            if(collectionItem.get().getId() == 1) { // 기본 프로필 설정
+                memberItem = MemberItem.builder().buy(true).wear(true).memberItemPK(memberItemPK).member(findMember.get()).collection(collectionItem.get()).build();
+            } else if(collectionItem.get().getId() == 6) { // 관리자 프로필은 건너띄기
+                continue;
+            }else {
+                memberItem = MemberItem.builder().buy(false).wear(false).memberItemPK(memberItemPK).member(findMember.get()).collection(collectionItem.get()).build();
+            }
             memberItemRepository.save(memberItem);
         }
     }
