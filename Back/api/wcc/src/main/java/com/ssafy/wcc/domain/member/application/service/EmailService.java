@@ -9,11 +9,13 @@ import java.io.UnsupportedEncodingException;
 
 public interface EmailService {
 
-    public boolean sendMessage(String email) throws MessagingException, UnsupportedEncodingException;
+    public String sendMessage(String email, int type) throws MessagingException, UnsupportedEncodingException;
 
-    public MimeMessage createMessage(String email, String code) throws MessagingException, UnsupportedEncodingException;
+    public MimeMessage createMessage(String email, String code, int type) throws MessagingException, UnsupportedEncodingException;
 
     public String createCode();
+
+    public String createPassword();
 
     public boolean verifyEmail(EmailVerifyRequest emailVerifyRequest) throws ChangeSetPersister.NotFoundException;
 }

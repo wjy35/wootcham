@@ -46,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/refresh").permitAll()
-                .antMatchers("/member/login", "/member/join", "/member/email", "/member/code", "/member/nickname").permitAll()
+                .antMatchers("/member/login", "/member/join", "/member/email", "/member/code", "/member/nickname", "/member/password").permitAll()
                 .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll() // swagger 접속 허용
                 .antMatchers("**").authenticated()
                 .and()
