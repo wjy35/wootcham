@@ -32,6 +32,7 @@ public class GameController {
 
     @MessageMapping("/skip/prepare/{sessionId}")
     void skipPrepare(@DestinationVariable String sessionId){
+        System.out.println("skip prepare ssessionId = " + sessionId);
         gameService.skipPreparePresent(sessionId);
     }
 
