@@ -1,6 +1,5 @@
 <template>
   <div v-if="gameStatus === GameStatus.WAIT_GAME_START">
-
     <div class="loading-screen">
       <div class="loading-screen-loader">
         Loading
@@ -16,11 +15,6 @@
       <p class="second">{{ second }}</p>
 
     </div>
-
-    <!-- <p>{{sessionId}}</p>
-      <p>{{memberId}}</p>
-      <p>{{memberToken}}</p> -->
-
   </div>
 
   <div v-else-if="gameStatus === GameStatus.PICK_TOPIC">
@@ -44,15 +38,14 @@
 
           <!-- 1번 박스 === video-one -->
           <div class="video video-one shadow">
-            <img v-if="streamManagers.length<1" src="@/assets/images/WCC_logo.png">
-            <div v-else class="video-card">
+            <img v-if="gameMembersOrderList.length<1 || !gameMembersMap.has(gameMembersOrderList[0])" src="@/assets/images/WCC_logo.png">
+            <div v-else class="video-card" :class="{'stop':!gameMembersMap.get(gameMembersOrderList[0]).isSmile}">
               <UserVideo
-                  :isMyFace="memberToken===memberTokens[0]"
-                  :stream-manager="streamManagers[0]"
+                  :isMyFace="memberToken===gameMembersOrderList[0]"
+                  :stream-manager="gameMembersMap.get(gameMembersOrderList[0]).streamManager"
                   :key="componentKey"
               />
             </div>
-            <!-- <div v-if="streamManagers[0] !== undefined" class="video-username">{{ nickname(publisher) }}</div>-->
           </div>
 
           <!-- 2, 3, 6, 7번 박스 === Main Content -->
@@ -63,17 +56,23 @@
 
               <!-- 발표자 화면 -->
               <div v-if="memberToken===tellerToken">
-                <!-- <UserVideo  :stream-manager="streamManagers[0]" :key="componentKey"/> -->
 
                 <!-- 주제 선택 화면 -->
                 <mission-select v-if="gameStatus===GameStatus.PREPARE_PRESENT"></mission-select>
 
                 <!-- 카운트다운 화면 -->
               </div>
+
               <div v-else class="stand-by">
                 <stand-by v-if="gameStatus===GameStatus.PREPARE_PRESENT"></stand-by>
-                <count-down v-if="gameStatus===GameStatus.COUNT_DOWN" :second="second"></count-down>
               </div>
+
+              <count-down v-if="gameStatus===GameStatus.COUNT_DOWN" :second="second"></count-down>
+              <UserVideo
+                  v-if="gameStatus===GameStatus.PRESENT && gameMembersMap.has(gameMembersOrderList[0]) && !sharedScreen"
+                  :stream-manager="gameMembersMap.get(gameMembersOrderList[0]).streamManager"
+                  :key="componentKey"
+              />
 
               <!-- Progress Bar -->
               <div class="loader">
@@ -84,14 +83,14 @@
                 <div class="sign">
                   <img src="@/assets/images/stream.png" alt="">
                 </div>
-                <div class="text">화면 공유</div>
+                <div class="text" @click="shareScreen">화면 공유</div>
               </div>
 
               <div class="share-btn endterm">
                 <div class="sign">
                   <img src="@/assets/images/the-end.png" alt="">
                 </div>
-                <div class="text">턴 종료</div>
+                <div class="text" @click="myFace">턴 종료</div>
               </div>
             </div>
           </div>
@@ -99,11 +98,11 @@
           <!-- 4, 8번 박스 === chat-card -->
           <div class="chat-card shadow">
             <div class="chat-body">
-              <ul v-for="m in messageList" :key="m.connectionId">
-                <li v-if="nickname(publisher) === m.nickname" class="message incoming">
+              <ul v-for="m in messageList" :key="m.nickname">
+                <li v-if="this.nickname === m.nickname" class="message incoming">
                   <p><span>{{ m.nickname }}</span>: {{ m.message }}</p>
                 </li>
-                <li v-if="nickname(publisher) !== m.nickname" class="message outgoing">
+                <li v-if="this.nickname !== m.nickname" class="message outgoing">
                   <p><span>{{ m.nickname }}</span>: {{ m.message }}</p>
                 </li>
               </ul>
@@ -119,48 +118,63 @@
 
           <!-- 5번 박스 -->
           <div class="video video-two shadow">
-            <img v-if="streamManagers.length<2" src="@/assets/images/WCC_logo.png">
-            <div v-else class="stop">
-              <UserVideo :isMyFace="memberToken===memberTokens[1]" :stream-manager="streamManagers[1]"
-                         :key="componentKey"/>
+            <img v-if="gameMembersOrderList.length<2 || !gameMembersMap.has(gameMembersOrderList[1])" src="@/assets/images/WCC_logo.png">
+            <div v-else class="video-card" :class="{'stop':!gameMembersMap.get(gameMembersOrderList[1]).isSmile}">
+              <UserVideo
+                  :isMyFace="memberToken===gameMembersOrderList[1]"
+                  :stream-manager="gameMembersMap.get(gameMembersOrderList[1]).streamManager"
+                  :key="componentKey"
+              />
             </div>
-
-            <!--                <div v-if="subscribers[0] !== undefined" class="video-username">{{ nickname(subscribers[0]) }}</div>-->
           </div>
 
           <!-- 9번 박스 -->
           <div class="video video-three shadow">
-            <img v-if="streamManagers.length<3" src="@/assets/images/WCC_logo.png">
-            <UserVideo v-else :isMyFace="memberToken===memberTokens[2]" :stream-manager="streamManagers[2]"
-                       :key="componentKey"/>
-            <!--                <div v-if="subscribers[1] !== undefined" class="video-username">{{ nickname(subscribers[1]) }}</div>-->
+            <img v-if="gameMembersOrderList.length<3 || !gameMembersMap.has(gameMembersOrderList[2])" src="@/assets/images/WCC_logo.png">
+            <div v-else class="video-card" :class="{'stop':!gameMembersMap.get(gameMembersOrderList[2]).isSmile}">
+              <UserVideo
+                  :isMyFace="memberToken===gameMembersOrderList[2]"
+                  :stream-manager="gameMembersMap.get(gameMembersOrderList[2]).streamManager"
+                  :key="componentKey"
+              />
+            </div>
           </div>
 
           <!-- 10번 박스 -->
           <div class="video video-four shadow">
-            <img v-if="streamManagers.length<4" src="@/assets/images/WCC_logo.png">
-            <UserVideo v-else :isMyFace="memberToken===memberTokens[3]" :stream-manager="streamManagers[3]"
-                       :key="componentKey"/>
-            <!--                <div v-if="subscribers[2] !== undefined" class="video-username">{{ nickname(subscribers[2]) }}</div>-->
+            <img v-if="gameMembersOrderList.length<4 || !gameMembersMap.has(gameMembersOrderList[3])" src="@/assets/images/WCC_logo.png">
+            <div v-else class="video-card" :class="{'stop':!gameMembersMap.get(gameMembersOrderList[3]).isSmile}">
+              <UserVideo
+                  :isMyFace="memberToken===gameMembersOrderList[3]"
+                  :stream-manager="gameMembersMap.get(gameMembersOrderList[3]).streamManager"
+                  :key="componentKey"
+              />
+            </div>
           </div>
 
           <!-- 11번 박스 -->
           <div class="video video-five shadow">
-            <img v-if="streamManagers.length<5" src="@/assets/images/WCC_logo.png">
-            <UserVideo v-else :isMyFace="memberToken===memberTokens[4]" :stream-manager="streamManagers[4]"
-                       :key="componentKey"/>
-            <!--                <div v-if="subscribers[3] !== undefined" class="video-username">{{ nickname(subscribers[3]) }}</div>-->
+            <img v-if="gameMembersOrderList.length<5 || !gameMembersMap.has(gameMembersOrderList[4])" src="@/assets/images/WCC_logo.png">
+            <div v-else class="video-card" :class="{'stop':!gameMembersMap.get(gameMembersOrderList[4]).isSmile}">
+              <UserVideo
+                  :isMyFace="memberToken===gameMembersOrderList[4]"
+                  :stream-manager="gameMembersMap.get(gameMembersOrderList[4]).streamManager"
+                  :key="componentKey"
+              />
+            </div>
           </div>
 
           <!-- 12번 박스 -->
           <div class="video video-six shadow">
-            <img v-if="streamManagers.length<6" src="@/assets/images/WCC_logo.png">
-            <UserVideo v-else :isMyFace="memberToken===memberTokens[5]" :stream-manager="streamManagers[5]"
-                       :key="componentKey"/>
-            <!--                <div v-if="subscribers[3] !== undefined" class="video-username">{{ nickname(subscribers[3]) }}</div>-->
+            <img v-if="gameMembersOrderList.length<6 || !gameMembersMap.has(gameMembersOrderList[5])" src="@/assets/images/WCC_logo.png">
+            <div v-else class="video-card" :class="{'stop':!gameMembersMap.get(gameMembersOrderList[5]).isSmile}">
+              <UserVideo
+                  :isMyFace="memberToken===gameMembersOrderList[5]"
+                  :stream-manager="gameMembersMap.get(gameMembersOrderList[5]).streamManager"
+                  :key="componentKey"
+              />
+            </div>
           </div>
-
-          <!-- <img src="@/assets/images/WCC_logo.png"> -->
         </div>
 
         <!-- 모달 창 -->
@@ -195,6 +209,46 @@ import UserVideo from "@/views/gameroom/components/openvidu/UserVideo.vue";
 import StandBy from '@/views/gameroom/components/maincontent/StandBy.vue';
 import MissionSelect from '@/views/gameroom/components/maincontent/MissionSelect.vue';
 import CountDown from '@/views/gameroom/components/maincontent/CountDown.vue';
+class GameMember {
+  constructor(memberToken, streamManager, isSmile, isConnected) {
+    this.memberToken = memberToken;
+    this.streamManager = streamManager;
+    this.isSmile = isSmile;
+    this.isConnected = isConnected
+  }
+
+  get memberToken(){
+    return this._memberToken;
+  }
+  get streamManager(){
+    return this._streamManager;
+  }
+
+  get isSmile(){
+    return this._isSmile;
+  }
+
+  get isConnected(){
+    return this._isConnected;
+  }
+
+  set memberToken(memberToken){
+    this._memberToken = memberToken;
+  }
+  set streamManager(streamManager){
+    this._streamManager = streamManager;
+  }
+
+  set isSmile(isSmile){
+    this._isSmile = isSmile;
+  }
+
+  set isConnected(isConnected){
+    this._isConnected = isConnected;
+  }
+
+}
+
 
 export default {
   name: 'GameRoom',
@@ -221,15 +275,19 @@ export default {
       OV: undefined,
       session: undefined,
       mainStreamManager: undefined,
-      streamManagers: [],
-      memberTokens: [],
       flag: false,
       componentKey: 0,
       round: "",
       tellerToken: "",
-
-      noLaugh: false,
-      laugh: []
+      topic:"",
+      publisher:Object,
+      gameMembersMap:new Map(),
+      gameMembersOrderList:[],
+      nickname:"빅빅예한",
+      messageList:[],
+      message:"",
+      sharedScreen:false,
+      myFaceTrack:undefined,
     }
   },
   mounted() {
@@ -242,8 +300,16 @@ export default {
 
       this.session.on("streamCreated", ({stream}) => {
         let subscribeStreamManager = this.session.subscribe(stream);
-        this.streamManagers.push(subscribeStreamManager);
-        this.memberTokens.push(JSON.parse(subscribeStreamManager.stream.connection.data).clientData);
+        let subscribeStreamData = JSON.parse(subscribeStreamManager.stream.connection.data);
+        let subscribeMemberToken = subscribeStreamData.clientData;
+        this.gameMembersMap.set(subscribeMemberToken,
+            new GameMember(
+                subscribeMemberToken,
+                subscribeStreamManager,
+                false,
+                false
+            )
+        );
       });
 
       this.session.on("streamDestroyed", ({stream}) => {
@@ -255,6 +321,11 @@ export default {
 
       this.session.on("exception", ({exception}) => {
         console.warn(exception);
+      });
+
+      this.session.on('signal:my-chat', (event) => {
+        let message = JSON.parse(event.data);
+        this.messageList.push(message);
       });
 
       this.session.connect(this.memberToken, {
@@ -271,8 +342,15 @@ export default {
           mirror: false, // Whether to mirror your local video or not
         });
 
-        this.streamManagers.push(publisherStreamManager);
-        this.memberTokens.push(this.memberToken);
+        this.gameMembersMap.set(this.memberToken,
+            new GameMember(
+                this.memberToken,
+                publisherStreamManager,
+                false,
+                false)
+        );
+
+        this.publisher = publisherStreamManager;
         this.session.publish(publisherStreamManager);
 
         this.client.subscribe(
@@ -280,46 +358,48 @@ export default {
             (frame) => {
               console.log(frame);
               let gameResponse = JSON.parse(frame.body);
+
+              if(gameResponse.gameStatus === GameStatus.SMILE){
+                this.smileEvent(gameResponse.memberToken);
+                return;
+              }
               this.gameStatus = gameResponse.gameStatus;
               this.second = gameResponse.second;
 
+              /**
+               * ToDO
+               *
+               * Game Order 를
+               * 매 라운드 시작이 아닌
+               * 매 발표 전 동기화로 바꾸기
+               */
               if (this.gameStatus === GameStatus.ROUND_SETTING) {
-                console.log(gameResponse.order);
-                console.log(this.memberTokens);
-
-                let orderStreamManagers = [];
-                let orderMemberTokens = [];
-
-                for (let orderMemberToken of gameResponse.order) {
-                  for (let i = 0; i < this.memberTokens.length; i++) {
-                    if (orderMemberToken === this.memberTokens[i]) {
-                      orderStreamManagers.push(this.streamManagers[i]);
-                      orderMemberTokens.push(orderMemberToken);
-                    }
+                this.round = gameResponse.round;
+                this.componentKey += 1;
+              }else if(this.gameStatus === GameStatus.PRESENT_SETTING){
+                this.gameMembersOrderList = gameResponse.order;
+                this.componentKey += 1;
+              } else if (this.gameStatus === GameStatus.PREPARE_PRESENT) {
+                this.tellerToken = gameResponse.tellerToken;
+                if(this.publisher.accessAllowed){
+                  if(this.memberToken === this.tellerToken){
+                    this.publisher.publishAudio(true);
+                  }else{
+                    this.publisher.publishAudio(false);
                   }
                 }
-                this.streamManagers = orderStreamManagers;
-                this.memberTokens = orderMemberTokens;
-                this.round = gameResponse.round;
-              } else if (this.gameStatus === GameStatus.PREPARE_PRESENT) {
-                if (this.flag) {
-                  this.streamManagers.push(this.streamManagers.shift());
-                  this.memberTokens.push(this.memberTokens.shift());
-                  this.componentKey += this.componentKey + 1;
-                  this.flag = false;
+              } else if (this.gameStatus === GameStatus.COUNT_DOWN){
+                if(this.publisher.accessAllowed){
+                  if(this.memberToken === this.tellerToken){
+                    this.publisher.publishAudio(true);
+                  }else{
+                    this.publisher.publishAudio(false);
+                  }
                 }
-                this.tellerToken = gameResponse.tellerToken;
               } else if (this.gameStatus === GameStatus.PRESENT) {
-                this.flag = true;
+                this.tellerToken = gameResponse.tellerToken;
+                this.topic = gameResponse.topic;
               }
-              //
-              // if(gameResponse.tellerToken){
-              //   this.tellerToken = gameResponse.tellerToken;
-              // }
-              //
-              // if(gameResponse.topic){
-              //   this.topic = gameResponse.topic;
-              // }
             },
             (error) => {
               console.log(error);
@@ -330,7 +410,31 @@ export default {
         console.log("There was an error connecting to the session:", error.code, error.message);
       });
 
-    }
+    },
+    async smileEvent(memberToken){
+      if(this.gameMembersMap.has(memberToken)){
+        this.gameMembersMap.get(memberToken).isSmile = true;
+        await new Promise(resolve => setTimeout(resolve, 2500));
+        this.gameMembersMap.get(memberToken).isSmile = false;
+      }
+    },
+    sendMessage(){
+      this.session.signal({
+        data: JSON.stringify({
+          nickname:this.nickname,
+          message: this.message
+        }),
+        to: [],
+        type: 'my-chat',
+      }).then(() => {
+        this.message = "";
+      }).catch(error => {
+            console.error(error);
+      });
+    },
+    async shareScreen(){
+    },
+    async myFace(){}
   },
 }
 </script>
