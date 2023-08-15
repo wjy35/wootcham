@@ -1,8 +1,8 @@
 package com.ssafy.wcc.domain.notice.application.mapper;
 
 import com.ssafy.wcc.domain.notice.application.dto.request.NoticeRequest;
-import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeForAdminResponse;
-import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeResponse;
+import com.ssafy.wcc.domain.notice.application.dto.response.NoticeForAdminResponse;
+import com.ssafy.wcc.domain.notice.application.dto.response.NoticeResponse;
 import com.ssafy.wcc.domain.notice.db.entity.Notice;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

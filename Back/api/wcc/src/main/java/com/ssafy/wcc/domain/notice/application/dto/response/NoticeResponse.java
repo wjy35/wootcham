@@ -1,22 +1,23 @@
-package com.ssafy.wcc.domain.notice.application.dto.resonse;
+package com.ssafy.wcc.domain.notice.application.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Getter
-public class NoticeForAdminResponse {
-    private long id;
+public class NoticeResponse {
     private String subject;
+    private String content;
+    private long hit;
     private String date;
 
     @Builder
-    public NoticeForAdminResponse(long id, String subject, Date date) {
-        this.id = id;
+    public NoticeResponse(String subject, String content, long hit, Date date) {
         this.subject = subject;
+        this.content = content;
+        this.hit = hit;
         this.date = changeDateFormat(date);
     }
 
