@@ -1,5 +1,6 @@
 package com.ssafy.wcc.domain.topic.presentation;
 
+import com.ssafy.wcc.common.aop.auth.Authorization;
 import com.ssafy.wcc.domain.topic.application.dto.response.TopicTypeDetailResponse;
 import com.ssafy.wcc.domain.topic.application.service.TopicService;
 import io.swagger.annotations.*;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.*;
 
@@ -31,7 +33,7 @@ public class TopicController {
             @ApiResponse(code = 404, message = "조회 실패"),
     })
     public ResponseEntity<?> getListTopic(
-            @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken
+            @Authorization @ApiIgnore Long accessToken
     ) {
         Map<String, Object> res = new HashMap<>();
 
