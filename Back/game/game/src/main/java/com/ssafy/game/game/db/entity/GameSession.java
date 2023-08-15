@@ -72,6 +72,11 @@ public class GameSession {
         smileCount.replace(memberToken,smileCount.get(memberToken)+count);
     }
 
+    public void changePresentOrder(){
+        orderList.add(orderList.get(0));
+        orderList.remove(0);
+    }
+
     public void disconnect(String memberToken){
         disconnectTime.put(memberToken,LocalDateTime.now());
     }

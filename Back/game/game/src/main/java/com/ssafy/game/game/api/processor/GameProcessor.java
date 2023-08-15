@@ -40,9 +40,16 @@ public class GameProcessor implements Runnable{
         pickTopic();
 
         for(int i=0; i<gameSession.getOrderList().size(); i++){
-            preparePresent(i);
-            countDown();
-            present(i);
+            presentSetting();
+
+            // ToDo gameMemberRepo 에서 조회하도록 변경
+            if(gameSession.getGameMembers().get(gameSession.getOrderList().get(0)).isConnected()){
+                preparePresent(i);
+                countDown();
+                present(i);
+            }
+
+            changePresentOrder();
         }
 
         reflectRank();
@@ -236,5 +243,13 @@ public class GameProcessor implements Runnable{
         if(gameSession.getGameMembers().size()==GameSetting.MAX_GAMEMEMBER_COUNT) return true;
 
         return false;
+    }
+
+    private void presentSetting(){
+        sender.sendObjectToAll(gameDestination,new PresentSettingResponse(gameSession.getOrderList()));
+    }
+
+    private void changePresentOrder(){
+        this.gameSession.changePresentOrder();
     }
 }
