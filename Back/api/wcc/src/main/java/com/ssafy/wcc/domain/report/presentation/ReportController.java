@@ -42,7 +42,7 @@ public class ReportController {
             @ApiResponse(code = 200, message = "신고 성공"),
             @ApiResponse(code = 404, message = "신고 실패"),
     })
-    public ResponseEntity<Map<String,Object>> report(@RequestBody Map<String,Integer> memberId) {
+    public ResponseEntity<Map<String,Object>> report(@RequestBody @ApiParam(value = "member_id", required = true) Map<String,Integer> memberId) {
         logger.info("report controller 진입");
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -58,7 +58,7 @@ public class ReportController {
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패"),
     })
-    public ResponseEntity<Map<String,Object>> memberList(@RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken) {
+    public ResponseEntity<Map<String,Object>> memberList(@RequestHeader("Authorization") @ApiParam(value = "accessToken", required = true) String accessToken) {
         logger.info("memberList controller 진입");
 
         Map<String, Object> resultMap = new HashMap<>();

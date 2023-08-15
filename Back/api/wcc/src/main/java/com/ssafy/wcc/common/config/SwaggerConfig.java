@@ -33,6 +33,20 @@ public class SwaggerConfig {
         return getDocket("com.ssafy.wcc.domain.collection", "아이템", Predicates.or(PathSelectors.regex("/collection.*")));
     }
 
+    @Bean
+    public Docket recordApi(){
+        return getDocket("com.ssafy.wcc.domain.record", "전적", Predicates.or(PathSelectors.regex("/record.*")));
+    }
+
+    @Bean
+    public Docket reportApi(){
+        return getDocket("com.ssafy.wcc.domain.report", "신고", Predicates.or(PathSelectors.regex("/report.*")));
+    }
+
+    @Bean
+    public Docket topicApi(){
+        return getDocket("com.ssafy.wcc.domain.topic", "키워드", Predicates.or(PathSelectors.regex("/topic.*")));
+    }
 
     @Bean
     public Docket memberApi() {
