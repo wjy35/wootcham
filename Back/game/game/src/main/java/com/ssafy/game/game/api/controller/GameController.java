@@ -43,4 +43,6 @@ public class GameController {
     void upSmileCount(@Payload UpSmileCountRequest upSmileCountRequest){
         gameService.upSmileCount(upSmileCountRequest);
     }
+
+    //ToDo Game skip present 추가
 }
