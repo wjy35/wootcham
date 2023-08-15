@@ -10,7 +10,7 @@ public class PresentSettingResponse {
     private List<String> order;
 
     public PresentSettingResponse(List<String> order) {
-        this.gameStatus = GameStatus.PREPARE_PRESENT;
+        this.gameStatus = GameStatus.PRESNET_SETTING;
         this.order = order;
     }
 }
