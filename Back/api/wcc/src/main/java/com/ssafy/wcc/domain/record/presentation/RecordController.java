@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Api(tags = "Report 컨트롤러")
+@Api(tags = "Record 컨트롤러")
 @RestController
 @RequestMapping("/record")
 @RequiredArgsConstructor
@@ -36,8 +36,7 @@ public class RecordController {
             @ApiResponse(code = 404, message = "전적 조회 실패"),
     })
     public ResponseEntity<?> recordList(
-            @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken,
-            @RequestBody @ApiParam(value = "닉네임", required = true) RecordRequest request
+            @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken
     ) {
         log.info("recordList controller 진입");
         Map<String, Object> res = new HashMap<>();
