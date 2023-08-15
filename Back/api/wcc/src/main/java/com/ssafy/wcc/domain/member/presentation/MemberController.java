@@ -68,7 +68,7 @@ public class MemberController{
             @ApiResponse(code = 400, message = "이미 존재하는 이메일"),
             @ApiResponse(code = 404, message = "사용 불가능한 이메일"),
     })
-    public ResponseEntity<?> confirmEmail(@RequestBody EmailVerifyRequest email) throws MessagingException, UnsupportedEncodingException {
+    public ResponseEntity<?> confirmEmail(@RequestBody EmailVerifyRequest email) {
         Map<String, Object> resultMap = new HashMap<>();
 
         // 이메일 중복 검사
