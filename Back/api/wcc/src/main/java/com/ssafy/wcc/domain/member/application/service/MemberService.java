@@ -14,9 +14,9 @@ public interface MemberService {
 
     public Member memberLogin(MemberloginRequest loginInfo);
 
-    public void memberDelete(String Id);
+    public void memberDelete(Long Id);
 
-    public void memberUpdate(MemberRequest memberRequest, String id);
+    public void memberUpdate(MemberRequest memberRequest, Long id);
     public void checkEmail(String email);
 
     public MemberInfoResponse memberInfoResponse(Long id);
@@ -33,5 +33,5 @@ public interface MemberService {
 
     public void setTmpPassword(String email);
 
-    public void confirmPassword(String id, String password);
+    public void confirmPassword(Long id, String password);
 }
