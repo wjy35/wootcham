@@ -139,6 +139,7 @@ public class CollectionItemServiceImpl implements CollectionItemService {
         List<CollectionItem> itemList = collectionItemRepository.findAllByType(type);
         for (int i = 0; i < itemList.size(); i++) {
             Long itemId = itemList.get(i).getId();
+            if(itemId == 6) continue;;
             Optional<MemberItem> m = memberItemRepository.findByMemberIdAndCollectionId(memberId, itemId);
             if (m.isPresent()) {
                 m.get().setWear(false);
