@@ -4,26 +4,12 @@
 
 
     <div class="scroll-snap-card">
-      <div class="slide one">
-        <div class="item">
-          <div class="notice-date">{{ noticeDate }}</div>
-          <div class="notice-heading">{{ noticeTitle }}</div>
-          <div class="notice-content">{{ noticeContent }}</div>
+      <div class = "slide" v-for="(item, index) in this.notices" :key="index">
+        <div class = "item">
+          <div class="notice-date">{{ item.date }}</div>
+          <div class="notice-heading">{{ item.subject }}</div>
+          <div class="notice-content">{{ item.content }}</div>
         </div>
-      </div>
-      <div class="slide two">
-        <div class="item">
-            <div class="notice-date">{{ noticeDate }}</div>
-            <div class="notice-heading">{{ noticeTitle }}</div>
-            <div class="notice-content">{{ noticeContent }}</div>
-          </div>
-      </div>
-      <div class="slide three">
-        <div class="item">
-            <div class="notice-date">{{ noticeDate }}</div>
-            <div class="notice-heading">{{ noticeTitle }}</div>
-            <div class="notice-content">{{ noticeContent }}</div>
-          </div>
       </div>
     </div>
 
@@ -31,13 +17,23 @@
 </template>
 
 <script>
+import api from "@/api"
+
 export default {
   data() {
     return {
-      noticeTitle: "웃참클럽 1주년 기념 이벤트 공지",
-      noticeDate: "2023-07-23",
-      noticeContent: "웃참클럽 1주년 기념 이벤트 공지 웃참클럽의 첫 생일을 축하하기 위해 웃참클럽이 생일 아이콘을 쏩니다!더불어 인기 아이템 최대 80% 할인, 저녁 9시부터 11시까지 게임 시 포인트 50% 추가 증정 등 다양한 혜택을 즐기세요!",
+      notices:{},
     };
+  },
+  created(){
+    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
+    api.get('/notice')
+    .then(({data}) => {
+      console.log(data)
+      this.notices = data.data;
+    }).catch((error)=>{
+      console.log(error);
+    })
   }
 }
 </script>

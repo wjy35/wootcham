@@ -7,14 +7,15 @@
             <div class='goodbye-content'>
                 <h1>정말 탈퇴하시겠습니까?</h1>
                 <p>회원님께서 탈퇴를 선택하신다면 저희 서비스를 더 이상 이용하실 수 없으며, 모든 혜택과 데이터가 소멸되는 점을 유념하시기 바랍니다. 회원님의 모든 개인정보가 삭제되며, 향후 복구가 불가능하니 신중하게 결정해주세요.</p>
-                <SubmitButton class='button back' @click="goodbye" value="탈퇴하기"></SubmitButton>
-                <SubmitButton class='button' @click="back" value="돌아가기"></SubmitButton>
+                <SubmitButton class='button back' @click.prevent="goodbye" value="탈퇴하기"></SubmitButton>
+                <SubmitButton class='button' @click.prevent="back" value="돌아가기"></SubmitButton>
             </div>
         </div>
     </div>
 </template>
 <script>
 import SubmitButton from './components/UI/SubmitButton.vue';
+import api from '@/api'
 
 export default {
     name: "GoodbyeView",
@@ -24,9 +25,19 @@ export default {
     methods: {
         goodbye() {
             // 탈퇴
+            api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
+            api.delete("/member")
+            .then(()=>{
+                alert("탈퇴 성공")
+                this.$router.push({name: 'login'})
+            })
+            .catch(()=> {
+                alert("일시적 오류입니다. 잠시 후 다시 시도해주세요.")
+            })
         }, 
         back() {
-            // 홈으로
+            // 뒤로
+            this.$router.go(-1);
         }
     }
 }
