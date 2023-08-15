@@ -9,11 +9,16 @@ export default createStore({
   },
   state: {
     userNickname: "",
+    profileImg: "",
     accessToken: "",
     refreshToken: "",
     isValidToken: false,
     mainStreamManager: "",
     client: "",
+
+    notices: [],
+    userList: [],
+
   },
   mutations: {
     setClient(state, payload) {
@@ -25,10 +30,24 @@ export default createStore({
     },
     initUserInfo(state) {
       state.userNickname = "";
+      state.accessToken = "";
+      state.refreshToken = "";
     },
     setUserNickname(state, payload) {
       state.userNickname = payload;
     },
+    setUserPoint(state, payload){
+      state.userInfo.point = payload;
+    },
+    setNotices(state, notices) {
+      state.notices = notices;
+    },
+    setUserList(state, userList) {
+      state.userList = userList;
+    },
+    setProfileImg(state, payload){
+      state.profileImg = payload;
+    }
   },
   getters: {
     getUserNickname(state) {
@@ -41,5 +60,8 @@ export default createStore({
     getClient(state) {
       return state.client;
     },
+    getProfileImg(state){
+      return state.profileImg;
+    }
   },
 });

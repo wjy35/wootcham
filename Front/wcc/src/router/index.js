@@ -7,9 +7,10 @@ import SignupViewVue from "@/views/Member/SignupView.vue";
 import WelcomeViewVue from "@/views/Member/WelcomeView.vue";
 import GoodbyeViewVue from "@/views/Member/GoodbyeView.vue";
 import AdminHome from '@/views/admin/AdminHome.vue'
-
+import NoticeCreateViewVue from '@/views/admin/NoticeCreateView.vue'
+import NoticeDetailViewVue from '@/views/admin/NoticeDetailView.vue'
+import UserManageViewVue from '@/views/admin/UserManageView.vue'
 import HomeView from "@/views/home/HomeView.vue"
-
 import GameRoomVue from "@/views/gameroom/GameRoom.vue";
 import GamePrepareVue from "@/views/gameroom/prepare/GamePrepare.vue";
 // import MainGameVue from "@/views/gameroom/maingame/MainGame.vue";
@@ -89,6 +90,21 @@ const routes = [
     path: "/admin",
     name: "admin",
     component: AdminHome,
+  },
+  {
+    path: "/admin/notice",
+    name: "noticecreate",
+    component: NoticeCreateViewVue,
+  },
+  {
+    path: "/admin/notice/:id",
+    name: "noticedetail",
+    component: NoticeDetailViewVue,
+  },
+  {
+    path: "/admin/user",
+    name: "user",
+    component: UserManageViewVue,
   },
 
 ];

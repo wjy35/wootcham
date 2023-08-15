@@ -60,44 +60,34 @@ export default {
                 console.log("data:", data)
 
                 // localStorage에 토큰 저장
-                localStorage.setItem("access_token", data.access_token);
-                localStorage.setItem("refresh_token", data.refresh_token);
+                localStorage.setItem("accessToken", data.accessToken);
+                localStorage.setItem("refreshToken", data.refreshToken);
 
-                // store에 토큰 저장
-                store.commit('setAccessToken', localStorage.getItem('access_token'));
-                console.log("localStorage AccessToken: ", localStorage.getItem('access_token'));
+                // store에 토큰
+                store.commit('setAccessToken', localStorage.getItem('accessToken'));
+
+                console.log("localStorage AccessToken: ", localStorage.getItem('accessToken'));
                 console.log("Store AccessToken: ", store.getters['getAccessToken']);
 
-                // 사용자 정보 읽어와서 state에 저장
-                // api.defaults.headers["access_token"] = localStorage.getItem("access_token");
-                // api.post(`/member`)
-                //     .then(({ data }) => {
-                //         if (data.isSuccess == true) {
-                //             console.log("회원 정보 조회 성공...............")
-                //             console.log("data: ", data.data)
-                //             store.commit('setUserEmail', data.data.email)
-                //             store.commit('setUserMoney', data.data.money)
-                //             store.commit('setUserNickname', data.data.nickname)
-                //             store.commit('setUserPoint', data.data.point)
-                //         } else {
-                //             console.log("회원 정보 조회 실패...............")
-                //         }
-                //     })
-                //     .catch(error => {
-                //         alert(error.message)
-                //         console.log(error.response)
-                //     });
-
-                // 홈 화면으로 이동
-                router.push({ name: 'homeview' })
-
-            }).catch(error => {
+                // 0이면 관리자 페이지로 이동
+                if (data.admin == 0) {
+                    router.push({ name: 'admin' })
+                }
+                // 1이면 일반 사용자 -> 홈 화면으로 이동
+                else {
+                    router.push({ name: 'homeview' })
+                }
+            }).catch((error) => {
                 console.log("error: ", error)
-                // if (error.response.status == 404) {   // 사용자 정보 없음
-                //     alert("이메일과 비밀번호를 다시 확인해주세요.")
-                // } else {
-                //     alert("잠시 후 다시 시도해주세요.")
-                // }
+                if (error.status === 400) {   // 비밀번호 틀림
+                    alert("비밀번호를 다시 확인해주세요.")
+                } else if (error.status === 403) { // 정지된 사용자
+                    alert("정지된 사용자입니다.")
+                } else if (error.status === 404) { // 존재하지 않는 사용자
+                    alert("이메일을 다시 확인해주세요.")
+                } else {
+                    alert("일시적 오류입니다. 잠시 후 다시 시도해주세요.")
+                }
             })
         }
 

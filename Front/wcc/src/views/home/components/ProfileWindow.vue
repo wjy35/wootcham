@@ -3,59 +3,99 @@
     <div class="content">
 
       <!-- 프로파일 화면 -->
-      <div class="profile-card">
-        <div class="top-section">
-          <div class="border"></div>
-          <div class="icons">
-            <div class="logo" v-text="state.userInfo.nickname">
-            </div>
-            <div class="social-media">
-              WootCham
-            </div>
-          </div>
+      <div class="card">
+        <!-- 프로필 이미지 -->
+        <div class="img"><img :src="this.profile_img" style="width:100%"></div>
+
+        <!-- 유저네임 -->
+        <span class="text-shadow">{{ this.nickname }}</span>
+
+        <p class="info"> {{ this.point }} p</p>
+        <p class="info">32위 (상위 15%)</p>
+
+        <div class="profile-btns">
+          <button @click.prevent="changeNickname">닉네임 수정하기</button>
+          <button @click.prevent="changePw">비밀번호 변경하기</button>
+          <div @click.prevent="deleteUser">회원 탈퇴하기</div>
         </div>
-        <div class="bottom-section">
-          <span class="title">UNIVERSE OF UI</span>
-          <div class="row row1">
-            <div class="item">
-              <span class="big-text">2626</span>
-              <span class="regular-text">UI elements</span>
-            </div>
-            <div class="item">
-              <span class="big-text">100%</span>
-              <span class="regular-text">Free for use</span>
-            </div>
-            <div class="item">
-              <span class="big-text">38,631</span>
-              <span class="regular-text">Contributers</span>
-            </div>
-          </div>
-        </div>
+
+
       </div>
 
       <!-- 전적 기록 화면 -->
       <div class="profile-record-card">
-        <div class="profile-image"></div>
+        <div class="banner">
+          <img src="@/assets/images/profile_record_banner.png" alt="profile_record_banner">
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>등수</th>
+              <th>시작 시간</th>
+              <th>종료 시간</th>
+              <th>웃은 횟수</th>
+              <th>포인트 변경</th>
+              <th>머니 획득</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(match, index) in this.records" :key="index">
+                <td>{{ match.rank }}</td>
+                <td>{{ match.start }}</td>
+                <td>{{ match.end }}</td>
+                <td>{{ match.smileCount }}</td>
+                <td>{{ match.changePoint }}</td>
+                <td>{{ match.changeMoney }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
 </template>
 <script>
-import { reactive } from 'vue'
-import { useStore } from 'vuex'
+import api from "@/api"
 
 export default {
   data() {
     return {
+      nickname: "",
+      point: "",
+      profile_img: "",
+      records:{}
     };
   },
-  setup() {
-    const store = useStore();
-    const state = reactive({        // state 선언
-      userInfo: store.getters['getUserInfo']
+  created() {
+    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken")
+    api.post(`/member`)
+    .then(({ data }) => {
+      this.point = data.data.point;
+      this.nickname = data.data.nickname;
+      this.profile_img = data.data.profile_img;
     })
-
-    return { state };
+    .catch(error => {
+      console.log(error.message)
+    })
+    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken")
+    api.get('/record')
+    .then(({data})=> {
+      this.records = data.data;
+    })
+    .catch(({error}) => {
+      console.log(error)
+    })
+  },
+  methods:{
+    changeNickname(){
+      this.$router.push({name: "nicknamechange"})
+    },
+    changePw(){
+      this.$router.push({name: "pwchange"})
+    },
+    deleteUser(){
+      this.$router.push({name: "goodbye"})
+    }
   }
 }
 </script>
@@ -81,143 +121,180 @@ export default {
 .content {
   display: flex;
   height: 100%;
-  width: 100%;
+  width: 80%;
+
+  gap: 100px;
 }
 
-.profile-card {
-  width: 400px;
-  border-radius: 20px;
-  background: #F27059;
-  padding: 5px;
-  overflow: hidden;
-  box-shadow: #F27059;
-  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
 
-.profile-card:hover {
-  transform: scale(1.05);
-}
-
-.profile-card .top-section {
-  height: 300px;
-  border-radius: 15px;
+/* ------- 프로필 카드 --------- */
+.card {
+  width: 31em;
+  transition: 1s ease-in-out;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(45deg, #FFF2EA 0%, #F27059 100%);
-  position: relative;
 }
 
-.profile-card .top-section .border {
-  border-bottom-right-radius: 10px;
-  height: 30px;
-  width: 130px;
-  background: white;
-  background: #FFF2EA;
-  position: relative;
-  transform: skew(-40deg);
-  box-shadow: -10px -10px 0 0 #FFF2EA;
+.card span {
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  display: block;
+  font-size: 2em;
 }
 
-.profile-card .top-section .border::before {
-  content: "";
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  top: 0;
-  right: -15px;
-  background: rgba(255, 255, 255, 0);
-  border-top-left-radius: 10px;
-  box-shadow: -5px -5px 0 2px #F27059;
+.card .info {
+  font-weight: 400;
+  color: white;
+  display: block;
+  text-align: center;
+  font-size: 1.3em;
 }
 
-.profile-card .top-section::before {
-  content: "";
-  position: absolute;
-  top: 30px;
-  left: 0;
-  background: rgba(255, 255, 255, 0);
-  height: 15px;
-  width: 15px;
-  border-top-left-radius: 15px;
-  box-shadow: -5px -5px 0 2px #1b233d;
+.card .img {
+  width: 8em;
+  height: 8em;
+  background: url(@/assets/images/profile.jpg);
+  background-size: cover;
+  border-radius: 15px;
+  margin: auto;
+
+  border: 5px inset gold;
 }
 
-.profile-card .top-section .icons {
-  position: absolute;
-  top: 0;
+.card a {
+  color: white;
+  transition: .4s ease-in-out;
+}
+
+.card a:hover {
+  color: red;
+}
+
+.profile-btns {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.card button {
+  width: 200px;
+  padding: 10px;
+  display: block;
+  border-radius: 20px;
+  border: none;
+  font-weight: bold;
+  background: #ffffff;
+  color: rgb(0, 0, 0);
+  transition: .2s ease-in-out;
+}
+
+.card button:hover {
+  background: #FF7B27;
+  color: white;
+  cursor: pointer;
+}
+
+/* ------- 나의 전적 화면 ----------- */
+.profile-record-card {
+  border: 2px solid transparent;
+}
+
+.banner img {
+  width: 340px;
+  margin-top: -80px;
+}
+
+table {
   width: 100%;
-  height: 30px;
-  display: flex;
-  justify-content: space-between;
+  border-collapse: collapse;
 }
 
-.profile-card .top-section .icons .logo {
-  height: 100%;
-  aspect-ratio: 1;
-  padding: 7px 0 7px 15px;
-  color: white;
-}
-
-.profile-card .top-section .icons .logo .top-section {
-  height: 100%;
-}
-
-.profile-card .top-section .icons .social-media {
-  height: 100%;
-  padding: 8px 15px;
-  display: flex;
-  gap: 7px;
-}
-
-.profile-card .top-section .icons .social-media .svg {
-  height: 100%;
-  fill: #1b233d;
-}
-
-.profile-card.top-section .icons .social-media .svg:hover {
-  fill: white;
-}
-
-.profile-card .bottom-section {
-  margin-top: 15px;
-  padding: 10px 5px;
-}
-
-.profile-card.bottom-section .title {
-  display: block;
-  font-size: 17px;
-  font-weight: bolder;
-  color: white;
+th, td {
+  border: 1px solid #ddd;
+  border-radius: 1px;
+  padding: 10px;
   text-align: center;
-  letter-spacing: 2px;
-}
-
-.profile-card .bottom-section .row {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.profile-card .bottom-section .row .item {
-  flex: 30%;
-  text-align: center;
-  padding: 5px;
-  color: rgba(170, 222, 243, 0.721);
-}
-
-.profile-card .bottom-section .row .item .big-text {
-  font-size: 12px;
   display: block;
+  font-size: 2em;
+}
+
+.card .info {
+  font-weight: 400;
   color: white;
-  font-weight: 700;
+  display: block;
+  text-align: center;
+  font-size: 1.3em;
 }
 
-.profile-card .bottom-section .row .item .regular-text {
-  font-size: 9px;
+.card .img {
+  width: 8em;
+  height: 8em;
+  background-size: cover;
+  border-radius: 15px;
+  margin: auto;
+
+  border: 5px inset gold;
 }
 
-.profile-card .bottom-section .row .item:nth-child(2) {
-  border-left: 1px solid rgba(255, 255, 255, 0.126);
-  border-right: 1px solid rgba(255, 255, 255, 0.126);
+.card a {
+  color: white;
+  transition: .4s ease-in-out;
+}
+
+.card a:hover {
+  color: red;
+}
+
+.profile-btns {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.card button {
+  width: 200px;
+  padding: 10px;
+  display: block;
+  border-radius: 20px;
+  border: none;
+  font-weight: bold;
+  background: #ffffff;
+  color: rgb(0, 0, 0);
+  transition: .2s ease-in-out;
+}
+
+.card button:hover {
+  background: #FF7B27;
+  color: white;
+  cursor: pointer;
+}
+
+/* ------- 나의 전적 화면 ----------- */
+.profile-record-card {
+  border: 2px solid transparent;
+}
+
+.banner img {
+  width: 340px;
+  margin-top: -80px;
+}
+
+table {
+  width: 140%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  border-radius: 1px;
+  padding: 10px;
+  text-align: center;
 }
 </style>
