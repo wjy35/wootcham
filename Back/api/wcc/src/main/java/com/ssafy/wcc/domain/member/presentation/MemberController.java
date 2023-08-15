@@ -219,7 +219,7 @@ public class MemberController{
     @ApiOperation(value = "임시 비밀번호 전송")
     @ApiResponses({
             @ApiResponse(code = 200, message = "전송 실패"),
-            @ApiResponse(code = 401, message = "해당 유저 없음"),
+            @ApiResponse(code = 404, message = "해당 유저 없음"),
             @ApiResponse(code = 403, message = "메일 전송 실패")
     })
     public ResponseEntity<Map<String, String>> sendTmpPassword(
@@ -229,6 +229,26 @@ public class MemberController{
         Map<String, String> res = new HashMap<>();
 
         memberService.setTmpPassword(request.getEmail());
+        res.put("isSuccess", "true");
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @PostMapping("/confirm")
+    @ApiOperation(value = "비밀번호 확인")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "비밀번호 일치"),
+            @ApiResponse(code = 400, message = "비밀번호 불일치"),
+            @ApiResponse(code = 404, message = "access token 불일치")
+    })
+    public ResponseEntity<Map<String, String>> confrimPassword(
+            @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken,
+            @RequestBody @ApiParam(value = "기존 비밀번호") MemberRequest request
+    ) {
+        logger.info("confrimPassword controller 진입");
+        Map<String, String> res = new HashMap<>();
+        id = tokenService.getIdByToken(accessToken);
+
+        memberService.confirmPassword(id, request.getPassword());
         res.put("isSuccess", "true");
         return new ResponseEntity<>(res, HttpStatus.OK);
     }

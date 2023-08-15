@@ -151,6 +151,20 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public void confirmPassword(String id, String password) {
+        logger.info("confirmPassword service 진입");
+        Optional<Member> member = memberRepository.findById(Long.parseLong(id));
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (member.isEmpty()) {
+            throw new WCCException(Error.USER_NOT_FOUND);
+        }
+        if (!encoder.matches(password, member.get().getPassword())) {
+            throw new WCCException(Error.PASSWORD_NOT_MATCH);
+        }
+    }
+
+    @Override
     public void memberDelete(String id) throws WCCException {
         logger.info("memberDelete service 진입");
         memberRepository.deleteById(Long.parseLong(id));
