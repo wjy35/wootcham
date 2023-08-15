@@ -5,13 +5,19 @@
 
     <div class="flex">
       <div class="loader"></div>
-      <p class="second text-shadow">5초</p>
+      <p class="second text-shadow">{{second}} 초</p>
     </div>
     
   </div>
 </template>
 
 <script>
+export default{
+  name:"CountDown",
+  props: {
+    second: String
+  },
+};
 </script>
 
 <style scoped>

@@ -23,8 +23,9 @@
 
   </div>
 
-  <div v-else-if="gameStatus === GameStatus.PICK_TOPIC_KEYWORD">
-    <game-room-prepare :round="round" :second="second"></game-room-prepare>
+  <div v-else-if="gameStatus === GameStatus.PICK_TOPIC">
+    <game-room-prepare :round="round" :second="second" :memberToken="memberToken"
+                       :sessionId="sessionId"></game-room-prepare>
   </div>
 
   <div v-else>
@@ -38,48 +39,46 @@
         </button>
       </header>
 
-        <div class="main-container">
-          <div class="gridlayout">
+      <div class="main-container">
+        <div class="gridlayout">
 
-            <!-- 1번 박스 === video-one -->
-            <div class="video video-one shadow" :class="{ 'video-effect': isLaugh }">
-                <div class="video-card" :class="{'stop':noLaugh}">
-                  <UserVideo 
-                    :isMyFace="memberToken===memberTokens[0]"  
-                    :stream-manager="streamManagers[0]" 
-                  />
-                </div>
-                <!-- <div v-if="streamManagers[0] !== undefined" class="video-username">{{ nickname(publisher) }}</div>-->
+          <!-- 1번 박스 === video-one -->
+          <div class="video video-one shadow">
+            <img v-if="streamManagers.length<1" src="@/assets/images/WCC_logo.png">
+            <div v-else class="video-card">
+              <UserVideo
+                  :isMyFace="memberToken===memberTokens[0]"
+                  :stream-manager="streamManagers[0]"
+                  :key="componentKey"
+              />
             </div>
+            <!-- <div v-if="streamManagers[0] !== undefined" class="video-username">{{ nickname(publisher) }}</div>-->
+          </div>
 
-            <!-- 2, 3, 6, 7번 박스 === Main Content -->
-            <div class="main-content shadow">
-              <div class="main-content-username">username</div>
-              <div id="main-content-video">
-                
-
-                <!-- 발표자 화면 -->
-                <div v-if="memberToken===tellerToken">            
-                    <!-- <UserVideo  :stream-manager="streamManagers[0]" :key="componentKey"/> -->
-                    
-                    <!-- 주제 선택 화면 -->
-                    <!-- <mission-select></mission-select> -->
-
-                    <!-- 카운트다운 화면 -->
-                    <count-down></count-down>
-                </div>
-                <div v-else class="stand-by">
-
-                  <!-- 대기 화면 -->
-                  <!-- <stand-by></stand-by> -->
+          <!-- 2, 3, 6, 7번 박스 === Main Content -->
+          <div class="main-content shadow">
+            <div class="main-content-username">username</div>
+            <div id="main-content-video">
 
 
-                </div>                
-                
-                <!-- Progress Bar -->
-                <div class="loader">
-                  <div></div>
-                </div>
+              <!-- 발표자 화면 -->
+              <div v-if="memberToken===tellerToken">
+                <!-- <UserVideo  :stream-manager="streamManagers[0]" :key="componentKey"/> -->
+
+                <!-- 주제 선택 화면 -->
+                <mission-select v-if="gameStatus===GameStatus.PREPARE_PRESENT"></mission-select>
+
+                <!-- 카운트다운 화면 -->
+              </div>
+              <div v-else class="stand-by">
+                <stand-by v-if="gameStatus===GameStatus.PREPARE_PRESENT"></stand-by>
+                <count-down v-if="gameStatus===GameStatus.COUNT_DOWN" :second="second"></count-down>
+              </div>
+
+              <!-- Progress Bar -->
+              <div class="loader">
+                <div></div>
+              </div>
 
               <div class="share-btn screenshare">
                 <div class="sign">
@@ -97,18 +96,18 @@
             </div>
           </div>
 
-            <!-- 4, 8번 박스 === chat-card -->
-            <div class="chat-card shadow">
-              <div class="chat-body">
-                <ul v-for="m in messageList" :key="m.connectionId">
-                  <li v-if="nickname(publisher) === m.nickname" class="message incoming">
-                    <p><span>{{ m.nickname }}</span>: {{ m.message }}</p>
-                  </li>
-                  <li v-if="nickname(publisher) !== m.nickname" class="message outgoing">
-                    <p><span>{{ m.nickname }}</span>: {{ m.message }}</p>
-                  </li>
-                </ul>
-              </div>
+          <!-- 4, 8번 박스 === chat-card -->
+          <div class="chat-card shadow">
+            <div class="chat-body">
+              <ul v-for="m in messageList" :key="m.connectionId">
+                <li v-if="nickname(publisher) === m.nickname" class="message incoming">
+                  <p><span>{{ m.nickname }}</span>: {{ m.message }}</p>
+                </li>
+                <li v-if="nickname(publisher) !== m.nickname" class="message outgoing">
+                  <p><span>{{ m.nickname }}</span>: {{ m.message }}</p>
+                </li>
+              </ul>
+            </div>
 
             <div class="input-container shadow">
               <input placeholder="메시지를 입력해주세요." type="text" class="input" v-model="message" @keyup.enter="sendMessage">
@@ -118,40 +117,48 @@
             </div>
           </div>
 
-            <!-- 5번 박스 -->
-            <div class="video video-two shadow">
-              <img v-if="streamManagers.length<2" src="@/assets/images/WCC_logo.png">
-              <UserVideo v-else :isMyFace="memberToken===memberTokens[1]"   :stream-manager="streamManagers[1]" :key="componentKey" />
-              <!--                <div v-if="subscribers[0] !== undefined" class="video-username">{{ nickname(subscribers[0]) }}</div>-->
+          <!-- 5번 박스 -->
+          <div class="video video-two shadow">
+            <img v-if="streamManagers.length<2" src="@/assets/images/WCC_logo.png">
+            <div v-else class="stop">
+              <UserVideo :isMyFace="memberToken===memberTokens[1]" :stream-manager="streamManagers[1]"
+                         :key="componentKey"/>
             </div>
 
-            <!-- 9번 박스 -->
-            <div class="video video-three shadow">
-              <img v-if="streamManagers.length<3" src="@/assets/images/WCC_logo.png">
-              <UserVideo v-else :isMyFace="memberToken===memberTokens[2]"  :stream-manager="streamManagers[2]" :key="componentKey" />
-              <!--                <div v-if="subscribers[1] !== undefined" class="video-username">{{ nickname(subscribers[1]) }}</div>-->
-            </div>
+            <!--                <div v-if="subscribers[0] !== undefined" class="video-username">{{ nickname(subscribers[0]) }}</div>-->
+          </div>
 
-            <!-- 10번 박스 -->
-            <div class="video video-four shadow">
-              <img v-if="streamManagers.length<4" src="@/assets/images/WCC_logo.png">
-              <UserVideo v-else :isMyFace="memberToken===memberTokens[3]" :stream-manager="streamManagers[3]" :key="componentKey" />
-              <!--                <div v-if="subscribers[2] !== undefined" class="video-username">{{ nickname(subscribers[2]) }}</div>-->
-            </div>
+          <!-- 9번 박스 -->
+          <div class="video video-three shadow">
+            <img v-if="streamManagers.length<3" src="@/assets/images/WCC_logo.png">
+            <UserVideo v-else :isMyFace="memberToken===memberTokens[2]" :stream-manager="streamManagers[2]"
+                       :key="componentKey"/>
+            <!--                <div v-if="subscribers[1] !== undefined" class="video-username">{{ nickname(subscribers[1]) }}</div>-->
+          </div>
 
-            <!-- 11번 박스 -->
-            <div class="video video-five shadow">
-              <img v-if="streamManagers.length<5" src="@/assets/images/WCC_logo.png">
-              <UserVideo v-else :isMyFace="memberToken===memberTokens[4]"  :stream-manager="streamManagers[4]" :key="componentKey" />
-              <!--                <div v-if="subscribers[3] !== undefined" class="video-username">{{ nickname(subscribers[3]) }}</div>-->
-            </div>
+          <!-- 10번 박스 -->
+          <div class="video video-four shadow">
+            <img v-if="streamManagers.length<4" src="@/assets/images/WCC_logo.png">
+            <UserVideo v-else :isMyFace="memberToken===memberTokens[3]" :stream-manager="streamManagers[3]"
+                       :key="componentKey"/>
+            <!--                <div v-if="subscribers[2] !== undefined" class="video-username">{{ nickname(subscribers[2]) }}</div>-->
+          </div>
 
-            <!-- 12번 박스 -->
-            <div class="video video-six shadow">
-              <img v-if="streamManagers.length<6" src="@/assets/images/WCC_logo.png">
-              <UserVideo v-else :isMyFace="memberToken===memberTokens[5]"  :stream-manager="streamManagers[5]" :key="componentKey" />
-              <!--                <div v-if="subscribers[3] !== undefined" class="video-username">{{ nickname(subscribers[3]) }}</div>-->
-            </div>
+          <!-- 11번 박스 -->
+          <div class="video video-five shadow">
+            <img v-if="streamManagers.length<5" src="@/assets/images/WCC_logo.png">
+            <UserVideo v-else :isMyFace="memberToken===memberTokens[4]" :stream-manager="streamManagers[4]"
+                       :key="componentKey"/>
+            <!--                <div v-if="subscribers[3] !== undefined" class="video-username">{{ nickname(subscribers[3]) }}</div>-->
+          </div>
+
+          <!-- 12번 박스 -->
+          <div class="video video-six shadow">
+            <img v-if="streamManagers.length<6" src="@/assets/images/WCC_logo.png">
+            <UserVideo v-else :isMyFace="memberToken===memberTokens[5]" :stream-manager="streamManagers[5]"
+                       :key="componentKey"/>
+            <!--                <div v-if="subscribers[3] !== undefined" class="video-username">{{ nickname(subscribers[3]) }}</div>-->
+          </div>
 
           <!-- <img src="@/assets/images/WCC_logo.png"> -->
         </div>
@@ -181,23 +188,22 @@
 
 <script>
 import GameRoomPrepare from "@/views/gameroom/prepare/GamePrepare.vue";
-import { GameStatus } from "@/game-status";
-import { OpenVidu } from "openvidu-browser";
-import { mapState } from "vuex";
+import {GameStatus} from "@/game-status";
+import {OpenVidu} from "openvidu-browser";
+import {mapState} from "vuex";
 import UserVideo from "@/views/gameroom/components/openvidu/UserVideo.vue";
-
-// import StandBy from '@/views/gameroom/components/maincontent/StandBy.vue';
-// import MissionSelect from '@/views/gameroom/components/maincontent/MissionSelect.vue';
+import StandBy from '@/views/gameroom/components/maincontent/StandBy.vue';
+import MissionSelect from '@/views/gameroom/components/maincontent/MissionSelect.vue';
 import CountDown from '@/views/gameroom/components/maincontent/CountDown.vue';
 
 export default {
   name: 'GameRoom',
   components: {
-    UserVideo, 
+    UserVideo,
     GameRoomPrepare,
-    // StandBy,
+    StandBy,
     CountDown,
-    // MissionSelect
+    MissionSelect
   },
   computed: {
     GameStatus() {
@@ -220,7 +226,7 @@ export default {
       flag: false,
       componentKey: 0,
       round: "",
-      tellerToken:"",
+      tellerToken: "",
 
       noLaugh: false,
       laugh: []
@@ -234,20 +240,20 @@ export default {
       this.OV = new OpenVidu();
       this.session = this.OV.initSession();
 
-      this.session.on("streamCreated", ({ stream }) => {
+      this.session.on("streamCreated", ({stream}) => {
         let subscribeStreamManager = this.session.subscribe(stream);
         this.streamManagers.push(subscribeStreamManager);
         this.memberTokens.push(JSON.parse(subscribeStreamManager.stream.connection.data).clientData);
       });
 
-      this.session.on("streamDestroyed", ({ stream }) => {
+      this.session.on("streamDestroyed", ({stream}) => {
         const index = this.subscribers.indexOf(stream.streamManager, 0);
         if (index >= 0) {
           this.subscribers.splice(index, 1);
         }
       });
 
-      this.session.on("exception", ({ exception }) => {
+      this.session.on("exception", ({exception}) => {
         console.warn(exception);
       });
 
@@ -270,54 +276,54 @@ export default {
         this.session.publish(publisherStreamManager);
 
         this.client.subscribe(
-          `/topic/game/${this.sessionId}`,
-          (frame) => {
-            console.log(frame);
-            let gameResponse = JSON.parse(frame.body);
-            this.gameStatus = gameResponse.gameStatus;
-            this.second = gameResponse.second;
+            `/topic/game/${this.sessionId}`,
+            (frame) => {
+              console.log(frame);
+              let gameResponse = JSON.parse(frame.body);
+              this.gameStatus = gameResponse.gameStatus;
+              this.second = gameResponse.second;
 
-            if (this.gameStatus === GameStatus.ORDER_GAMEMEMBER) {
-              console.log(gameResponse.order);
-              console.log(this.memberTokens);
+              if (this.gameStatus === GameStatus.ROUND_SETTING) {
+                console.log(gameResponse.order);
+                console.log(this.memberTokens);
 
-              let orderStreamManagers = [];
-              let orderMemberTokens = [];
+                let orderStreamManagers = [];
+                let orderMemberTokens = [];
 
-              for (let orderMemberToken of gameResponse.order) {
-                for (let i = 0; i < this.memberTokens.length; i++) {
-                  if (orderMemberToken === this.memberTokens[i]) {
-                    orderStreamManagers.push(this.streamManagers[i]);
-                    orderMemberTokens.push(orderMemberToken);
+                for (let orderMemberToken of gameResponse.order) {
+                  for (let i = 0; i < this.memberTokens.length; i++) {
+                    if (orderMemberToken === this.memberTokens[i]) {
+                      orderStreamManagers.push(this.streamManagers[i]);
+                      orderMemberTokens.push(orderMemberToken);
+                    }
                   }
                 }
+                this.streamManagers = orderStreamManagers;
+                this.memberTokens = orderMemberTokens;
+                this.round = gameResponse.round;
+              } else if (this.gameStatus === GameStatus.PREPARE_PRESENT) {
+                if (this.flag) {
+                  this.streamManagers.push(this.streamManagers.shift());
+                  this.memberTokens.push(this.memberTokens.shift());
+                  this.componentKey += this.componentKey + 1;
+                  this.flag = false;
+                }
+                this.tellerToken = gameResponse.tellerToken;
+              } else if (this.gameStatus === GameStatus.PRESENT) {
+                this.flag = true;
               }
-              this.streamManagers = orderStreamManagers;
-              this.memberTokens = orderMemberTokens;
-              this.round = gameResponse.round;
-            } else if (this.gameStatus === GameStatus.PREPARE_PRESENT) {
-              if (this.flag) {
-                this.streamManagers.push(this.streamManagers.shift());
-                this.memberTokens.push(this.memberTokens.shift());
-                this.componentKey += this.componentKey + 1;
-                this.flag = false;
-              }
-              this.tellerToken = gameResponse.tellerToken;
-            } else if (this.gameStatus === GameStatus.PRESENT) {
-              this.flag = true;
-            }
-            //
-            // if(gameResponse.tellerToken){
-            //   this.tellerToken = gameResponse.tellerToken;
-            // }
-            //
-            // if(gameResponse.topic){
-            //   this.topic = gameResponse.topic;
-            // }
-          },
-          (error) => {
-            console.log(error);
-          },
+              //
+              // if(gameResponse.tellerToken){
+              //   this.tellerToken = gameResponse.tellerToken;
+              // }
+              //
+              // if(gameResponse.topic){
+              //   this.topic = gameResponse.topic;
+              // }
+            },
+            (error) => {
+              console.log(error);
+            },
         );
 
       }).catch((error) => {
@@ -337,7 +343,7 @@ header {
   left: 0;
   width: 100%;
   /* background-color: #F27059; */
-  background-color: #504C4C; 
+  background-color: #504C4C;
   z-index: 999;
 
   display: flex;
@@ -396,24 +402,31 @@ header {
 .video-one {
   grid-area: 1 / 1 / 2 / 2;
 }
+
 .main-content {
   grid-area: 1 / 2 / 4 / 4;
 }
+
 .chat-card {
   grid-area: 1 / 4 / 3 / 5;
 }
+
 .video-two {
   grid-area: 2 / 1 / 3 / 2;
 }
+
 .video-three {
   grid-area: 3 / 1 / 4 / 2;
 }
+
 .video-four {
   grid-area: 3 / 2 / 4 / 3;
 }
+
 .video-five {
   grid-area: 3 / 3 / 4 / 4;
 }
+
 .video-six {
   grid-area: 3 / 4 / 4 / 5;
 }
@@ -697,7 +710,7 @@ header {
   border-radius: 8px;
 }
 
-.input-container input:placeholder-shown~.invite-btn {
+.input-container input:placeholder-shown ~ .invite-btn {
   pointer-events: none;
   background-color: gray;
   opacity: 0.5;
@@ -882,9 +895,9 @@ header {
   font-variant: small-caps;
   font-weight: 900;
   background: conic-gradient(#dff2ae 0 25%,
-      #ff904f 25% 50%,
-      #feefe7 50% 75%,
-      #ffde2b 75%);
+  #ff904f 25% 50%,
+  #feefe7 50% 75%,
+  #ffde2b 75%);
   background-size: 200% 200%;
   animation: animateBackground 4.5s ease-in-out infinite;
   color: transparent;
@@ -956,35 +969,35 @@ header {
   left: calc(0 * var(--offset));
   top: calc(0 * var(--offset));
   animation: square1 var(--duration) var(--delay) var(--timing-function) infinite,
-    squarefadein var(--in-duration) calc(1 * var(--in-delay)) var(--in-timing-function) both;
+  squarefadein var(--in-duration) calc(1 * var(--in-delay)) var(--in-timing-function) both;
 }
 
 .loadingspinner #square2 {
   left: calc(0 * var(--offset));
   top: calc(1 * var(--offset));
   animation: square2 var(--duration) var(--delay) var(--timing-function) infinite,
-    squarefadein var(--in-duration) calc(1 * var(--in-delay)) var(--in-timing-function) both;
+  squarefadein var(--in-duration) calc(1 * var(--in-delay)) var(--in-timing-function) both;
 }
 
 .loadingspinner #square3 {
   left: calc(1 * var(--offset));
   top: calc(1 * var(--offset));
   animation: square3 var(--duration) var(--delay) var(--timing-function) infinite,
-    squarefadein var(--in-duration) calc(2 * var(--in-delay)) var(--in-timing-function) both;
+  squarefadein var(--in-duration) calc(2 * var(--in-delay)) var(--in-timing-function) both;
 }
 
 .loadingspinner #square4 {
   left: calc(2 * var(--offset));
   top: calc(1 * var(--offset));
   animation: square4 var(--duration) var(--delay) var(--timing-function) infinite,
-    squarefadein var(--in-duration) calc(3 * var(--in-delay)) var(--in-timing-function) both;
+  squarefadein var(--in-duration) calc(3 * var(--in-delay)) var(--in-timing-function) both;
 }
 
 .loadingspinner #square5 {
   left: calc(3 * var(--offset));
   top: calc(1 * var(--offset));
   animation: square5 var(--duration) var(--delay) var(--timing-function) infinite,
-    squarefadein var(--in-duration) calc(4 * var(--in-delay)) var(--in-timing-function) both;
+  squarefadein var(--in-duration) calc(4 * var(--in-delay)) var(--in-timing-function) both;
 }
 
 @keyframes square1 {

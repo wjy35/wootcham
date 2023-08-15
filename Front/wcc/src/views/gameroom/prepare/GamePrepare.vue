@@ -28,13 +28,13 @@
 																			width:12em; 
 																			text-align: center;
 																			border: none;
-																			border-radius: 15px;" aria-label="Default select example">
+																			border-radius: 15px;" aria-label="Default select example"
+                v-model="selectedType"
+              >
                 <option selected>분류 선택</option>
-                <option value="nonsense">넌센스</option>
-                <option value="dance">막춤</option>
-                <option value="acrostic_poem">삼행시</option>
-                <option value="impression">성대모사</option>
-                <option value="impression">프리스타일</option>
+                <option value="1">넌센스</option>
+                <option value="2">막춤</option>
+                <option value="3">삼행시</option>
               </select>
             </div>
           </div>
@@ -48,12 +48,12 @@
               <span class="dice-tooltip">
                 랜덤으로 키워드를 정할 수 있습니다.
               </span>
-              <img type="button" @click="rollKeyword" src="@/assets/images/dice.png" class="dice-icon"
+              <img type="button" @click="pick" src="@/assets/images/dice.png" class="dice-icon"
                 alt="Game_Prepare_Banner" width="100">
             </div>
           </div>
 
-          <button id-="submitButton" @click="goMainGame" class="shadow">
+          <button id-="submitButton" @click="skip" class="shadow">
             <span class="now">ENTER ROOM</span>
             <span class="play">READY!</span>
           </button>
@@ -69,11 +69,18 @@
 
 <script>
 import GameRoomTimer from "../components/timer/GameTimer.vue"
+import {mapState} from "vuex";
 
 export default {
   name: 'GameRoomPrepare',
   components: {
-    GameRoomTimer
+    GameRoomTimer,
+  },
+  computed: {
+    ...mapState(["client"])
+  },
+  mounted() {
+    this.pick();
   },
   props: {
     round: Number,
@@ -81,19 +88,36 @@ export default {
       type: Number,
       default: 0
     },
+    memberToken: String,
+    sessionId: String,
   },
   data() {
     return {
-      selectedKeyword: '노트북',
+      topics:{
+        "1" : ['노트북', '싸진남', '마우스', '에어컨', '강아지', '고양이'],
+        "2" : ['노트북', '싸진남', '마우스', '에어컨', '강아지', '고양이'],
+        "3" : ['노트북', '싸진남', '마우스', '에어컨', '강아지', '고양이']
+      },
+      selectedType:"1",
+      selectedKeyword: "",
     }
   },
   methods: {
-    rollKeyword() {
-      const keywords = ['노트북', '싸진남', '마우스', '에어컨', '강아지', '고양이'];
-      this.selectedKeyword = keywords[Math.floor(Math.random() * keywords.length)];
+    pick() {
+      //ToDo storage 에서 selectedType 에 따른 keyword 가져오기
+      console.log("selectedType",this.selectedType);
+      this.selectedKeyword = this.topics[this.selectedType][Math.floor(Math.random() * this.topics[this.selectedType].length)];
+      this.client.send(`/pick/shuffle/${this.sessionId}`,JSON.stringify({
+        memberToken: this.memberToken,
+        type: this.selectedType,
+        keyword: this.selectedKeyword
+      }));
     },
-    goMainGame() {
-      this.$router.push({ name: 'maingame' })
+    skip() {
+      this.client.send(`/skip/pick`,JSON.stringify({
+        sessionId: this.sessionId,
+        memberToken: this.memberToken
+      }));
     }
   },
 }

@@ -5,9 +5,9 @@
 
 <script>
 import * as faceapi from 'face-api.js';
+import {mapState} from "vuex";
 
 let cam;
-let interval;
 
 export default {
 	name: 'MyFace',
@@ -15,13 +15,14 @@ export default {
 	props: {
 		streamManager: Object,
 	},
-	data() {
-		return {
-			laughCount: 0,
-			outOfFrame: 0,
-		}
-	},
-
+  data() {
+    return {
+      isChecked: false,
+    }
+  },
+  computed: {
+    ...mapState(["client"])
+  },
 	mounted() {
 		cam = document.getElementById("myFace");
 		Promise.all([
@@ -61,35 +62,25 @@ export default {
 		this.streamManager.addVideoElement(cam);
 		this.startDetect();
 	},
-
-	unmounted() {
-		console.log('destroyed');
-		this.stopDetect();
-	},
-
 	methods: {
-		async detectLaugh(cam) {
+		async detectSmile(cam) {
 			const detections = await faceapi.detectSingleFace(cam, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
-			if (detections === undefined) {
-				this.outOfFrame += 1;
-				console.log("out of frame")
-			} else {
-				if (detections.expressions.happy > 0.7) {
-					console.log("laugh")
-					this.laughCount += 1;
-				} else {
-					console.log('neutral')
-				}
-			}
-		},
-		stopDetect() {
-			console.log('stop')
-			clearInterval(interval);
+			if(!this.isChecked){
+        if (detections === undefined || detections.expressions.happy > 0.75) {
+
+          this.client.send("/up",JSON.stringify({
+            sessionId: localStorage.getItem("sessionId"),
+            memberToken: localStorage.getItem("memberToken")
+          }));
+
+          this.isChecked = true;
+          setTimeout(() => this.isChecked=false, 5000);
+        }
+      }
 		},
 		startDetect() {
-			console.log('start')
-			interval = setInterval(() => {
-				this.detectLaugh(cam);
+			setInterval(() => {
+				this.detectSmile(cam);
 			}, 1000);
 		}
 	}
