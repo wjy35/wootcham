@@ -1,11 +1,9 @@
 package com.ssafy.wcc.domain.notice.presentation;
 
-import com.ssafy.wcc.common.exception.WCCException;
 import com.ssafy.wcc.domain.jwt.application.service.TokenService;
-import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
 import com.ssafy.wcc.domain.notice.application.dto.request.NoticeRequest;
-import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeForAdminResponse;
-import com.ssafy.wcc.domain.notice.application.dto.resonse.NoticeResponse;
+import com.ssafy.wcc.domain.notice.application.dto.response.NoticeForAdminResponse;
+import com.ssafy.wcc.domain.notice.application.dto.response.NoticeResponse;
 import com.ssafy.wcc.domain.notice.application.service.NoticeService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;

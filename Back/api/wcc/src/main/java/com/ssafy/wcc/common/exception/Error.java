@@ -16,7 +16,6 @@ public enum Error {
     NO_SUCH_NOTICE("해당 아이디를 가진 공지사항이 없습니다.", HttpStatus.NOT_FOUND),
 
     // 토큰
-    TOKEN_EXPIRED("토큰이 만료되었습니다.",HttpStatus.UNAUTHORIZED),
     UNKNOWN_ERROR("인증 토큰이 존재하지 않습니다.",HttpStatus.UNAUTHORIZED),
     WRONG_TYPE_TOKEN("잘못된 토큰 정보입니다.",HttpStatus.UNAUTHORIZED),
     EXPIRED_TOKEN("만료된 토큰 정보입니다.",HttpStatus.UNAUTHORIZED),

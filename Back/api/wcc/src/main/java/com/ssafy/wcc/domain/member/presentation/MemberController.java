@@ -40,8 +40,6 @@ public class MemberController{
 
     private final EmailService emailService;
 
-    private String accessToken;
-
     private String id;
 
     @PostMapping("/join")
@@ -125,6 +123,7 @@ public class MemberController{
         res.put("admin",member.getAdmin());
         res.put("accessToken", memberLoginResponse.getAccessToken());
         res.put("refreshToken", memberLoginResponse.getRefreshToken());
+
 
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
