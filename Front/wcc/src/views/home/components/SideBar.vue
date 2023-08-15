@@ -7,7 +7,7 @@
       <!-- 프로필 이미지 & 게임 포인트 -->
       <div class="profile-image-container">
         <div class="profile-image">
-          <img src="@/assets/images/profile.jpg" alt="">
+          <img :src="this.profile_img" style="width:100%" alt="">
         </div>
         <div class="point-button">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
@@ -46,6 +46,7 @@ export default {
     return {
       point: '',
       nickname: '',
+      profile_img: '',
       activeMenuItem: ''
     };
   },
@@ -54,16 +55,17 @@ export default {
     api.defaults.headers["Authorization"] = localStorage.getItem("accessToken")
     api.post(`/member`)
       .then(({ data }) => {
-        console.log("회원 정보 조회 성공...............")
-        console.log("data: ", data.data)
-        console.log("data.point: ", data.data.point)
-        this.$store.commit('setUserNickname', data.data.nickname)
+        // 데이터 조회
         this.point = data.data.point;
         this.nickname = data.data.nickname;
+        this.profile_img = data.data.profile_img;
+        // store 저장
+        this.$store.commit('setUserNickname', this.nickname)
+        this.$store.commit('setProfileImg', this.profile_img)
         this.$emit('user-rankpoint', this.point);
       })
       .catch(error => {
-        alert(error.message)
+        console.log(error.message)
       })
   },
 

@@ -9,7 +9,7 @@
       <div class="ranking-modal-left shadow">
         <div class="rank-card" v-for="(r, i) in rankersLeft" :key="i">
           <div class="rank-card-image">
-            <img src="@/assets/images/profile.jpg" alt="">
+            <img :src='r.profile_img' alt="">
           </div>
           <div class="rank-card-detail">
             <div class="rank-heading" >#{{ i + 1 }}</div>
@@ -23,7 +23,7 @@
       <div class="ranking-modal-right shadow" v-if="rankersRight.length > 0">
         <div class="rank-card" v-for="(r, i) in rankersRight" :key="i">
           <div class="rank-card-image">
-            <img src="@/assets/images/profile.jpg" alt="">
+            <img :src='r.profile_img' alt="">
           </div>
           <div class="rank-card-detail">
             <div class="rank-heading">#{{ left + i + 1 }}</div>

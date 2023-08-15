@@ -95,7 +95,6 @@
           </div>
         </div>
       </div>
-
       <div class="slide">
         <div class="heading">Profile Frame Items</div>
           <div class="frame-products">
@@ -120,8 +119,6 @@
 
          </div>
       </div>
-
-
       <div class="slide">
         <div class="heading">Badge Items</div>
           <div class="badge-products">
@@ -149,8 +146,7 @@
 
           </div>
       </div>
-
-    </div>  
+    </div> 
 
     <!-- 현재 가지고 있는 코인 -->
     <div class="coin-amount shadow">
