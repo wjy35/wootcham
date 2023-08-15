@@ -15,7 +15,7 @@
               <img class='coin-img' src="@/assets/images/coin.png" style="width: 20px; height: 20px">
               <span class="price">{{ profile[(count - 1) * 3].price }}</span>
             </div>
-            <span class="desc">{{ profile[(count - 1) * 3].name }}{{ profile[(count - 1) * 3].buy ? '(보유 중)' : '' }}</span>
+            <span class="desc">{{ profile[(count - 1) * 3].name }}{{ profile[(count - 1) * 3].buy ? '(보유 중)' : '' }}{{ profile[(count - 1) * 3].wear ? '(착용 중)' : '' }}</span>
           </div>
           <div class="image-item" @click="toggleBuy(profile[(count - 1) * 3 + 1])" v-if="profile.length >= (count - 1) * 3 + 2">
             <div class="coin flex text-shadow">
@@ -95,6 +95,61 @@
           </div>
         </div>
       </div>
+
+      <div class="slide">
+        <div class="heading">Profile Frame Items</div>
+          <div class="frame-products">
+            <div class="frame-item" @click="toggleBuy">
+              <div class="coin flex text-shadow">
+                <img src="@/assets/images/coin.png" style="width: 20px; height: 20px">
+                500
+              </div>
+            </div>
+            <div class="frame-item" @click="toggleBuy">
+              <div class="coin flex text-shadow">
+                <img src="@/assets/images/coin.png" style="width: 20px; height: 20px">
+                700
+              </div>
+            </div>
+            <div class="frame-item" @click="toggleBuy">
+              <div class="coin flex text-shadow">
+                <img src="@/assets/images/coin.png" style="width: 20px; height: 20px">
+                1000
+              </div>
+            </div>
+
+         </div>
+      </div>
+
+
+      <div class="slide">
+        <div class="heading">Badge Items</div>
+          <div class="badge-products">
+            <div class="badge-item" @click="toggleBuy">
+              <div class="coin flex text-shadow">
+                <img src="@/assets/images/coin.png" style="width: 20px; height: 20px">
+                500
+                <span>username</span>
+              </div>
+            </div>
+            <div class="badge-item" @click="toggleBuy">
+              <div class="coin flex text-shadow">
+                <img src="@/assets/images/coin.png" style="width: 20px; height: 20px">
+                700
+                <span>username</span>
+              </div>
+            </div>
+            <div class="badge-item" @click="toggleBuy">
+              <div class="coin flex text-shadow">
+                <img src="@/assets/images/coin.png" style="width: 20px; height: 20px">
+                1000
+                <span>username</span>
+              </div>
+            </div>
+
+          </div>
+      </div>
+
     </div>  
 
     <!-- 현재 가지고 있는 코인 -->
@@ -155,6 +210,7 @@ export default {
       badge: [],
       myMoney: 0,
       selectedItem: undefined,
+      myProfile: '',
     }
   },
   methods: {
@@ -219,8 +275,10 @@ export default {
     },
     callMoney() {
       let token = localStorage.getItem("accessToken");
-      api.post('/member', {headers : { 'Authorization': token }}).then(({data}) => {
+      api.post('/member', {headers : { 'Authorization': token }}).then(({data}) => { 
+        console.log(data.data);
         this.myMoney = data.data.money;
+        this.myProfile = data.data.profile_img;
       })
     }
   },
