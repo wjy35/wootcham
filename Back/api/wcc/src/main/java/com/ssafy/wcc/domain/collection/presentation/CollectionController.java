@@ -40,6 +40,7 @@ public class CollectionController {
     private final CollectionItemService collectionItemService;
 
     private String id;
+
     @GetMapping
     @ApiOperation(value = "도감 조회")
     @ApiResponses({
@@ -52,42 +53,11 @@ public class CollectionController {
         Map<String, Object> res = new HashMap<>();
         id = tokenService.getIdByToken(accessToken);
 
-        try {
-            List<CollectionItem> list = collectionItemService.getCollectionList(Long.parseLong(id));
+        List<CollectionResponse> list = collectionItemService.getCollectionList(Long.parseLong(id));
 
-            JSONArray arr = new JSONArray();
-            for (int i = 0; i < list.size(); i++) {
-                JSONObject data = new JSONObject();
-                CollectionItem collectionItem = list.get(i);
-                data.put("id", collectionItem.getId());
-                data.put("type", collectionItem.getType());
-                data.put("name", collectionItem.getName());
-                data.put("price", collectionItem.getPrice());
-                data.put("description", collectionItem.getDescription());
-                data.put("wear", false);
-                data.put("buy", false);
-                for (int j = 0; j < collectionItem.getMemberItems().size(); j++) {
-                    if (collectionItem.getMemberItems().get(j).getMember().getId() == Long.parseLong(id)) {
-                        if (collectionItem.getMemberItems().get(j).isWear()) {
-                            data.put("wear", true);
-                        }
-
-                        if (collectionItem.getMemberItems().get(j).isBuy()) {
-                            data.put("buy", true);
-                        }
-                        data.put("ssss", collectionItem.getMemberItems().get(j).getMember().getId());
-                    }
-                }
-
-                arr.add(data);
-            }
-            res.put("isSuccess", true);
-            res.put("data", arr);
-            return new ResponseEntity<>(res, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
+        res.put("isSuccess", true);
+        res.put("data", list);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @PostMapping()

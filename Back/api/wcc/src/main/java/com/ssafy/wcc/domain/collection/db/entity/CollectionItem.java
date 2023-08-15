@@ -28,16 +28,20 @@ public class CollectionItem {
     @Column(nullable = false, length = 100)
     private String description;
 
+    @Column(nullable = false, length = 100)
+    private String url;
+
     @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY)
     private List<MemberItem> memberItems = new ArrayList<>();
 
     @Builder
-    public CollectionItem(Long id, int type, String name, int price, String description, List<MemberItem> memberItems) {
+    public CollectionItem(Long id, int type, String name, int price, String description, String url, List<MemberItem> memberItems) {
         this.id = id;
         this.type = type;
         this.name = name;
         this.price = price;
         this.description = description;
+        this.url = url;
         this.memberItems = memberItems;
     }
 }
