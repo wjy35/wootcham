@@ -30,4 +30,8 @@ public interface MemberService {
     public void updateCurrentLogin(Optional<Member> findMember);
 
     public void checkSuspendedMember(Optional<Member> findMember);
+
+    public void setTmpPassword(String email);
+
+    public void confirmPassword(String id, String password);
 }

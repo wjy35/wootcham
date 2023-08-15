@@ -17,6 +17,8 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
+import java.security.SecureRandom;
+import java.util.Date;
 import java.util.Random;
 
 
@@ -33,28 +35,34 @@ public class EmailServiceImpl implements EmailService {
     private String id;
 
     @Override
-    public boolean sendMessage(String email) throws MessagingException, UnsupportedEncodingException {
-        String code = createCode();
-        MimeMessage message = createMessage(email, code);
+    // type: 1-회원 가입 시 이메일 인증, 2-비밀번호 찾기
+    public String sendMessage(String email, int type) throws MessagingException, UnsupportedEncodingException {
+        String code = "";
+        if (type == 1) code = createCode();
+        else if (type == 2) code = createPassword();
+        MimeMessage message = createMessage(email, code, type);
         try {
             emailRedisRepository.setDataExpire(code, email, 60 * 5L); // 인증 코드 유효시간: 5분
             javaMailSender.send(message);
         } catch (MailException e) {
             throw new WCCException(Error.EMAIL_SEND_FAILURE);
         }
-        return true;
+        return code;
     }
 
     @Override
-    public MimeMessage createMessage(String email, String code) throws UnsupportedEncodingException, MessagingException {
+    public MimeMessage createMessage(String email, String code, int type) throws UnsupportedEncodingException, MessagingException {
         log.info("이메일 전송 대상: {}", email);
 
         MimeMessage message = javaMailSender.createMimeMessage();
-        message.setSubject("WCC 회원가입 인증 코드"); // 메일 제목
+        // 메일 제목
+        if (type == 1) message.setSubject("WCC 회원가입 인증 코드");
+        else if (type == 2) message.setSubject("WCC 임시 비밀번호");
 
         // 메일 내용
         StringBuilder msg = new StringBuilder();
-        msg.append("<h1 style=\"font-size: 30px; padding-right: 30px; padding-left: 30px;\">이메일 인증 코드</h1>");
+        if (type == 1) msg.append("<h1 style=\"font-size: 30px; padding-right: 30px; padding-left: 30px;\">이메일 인증 코드</h1>");
+        else if (type == 2) msg.append("<h1 style=\"font-size: 30px; padding-right: 30px; padding-left: 30px;\">임시 비밀번호</h1>");
         msg.append("<div style=\"padding-right: 30px; padding-left: 30px; margin: 32px 0 40px;\"><table style=\"border-collapse: collapse; border: 0; background-color: #F4F4F4; height: 70px; table-layout: fixed; word-wrap: break-word; border-radius: 6px;\"><tbody><tr><td style=\"text-align: center; vertical-align: middle; font-size: 30px;\">");
         msg.append(code);
         msg.append("</td></tr></tbody></table></div>");
@@ -76,6 +84,28 @@ public class EmailServiceImpl implements EmailService {
             code.append((rnd.nextInt(10)));
         }
         return code.toString();
+    }
+
+    @Override
+    public String createPassword() {
+        char[] charSet = new char[] {
+                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+                '!', '@', '#', '$', '%', '^', '&' };
+
+        StringBuffer sb = new StringBuffer();
+        SecureRandom sr = new SecureRandom();
+        sr.setSeed(new Date().getTime());
+
+        int idx = 0;
+        int len = charSet.length;
+        for (int i = 0; i < 16; i++) { // 길이 16의 임시 비밀번호
+            idx = sr.nextInt(len);
+            sb.append(charSet[idx]);
+        }
+
+        return sb.toString();
     }
 
     @Override
