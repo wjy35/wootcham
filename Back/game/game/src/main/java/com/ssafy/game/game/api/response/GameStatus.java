@@ -8,5 +8,5 @@ public class GameStatus {
     public static final int COUNT_DOWN = 5;
     public static final int PRESENT = 6;
     public static final int REFLECT_RANK = 7;
-
+    public static final int SMILE=8;
 }

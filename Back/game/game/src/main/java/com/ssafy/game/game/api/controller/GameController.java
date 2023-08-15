@@ -3,7 +3,11 @@ package com.ssafy.game.game.api.controller;
 import com.ssafy.game.game.api.request.SkipPickTopicRequest;
 import com.ssafy.game.game.api.request.TopicRequest;
 import com.ssafy.game.game.api.request.UpSmileCountRequest;
+import com.ssafy.game.game.api.response.GameStatus;
+import com.ssafy.game.game.api.response.GameStatusResponse;
+import com.ssafy.game.game.api.response.SmileResponse;
 import com.ssafy.game.game.api.service.GameService;
+import com.ssafy.game.util.MessageSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 public class GameController {
 
     private final GameService gameService;
+    private final MessageSender sender;
 
     @SubscribeMapping("/topic/game/{sessionId}")
     void load(@DestinationVariable String sessionId, @Header("simpSessionId") String memberId){
@@ -42,6 +47,10 @@ public class GameController {
     @MessageMapping("/up")
     void upSmileCount(@Payload UpSmileCountRequest upSmileCountRequest){
         gameService.upSmileCount(upSmileCountRequest);
+        sender.sendObjectToAll(
+                "/topic/game/"+upSmileCountRequest.getSessionId(),
+                new SmileResponse(upSmileCountRequest.getMemberToken())
+        );
     }
 
     //ToDo Game skip present 추가
