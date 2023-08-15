@@ -14,12 +14,13 @@
                     <li>닉네임은 추후에 변경할 수 있습니다.</li>
                 </ul>
                 <SubmitButton class='button back' @click="back" value="돌아가기"></SubmitButton>
-                <SubmitButton class='button' @click="nickname" value="변경하기"></SubmitButton>
+                <SubmitButton class='button' @click.prevent="nickname" value="변경하기"></SubmitButton>
             </form>
         </div>
     </div>
 </template>
 <script>
+import api from '@/api';
 import SubmitButton from './UI/SubmitButton.vue';
 const regNickname = /^[a-zA-Z0-9가-힣]{1,10}$/
 export default {
@@ -51,17 +52,25 @@ export default {
         nicknameCheck() {
             if (!this.nicknameInput) {
                 alert("닉네임을 입력하세요")
-            } else if (this.nicknameInput === "ssafy") {
-                alert("중복된 닉네임입니다.")
-                this.nicknameExists = true;
-            } else if (!regNickname.test(this.nicknameInput)) {
-                alert('사용할 수 없는 닉네임입니다.')
-            } else {
-                alert("사용 가능한 닉네임입니다.")
-                this.nicknameExists = false;
+            } else{
+                api.post("/member/nickname", {
+                    "nickname": this.nicknameInput
+                }).then(({data}) => {
+                    if(data.unique == true){
+                        alert("사용 가능한 닉네임입니다.")
+                        this.nicknameExists = false;
+                    }else{
+                        alert("사용 불가능한 닉네임입니다.")
+                        this.nicknameExists = true;
+                    }
+                }).catch(()=>{
+                    alert("사용 불가능한 닉네임입니다.")
+                })
             }
         },
         nickname() {
+            console.log("nicknameWarning: ", this.nicknameWarning)
+            console.log("nicknameExist: ", this.nicknameExists)
             if (this.nicknameInput.length === 0) {
                 alert('닉네임을 입력하세요')
             } else if (this.nicknameWarning) {
@@ -71,12 +80,22 @@ export default {
             } else if (!this.nicknameWarning && this.nicknameExists) {
                 alert('중복된 닉네임입니다')
             } else if (!this.nicknameWarning && !this.nicknameExists) {
-                alert("가입 성공")
-                // 어딘가로 라우팅
+                console.log("중복 검사 요청..")
+                api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
+                console.log(localStorage.getItem("accessToken"));
+                api.put("/member", {
+                    "nickname" : this.nicknameInput, 
+                }).then(()=>{
+                    alert("수정 성공");
+                    this.$router.go(-1);
+                }).catch(()=>{
+                    alert("일시적 오류입니다. 잠시 후 다시 시도해주세요.")
+                })
             }
         },
         back() {
-            
+            // 이전 페이지로 돌아가기
+            this.$router.go(-1);
         }
     }
 }

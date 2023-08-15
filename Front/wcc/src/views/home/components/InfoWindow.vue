@@ -5,14 +5,14 @@
     </div>
 
     <div class="scroll-snap-card">
-      <div class="slide red">
-        <p class="tip">Scroll On Me</p>
+      <div class="slide one">
+
       </div>
-      <div class="slide blue">
-        <p class="tip">Scroll On Me</p>
+      <div class="slide two">
+
       </div>
-      <div class="slide green">
-        <p class="tip">Scroll On Me</p>
+      <div class="slide three">
+
       </div>
     </div>
   </div>
@@ -46,16 +46,22 @@
 }
 
 /* 메인 콘텐츠 */
-.red {
-  background-color: #f43f5e;
+.one {
+  background: url(@/assets/images/introduction_one.png);
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
-.blue {
-  background-color: #3b82f6;
+.two {
+  background: url(@/assets/images/introduction_one.png);
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
-.green {
-  background-color: #22c55e;
+.three {
+  background: url(@/assets/images/introduction_one.png);
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .scroll-snap-card {
