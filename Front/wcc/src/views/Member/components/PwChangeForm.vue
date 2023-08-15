@@ -11,14 +11,15 @@
                     <input type="password" placeholder="새로운 비밀번호 확인" v-model="newPwCheck">
                     <p class="warningtext" v-if="warning2">비밀번호가 일치하지 않습니다.</p>
                 </div>
-                <SubmitButton class='button back' @click="back" value="돌아가기"></SubmitButton>
-                <SubmitButton class='button' @click="pwChange" value="변경하기"></SubmitButton>
+                <SubmitButton class='button back' @click.prevent="back" value="돌아가기"></SubmitButton>
+                <SubmitButton class='button' @click.prevent="pwChange" value="변경하기"></SubmitButton>
             </form>
         </div>
     </div>
 </template>
 <script>
 import SubmitButton from './UI/SubmitButton.vue';
+import api from '@/api'
 
 const regPass = /^(?=.*[a-zA-Z])(?=.*[\W_]).{8,16}$/;
 
@@ -90,14 +91,31 @@ export default {
 
     methods: {
         back() {
-
+            this.$router.go(-1);
         },
         pwChange() {
             // 셋 중 하나라도 공백이거나 warning이 활성화되어 있을 시 되돌려놓기
-
-            // 비밀번호가 내 비밀번호가 아닐 때
-
-            // 승인
+            if(this.originalPw === '' || this.newPw === '' || this.newPwCheck === ''){
+                alert('모든 란을 입력해주세요.')
+            }else if(!this.warning1 && !this.warning2 && !this.warning3){    // 모든 입력이 조건 만족시
+                api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
+                api.post('/member/confirm', {"password": this.originalPw})
+                .then(()=>{
+                    // 이전 비밀 번호 확인 성공시 수정 요청
+                    api.put('/member', {"password": this.newPw})
+                    .then(()=>{
+                        alert("비밀번호 수정 성공!")
+                        this.$router.go(-1);
+                    })
+                    .catch(()=>{
+                        alert("수정 실패. 잠시 후 다시 시도해주세요.")
+                    })
+                }).catch(() => {   // 이전 비밀 번호 불일치 시 에러
+                    alert("수정 실패. 이전 비밀번호를 확인해주세요.")
+                })
+            }else{
+                alert('모든 란을 조건에 맞게 입력해주세요.')
+            }
         }
     }
 }
