@@ -22,8 +22,9 @@ public class TopicTypeDetail {
     private String name;
 
     @Column(name = "sub_keyword")
-    private int subKeyword;
+    private String subKeyword;
 
     @OneToMany(mappedBy = "topicTypeDetail")
     private List<Topic> topicList = new ArrayList<>();
+
 }

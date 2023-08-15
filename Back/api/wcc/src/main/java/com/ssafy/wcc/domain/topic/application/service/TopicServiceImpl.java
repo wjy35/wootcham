@@ -1,15 +1,20 @@
 package com.ssafy.wcc.domain.topic.application.service;
 
+import com.ssafy.wcc.domain.topic.application.dto.response.TopicTypeDetailResponse;
 import com.ssafy.wcc.domain.topic.application.mapper.TopicMapper;
+import com.ssafy.wcc.domain.topic.application.mapper.TopicTypeDetailMapper;
 import com.ssafy.wcc.domain.topic.db.entity.Topic;
 import com.ssafy.wcc.domain.topic.db.entity.TopicPK;
+import com.ssafy.wcc.domain.topic.db.entity.TopicTypeDetail;
 import com.ssafy.wcc.domain.topic.db.repository.TopicRepository;
+import com.ssafy.wcc.domain.topic.db.repository.TopicTypeDetailRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -19,13 +24,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TopicServiceImpl implements TopicService {
 
+    private final TopicTypeDetailRepository topicTypeDetailRepository;
     private final TopicRepository topicRepository;
-    private final TopicMapper topicMapper;
+    private final TopicTypeDetailMapper topicTypeDetailMapper;
 
     Logger logger = LoggerFactory.getLogger(TopicServiceImpl.class);
 
     @Override
     public Map<String, List<String>> getTopicList() {
+        log.info("getTopicList service 진입");
         List<Topic> topicList = topicRepository.findAll();
         Map<String, List<String>> resultMap = topicList.stream()
                 .collect(Collectors.groupingBy(
@@ -34,4 +41,26 @@ public class TopicServiceImpl implements TopicService {
                 ));
         return resultMap;
     }
+
+    @Override
+    public List<TopicTypeDetailResponse> getTopicTypeDetailList() {
+        log.info("getTopicTypeDetailList service 진입");
+        List<TopicTypeDetail> topicTypeDetails = topicTypeDetailRepository.findAll();
+        return topicTypeDetails.stream()
+                .map(n -> topicTypeDetailMapper.toTopicTypeDetailResponse(n))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Object> getTopicResponse(){
+        log.info("getTopicResponse service 진입");
+        List<Object> list = new ArrayList<>();
+
+        list.add(this.getTopicList());
+        list.add(this.getTopicTypeDetailList());
+
+        return list;
+    }
 }
+
+

@@ -1,7 +1,6 @@
 package com.ssafy.wcc.domain.topic.presentation;
 
-import com.ssafy.wcc.domain.notice.application.dto.request.NoticeRequest;
-import com.ssafy.wcc.domain.topic.application.dto.response.TopicResponse;
+import com.ssafy.wcc.domain.topic.application.dto.response.TopicTypeDetailResponse;
 import com.ssafy.wcc.domain.topic.application.service.TopicService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Api(tags = "Topic 컨트롤러")
@@ -38,9 +35,10 @@ public class TopicController {
     ) {
         log.info("getListTopic controller 진입");
         Map<String, Object> res = new HashMap<>();
-        Map<String, List<String>> topicResponseList = (Map<String, List<String>>) topicService.getTopicList();
+
+        List<Object> list = topicService.getTopicResponse();
         res.put("isSuccess", true);
-        res.put("data", topicResponseList);
+        res.put("data",list);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 

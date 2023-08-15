@@ -22,7 +22,7 @@ public class Topic {
     }
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "type")
+    @JoinColumn(name = "type", referencedColumnName = "type")
     @MapsId("type")
     TopicTypeDetail topicTypeDetail;
 }
