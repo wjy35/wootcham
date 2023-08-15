@@ -1,5 +1,6 @@
 package com.ssafy.wcc.domain.rank.presentation;
 
+import com.ssafy.wcc.common.aop.auth.Authorization;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
 import com.ssafy.wcc.domain.member.application.dto.response.MemberInfoResponse;
 import com.ssafy.wcc.domain.notice.presentation.NoticeController;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +36,9 @@ public class RankController {
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패"),
     })
-    public ResponseEntity<Map<String, Object>> rank() {
+    public ResponseEntity<Map<String, Object>> rank(
+            @Authorization @ApiIgnore Long accessToken
+    ) {
 
         Map<String, Object> res = new HashMap<>();
 
