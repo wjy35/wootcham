@@ -20,6 +20,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -41,6 +43,8 @@ public class MemberServiceImpl implements MemberService {
     private final CollectionItemRepository collectionItemRepository;
 
     private final MemberItemRepository memberItemRepository;
+
+    private final EmailService emailService;
 
     @Override
     public void memberSignUp(MemberRequest signupInfo) throws WCCException {
@@ -118,6 +122,45 @@ public class MemberServiceImpl implements MemberService {
         LocalDate date2 = LocalDate.now();
         if (date1.compareTo(date2) >= 0) {
             throw new WCCException(Error.SUSPENDED_USER);
+        }
+    }
+
+    @Override
+    public void setTmpPassword(String email) {
+        logger.info("임시 비밀번호를 발급하는 email 주소: {}", email);
+        // 이메일 조회
+        Optional<Member> findMember = memberRepository.findByEmail(email);
+        if (findMember.isEmpty()) {
+            throw new WCCException(Error.USER_NOT_FOUND);
+        }
+
+        // 임시 비밀번호 생성 및 메일 전송
+        String code;
+        try {
+            code = emailService.sendMessage(email, 2);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new WCCException(Error.EMAIL_SEND_FAILURE);
+        }
+
+        // DB에 임시 비밀번호 저장
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String securePassword = encoder.encode(code);
+
+        findMember.get().setPassword(securePassword);
+        memberRepository.save(findMember.get());
+    }
+
+    @Override
+    public void confirmPassword(String id, String password) {
+        logger.info("confirmPassword service 진입");
+        Optional<Member> member = memberRepository.findById(Long.parseLong(id));
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (member.isEmpty()) {
+            throw new WCCException(Error.USER_NOT_FOUND);
+        }
+        if (!encoder.matches(password, member.get().getPassword())) {
+            throw new WCCException(Error.PASSWORD_NOT_MATCH);
         }
     }
 

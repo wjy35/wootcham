@@ -1,7 +1,6 @@
 package com.ssafy.wcc.domain.member.presentation;
 
 
-import com.ssafy.wcc.domain.collection.application.service.CollectionItemService;
 import com.ssafy.wcc.domain.member.application.dto.request.EmailVerifyRequest;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberloginRequest;
@@ -11,7 +10,6 @@ import com.ssafy.wcc.domain.member.application.service.EmailService;
 import com.ssafy.wcc.domain.member.application.service.MemberService;
 import com.ssafy.wcc.domain.jwt.application.service.TokenService;
 import com.ssafy.wcc.domain.member.db.entity.Member;
-import com.ssafy.wcc.domain.notice.presentation.NoticeController;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -73,10 +71,10 @@ public class MemberController{
         Map<String, Object> resultMap = new HashMap<>();
 
         // 이메일 중복 검사
-       memberService.checkEmail(email.getEmail());
+        memberService.checkEmail(email.getEmail());
 
         // 인증 메일 전송
-        emailService.sendMessage(email.getEmail());
+        emailService.sendMessage(email.getEmail(), 1);
 
         resultMap.put("isSuccess", true);
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
@@ -214,6 +212,44 @@ public class MemberController{
             res.put("unique", false);
             return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping("/password")
+    @ApiOperation(value = "임시 비밀번호 전송")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "전송 실패"),
+            @ApiResponse(code = 404, message = "해당 유저 없음"),
+            @ApiResponse(code = 403, message = "메일 전송 실패")
+    })
+    public ResponseEntity<Map<String, String>> sendTmpPassword(
+            @RequestBody @ApiParam(value = "이메일") MemberRequest request
+    ) {
+        logger.info("sendTmpPassword controller 진입");
+        Map<String, String> res = new HashMap<>();
+
+        memberService.setTmpPassword(request.getEmail());
+        res.put("isSuccess", "true");
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @PostMapping("/confirm")
+    @ApiOperation(value = "비밀번호 확인")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "비밀번호 일치"),
+            @ApiResponse(code = 400, message = "비밀번호 불일치"),
+            @ApiResponse(code = 404, message = "access token 불일치")
+    })
+    public ResponseEntity<Map<String, String>> confrimPassword(
+            @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken,
+            @RequestBody @ApiParam(value = "기존 비밀번호") MemberRequest request
+    ) {
+        logger.info("confrimPassword controller 진입");
+        Map<String, String> res = new HashMap<>();
+        id = tokenService.getIdByToken(accessToken);
+
+        memberService.confirmPassword(id, request.getPassword());
+        res.put("isSuccess", "true");
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
 }
