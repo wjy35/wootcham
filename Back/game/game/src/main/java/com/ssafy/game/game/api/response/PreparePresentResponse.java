@@ -1,8 +1,10 @@
 package com.ssafy.game.game.api.response;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class PreparePresentResponse extends GameStatusResponse {
 
     private String tellerToken;

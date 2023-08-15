@@ -1,10 +1,12 @@
 package com.ssafy.game.game.api.response;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 public class PresentSettingResponse {
     private int gameStatus;
     private List<String> order;
