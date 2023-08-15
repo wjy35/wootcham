@@ -25,7 +25,7 @@ public class Record {
 
     private Date start;
 
-    private int rankPoint;
+    private int rank;
 
     @EmbeddedId
     private RecordPK recordPK;
