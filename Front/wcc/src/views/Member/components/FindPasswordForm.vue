@@ -8,11 +8,11 @@
                     <p 임시>가입한 이메일을 입력하시면 해당 이메일로 임시 비밀번호를 보내드립니다.
                     임시 비밀번호로 로그인 후 비밀번호를 꼭 변경해주세요.</p>
                 </div>
-                <SubmitButton class="emailSendButton" @click="findPw" value="임시 비밀번호 전송"></SubmitButton>
+                <SubmitButton class="emailSendButton" @click.prevent="findPw" value="임시 비밀번호 전송"></SubmitButton>
             </div>
             
             <div id="routes">
-                <SubmitButton class='routeButton' value="로그인" @click="goLogin"></SubmitButton >
+                <SubmitButton class='routeButton' value="로그인" @click.prevent="goLogin"></SubmitButton >
             </div>
             <div>
                 <div @click="goForsignUp" class="goForsignUp">아직 회원이 아니신가요?</div>
@@ -41,6 +41,29 @@ export default {
                 alert('올바른 이메일을 입력해주세요.')
             }else{
                 // api.
+                api.post('/member/password', {"email": this.emailInput})
+                .then(({data}) => {
+                    console.log("data:", data)
+                    alert("인증 성공! 메일을 확인해주세요.")
+                    // if(data.response.status === 200){
+                    //     alert("인증 성공! 메일을 확인해주세요.")
+                    // }
+                    // else if (data.response.status === 404){
+                    //     alert("해당 이메일을 가진 유저가 없습니다. 메일 주소를 확인해주세요.")
+                    // }
+                    // else{
+                    //     alert("메일 전송에 실패했습니다. 잠시 후 다시 시도해주세요.")
+                    // }
+                }).catch((error) => {
+                    console.log(error)
+                    if(error.response.status === 403){
+                        alert("메일 전송에 실패했습니다. 잠시 후 다시 시도해주세요.")
+                    }
+                    else if (error.response.status === 404){
+                        alert("해당 이메일을 가진 유저가 없습니다. 메일 주소를 확인해주세요.")
+                    }
+                })
+
             }
             // if (this.emailInput === 'ssafy@ssafy.com') {
             //     alert('가입하신 이메일로 임시 비밀번호를 전송했습니다.');

@@ -37,15 +37,22 @@
               <th>웃은 횟수</th>
               <th>포인트 변경</th>
               <th>머니 획득</th>
-            </tr>
-          </thead>
-          <tbody>
-            
-          </tbody>
-        </table>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(match, index) in this.records" :key="index">
+                <td>{{ match.rank }}</td>
+                <td>{{ match.start }}</td>
+                <td>{{ match.end }}</td>
+                <td>{{ match.smileCount }}</td>
+                <td>{{ match.changePoint }}</td>
+                <td>{{ match.changeMoney }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
 </template>
 <script>
 import api from "@/api"
@@ -56,12 +63,7 @@ export default {
       nickname: "",
       point: "",
       profile_img: "",
-      records:{
-        rank: "",
-        start: "",
-        end: "",
-        change_point: "",
-      }
+      records:{}
     };
   },
   created() {
@@ -78,7 +80,7 @@ export default {
     api.defaults.headers["Authorization"] = localStorage.getItem("accessToken")
     api.get('/record')
     .then(({data})=> {
-      this.records = data;
+      this.records = data.data;
     })
     .catch(({error}) => {
       console.log(error)

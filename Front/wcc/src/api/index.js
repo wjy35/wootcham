@@ -37,6 +37,7 @@ const errorHandler = async (error) => {
         redirectToLogin();
       }
   }
+  return Promise.reject(error);
 }
 
 const redirectToLogin = () => {
@@ -46,6 +47,7 @@ const redirectToLogin = () => {
     localStorage.removeItem("refreshToken");
     delete _axios.defaults.headers.Authorization;
     router.push({name: "login"});
+    return;
 }
 
 
