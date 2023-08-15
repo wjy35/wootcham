@@ -36,7 +36,6 @@ public class JwtController {
             @ApiResponse(code = 404, message = "갱신 실패")
     })
     public ResponseEntity<Map<String, Object>> refreshToken(@RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String refreshToken) {
-        logger.info("refreshToken service 진입");
         Map<String, Object> res = new HashMap<>();
         if (tokenService.checkToken(refreshToken)) {
             String id = tokenService.getIdByToken(refreshToken);

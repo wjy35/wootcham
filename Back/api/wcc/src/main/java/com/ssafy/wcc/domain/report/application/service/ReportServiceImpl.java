@@ -33,7 +33,6 @@ public class ReportServiceImpl implements ReportService{
 
     @Override
     public void report(Long memberId) {
-        logger.info("report service 진입");
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar c = Calendar.getInstance();
@@ -64,7 +63,6 @@ public class ReportServiceImpl implements ReportService{
 
     @Override
     public List<AllMemberResponse> getAllMemberList() {
-        logger.info("getAllMemberList service 진입");
         List<Member> memberList = memberRepository.findAll();
         List<AllMemberResponse> allMemberResponsesList = new ArrayList<>();
         for(int i=0; i<memberList.size(); i++){

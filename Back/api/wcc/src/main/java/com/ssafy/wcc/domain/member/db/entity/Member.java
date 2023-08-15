@@ -110,4 +110,10 @@ public class Member extends BaseEntity implements UserDetails {
     public boolean isEnabled() {
         return false;
     }
+
+    @Override
+    public String toString() {
+        String result = "id: "+this.getId()+", email: "+this.getEmail();
+        return result;
+    }
 }

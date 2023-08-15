@@ -37,7 +37,6 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public List<NoticeResponse> getNoticeListForUsers(long id) throws WCCException {
-        logger.info("getNoticeListForUsers service 진입: {}", id);
         checkMember(id, 1);
         
         long count = noticeRepository.countBy();
@@ -49,7 +48,6 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public List<NoticeForAdminResponse> getNoticeListForAdmin(long id) throws WCCException {
-        logger.info("getNoticeListForAdmin service 진입");
         checkMember(id, 0);
 
         List<Notice> noticeList = noticeRepositorySupport.listNoticeForAdmin();
@@ -60,7 +58,6 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public NoticeResponse getNoticeDetail(long memberId, long noticeId) throws WCCException {
-        logger.info("getNoticeDetail service 진입");
         checkMember(memberId, 0);
 
         Optional<Notice> notice = noticeRepositorySupport.getNoticeDetail(noticeId);
@@ -71,7 +68,6 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     @Transactional
     public void registerNotice(long id, NoticeRequest noticeRequest) throws WCCException {
-        logger.info("registerNotice service 진입");
         checkMember(id, 0);
 
         Notice notice = Notice.builder()
@@ -85,7 +81,6 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     @Transactional
     public void updateNotice(long id, NoticeRequest noticeRequest) throws WCCException {
-        logger.info("updateNotice service 진입");
         checkMember(id, 0);
 
         noticeRepositorySupport.updateNoticeInfo(noticeRequest);

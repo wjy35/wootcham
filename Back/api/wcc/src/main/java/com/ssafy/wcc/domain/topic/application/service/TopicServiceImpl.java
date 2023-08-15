@@ -32,7 +32,6 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Map<String, List<String>> getTopicList() {
-        log.info("getTopicList service 진입");
         List<Topic> topicList = topicRepository.findAll();
         Map<String, List<String>> resultMap = topicList.stream()
                 .collect(Collectors.groupingBy(
@@ -44,7 +43,6 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public List<TopicTypeDetailResponse> getTopicTypeDetailList() {
-        log.info("getTopicTypeDetailList service 진입");
         List<TopicTypeDetail> topicTypeDetails = topicTypeDetailRepository.findAll();
         return topicTypeDetails.stream()
                 .map(n -> topicTypeDetailMapper.toTopicTypeDetailResponse(n))
@@ -53,7 +51,6 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public List<Object> getTopicResponse(){
-        log.info("getTopicResponse service 진입");
         List<Object> list = new ArrayList<>();
 
         list.add(this.getTopicList());

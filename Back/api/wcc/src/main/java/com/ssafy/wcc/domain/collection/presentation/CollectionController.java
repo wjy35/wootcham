@@ -48,8 +48,6 @@ public class CollectionController {
             @ApiResponse(code = 404, message = "조회 실패"),
     })
     public ResponseEntity<Map<String, Object>> collectionList(@RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken) {
-        logger.info("collectionList controller 진입");
-
         Map<String, Object> res = new HashMap<>();
         id = tokenService.getIdByToken(accessToken);
 
@@ -68,8 +66,6 @@ public class CollectionController {
             @ApiResponse(code = 404, message = "구매 실패"),
     })
     public ResponseEntity<Map<String, Object>> buy(@RequestBody Map<String, Integer> collectionId, @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken) {
-        logger.info("buy controller 진입");
-
         Map<String, Object> res = new HashMap<>();
 
         id = tokenService.getIdByToken(accessToken);
@@ -87,8 +83,6 @@ public class CollectionController {
             @ApiResponse(code = 404, message = "착용 실패"),
     })
     public ResponseEntity<Map<String, Object>> wear(@RequestBody Map<String, Integer> collectionId, @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken) {
-        logger.info("wear controller 진입");
-
         Map<String, Object> res = new HashMap<>();
 
         id = tokenService.getIdByToken(accessToken);

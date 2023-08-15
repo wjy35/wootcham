@@ -33,7 +33,6 @@ public class TopicController {
     public ResponseEntity<?> getListTopic(
             @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken
     ) {
-        log.info("getListTopic controller 진입");
         Map<String, Object> res = new HashMap<>();
 
         List<Object> list = topicService.getTopicResponse();

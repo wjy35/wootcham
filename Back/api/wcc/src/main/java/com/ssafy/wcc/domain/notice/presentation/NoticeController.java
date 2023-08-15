@@ -76,7 +76,6 @@ public class NoticeController {
             @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken,
             @RequestBody @ApiParam(value = "글 아이디", required = true) NoticeRequest request
     ) {
-        log.info("noticeDetail controller 진입");
         Map<String, Object> res = new HashMap<>();
 
         NoticeResponse notice = noticeService.getNoticeDetail(Long.parseLong(tokenService.getIdByToken(accessToken)), request.getId());
@@ -95,7 +94,6 @@ public class NoticeController {
             @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken,
             @RequestBody @ApiParam(value = "글 정보", required = true) NoticeRequest request
     ) {
-        log.info("registerNotice controller 진입");
         Map<String, Object> res = new HashMap<>();
 
         noticeService.registerNotice(Long.parseLong(tokenService.getIdByToken(accessToken)), request);
@@ -113,7 +111,6 @@ public class NoticeController {
             @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken,
             @RequestBody @ApiParam(value = "글 정보", required = true) NoticeRequest request
     ) {
-        log.info("updateNotice controller 진입");
         Map<String, Object> res = new HashMap<>();
 
         noticeService.updateNotice(Long.parseLong(tokenService.getIdByToken(accessToken)), request);

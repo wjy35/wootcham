@@ -43,7 +43,6 @@ public class ReportController {
             @ApiResponse(code = 404, message = "신고 실패"),
     })
     public ResponseEntity<Map<String,Object>> report(@RequestBody @ApiParam(value = "member_id", required = true) Map<String,Integer> memberId) {
-        logger.info("report controller 진입");
 
         Map<String, Object> resultMap = new HashMap<>();
         reportService.report(Long.valueOf(memberId.get("member_id")));
@@ -59,7 +58,6 @@ public class ReportController {
             @ApiResponse(code = 404, message = "조회 실패"),
     })
     public ResponseEntity<Map<String,Object>> memberList(@RequestHeader("Authorization") @ApiParam(value = "accessToken", required = true) String accessToken) {
-        logger.info("memberList controller 진입");
 
         Map<String, Object> resultMap = new HashMap<>();
         id = tokenService.getIdByToken(accessToken);

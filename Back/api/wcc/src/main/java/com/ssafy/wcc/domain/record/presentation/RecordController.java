@@ -38,7 +38,6 @@ public class RecordController {
     public ResponseEntity<?> recordList(
             @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken
     ) {
-        log.info("recordList controller 진입");
         Map<String, Object> res = new HashMap<>();
         String id = tokenService.getIdByToken(accessToken);
         List<RecordResponse> recordResponseList = recordService.getRecord(Long.valueOf(id));

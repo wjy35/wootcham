@@ -37,7 +37,6 @@ public class CollectionItemServiceImpl implements CollectionItemService {
 
     @Override
     public List<CollectionResponse> getCollectionList(Long id) throws WCCException {
-        logger.info("getCollectionList service 진입");
         List<CollectionItem> collectionItemList = collectionItemRepository.findAll();
         List<CollectionResponse> responses = new ArrayList<>();
 
@@ -76,7 +75,6 @@ public class CollectionItemServiceImpl implements CollectionItemService {
 
     @Override
     public boolean buy(Long memberId, int collectionId) {
-        logger.info("buy service 진입");
         MemberItemRequest memberItemRequest = MemberItemRequest.builder().buy(true).wear(false).memberId(memberId).collectionId(collectionId).build();
 
         MemberItem memberItem = memberItemMapper.memberItemRequestToMemberItem(memberItemRequest);
@@ -98,7 +96,6 @@ public class CollectionItemServiceImpl implements CollectionItemService {
 
     @Override
     public boolean wear(Long memberId, int collectionId) {
-        logger.info("wear service 진입");
         Optional<MemberItem> memberItem = memberItemRepository.findByMemberIdAndCollectionId(memberId, (long) collectionId);
         if (memberItem.isPresent()) {
 
@@ -118,7 +115,6 @@ public class CollectionItemServiceImpl implements CollectionItemService {
 
     @Override
     public int getPrice(int collectionId) {
-        logger.info("getPrice service 진입");
         Optional<CollectionItem> collectionItem = collectionItemRepository.findById((long) collectionId);
         if (collectionItem.isPresent()) {
             return collectionItem.get().getPrice();
@@ -128,7 +124,6 @@ public class CollectionItemServiceImpl implements CollectionItemService {
 
     @Override
     public int getType(int collectionId) {
-        logger.info("getType service 진입");
         Optional<CollectionItem> nowCollectionItem = collectionItemRepository.findById((long) collectionId);
         if (nowCollectionItem.isPresent()) {
             return nowCollectionItem.get().getType();
@@ -138,7 +133,6 @@ public class CollectionItemServiceImpl implements CollectionItemService {
 
     @Override
     public void takeOffItem(int type, Long memberId){
-        logger.info("takeOffItem service 진입");
         List<CollectionItem> itemList = collectionItemRepository.findAllByType(type);
         for (int i = 0; i < itemList.size(); i++) {
             Long itemId = itemList.get(i).getId();

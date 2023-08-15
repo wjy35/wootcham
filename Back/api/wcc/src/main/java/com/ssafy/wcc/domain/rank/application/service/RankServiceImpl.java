@@ -32,8 +32,6 @@ public class RankServiceImpl implements RankService{
     private final MemberMapper memberMapper;
 
     public List<MemberInfoResponse> getRank() throws RuntimeException {
-        logger.info("getRank service 진입");
-
         try{
             List<Member> rankList = repository.findTop10ByOrderByPointDesc();
             List<MemberInfoResponse> result = new ArrayList<>();

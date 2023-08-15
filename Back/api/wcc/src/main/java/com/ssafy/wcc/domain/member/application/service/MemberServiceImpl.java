@@ -49,7 +49,6 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void memberSignUp(MemberRequest signupInfo) throws WCCException {
         // 비밀번호에 암호 적용
-        logger.info("memberSignUp service 진입");
         Member member = memberMapper.memberRequestToMember(signupInfo);
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -77,7 +76,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member memberLogin(MemberloginRequest loginInfo) throws WCCException {
-        logger.info("memberLogin service 진입");
         Optional<Member> findMember = memberRepository.findByEmail(loginInfo.getEmail());
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if (!findMember.isPresent()) {
@@ -97,7 +95,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public LocalDate getCurrentTime() {
-        logger.info("getCurrentTime service 진입");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar c = Calendar.getInstance();
         String today = sdf.format(c.getTime());
@@ -108,7 +105,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void updateCurrentLogin(Optional<Member> findMember){
-        logger.info("updateCurrentLogin service 진입");
         LocalDate currentTime = this.getCurrentTime();
         Member member = findMember.get();
         member.setCurrentLogin(currentTime);
@@ -117,7 +113,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void checkSuspendedMember(Optional<Member> findMember){
-        logger.info("checkSuspendedMember service 진입");
         LocalDate date1 = findMember.get().getSuspensionDay();
         LocalDate date2 = LocalDate.now();
         if (date1.compareTo(date2) >= 0) {
@@ -152,7 +147,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void confirmPassword(String id, String password) {
-        logger.info("confirmPassword service 진입");
         Optional<Member> member = memberRepository.findById(Long.parseLong(id));
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -166,13 +160,11 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void memberDelete(String id) throws WCCException {
-        logger.info("memberDelete service 진입");
         memberRepository.deleteById(Long.parseLong(id));
     }
 
     @Override
     public void memberUpdate(MemberRequest memberRequest, String id) throws WCCException {
-        logger.info("memberUpdate service 진입");
         Optional<Member> member = memberRepository.findById(Long.parseLong(id));
         if (member.isPresent()) {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -191,7 +183,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void checkEmail(String email) {
-        logger.info("checkEmail service 진입");
         if(memberRepository.existsByEmail(email)){
             throw new WCCException(Error.DUPLICATE_EMAIL);
         }
@@ -200,7 +191,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberInfoResponse memberInfoResponse(Long id) {
-        logger.info("memberInfoResponse service 진입");
         Optional<Member> findMember = memberRepository.findById(id);
         if (findMember.isPresent()) {
             // 사용 중인 아이템 가져오기
@@ -221,7 +211,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean checkNickname(String nickname) {
-        logger.info("checkNickname service 진입");
         long count = memberRepository.countByNickname(nickname);
         if (count == 0) {
             return true;
@@ -231,7 +220,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public String getMemberNickname(Long id) {
-        logger.info("getMemberNickname service 진입");
         Optional<String> nickname = memberRepository.findNicknameById(id);
         if (nickname.isPresent()) {
             return nickname.get();

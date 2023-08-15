@@ -31,8 +31,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        logger.info("memberInfoResponse service 진입");
-
         if("OPTIONS".equalsIgnoreCase(((HttpServletRequest)request).getMethod())) {
             ((HttpServletResponse)response).setStatus(HttpServletResponse.SC_OK);
             chain.doFilter(request, response);
@@ -41,18 +39,14 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         // 헤더에서 accessToken을 받아옵니다.
         String token = tokenService.resolveToken((HttpServletRequest) request);
 
-        logger.info("token {}",token);
         // 유효한 토큰인지 확인합니다.
         if (token != null && tokenService.checkToken(token)) {
-            logger.info("유효한 토큰");
             String s = tokenService.getToken(token);
             if (s == null) {
-                logger.info("Black List에 등록되지 않은 토큰");
                 // 토큰이 유효하면 토큰으로부터 유저 정보를 받아옵니다.
                 Authentication authentication = tokenService.getAuthentication(token);
                 // SecurityContext 에 Authentication 객체를 저장합니다.
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                logger.info("로그인 완료");
             }
         }
         

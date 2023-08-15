@@ -35,7 +35,6 @@ public class RankController {
             @ApiResponse(code = 404, message = "조회 실패"),
     })
     public ResponseEntity<Map<String, Object>> rank() {
-        log.info("rank controller 진입");
 
         Map<String, Object> res = new HashMap<>();
 

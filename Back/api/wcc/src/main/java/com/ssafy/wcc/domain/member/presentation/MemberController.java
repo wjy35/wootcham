@@ -52,7 +52,6 @@ public class MemberController{
     public ResponseEntity<?> signUp (
             @RequestBody @ApiParam(value = "회원가입 정보", required = true) MemberRequest signupInfo
     ) {
-        logger.info("signUp controller 진입");
         Map<String, Object> resultMap = new HashMap<>();
         memberService.memberSignUp(signupInfo);
         resultMap.put("isSuccess", true);
@@ -89,7 +88,6 @@ public class MemberController{
     public ResponseEntity<?> verifyEmail(
             @RequestBody @ApiParam(value = "이메일 인증 정보", required = true) EmailVerifyRequest emailVerifyRequest
     ) {
-        logger.info("verifyEmail controller 진입");
         Map<String, Object> resultMap = new HashMap<>();
 
         try {
@@ -114,7 +112,6 @@ public class MemberController{
     public ResponseEntity<Map<String, Object>> login(
             @RequestBody @ApiParam(value = "로그인 정보") MemberloginRequest loginInfo
     ) {
-        logger.info("login controller 진입");
         Map<String, Object> res = new HashMap<>();
 
         Member member = memberService.memberLogin(loginInfo);
@@ -137,7 +134,6 @@ public class MemberController{
     public ResponseEntity<Map<String, Object>> logout(
             @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken
     ) {
-        logger.info("logout controller 진입");
         id = tokenService.getIdByToken(accessToken);
         Map<String, Object> res = new HashMap<>();
         tokenService.saveLogoutToken(accessToken);
@@ -153,7 +149,6 @@ public class MemberController{
             @ApiResponse(code = 404, message = "조회 실패")
     })
     public ResponseEntity<Map<String, Object>> memberInfo(@RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken) {
-        logger.info("memberInfo controller 진입");
         Map<String, Object> res = new HashMap<>();
         id = tokenService.getIdByToken(accessToken);
         MemberInfoResponse memberInfoResponse = memberService.memberInfoResponse(Long.parseLong(id));
@@ -169,7 +164,6 @@ public class MemberController{
             @ApiResponse(code = 404, message = "수정 실패")
     })
     public ResponseEntity<Map<String, Object>> memberUpdate(@RequestBody MemberRequest memberRequest, @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken) {
-        logger.info("memberUpdate controller 진입");
         Map<String, Object> res = new HashMap<>();
         id = tokenService.getIdByToken(accessToken);
         memberService.memberUpdate(memberRequest, id);
@@ -185,7 +179,6 @@ public class MemberController{
             @ApiResponse(code = 404, message = "탈퇴 실패")
     })
     public ResponseEntity<Map<String, Object>> memberDelete(@RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken) {
-        logger.info("memberDelete controller 진입");
         Map<String, Object> res = new HashMap<>();
         id = tokenService.getIdByToken(accessToken);
         memberService.memberDelete(id);
@@ -200,7 +193,6 @@ public class MemberController{
             @ApiResponse(code = 404, message = "중복")
     })
     public ResponseEntity<Map<String, Object>> nickNameCheck(@RequestBody MemberRequest loginInfo) {
-        logger.info("nickNameCheck controller 진입");
         Map<String, Object> res = new HashMap<>();
 
         String nickName = loginInfo.getNickname();
@@ -224,7 +216,6 @@ public class MemberController{
     public ResponseEntity<Map<String, String>> sendTmpPassword(
             @RequestBody @ApiParam(value = "이메일") MemberRequest request
     ) {
-        logger.info("sendTmpPassword controller 진입");
         Map<String, String> res = new HashMap<>();
 
         memberService.setTmpPassword(request.getEmail());
@@ -243,7 +234,6 @@ public class MemberController{
             @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken,
             @RequestBody @ApiParam(value = "기존 비밀번호") MemberRequest request
     ) {
-        logger.info("confrimPassword controller 진입");
         Map<String, String> res = new HashMap<>();
         id = tokenService.getIdByToken(accessToken);
 

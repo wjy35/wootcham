@@ -37,14 +37,12 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public String createAccessToken(String id) {
-        logger.info("createAccessToken service 진입");
         String accessToken = create("accessToken", id, expireMin);
         return accessToken;
     }
 
     @Override
     public String createRefreshToken(String id) {
-        logger.info("createRefreshToken service 진입");
         String refreshToken = create("refreshToken", id, expireMin * 5);
         tokenRedisRepository.saveToken(refreshToken, id, expireMin * 5);
         return refreshToken;
@@ -52,14 +50,12 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public void saveLogoutToken(String accessToken) {
-        logger.info("saveLogoutToken service 진입");
         tokenRedisRepository.saveToken(accessToken, "logout", this.getExpire(accessToken));
     }
 
 
     @Override
     public Long getExpire(String accessToken) {
-        logger.info("getExpire service 진입");
         System.out.println(accessToken);
         Date expiration = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(accessToken).getBody().getExpiration();
         Long now = new Date().getTime();
@@ -68,7 +64,6 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public String create(String subject, String id, long expireMin) {
-        logger.info("create service 진입");
         Claims claims = Jwts.claims()
                 .setSubject(subject)
                 .setId(id)
@@ -85,20 +80,17 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public String getToken(String token) {
-        logger.info("getToken service 진입");
         return tokenRedisRepository.getTokenValue(token);
     }
 
 
     @Override
     public String getEmailData(String token) {
-        logger.info("getEmailData service 진입");
         return emailRedisRepository.getEmailValue(token);
     }
 
     @Override
     public byte[] generateKey() {
-        logger.info("generateKey service 진입");
         byte[] key = null;
         key = salt.getBytes();
         return key;
@@ -106,48 +98,39 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public String getIdByToken(String jwt) {
-        logger.info("getIdByToken service 진입");
         Jws<Claims> claims = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt);
         return claims.getBody().getId();
     }
 
     @Override
     public boolean checkToken(String jwt){
-        logger.info("checkToken service 진입");
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt);
             return true;
         } catch (SignatureException e) {
-            log.info("SignatureException");
             throw new JwtException(Error.WRONG_TYPE_TOKEN.getMessage());
         } catch (MalformedJwtException e) {
-            log.info("MalformedJwtException");
             throw new JwtException(Error.UNSUPPORTED_TOKEN.getMessage());
         } catch (ExpiredJwtException e) {
-            log.info("ExpiredJwtException");
             throw new JwtException(Error.EXPIRED_TOKEN.getMessage());
         } catch (IllegalArgumentException e) {
-            log.info("IllegalArgumentException");
             throw new JwtException(Error.UNKNOWN_ERROR.getMessage());
         }
     }
 
     @Override
     public MemberLoginResponse makeMemberLoginResponse(String id) {
-        logger.info("makeMemberLoginResponse service 진입");
         MemberLoginResponse response = new MemberLoginResponse( this.createAccessToken(id), this.createRefreshToken(id));
         return response;
     }
 
     @Override
     public String resolveToken(HttpServletRequest request) {
-        logger.info("resolveToken service 진입");
         return request.getHeader("Authorization");
     }
 
     @Override
     public Authentication getAuthentication(String token) throws RuntimeException {
-        logger.info("getAuthentication service 진입");
         String id = this.getIdByToken(token);
         Member m = Member.builder().id(Long.parseLong(id)).build();
         UserDetails userDetails = m;
