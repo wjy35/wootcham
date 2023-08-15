@@ -9,6 +9,7 @@ export default createStore({
   },
   state: {
     userNickname: "",
+    profileImg: "",
     accessToken: "",
     refreshToken: "",
     isValidToken: false,
@@ -31,6 +32,9 @@ export default createStore({
     setUserNickname(state, payload) {
       state.userNickname = payload;
     },
+    setProfileImg(state, payload){
+      state.profileImg = payload;
+    }
   },
   getters: {
     getUserNickname(state) {
@@ -43,5 +47,8 @@ export default createStore({
     getClient(state) {
       return state.client;
     },
+    getProfileImg(state){
+      return state.profileImg;
+    }
   },
 });

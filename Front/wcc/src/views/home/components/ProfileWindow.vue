@@ -5,7 +5,7 @@
       <!-- 프로파일 화면 -->
       <div class="card">
         <!-- 프로필 이미지 -->
-        <div class="img"></div>
+        <div class="img"><img :src="this.profile_img" style="width:100%"></div>
 
         <!-- 유저네임 -->
         <span class="text-shadow">{{ this.nickname }}</span>
@@ -55,25 +55,34 @@ export default {
     return {
       nickname: "",
       point: "",
+      profile_img: "",
       records:{
         rank: "",
         start: "",
         end: "",
         change_point: "",
-
       }
     };
   },
   created() {
     api.defaults.headers["Authorization"] = localStorage.getItem("accessToken")
     api.post(`/member`)
-      .then(({ data }) => {
-        this.point = data.data.point;
-        this.nickname = data.data.nickname;
-      })
-      .catch(error => {
-        console.log(error.message)
-      })
+    .then(({ data }) => {
+      this.point = data.data.point;
+      this.nickname = data.data.nickname;
+      this.profile_img = data.data.profile_img;
+    })
+    .catch(error => {
+      console.log(error.message)
+    })
+    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken")
+    api.get('/record')
+    .then(({data})=> {
+      this.records = data;
+    })
+    .catch(({error}) => {
+      console.log(error)
+    })
   },
   methods:{
     changeNickname(){
@@ -110,7 +119,7 @@ export default {
 .content {
   display: flex;
   height: 100%;
-  width: 100%;
+  width: 80%;
 
   gap: 100px;
 }
@@ -118,7 +127,7 @@ export default {
 
 /* ------- 프로필 카드 --------- */
 .card {
-  width: 30em;
+  width: 31em;
   height: 31em;
   background: #FFCDAD;
   transition: 1s ease-in-out;
@@ -148,7 +157,6 @@ export default {
 .card .img {
   width: 8em;
   height: 8em;
-  background: url(@/assets/images/profile.jpg);
   background-size: cover;
   border-radius: 15px;
   margin: auto;
@@ -202,7 +210,7 @@ export default {
 }
 
 table {
-  width: 100%;
+  width: 140%;
   border-collapse: collapse;
 }
 
