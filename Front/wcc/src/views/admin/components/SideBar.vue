@@ -2,22 +2,14 @@
     <div class="sidebar shadow">
       <div class="sidebar-contrast"></div>
   
-      <div @click="selectProfile" class="sidebar-info">
+      <div class="sidebar-info">
   
         <!-- 프로필 이미지 & 게임 포인트 -->
         <div class="profile-image-container">
           <div class="profile-image">
             <img src="@/assets/images/admin.png" alt="">
           </div>
-          <div class="point-button">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
-                <path d="m18 0 8 12 10-8-4 20H4L0 4l10 8 8-12z"></path>
-            </svg>
-            <span v-text="state.userInfo.point"></span>
-          </div>
-        </div>
-  
-        <div class="username" v-text="state.userInfo.nickname">
+          <p>admin</p>
         </div>
       </div>
   
@@ -57,24 +49,12 @@
     },
   
     methods: {
-      selectProfile(){
-        this.$emit('selectProfile');
+      selectNoticeList() {
+        this.$router.push({name: 'admin'})
       },
-      selectStart() {
-        this.$emit('selectStart');
-      },
-      selectNotice() {
-        this.$emit('selectNotice');
-      },
-      selectShop() {
-        this.$emit('selectShop');
-      },
-      selectRanking() {
-        this.$emit('selectRanking');
-      },
-      selectInfo() {
-        this.$emit('selectInfo');
-      },
+      selectUserList() {
+        this.$router.push({name: 'user'})
+      }
     },
   };
   </script>
@@ -96,16 +76,11 @@
     transition-duration: .3s;
   }
   
-  .profile-image-container:hover {
-    background-color: #FF7B27;
-    transition-duration: .5s;
-  }
-  
   .profile-image img {
     width: 150px;
     height: 150px;
   
-    border-radius: 30px 30px 0 0;
+    border-radius: 30px;
     box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.329);
   }
   
@@ -185,7 +160,6 @@
     flex-direction: column;
     align-items: center; 
     justify-content: center;
-    cursor: pointer;
   
     margin-top: -160px;
   }
