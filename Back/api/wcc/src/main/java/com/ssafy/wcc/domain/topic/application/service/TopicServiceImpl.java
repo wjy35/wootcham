@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -42,11 +44,14 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public List<TopicTypeDetailResponse> getTopicTypeDetailList() {
+    public Map<Integer, TopicTypeDetailResponse> getTopicTypeDetailMap() {
         List<TopicTypeDetail> topicTypeDetails = topicTypeDetailRepository.findAll();
         return topicTypeDetails.stream()
                 .map(n -> topicTypeDetailMapper.toTopicTypeDetailResponse(n))
-                .collect(Collectors.toList());
+                .collect(Collectors.toMap(
+                        TopicTypeDetailResponse::getType,
+                        Function.identity()
+                ));
     }
 
     @Override
@@ -54,7 +59,7 @@ public class TopicServiceImpl implements TopicService {
         List<Object> list = new ArrayList<>();
 
         list.add(this.getTopicList());
-        list.add(this.getTopicTypeDetailList());
+        list.add(this.getTopicTypeDetailMap());
 
         return list;
     }

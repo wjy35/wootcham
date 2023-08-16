@@ -9,7 +9,7 @@ import java.util.Map;
 public interface TopicService {
     public Map<String, List<String>> getTopicList();
 
-    public List<TopicTypeDetailResponse> getTopicTypeDetailList();
+    public Map<Integer, TopicTypeDetailResponse> getTopicTypeDetailMap();
 
     public List<Object> getTopicResponse();
 }
