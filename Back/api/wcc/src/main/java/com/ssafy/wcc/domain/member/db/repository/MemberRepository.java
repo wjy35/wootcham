@@ -13,8 +13,18 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
 
     Optional<Member> findByEmail(String email);
 
+    @Query("SELECT COUNT(*) FROM Member")
+    Long countById();
+
     Long countByNickname(String nickname);
 
     @Query("SELECT m.nickname FROM Member m WHERE m.id = :memberId")
     Optional<String> findNicknameById(@Param("memberId") Long userId);
+
+    @Query(nativeQuery = true,
+            value = "SELECT r.ranking \n" +
+            "FROM (SELECT id, email, point, dense_rank() OVER (ORDER BY point DESC) AS ranking \n" +
+                    "FROM member) AS r \n" +
+            "where id = :memberId")
+    Long getRanking(@Param("memberId") Long userId);
 }
