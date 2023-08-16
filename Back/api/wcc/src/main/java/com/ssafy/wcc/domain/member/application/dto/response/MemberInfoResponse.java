@@ -15,13 +15,17 @@ public class MemberInfoResponse {
     private Integer money;
     @JsonProperty("profile_img")
     private String profileImg;
+    private String badge;
+    private String border;
 
     @Builder
-    public MemberInfoResponse(String email, String nickname, Integer point, Integer money, String profileImg) {
+    public MemberInfoResponse(String email, String nickname, Integer point, Integer money, String profileImg, String badge, String border) {
         this.email = email;
         this.nickname = nickname;
         this.point = point;
         this.money = money;
         this.profileImg = profileImg;
+        this.badge = badge;
+        this.border = border;
     }
 }
