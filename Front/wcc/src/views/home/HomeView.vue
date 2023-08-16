@@ -6,7 +6,8 @@
 
       <div class="header-center">
         <!-- <span @click="handleStartGame">{{ headerText }}</span> -->
-        <span v-if="matchStatus === MatchStatus.READY" @click="handleStartGame"> 시작하기 </span>
+        <span v-if="!ready">카메라를 키고 활짝 웃어주세요!</span>
+        <span v-if="ready && matchStatus === MatchStatus.READY" @click="handleStartGame"> 시작하기 </span>
 
 
         <button v-if="matchStatus === MatchStatus.MATCHING" @click="cancel" class="text-shadow">
@@ -34,7 +35,7 @@
     <!-- CONTENT -->
     <div class="main-container">
       <SideBar @selectProfile="selectProfile" @selectStart="selectStart" @selectNotice="selectNotice"
-        @selectShop="selectShop" @selectRanking="selectRanking" @selectInfo="selectInfo" />
+        @selectShop="selectShop" @selectRanking="selectRanking" @selectInfo="selectInfo" ref="sidebar"/>
 
       <!-- Conditional rendering based on the selectedScreen data -->
       <div v-if="selectedScreen === 'ProfileWindowScreen'">
@@ -47,7 +48,7 @@
         <NoticeWindow />
       </div>
       <div v-else-if="selectedScreen === 'ShopWindowScreen'">
-        <ShopWindow />
+        <ShopWindow @refreshSidebar = refreshSidebar></ShopWindow>
       </div>
       <div v-else-if="selectedScreen === 'RankingWindowScreen'">
         <RankingWindow />
@@ -87,6 +88,7 @@ export default {
     return {
       headerText: "게임 시작하기", // 카메라가 켜지기 전까지 logout 버튼은 숨겨진다.
       selectedScreen: 'StartWindowScreen', // 초기화면은 StartWindowScreen
+      previousScreen: 'StartWindowScreen',
       client: null,
       groupId: "",
       memberId: "",
@@ -140,7 +142,6 @@ export default {
 
                 } else if (response.matchStatus === MatchStatus.DESTROYED) {
                   this.matchStatus = MatchStatus.READY;
-
                   // ToDo 연속 뇌절 금지 만들기   // Destroyed 될때마다 count를 올려주고 일정 count가 되면 일정 시간동안 게임시작 잠그기
                   console.log("");
 
@@ -186,7 +187,12 @@ export default {
       })
     },
     selectProfile() {
-      this.selectedScreen = 'ProfileWindowScreen';
+      if(this.selectedScreen == 'ProfileWindowScreen'){
+        this.selectedScreen = this.previousScreen;
+      }else{
+        this.previousScreen = this.selectedScreen;
+        this.selectedScreen = 'ProfileWindowScreen';
+      }
     },
     selectStart() {
       this.selectedScreen = 'StartWindowScreen';
@@ -219,13 +225,20 @@ export default {
 
       this.client.send(`/enter/${this.groupId}/${this.memberId}`,this.userNickname);
     },
+    refreshSidebar(){
+      this.$refs.sidebar.refresh();
+    },
+
     ...mapMutations(["setClient"])
   },
   computed: {
     MatchStatus() {
       return MatchStatus
     },
-    ...mapState(["userNickname"])
+    ...mapState(["userNickname", "ready"])
+  },
+  beforeUnmount() {
+    this.$store.commit('setReady');
   }
 };
 </script>

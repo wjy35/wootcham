@@ -9,12 +9,14 @@
       <div class="ranking-modal-left shadow">
         <div class="rank-card" v-for="(r, i) in rankersLeft" :key="i">
           <div class="rank-card-image">
-            <img :src='r.profile_img' alt="">
+            <img :src='r.profile_img' alt="" v-if="r.border" :style="{ border: '6px outset ' + r.border }">
+            <img :src="r.profile_img" alt="" v-else>
           </div>
           <div class="rank-card-detail">
             <div class="rank-heading" >#{{ i + 1 }}</div>
             <div class="rank-info">
-              <div class="rank-username">{{ r.nickname }}</div>
+              <div class="rank-username badge-on" v-if="r.badge" :style="{ border: '6px outset ' + r.badge }">{{ r.nickname }}</div>
+              <div class="rank-username" v-else>{{ r.nickname }}</div>
               <div class="rank-pts-earned">{{ r.point }}</div>
             </div>
           </div>
@@ -23,12 +25,14 @@
       <div class="ranking-modal-right shadow" v-if="rankersRight.length > 0">
         <div class="rank-card" v-for="(r, i) in rankersRight" :key="i">
           <div class="rank-card-image">
-            <img :src='r.profile_img' alt="">
+            <img :src='r.profile_img' alt="" v-if="r.border" :style="{ border: '6px outset ' + r.border }">
+            <img :src="r.profile_img" alt="" v-else>
           </div>
           <div class="rank-card-detail">
             <div class="rank-heading">#{{ left + i + 1 }}</div>
             <div class="rank-info">
-              <div class="rank-username">{{ r.nickname }}</div>
+              <div class="rank-username badge-on" v-if="r.badge" :style="{ border: '6px outset ' + r.badge }">{{ r.nickname }}</div>
+              <div class="rank-username" v-else>{{ r.nickname }}</div>
               <div class="rank-pts-earned">{{ r.point }}</div>
             </div>
           </div>
@@ -108,10 +112,9 @@ export default {
     };
   },
   created() {
-    // notices 받아오기
     let token = localStorage.getItem("accessToken");
     api.get('/rank', { headers : { 'Authorization': token }}).then(({data}) => {
-      console.log(data.data.length)
+      console.log(data.data[6].border)
       if (data.data.length < 6) {
         this.rankersLeft = data.data;
       } else {
@@ -188,9 +191,9 @@ export default {
 }
 
 .rank-card-image img{
-  width: 50px;
-  height: 50px;
-  margin: 0 10px 0 10px;
+  width: 60px;
+  height: 60px;
+  margin: 0 10px 0 15px;
   border-radius: 15px;
   flex-shrink: 0;
   transition: filter 0.3s ease;
@@ -231,13 +234,19 @@ export default {
 
 .rank-card-detail .rank-info {
   position: absolute;
-  left: 100px;
-  top: 15px;
+  left: 110px;
+  top: 10px;
 }
 
 .rank-info .rank-username {
   color: #FAAD1B;
   white-space: normal;
+}
+
+.badge-on {
+  border-radius: 10px;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .rank-info .rank-pts-earned {

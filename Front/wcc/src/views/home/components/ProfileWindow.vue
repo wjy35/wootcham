@@ -3,23 +3,21 @@
     <div class="content">
 
       <!-- 프로파일 화면 -->
-      <div class="card shadow">
+      <div class="card">
         <!-- 프로필 이미지 -->
         <div class="img"><img :src="this.profile_img" style="width:100%; border-radius: 10px;"></div>
 
         <!-- 유저네임 -->
         <span class="text-shadow">{{ this.nickname }}</span>
 
-        <p class="info"> {{ this.point }} p</p>
-        <p class="info">32위 (상위 15%)</p>
+        <p class="info text-shadow"> {{ this.point }} p</p>
+        <p class="info text-shadow">32위 (상위 15%)</p>
 
         <div class="profile-btns">
-          <button @click.prevent="changeNickname">닉네임 수정하기</button>
-          <button @click.prevent="changePw">비밀번호 변경하기</button>
+          <button @click.prevent="changeNickname" class="shadow">닉네임 수정하기</button>
+          <button @click.prevent="changePw" class="shadow">비밀번호 변경하기</button>
           <div @click.prevent="deleteUser">회원 탈퇴하기</div>
         </div>
-
-
       </div>
 
       <!-- 전적 기록 화면 -->
@@ -28,28 +26,34 @@
           <img src="@/assets/images/profile_record_banner.png" alt="profile_record_banner">
         </div>
 
-        <table>
-          <thead>
-              <tr>
-                <th>등수</th>
-                <th>시작 시간</th>
-                <th>종료 시간</th>
-                <th>웃은 횟수</th>
-                <th>포인트 변경</th>
-                <th>머니 획득</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(match, index) in this.records" :key="index">
-                <td>{{ match.rank }}</td>
-                <td>{{ match.start }}</td>
-                <td>{{ match.end }}</td>
-                <td>{{ match.smileCount }}</td>
-                <td>{{ match.changePoint }}</td>
-                <td>{{ match.changeMoney }}</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="table-container">
+            <table class="styled-table">
+
+              <thead>
+                <tr>
+                  <th>등수</th>
+                  <th>시작 시간</th>
+                  <th>종료 시간</th>
+                  <th>웃은 횟수</th>
+                  <th>포인트 변경</th>
+                  <th>머니 획득</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr v-for="(match, index) in this.records" :key="index">
+                  <td>{{ match.rank }}</td>
+                  <td>{{ match.start }}</td>
+                  <td>{{ match.end }}</td>
+                  <td>{{ match.smileCount }}</td>
+                  <td>{{ match.changePoint }}</td>
+                  <td>{{ match.changeMoney }}</td>
+                </tr>
+              </tbody>
+
+            </table>
+        </div>
+
         </div>
       </div>
     </div>
@@ -123,7 +127,7 @@ export default {
   height: 100%;
   width: 80%;
 
-  gap: 100px;
+  gap: 80px;
 }
 
 
@@ -138,7 +142,7 @@ export default {
 }
 
 .card span {
-  font-weight: bold;
+  font-weight: 200;
   color: white;
   text-align: center;
   display: block;
@@ -294,18 +298,37 @@ th, td {
 
 .banner img {
   width: 340px;
-  margin-top: -80px;
+  margin: -80px 0 0 100px;
 }
 
-table {
-  width: 140%;
+.table-container {
+  position: absolute;
+  background-color: transparent;
+  height: 80%; 
+  width: 60%;
+}
+
+.styled-table {
   border-collapse: collapse;
+  width: 100%;
+  overflow-y: hidden;
 }
 
-th, td {
-  border: 1px solid #ddd;
-  border-radius: 1px;
-  padding: 10px;
+.styled-table th,
+.styled-table td {
+  border: 3px solid white;
+  padding: 8px;
   text-align: center;
+  border-radius: 10px;
+}
+
+.styled-table th {
+  background-color: #FF7B27;
+  color: white;
+  font-size: 1.2em;
+}
+
+.styled-table tr:nth-child(even) {
+  background-color: #FF7B27;
 }
 </style>
