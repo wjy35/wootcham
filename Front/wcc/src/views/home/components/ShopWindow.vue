@@ -241,6 +241,7 @@ export default {
       }).then(() => {
         this.callItems();
         this.callMoney();
+        this.$emit('refreshSidebar');
       }).catch((err) => {
         alert('착용 실패' + err);
       })
@@ -277,7 +278,7 @@ export default {
         this.myProfile = data.data.profile_img;
         this.myNickname = data.data.nickname;
       })
-    }
+    },
   },
   created() {
     this.callItems();
