@@ -2,12 +2,12 @@
   <div class="sidebar shadow">
     <div class="sidebar-contrast"></div>
 
-    <div @click="selectProfile" class="sidebar-info">
+    <div @click.prevent="selectProfile" class="sidebar-info">
 
       <!-- 프로필 이미지 & 게임 포인트 -->
       <div class="profile-image-container">
         <div class="profile-image">
-          <img :src="this.profile_img" style="width:100%" alt="">
+          <img :src="this.profile_img" :style="{ width: '100%' }" alt="">
         </div>
         <div class="point-button">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
@@ -23,15 +23,15 @@
 
     <div class="sidebar-menus">
       <div>
-        <div @click="selectStart" class="start-button sidebar-menu">게임 시작
+        <div @click="selectStart" class="start-button sidebar-menu" :class="{ 'selected': activeMenuItem === 'start' }">게임 시작
         </div>
-        <div @click="selectNotice" class="-button sidebar-menu">공지
+        <div @click="selectNotice" class="-button sidebar-menu" :class="{ 'selected': activeMenuItem === 'notice' }">공지
         </div>
-        <div @click="selectShop" class="shop-button sidebar-menu">도감
+        <div @click="selectShop" class="shop-button sidebar-menu" :class="{ 'selected': activeMenuItem === 'shop' }">도감
         </div>
-        <div @click="selectRanking" class="ranking-button sidebar-menu">랭킹
+        <div @click="selectRanking" class="ranking-button sidebar-menu" :class="{ 'selected': activeMenuItem === 'ranking' }">랭킹
         </div>
-        <div @click="selectInfo" class="info-button sidebar-menu">설명
+        <div @click="selectInfo" class="info-button sidebar-menu" :class="{ 'selected': activeMenuItem === 'info' }">설명
         </div>
       </div>
     </div>
@@ -47,13 +47,41 @@ export default {
       point: '',
       nickname: '',
       profile_img: '',
-      activeMenuItem: ''
+      activeMenuItem: 'start',
     };
   },
 
   created() {
-    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken")
-    api.post(`/member`)
+    this.refresh();
+  },
+
+  methods: {
+    selectProfile() {
+      this.$emit('selectProfile');
+    },
+    selectStart() {
+      this.activeMenuItem = 'start';
+      this.$emit('selectStart');
+    },
+    selectNotice() {
+      this.activeMenuItem = 'notice';
+      this.$emit('selectNotice');
+    },
+    selectShop() {
+      this.activeMenuItem = 'shop';
+      this.$emit('selectShop');
+    },
+    selectRanking() {
+      this.activeMenuItem = 'ranking';
+      this.$emit('selectRanking');
+    },
+    selectInfo() {
+      this.activeMenuItem = 'info';
+      this.$emit('selectInfo');
+    },
+    refresh(){
+      api.defaults.headers["Authorization"] = localStorage.getItem("accessToken")
+      api.post(`/member`, {headers: {'Authorization': localStorage.getItem("accessToken")}})
       .then(({ data }) => {
         // 데이터 조회
         this.point = data.data.point;
@@ -66,28 +94,8 @@ export default {
       })
       .catch(error => {
         console.log(error.message)
-      })
-  },
-
-  methods: {
-    selectProfile() {
-      this.$emit('selectProfile');
-    },
-    selectStart() {
-      this.$emit('selectStart');
-    },
-    selectNotice() {
-      this.$emit('selectNotice');
-    },
-    selectShop() {
-      this.$emit('selectShop');
-    },
-    selectRanking() {
-      this.$emit('selectRanking');
-    },
-    selectInfo() {
-      this.$emit('selectInfo');
-    },
+      });
+    }
   },
 };
 </script>

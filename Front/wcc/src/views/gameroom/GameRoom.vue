@@ -60,7 +60,6 @@
                 <!-- 주제 선택 화면 -->
                 <mission-select v-if="gameStatus===GameStatus.PREPARE_PRESENT"></mission-select>
 
-                <!-- 카운트다운 화면 -->
               </div>
 
               <div v-else class="stand-by">
@@ -263,7 +262,7 @@ export default {
     GameStatus() {
       return GameStatus
     },
-    ...mapState(["client"])
+    ...mapState(["client","userNickname"])
   },
   data() {
     return {
@@ -283,7 +282,6 @@ export default {
       publisher:Object,
       gameMembersMap:new Map(),
       gameMembersOrderList:[],
-      nickname:"빅빅예한",
       messageList:[],
       message:"",
       sharedScreen:false,
@@ -378,6 +376,7 @@ export default {
                 this.componentKey += 1;
               }else if(this.gameStatus === GameStatus.PRESENT_SETTING){
                 this.gameMembersOrderList = gameResponse.order;
+                console.log("order list",this.gameMembersOrderList);
                 this.componentKey += 1;
               } else if (this.gameStatus === GameStatus.PREPARE_PRESENT) {
                 this.tellerToken = gameResponse.tellerToken;
@@ -399,6 +398,8 @@ export default {
               } else if (this.gameStatus === GameStatus.PRESENT) {
                 this.tellerToken = gameResponse.tellerToken;
                 this.topic = gameResponse.topic;
+              } else if (this.gameStatus === GameStatus.REFLECT_RANK){
+                this.$router.push({ name: "gameresult" });
               }
             },
             (error) => {
@@ -421,7 +422,7 @@ export default {
     sendMessage(){
       this.session.signal({
         data: JSON.stringify({
-          nickname:this.nickname,
+          nickname:this.userNickname,
           message: this.message
         }),
         to: [],
@@ -432,10 +433,13 @@ export default {
             console.error(error);
       });
     },
-    async shareScreen(){
-    },
+    async shareScreen(){},
     async myFace(){}
   },
+  unmounted() {
+    this.client.disconnect();
+    console.log("unmounted");
+  }
 }
 </script>
 
