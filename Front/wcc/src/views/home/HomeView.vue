@@ -6,7 +6,8 @@
 
       <div class="header-center">
         <!-- <span @click="handleStartGame">{{ headerText }}</span> -->
-        <span v-if="matchStatus === MatchStatus.READY" @click="handleStartGame"> 시작하기 </span>
+        <span v-if="!ready">카메라를 키고 활짝 웃어주세요!</span>
+        <span v-if="ready && matchStatus === MatchStatus.READY" @click="handleStartGame"> 시작하기 </span>
 
 
         <button v-if="matchStatus === MatchStatus.MATCHING" @click="cancel" class="text-shadow">
@@ -141,7 +142,6 @@ export default {
 
                 } else if (response.matchStatus === MatchStatus.DESTROYED) {
                   this.matchStatus = MatchStatus.READY;
-
                   // ToDo 연속 뇌절 금지 만들기   // Destroyed 될때마다 count를 올려주고 일정 count가 되면 일정 시간동안 게임시작 잠그기
                   console.log("");
 
@@ -235,7 +235,10 @@ export default {
     MatchStatus() {
       return MatchStatus
     },
-    ...mapState(["userNickname"])
+    ...mapState(["userNickname", "ready"])
+  },
+  beforeUnmount() {
+    this.$store.commit('setReady');
   }
 };
 </script>
