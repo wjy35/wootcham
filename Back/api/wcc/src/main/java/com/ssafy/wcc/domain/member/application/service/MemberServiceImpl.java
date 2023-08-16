@@ -146,8 +146,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void confirmPassword(String id, String password) {
-        Optional<Member> member = memberRepository.findById(Long.parseLong(id));
+    public void confirmPassword(Long id, String password) {
+        Optional<Member> member = memberRepository.findById(id);
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if (member.isEmpty()) {
@@ -159,13 +159,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void memberDelete(String id) throws WCCException {
-        memberRepository.deleteById(Long.parseLong(id));
+    public void memberDelete(Long id) throws WCCException {
+        memberRepository.deleteById(id);
     }
 
     @Override
-    public void memberUpdate(MemberRequest memberRequest, String id) throws WCCException {
-        Optional<Member> member = memberRepository.findById(Long.parseLong(id));
+    public void memberUpdate(MemberRequest memberRequest, Long id) throws WCCException {
+        Optional<Member> member = memberRepository.findById(id);
         if (member.isPresent()) {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             if (memberRequest.getPassword() != null) { // 비밀번호 변경을 요청하는 경우

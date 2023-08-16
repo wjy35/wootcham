@@ -1,5 +1,6 @@
 package com.ssafy.wcc.domain.report.presentation;
 
+import com.ssafy.wcc.common.aop.auth.Authorization;
 import com.ssafy.wcc.domain.jwt.application.service.TokenService;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
 import com.ssafy.wcc.domain.notice.presentation.NoticeController;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -31,10 +33,6 @@ public class ReportController {
     Logger logger = LoggerFactory.getLogger(NoticeController.class);
 
     private final ReportService reportService;
-
-    private final TokenService tokenService;
-
-    private String id;
 
     @PostMapping()
     @ApiOperation(value = "해당 유저 신고")
@@ -57,10 +55,10 @@ public class ReportController {
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패"),
     })
-    public ResponseEntity<Map<String,Object>> memberList(@RequestHeader("Authorization") @ApiParam(value = "accessToken", required = true) String accessToken) {
-
+    public ResponseEntity<Map<String,Object>> memberList(
+            @Authorization @ApiIgnore Long id
+    ) {
         Map<String, Object> resultMap = new HashMap<>();
-        id = tokenService.getIdByToken(accessToken);
         List<AllMemberResponse> memberResponseList = reportService.getAllMemberList();
 
         JSONArray arr = new JSONArray();
