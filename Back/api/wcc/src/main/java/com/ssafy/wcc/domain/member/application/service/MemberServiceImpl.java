@@ -186,8 +186,10 @@ public class MemberServiceImpl implements MemberService {
     public MemberInfoResponse memberInfoResponse(Long id) {
         Optional<Member> findMember = memberRepository.findById(id);
         if (findMember.isPresent()) {
-            // 사용 중인 아이템 가져오기
-            String url = collectionItemRepository.getCurrentItemImage(findMember.get().getId(), 1).toString();
+            // 착용 중인
+            String url = collectionItemRepository.getCurrentItemImage(findMember.get().getId(), 1);
+            String badge = collectionItemRepository.getCurrentItemImage(findMember.get().getId(), 2);
+            String border = collectionItemRepository.getCurrentItemImage(findMember.get().getId(), 3);
 
             MemberInfoResponse memberInfoResponse = MemberInfoResponse.builder()
                     .email(findMember.get().getEmail())
@@ -195,6 +197,8 @@ public class MemberServiceImpl implements MemberService {
                     .point(findMember.get().getPoint())
                     .money(findMember.get().getMoney())
                     .profileImg(url)
+                    .badge(badge)
+                    .border(border)
                     .build();
 
             return memberInfoResponse;
