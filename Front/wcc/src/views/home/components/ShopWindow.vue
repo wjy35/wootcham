@@ -6,96 +6,96 @@
 
     <div class="scroll-snap-card">
       <!-- 프로필 이미지 -->
-      <div class="slide" v-for="count in (parseInt(profile.length / 3) + 1)" :key="count">
+      <div class="slide" v-for="count in (parseInt((profile.length + 2) / 3))" :key="count">
         <div class="heading">Profile Image Items</div>
         <div class="image-products">
           <div class="image-item" @click="toggleBuy(profile[(count - 1) * 3])" v-if="profile.length >= (count - 1) * 3 + 1">
             <div class="coin flex text-shadow">
-              <img class='itemImg' :src='profile[(count - 1) * 3].url'>
-              <img class='coin-img' src="@/assets/images/coin.png" style="width: 20px; height: 20px">
+              <img class='itemImg' :src='profile[(count - 1) * 3].url' style="border-radius: 10px;">
+              <img class='coin-img' src="@/assets/images/coin.png" style="width: 20px; height: 20px;">
               <span class="price">{{ profile[(count - 1) * 3].price }}</span>
             </div>
             <span class="desc">{{ profile[(count - 1) * 3].name }}{{ profile[(count - 1) * 3].buy ? '(보유 중)' : '' }}{{ profile[(count - 1) * 3].wear ? '(착용 중)' : '' }}</span>
           </div>
           <div class="image-item" @click="toggleBuy(profile[(count - 1) * 3 + 1])" v-if="profile.length >= (count - 1) * 3 + 2">
             <div class="coin flex text-shadow">
-              <img class='itemImg' :src='profile[(count - 1) * 3 + 1].url'>
+              <img class='itemImg' :src='profile[(count - 1) * 3 + 1].url' style="border-radius: 10px;">
               <img class='coin-img' src="@/assets/images/coin.png" style="width: 20px; height: 20px">
               <span class="price">{{ profile[(count - 1) * 3 + 1].price }}</span>
             </div>
-            <span class="desc">{{ profile[(count - 1) * 3 + 1].name }}{{ profile[(count - 1) * 3 + 1].buy ? '(보유 중)' : '' }}</span> 
+            <span class="desc">{{ profile[(count - 1) * 3 + 1].name }}{{ profile[(count - 1) * 3 + 1].buy ? '(보유 중)' : '' }}{{ profile[(count - 1) * 3 + 1].wear ? '(착용 중)' : '' }}</span> 
           </div>
           <div class="image-item" @click="toggleBuy((profile[(count - 1) * 3 + 2]))" v-if="profile.length >= (count - 1) * 3 + 3">
             <div class="coin flex text-shadow">
-              <img class='itemImg' :src='profile[(count - 1) * 3 + 2].url'>
+              <img class='itemImg' :src='profile[(count - 1) * 3 + 2].url' style="border-radius: 10px;">
               <img class='coin-img' src="@/assets/images/coin.png" style="width: 20px; height: 20px">
               <span class="price">{{ profile[(count - 1) * 3 + 2].price }}</span>
             </div>
-            <span class="desc">{{ profile[(count - 1) * 3 + 2].name }}{{ profile[(count - 1) * 3 + 2].buy ? '(보유 중)' : '' }}</span>
+            <span class="desc">{{ profile[(count - 1) * 3 + 2].name }}{{ profile[(count - 1) * 3 + 2].buy ? '(보유 중)' : '' }}{{ profile[(count - 1) * 3 + 2].wear ? '(착용 중)' : '' }}</span>
           </div>
         </div>
       </div>
       <!-- 프레임 -->
-      <div class="slide" v-for="count in (parseInt(frame.length / 3) + 1)" :key="count">
+      <div class="slide" v-for="count in (parseInt((frame.length + 2)/ 3))" :key="count">
         <div class="heading">Profile Frame Items</div>
         <div class="image-products">
           <div class="image-item" @click="toggleBuy(frame[(count - 1) * 3])" v-if="frame.length >= (count - 1) * 3 + 1">
             <div class="coin flex text-shadow">
-              <img class='itemImg' :src='frame[(count - 1) * 3].url'>
+              <img class='itemImg' :src='myProfile' :style="{ border: '10px outset ' + frame[(count - 1) * 3].url, 'border-radius': '10px'}">
               <img class='coin-img' src="@/assets/images/coin.png" style="width: 20px; height: 20px">
               <span class="price">{{ frame[(count - 1) * 3].price }}</span>
             </div>
-            <span class="desc">{{ frame[(count - 1) * 3].name }}{{ frame[(count - 1) * 3].buy ? '(보유 중)' : '' }}</span>
+            <span class="desc">{{ frame[(count - 1) * 3].name }}{{ frame[(count - 1) * 3].buy ? '(보유 중)' : '' }}{{ frame[(count - 1) * 3].wear ? '(착용 중)' : '' }}</span>
           </div>
           <div class="image-item" @click="toggleBuy(frame[(count - 1) * 3 + 1])" v-if="frame.length >= (count - 1) * 3 + 2">
             <div class="coin flex text-shadow">
-              <img class='itemImg' :src='frame[(count - 1) * 3 + 1].url'>
+              <img class='itemImg' :src='myProfile' :style="{ border: '10px outset ' + frame[(count - 1) * 3 + 1].url, 'border-radius': '10px'}">
               <img class='coin-img' src="@/assets/images/coin.png" style="width: 20px; height: 20px">
               <span class="price">{{ frame[(count - 1) * 3 + 1].price }}</span>
             </div>
-            <span class="desc">{{ frame[(count - 1) * 3 + 1].name }}{{ profile[(count - 1) * 3 + 1].buy ? '(보유 중)' : '' }}</span> 
+            <span class="desc">{{ frame[(count - 1) * 3 + 1].name }}{{ frame[(count - 1) * 3 + 1].buy ? '(보유 중)' : '' }}{{ frame[(count - 1) * 3 + 1].wear ? '(착용 중)' : '' }}</span> 
           </div>
           <div class="image-item" @click="toggleBuy((frame[(count - 1) * 3 + 2]))" v-if="frame.length >= (count - 1) * 3 + 3">
             <div class="coin flex text-shadow">
-              <img class='itemImg' :src='frame[(count - 1) * 3 + 2].url'>
+              <img class='itemImg' :src='myProfile' :style="{ border: '10px outset ' + frame[(count - 1) * 3 + 2].url, 'border-radius': '10px'}">
               <img class='coin-img' src="@/assets/images/coin.png" style="width: 20px; height: 20px">
               <span class="price">{{ frame[(count - 1) * 3 + 2].price }}</span>
             </div>
-            <span class="desc">{{ frame[(count - 1) * 3 + 2].name }}{{ frame[(count - 1) * 3 + 2].buy ? '(보유 중)' : '' }}</span>
+            <span class="desc">{{ frame[(count - 1) * 3 + 2].name }}{{ frame[(count - 1) * 3 + 2].buy ? '(보유 중)' : '' }}{{ frame[(count - 1) * 3 + 2].wear ? '(착용 중)' : '' }}</span>
           </div>
         </div>
       </div>
 
-      <div class="slide" v-for="count in (parseInt(badge.length / 3) + 1)" :key="count">
+      <div class="slide" v-for="count in (parseInt((badge.length + 2) / 3))" :key="count">
         <div class="heading">Profile Badge Items</div>
         <div class="image-products">
-          <div class="image-item" @click="toggleBuy(badge[(count - 1) * 3])" v-if="badge.length >= (count - 1) * 3 + 1">
+          <div class="badge-item" @click="toggleBuy(badge[(count - 1) * 3])" v-if="badge.length >= (count - 1) * 3 + 1">
             <div class="coin flex text-shadow">
-              <img class='itemImg' :src='badge[(count - 1) * 3].url'>
               <img class='coin-img' src="@/assets/images/coin.png" style="width: 20px; height: 20px">
               <span class="price">{{ badge[(count - 1) * 3].price }}</span>
+              <span class='badge-nickname' :style="{ border: '7px inset ' + badge[(count - 1) * 3].url }">{{ myNickname }}</span>
             </div>
-            <span class="desc">{{ badge[(count - 1) * 3].name }}{{ badge[(count - 1) * 3].buy ? '(보유 중)' : '' }}</span>
+            <span class="desc">{{ badge[(count - 1) * 3].name }}{{ badge[(count - 1) * 3].buy ? '(보유 중)' : '' }}{{ badge[(count - 1) * 3].wear ? '(착용 중)' : '' }}</span>
           </div>
-          <div class="image-item" @click="toggleBuy(badge[(count - 1) * 3 + 1])" v-if="badge.length >= (count - 1) * 3 + 2">
+          <div class="badge-item" @click="toggleBuy(badge[(count - 1) * 3 + 1])" v-if="badge.length >= (count - 1) * 3 + 2">
             <div class="coin flex text-shadow">
-              <img class='itemImg' :src='badge[(count - 1) * 3 + 1].url'>
               <img class='coin-img' src="@/assets/images/coin.png" style="width: 20px; height: 20px">
               <span class="price">{{ badge[(count - 1) * 3 + 1].price }}</span>
+              <span class='badge-nickname' :style="{ border: '7px inset ' + badge[(count - 1) * 3 + 1].url }">{{ myNickname }}</span>
             </div>
-            <span class="desc">{{ badge[(count - 1) * 3 + 1].name }}{{ badge[(count - 1) * 3 + 1].buy ? '(보유 중)' : '' }}</span> 
+            <span class="desc">{{ badge[(count - 1) * 3 + 1].name }}{{ badge[(count - 1) * 3 + 1].buy ? '(보유 중)' : '' }}{{ badge[(count - 1) * 3 + 1].wear ? '(착용 중)' : '' }}</span> 
           </div>
-          <div class="image-item" @click="toggleBuy((badge[(count - 1) * 3 + 2]))" v-if="badge.length >= (count - 1) * 3 + 3">
+          <div class="badge-item" @click="toggleBuy((badge[(count - 1) * 3 + 2]))" v-if="badge.length >= (count - 1) * 3 + 3">
             <div class="coin flex text-shadow">
-              <img class='itemImg' :src='badge[(count - 1) * 3 + 2].url'>
               <img class='coin-img' src="@/assets/images/coin.png" style="width: 20px; height: 20px">
               <span class="price">{{ badge[(count - 1) * 3 + 2].price }}</span>
+              <span class='badge-nickname' :style="{ border: '7px inset ' + badge[(count - 1) * 3 + 2].url }">{{ myNickname }}</span>
             </div>
-            <span class="desc">{{ badge[(count - 1) * 3 + 2].name }}{{ badge[(count - 1) * 3 + 2].buy ? '(보유 중)' : '' }}</span>
+            <span class="desc">{{ badge[(count - 1) * 3 + 2].name }}{{ badge[(count - 1) * 3 + 2].buy ? '(보유 중)' : '' }}{{ badge[(count - 1) * 3 + 2].wear ? '(착용 중)' : '' }}</span>
           </div>
         </div>
       </div>
-      <div class="slide">
+      <!-- <div class="slide">
         <div class="heading">Profile Frame Items</div>
           <div class="frame-products">
             <div class="frame-item" @click="toggleBuy">
@@ -118,8 +118,8 @@
             </div>
 
          </div>
-      </div>
-      <div class="slide">
+      </div> -->
+      <!-- <div class="slide">
         <div class="heading">Badge Items</div>
           <div class="badge-products">
             <div class="badge-item" @click="toggleBuy">
@@ -145,7 +145,7 @@
             </div>
 
           </div>
-      </div>
+      </div> -->
     </div> 
 
     <!-- 현재 가지고 있는 코인 -->
@@ -160,7 +160,6 @@
     <div v-if="showModal" class="modal">
       <div class="modal-card" v-if="selectedItem.buy && !selectedItem.wear">
         <div class="header">
-          <img :src="selectedItem.url" alt="">
           <span class="title"><span class="title-name">{{ selectedItem.name }} {{ selectedItem.type }}</span>착용하시겠습니까?</span>
           <p class="message">상품 설명: {{ selectedItem.description }}</p>
           <div class="actions">
@@ -207,6 +206,7 @@ export default {
       myMoney: 0,
       selectedItem: undefined,
       myProfile: '',
+      myNickname: '',
     }
   },
   methods: {
@@ -257,10 +257,10 @@ export default {
         for (let i of data.data) {
           if (i.type === '프로필') {
             profile.push(i);
-          } else if (i.type === '프레임') {
-            frame.push(i);
-          } else if (i.type === '배지') {
+          } else if (i.type === '휘장') {
             badge.push(i);
+          } else if (i.type === '테두리') {
+            frame.push(i);
           }
         }
 
@@ -275,6 +275,7 @@ export default {
         console.log(data.data);
         this.myMoney = data.data.money;
         this.myProfile = data.data.profile_img;
+        this.myNickname = data.data.nickname;
       })
     }
   },
@@ -468,7 +469,15 @@ export default {
 
   background-color: #FF7B27;
   border-radius: 15px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
 }
+.coin-amount:hover {
+  transform: scale(1.1);
+  border: 2px solid white;
+}
+
+
 /* COIN 코인 */
 .coin {
   color: white;
@@ -653,8 +662,9 @@ export default {
 
 .desc {
   position: absolute;
-  bottom: 0;
+  bottom: 1px;
   color: black;
+  font-size: 1.2em;
 }
 .coin-img {
   position: absolute;
@@ -674,5 +684,21 @@ export default {
   line-height: 1.5rem;
   margin: 10px;
   color: #F27059;
+}
+
+.badge-nickname {
+  width: 150px;
+  height: 50px;
+  border-radius: 15px;
+  color: #020715;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 80px;
+  margin-left: -15px;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

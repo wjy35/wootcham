@@ -15,7 +15,7 @@
 export default{
   name:"CountDown",
   props: {
-    second: String
+    second: Number
   },
 };
 </script>
