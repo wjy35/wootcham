@@ -34,7 +34,7 @@
     <!-- CONTENT -->
     <div class="main-container">
       <SideBar @selectProfile="selectProfile" @selectStart="selectStart" @selectNotice="selectNotice"
-        @selectShop="selectShop" @selectRanking="selectRanking" @selectInfo="selectInfo" />
+        @selectShop="selectShop" @selectRanking="selectRanking" @selectInfo="selectInfo" ref="sidebar"/>
 
       <!-- Conditional rendering based on the selectedScreen data -->
       <div v-if="selectedScreen === 'ProfileWindowScreen'">
@@ -47,7 +47,7 @@
         <NoticeWindow />
       </div>
       <div v-else-if="selectedScreen === 'ShopWindowScreen'">
-        <ShopWindow />
+        <ShopWindow @refreshSidebar = refreshSidebar></ShopWindow>
       </div>
       <div v-else-if="selectedScreen === 'RankingWindowScreen'">
         <RankingWindow />
@@ -87,6 +87,7 @@ export default {
     return {
       headerText: "게임 시작하기", // 카메라가 켜지기 전까지 logout 버튼은 숨겨진다.
       selectedScreen: 'StartWindowScreen', // 초기화면은 StartWindowScreen
+      previousScreen: 'StartWindowScreen',
       client: null,
       groupId: "",
       memberId: "",
@@ -186,7 +187,12 @@ export default {
       })
     },
     selectProfile() {
-      this.selectedScreen = 'ProfileWindowScreen';
+      if(this.selectedScreen == 'ProfileWindowScreen'){
+        this.selectedScreen = this.previousScreen;
+      }else{
+        this.previousScreen = this.selectedScreen;
+        this.selectedScreen = 'ProfileWindowScreen';
+      }
     },
     selectStart() {
       this.selectedScreen = 'StartWindowScreen';
@@ -219,6 +225,10 @@ export default {
 
       this.client.send(`/enter/${this.groupId}/${this.memberId}`,this.userNickname);
     },
+    refreshSidebar(){
+      this.$refs.sidebar.refresh();
+    },
+
     ...mapMutations(["setClient"])
   },
   computed: {

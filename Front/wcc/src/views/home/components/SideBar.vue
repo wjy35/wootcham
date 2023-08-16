@@ -2,7 +2,7 @@
   <div class="sidebar shadow">
     <div class="sidebar-contrast"></div>
 
-    <div @click="selectProfile" class="sidebar-info">
+    <div @click.prevent="selectProfile" class="sidebar-info">
 
       <!-- 프로필 이미지 & 게임 포인트 -->
       <div class="profile-image-container">
@@ -47,26 +47,12 @@ export default {
       point: '',
       nickname: '',
       profile_img: '',
-      activeMenuItem: 'start'
+      activeMenuItem: 'start',
     };
   },
 
   created() {
-    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken")
-    api.post(`/member`)
-      .then(({ data }) => {
-        // 데이터 조회
-        this.point = data.data.point;
-        this.nickname = data.data.nickname;
-        this.profile_img = data.data.profile_img;
-        // store 저장
-        this.$store.commit('setUserNickname', this.nickname)
-        this.$store.commit('setProfileImg', this.profile_img)
-        this.$emit('user-rankpoint', this.point);
-      })
-      .catch(error => {
-        console.log(error.message)
-      });
+    this.refresh();
   },
 
   methods: {
@@ -93,6 +79,23 @@ export default {
       this.activeMenuItem = 'info';
       this.$emit('selectInfo');
     },
+    refresh(){
+      api.defaults.headers["Authorization"] = localStorage.getItem("accessToken")
+      api.post(`/member`, {headers: {'Authorization': localStorage.getItem("accessToken")}})
+      .then(({ data }) => {
+        // 데이터 조회
+        this.point = data.data.point;
+        this.nickname = data.data.nickname;
+        this.profile_img = data.data.profile_img;
+        // store 저장
+        this.$store.commit('setUserNickname', this.nickname)
+        this.$store.commit('setProfileImg', this.profile_img)
+        this.$emit('user-rankpoint', this.point);
+      })
+      .catch(error => {
+        console.log(error.message)
+      });
+    }
   },
 };
 </script>
