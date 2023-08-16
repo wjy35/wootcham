@@ -83,10 +83,13 @@ public class GameProcessor implements Runnable{
 
         Integer smileSum = 0;
 
+        System.out.println("gameSession.getSmileCount() = " + gameSession.getSmileCount());
         for(Integer smileCount: gameSession.getSmileCount().values()){
             smileSum += smileCount;
         }
         Integer smileAvg = smileSum/gameSession.getGameMembers().size();
+
+        System.out.println("smileAvg = " + smileAvg);
 
         List<Map.Entry<String,Integer>> smileCountEntryList =  new ArrayList<>(gameSession.getSmileCount().entrySet());
         smileCountEntryList.sort(new Comparator<Map.Entry<String, Integer>>() {
