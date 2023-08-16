@@ -4,7 +4,6 @@ import com.ssafy.game.common.GameSessionSetting;
 import com.ssafy.game.game.api.dto.RankPointChange;
 import com.ssafy.game.game.api.response.*;
 import com.ssafy.game.game.db.entity.GameSession;
-import com.ssafy.game.game.db.entity.Member;
 import com.ssafy.game.game.db.repository.MemberRepository;
 import com.ssafy.game.match.common.GameSetting;
 import com.ssafy.game.util.MessageSender;
