@@ -36,7 +36,7 @@ public class Member extends BaseEntity implements UserDetails {
     @Column(nullable = false, length = 20, unique = true)
     private String nickname;
 
-    @ColumnDefault("0")
+    @ColumnDefault("1000")
     private Integer point;
 
     @ColumnDefault("0")
