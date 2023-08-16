@@ -11,7 +11,7 @@
         <div class="image-products">
           <div class="image-item" @click="toggleBuy(profile[(count - 1) * 3])" v-if="profile.length >= (count - 1) * 3 + 1">
             <div class="coin flex text-shadow">
-              <img class='itemImg' :src='profile[(count - 1) * 3].url'>
+              <img class='itemImg' :src='profile[(count - 1) * 3].url' style="border-radius: 10px;">
               <img class='coin-img' src="@/assets/images/coin.png" style="width: 20px; height: 20px;">
               <span class="price">{{ profile[(count - 1) * 3].price }}</span>
             </div>
@@ -19,7 +19,7 @@
           </div>
           <div class="image-item" @click="toggleBuy(profile[(count - 1) * 3 + 1])" v-if="profile.length >= (count - 1) * 3 + 2">
             <div class="coin flex text-shadow">
-              <img class='itemImg' :src='profile[(count - 1) * 3 + 1].url'>
+              <img class='itemImg' :src='profile[(count - 1) * 3 + 1].url' style="border-radius: 10px;">
               <img class='coin-img' src="@/assets/images/coin.png" style="width: 20px; height: 20px">
               <span class="price">{{ profile[(count - 1) * 3 + 1].price }}</span>
             </div>
@@ -27,7 +27,7 @@
           </div>
           <div class="image-item" @click="toggleBuy((profile[(count - 1) * 3 + 2]))" v-if="profile.length >= (count - 1) * 3 + 3">
             <div class="coin flex text-shadow">
-              <img class='itemImg' :src='profile[(count - 1) * 3 + 2].url'>
+              <img class='itemImg' :src='profile[(count - 1) * 3 + 2].url' style="border-radius: 10px;">
               <img class='coin-img' src="@/assets/images/coin.png" style="width: 20px; height: 20px">
               <span class="price">{{ profile[(count - 1) * 3 + 2].price }}</span>
             </div>
@@ -41,7 +41,7 @@
         <div class="image-products">
           <div class="image-item" @click="toggleBuy(frame[(count - 1) * 3])" v-if="frame.length >= (count - 1) * 3 + 1">
             <div class="coin flex text-shadow">
-              <img class='itemImg' :src='myProfile' :style="{ border: '10px outset ' + frame[(count - 1) * 3].url }">
+              <img class='itemImg' :src='myProfile' :style="{ border: '10px outset ' + frame[(count - 1) * 3].url, 'border-radius': '10px'}">
               <img class='coin-img' src="@/assets/images/coin.png" style="width: 20px; height: 20px">
               <span class="price">{{ frame[(count - 1) * 3].price }}</span>
             </div>
@@ -49,7 +49,7 @@
           </div>
           <div class="image-item" @click="toggleBuy(frame[(count - 1) * 3 + 1])" v-if="frame.length >= (count - 1) * 3 + 2">
             <div class="coin flex text-shadow">
-              <img class='itemImg' :src='myProfile' :style="{ border: '10px outset ' + frame[(count - 1) * 3 + 1].url }">
+              <img class='itemImg' :src='myProfile' :style="{ border: '10px outset ' + frame[(count - 1) * 3 + 1].url, 'border-radius': '10px'}">
               <img class='coin-img' src="@/assets/images/coin.png" style="width: 20px; height: 20px">
               <span class="price">{{ frame[(count - 1) * 3 + 1].price }}</span>
             </div>
@@ -57,7 +57,7 @@
           </div>
           <div class="image-item" @click="toggleBuy((frame[(count - 1) * 3 + 2]))" v-if="frame.length >= (count - 1) * 3 + 3">
             <div class="coin flex text-shadow">
-              <img class='itemImg' :src='myProfile' :style="{ border: '10px outset ' + frame[(count - 1) * 3 + 2].url }" >
+              <img class='itemImg' :src='myProfile' :style="{ border: '10px outset ' + frame[(count - 1) * 3 + 2].url, 'border-radius': '10px'}">
               <img class='coin-img' src="@/assets/images/coin.png" style="width: 20px; height: 20px">
               <span class="price">{{ frame[(count - 1) * 3 + 2].price }}</span>
             </div>

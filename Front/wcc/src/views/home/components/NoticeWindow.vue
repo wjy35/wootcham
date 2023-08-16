@@ -131,9 +131,9 @@ export default {
 
 .scroll-snap-card .slide .item .notice-heading {
   font-size: 3em;
-  color: black;
+  color: #ff6547;
   font-weight: 400;
-  padding: 20px 30px;
+  padding: 10px 20px;
   cursor: pointer;
   transition: font-size 0.5s ease, transform 1s ease, color 1s ease;
 }

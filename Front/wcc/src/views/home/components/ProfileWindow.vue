@@ -3,23 +3,21 @@
     <div class="content">
 
       <!-- 프로파일 화면 -->
-      <div class="card shadow">
+      <div class="card">
         <!-- 프로필 이미지 -->
         <div class="img"><img :src="this.profile_img" style="width:100%; border-radius: 10px;"></div>
 
         <!-- 유저네임 -->
         <span class="text-shadow">{{ this.nickname }}</span>
 
-        <p class="info"> {{ this.point }} p</p>
-        <p class="info">32위 (상위 15%)</p>
+        <p class="info text-shadow"> {{ this.point }} p</p>
+        <p class="info text-shadow">32위 (상위 15%)</p>
 
         <div class="profile-btns">
-          <button @click.prevent="changeNickname">닉네임 수정하기</button>
-          <button @click.prevent="changePw">비밀번호 변경하기</button>
+          <button @click.prevent="changeNickname" class="shadow">닉네임 수정하기</button>
+          <button @click.prevent="changePw" class="shadow">비밀번호 변경하기</button>
           <div @click.prevent="deleteUser">회원 탈퇴하기</div>
         </div>
-
-
       </div>
 
       <!-- 전적 기록 화면 -->
@@ -28,28 +26,34 @@
           <img src="@/assets/images/profile_record_banner.png" alt="profile_record_banner">
         </div>
 
-        <table>
-          <thead>
-              <tr>
-                <th>등수</th>
-                <th>시작 시간</th>
-                <th>종료 시간</th>
-                <th>웃은 횟수</th>
-                <th>포인트 변경</th>
-                <th>머니 획득</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(match, index) in this.records" :key="index">
-                <td>{{ match.rank }}</td>
-                <td>{{ match.start }}</td>
-                <td>{{ match.end }}</td>
-                <td>{{ match.smileCount }}</td>
-                <td>{{ match.changePoint }}</td>
-                <td>{{ match.changeMoney }}</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="table-container">
+            <table class="styled-table">
+
+              <thead>
+                <tr>
+                  <th>등수</th>
+                  <th>시작 시간</th>
+                  <th>종료 시간</th>
+                  <th>웃은 횟수</th>
+                  <th>포인트 변경</th>
+                  <th>머니 획득</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr v-for="(match, index) in this.records" :key="index">
+                  <td>{{ match.rank }}</td>
+                  <td>{{ match.start }}</td>
+                  <td>{{ match.end }}</td>
+                  <td>{{ match.smileCount }}</td>
+                  <td>{{ match.changePoint }}</td>
+                  <td>{{ match.changeMoney }}</td>
+                </tr>
+              </tbody>
+
+            </table>
+        </div>
+
         </div>
       </div>
     </div>
@@ -123,14 +127,17 @@ export default {
   height: 100%;
   width: 80%;
 
-  gap: 100px;
+  gap: 80px;
 }
 
 
 /* ------- 프로필 카드 --------- */
 .card {
   width: 31em;
+  height: 31em;
+  background: #FFCDAD;
   transition: 1s ease-in-out;
+  clip-path: polygon(30px 0%, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0% 30px);
   border-top-right-radius: 20px;
   border-bottom-left-radius: 20px;
   display: flex;
@@ -138,86 +145,8 @@ export default {
 }
 
 .card span {
-  font-weight: bold;
+  font-weight: 200;
   color: white;
-  text-align: center;
-  display: block;
-  font-size: 2em;
-}
-
-.card .info {
-  font-weight: 400;
-  color: white;
-  display: block;
-  text-align: center;
-  font-size: 1.3em;
-}
-
-.card .img {
-  width: 8em;
-  height: 8em;
-  background: url(@/assets/images/profile.jpg);
-  background-size: cover;
-  border-radius: 15px;
-  margin: auto;
-
-  border: 5px inset gold;
-}
-
-.card a {
-  color: white;
-  transition: .4s ease-in-out;
-}
-
-.card a:hover {
-  color: red;
-}
-
-.profile-btns {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-
-.card button {
-  width: 200px;
-  padding: 10px;
-  display: block;
-  border-radius: 20px;
-  border: none;
-  font-weight: bold;
-  background: #ffffff;
-  color: rgb(0, 0, 0);
-  transition: .2s ease-in-out;
-}
-
-.card button:hover {
-  background: #FF7B27;
-  color: white;
-  cursor: pointer;
-}
-
-/* ------- 나의 전적 화면 ----------- */
-.profile-record-card {
-  border: 2px solid transparent;
-}
-
-.banner img {
-  width: 340px;
-  margin-top: -80px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
-  border: 1px solid #ddd;
-  border-radius: 1px;
-  padding: 10px;
   text-align: center;
   display: block;
   font-size: 2em;
@@ -294,18 +223,35 @@ th, td {
 
 .banner img {
   width: 340px;
-  margin-top: -80px;
+  margin: -80px 0 0 100px;
 }
 
-table {
-  width: 140%;
+.table-container {
+  position: absolute;
+  background-color: transparent;
+  height: 80%; 
+  width: 60%;
+  
+}
+
+.styled-table {
   border-collapse: collapse;
+  width: 100%;
 }
 
-th, td {
-  border: 1px solid #ddd;
-  border-radius: 1px;
-  padding: 10px;
-  text-align: center;
+.styled-table th,
+.styled-table td {
+  border: 3px solid white;
+  padding: 8px;
+  text-align: left;
+  border-radius: 10px;
+}
+
+.styled-table th {
+  background-color: #FF7B27;
+}
+
+.styled-table tr:nth-child(even) {
+  background-color: #FF7B27;
 }
 </style>
