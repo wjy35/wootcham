@@ -12,7 +12,7 @@
           <div class="image-item" @click="toggleBuy(profile[(count - 1) * 3])" v-if="profile.length >= (count - 1) * 3 + 1">
             <div class="coin flex text-shadow">
               <img class='itemImg' :src='profile[(count - 1) * 3].url'>
-              <img class='coin-img' src="@/assets/images/coin.png" style="width: 20px; height: 20px">
+              <img class='coin-img' src="@/assets/images/coin.png" style="width: 20px; height: 20px;">
               <span class="price">{{ profile[(count - 1) * 3].price }}</span>
             </div>
             <span class="desc">{{ profile[(count - 1) * 3].name }}{{ profile[(count - 1) * 3].buy ? '(보유 중)' : '' }}{{ profile[(count - 1) * 3].wear ? '(착용 중)' : '' }}</span>
@@ -468,7 +468,15 @@ export default {
 
   background-color: #FF7B27;
   border-radius: 15px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
 }
+.coin-amount:hover {
+  transform: scale(1.1);
+  border: 2px solid white;
+}
+
+
 /* COIN 코인 */
 .coin {
   color: white;
@@ -653,8 +661,9 @@ export default {
 
 .desc {
   position: absolute;
-  bottom: 0;
+  bottom: 1px;
   color: black;
+  font-size: 1.2em;
 }
 .coin-img {
   position: absolute;

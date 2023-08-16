@@ -117,7 +117,7 @@ export default {
   scroll-snap-align: start;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 
   padding: 20px 50px 0;
 }
