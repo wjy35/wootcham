@@ -3,9 +3,11 @@ package com.ssafy.game.game.api.dto;
 import com.ssafy.game.common.RankSetting;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class RankPointChange {
     private String memberToken;
     private Integer rankPoint;
