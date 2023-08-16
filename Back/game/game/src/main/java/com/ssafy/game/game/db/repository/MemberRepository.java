@@ -11,6 +11,10 @@ import org.springframework.stereotype.Repository;
 public interface MemberRepository extends CrudRepository<Test,Integer> {
 
     @Procedure("pointProc")
-    void updateRankPoint(@Param("nickname_input") String nickname,@Param("point_change") Integer point);
+    void updateRankPoint(
+            @Param("nickname_input") String nickname,
+            @Param("point_change") Integer point,
+            @Param("money_change") Integer money
+            );
 
 }

@@ -1,7 +1,7 @@
 package com.ssafy.game.game.api.processor;
 
 import com.ssafy.game.common.GameSessionSetting;
-import com.ssafy.game.game.api.dto.RankPointChange;
+import com.ssafy.game.game.api.dto.GameMemberChange;
 import com.ssafy.game.game.api.response.*;
 import com.ssafy.game.game.db.entity.GameSession;
 import com.ssafy.game.game.db.repository.MemberRepository;
@@ -59,23 +59,26 @@ public class GameProcessor implements Runnable{
     }
 
     private void reflectRank(){
-        List<RankPointChange> rankPointChangeList = getRankPointChangeList();
+        List<GameMemberChange> gameMemberChangeList = getGameMemberChangeList();
 
-        System.out.println("rankPointChangeList = " + rankPointChangeList);
 
-        for(RankPointChange rankPointChange : rankPointChangeList){
-            updateRankTable(rankPointChange);
+        for(GameMemberChange gameMemberChange : gameMemberChangeList){
+            updateMemberTable(gameMemberChange);
         }
 
-        sendGameStatusResponse(new ReflectRankResponse(rankPointChangeList));
+        sendGameStatusResponse(new ReflectRankResponse(gameMemberChangeList));
     }
 
-    private void updateRankTable(RankPointChange rankPointChange){
-        memberRepository.updateRankPoint(gameSession.getGameMembers().get(rankPointChange.getMemberToken()).getNickname(),rankPointChange.getRankPoint());
+    private void updateMemberTable(GameMemberChange gameMemberChange){
+        memberRepository.updateRankPoint(
+                gameSession.getGameMembers().get(gameMemberChange.getNickname()).getNickname(),
+                gameMemberChange.getPoint(),
+                gameMemberChange.getMoney()
+                );
     }
 
 
-    private List<RankPointChange> getRankPointChangeList(){
+    private List<GameMemberChange> getGameMemberChangeList(){
         updateDisconnectGameMemberSmileCount();
 
         Integer smileSum = 0;
@@ -93,17 +96,26 @@ public class GameProcessor implements Runnable{
             }
         });
 
-        List<RankPointChange> rankPointChangeList = new ArrayList<>();
+        List<GameMemberChange> gameMemberChangeList = new ArrayList<>();
+
+        int money;
 
         for(int rank=1; rank<= smileCountEntryList.size(); rank++){
-            rankPointChangeList.add(
-                    new RankPointChange(
-                            smileCountEntryList.get(rank-1).getKey(),
-                            smileAvg-smileCountEntryList.get(rank-1).getValue()+(10-rank))
+            money = 0;
+            if(gameSession.getGameMembers().get(smileCountEntryList.get(rank-1).getKey()).isConnected()){
+                money = (gameSession.getGameMembers().size()-rank+1) * 10;
+            }
+
+            gameMemberChangeList.add(
+                    new GameMemberChange(
+                            gameSession.getGameMembers().get(smileCountEntryList.get(rank-1).getKey()).getNickname(),
+                            smileAvg-smileCountEntryList.get(rank-1).getValue()+(10-rank),
+                            money
+                            )
             );
         }
 
-        return rankPointChangeList;
+        return gameMemberChangeList;
     }
 
     private void updateDisconnectGameMemberSmileCount() {
