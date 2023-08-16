@@ -4,10 +4,7 @@ import com.ssafy.game.match.api.observer.MatchEventSource;
 import com.ssafy.game.match.api.observer.MatchObserver;
 import com.ssafy.game.match.api.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.Header;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.handler.annotation.*;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,7 +33,8 @@ public class MatchController {
 
 
     @MessageMapping("/enter/{groupId}/{memberId}")
-    void enter(@DestinationVariable String groupId,@DestinationVariable String memberId){
-        matchService.enterGame(groupId, memberId);
+    void enter(@DestinationVariable String groupId, @DestinationVariable String memberId, @Payload String nickname){
+        System.out.println("nickname = " + nickname);
+        matchService.enterGame(groupId, memberId, nickname);
     }
 }

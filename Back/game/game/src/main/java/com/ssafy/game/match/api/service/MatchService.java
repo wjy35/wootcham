@@ -5,6 +5,7 @@ import com.ssafy.game.game.db.entity.GameMember;
 import com.ssafy.game.game.db.entity.GameSession;
 import com.ssafy.game.game.db.repository.GameMemberRepository;
 import com.ssafy.game.game.db.repository.GameSessionRepository;
+import com.ssafy.game.game.db.repository.MemberRepository;
 import com.ssafy.game.match.api.response.GameCreatedResponse;
 import com.ssafy.game.match.db.entity.Group;
 import com.ssafy.game.match.db.repository.GroupRepository;
@@ -40,6 +41,7 @@ public class MatchService {
     private final MessageSender messageSender;
     private final GameSessionRepository gameSessionRepository;
     private final GameMemberRepository gameMemberRepository;
+    private final MemberRepository memberRepository;
 
     @PostConstruct
     public void init() {
@@ -92,7 +94,7 @@ public class MatchService {
                     gameSessionRepository.insertGameSession(gameSession);
                     sendGameLoadRequestToAll(groupMemberList,openviduSession);
 
-                    GameProcessor gameProcessor = new GameProcessor(gameSession,this.messageSender);
+                    GameProcessor gameProcessor = new GameProcessor(gameSession, this.messageSender, this.memberRepository);
                     Thread thread = new Thread(gameProcessor);
                     thread.start();
                     return;
@@ -146,10 +148,12 @@ public class MatchService {
         return null;
     }
 
-    public void enterGame(String groupId, String memberId){
+    public void enterGame(String groupId, String memberId, String nickname){
+        Member enteredMember = matchMemberSession.findByMemberId(memberId);
+        enteredMember.setNickname(nickname);
         groupRepository.findGroupByGroupId(groupId)
                 .getMembers()
-                .put(memberId,matchMemberSession.findByMemberId(memberId));
+                .put(memberId,enteredMember);
     }
 
     private void sendObjectToGroupMembers(Collection<Member> groupMemberList, Object object){
@@ -184,7 +188,13 @@ public class MatchService {
                         .build();
                 Connection connection = openviduSession.createConnection(connectionProperties);
 
-                GameMember gameMember = new GameMember(openviduSession.getSessionId(),groupMember.getMemberId(),connection.getToken());
+                GameMember gameMember =
+                        new GameMember(
+                                openviduSession.getSessionId(),
+                                groupMember.getMemberId(),
+                                connection.getToken(),
+                                groupMember.getNickname()
+                        );
                 gameMemberRepository.save(gameMember);
 
                 messageSender.sendObjectToMember(

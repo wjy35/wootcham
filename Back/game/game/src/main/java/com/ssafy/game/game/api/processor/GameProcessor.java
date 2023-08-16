@@ -4,6 +4,8 @@ import com.ssafy.game.common.GameSessionSetting;
 import com.ssafy.game.game.api.dto.RankPointChange;
 import com.ssafy.game.game.api.response.*;
 import com.ssafy.game.game.db.entity.GameSession;
+import com.ssafy.game.game.db.entity.Member;
+import com.ssafy.game.game.db.repository.MemberRepository;
 import com.ssafy.game.match.common.GameSetting;
 import com.ssafy.game.util.MessageSender;
 
@@ -16,10 +18,12 @@ public class GameProcessor implements Runnable{
     private final GameSession gameSession;
     private final MessageSender sender;
     private final String gameDestination;
+    private final MemberRepository memberRepository;
 
-    public GameProcessor(GameSession gameSession, MessageSender sender) {
+    public GameProcessor(GameSession gameSession, MessageSender sender,MemberRepository memberRepository) {
         this.gameSession = gameSession;
         this.sender = sender;
+        this.memberRepository = memberRepository;
         this.gameDestination = "/topic/game/"+gameSession.getSessionId();
     }
 
@@ -59,7 +63,17 @@ public class GameProcessor implements Runnable{
         List<RankPointChange> rankPointChangeList = getRankPointChangeList();
 
         System.out.println("rankPointChangeList = " + rankPointChangeList);
+
+        for(RankPointChange rankPointChange : rankPointChangeList){
+            updateRankTable(rankPointChange);
+        }
+
         sendGameStatusResponse(new ReflectRankResponse(rankPointChangeList));
+    }
+
+    private void updateRankTable(RankPointChange rankPointChange){
+        Member member = memberRepository.findByNickname(gameSession.getGameMembers().get(rankPointChange.getMemberToken()).getNickname()).get();
+        System.out.println(member);
     }
 
 
