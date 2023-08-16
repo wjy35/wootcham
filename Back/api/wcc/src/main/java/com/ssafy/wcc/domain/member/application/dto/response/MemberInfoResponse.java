@@ -17,9 +17,11 @@ public class MemberInfoResponse {
     private String profileImg;
     private String badge;
     private String border;
+    private Long ranking; //순위
+    private Long top; // 상위 %
 
     @Builder
-    public MemberInfoResponse(String email, String nickname, Integer point, Integer money, String profileImg, String badge, String border) {
+    public MemberInfoResponse(String email, String nickname, Integer point, Integer money, String profileImg, String badge, String border, Long ranking, Long top) {
         this.email = email;
         this.nickname = nickname;
         this.point = point;
@@ -27,5 +29,7 @@ public class MemberInfoResponse {
         this.profileImg = profileImg;
         this.badge = badge;
         this.border = border;
+        this.ranking = ranking;
+        this.top = top;
     }
 }
