@@ -40,7 +40,7 @@ public class NoticeServiceImpl implements NoticeService {
         checkMember(id, 1);
         
         long count = noticeRepository.countBy();
-        List<Notice> noticeList = noticeRepositorySupport.listNoticeForUsers(Math.min(count, 4));
+        List<Notice> noticeList = noticeRepositorySupport.listNoticeForUsers(Math.min(count, 3));
         return noticeList.stream()
                 .map(n -> noticeMapper.toNoticeResponse(n))
                 .collect(Collectors.toList());
@@ -61,6 +61,7 @@ public class NoticeServiceImpl implements NoticeService {
         checkMember(memberId, 0);
 
         Optional<Notice> notice = noticeRepositorySupport.getNoticeDetail(noticeId);
+
         if (notice.isEmpty()) throw new WCCException(Error.NO_SUCH_NOTICE);
         return noticeMapper.toNoticeResponse(notice.get());
     }
@@ -90,8 +91,10 @@ public class NoticeServiceImpl implements NoticeService {
         Optional<Member> member = memberRepository.findById(id);
         if (member.isEmpty()) throw new WCCException(Error.USER_NOT_FOUND);
 
+        System.out.println(member.get().getEmail());
+
         // 관리자인지도 추가로 확인해야하는 경우
-        if (type == 0) if (member.get().getAdmin() != 0) throw new WCCException(Error.NOT_ADMIN);
+        if (type == 0) if (member.get().getAdmin() == 1) throw new WCCException(Error.NOT_ADMIN);
 
         logger.info("공지를 받으려는 Member 이메일: {}", member.get().getEmail());
     }

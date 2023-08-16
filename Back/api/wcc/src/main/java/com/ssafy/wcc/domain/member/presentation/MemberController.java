@@ -3,6 +3,7 @@ package com.ssafy.wcc.domain.member.presentation;
 
 import com.ssafy.wcc.common.exception.Error;
 import com.ssafy.wcc.common.exception.WCCException;
+import com.ssafy.wcc.common.aop.auth.Authorization;
 import com.ssafy.wcc.domain.member.application.dto.request.EmailVerifyRequest;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberloginRequest;
@@ -23,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
@@ -36,8 +38,6 @@ import java.util.Map;
 @RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController{
-
-    Logger logger = LoggerFactory.getLogger(MemberController.class);
 
     private final TokenService tokenService;
 
@@ -76,7 +76,7 @@ public class MemberController{
             @ApiResponse(code = 400, message = "이미 존재하는 이메일"),
             @ApiResponse(code = 404, message = "사용 불가능한 이메일"),
     })
-    public ResponseEntity<?> confirmEmail(@RequestBody EmailVerifyRequest email) throws MessagingException, UnsupportedEncodingException {
+    public ResponseEntity<?> confirmEmail(@RequestBody EmailVerifyRequest email) {
         Map<String, Object> resultMap = new HashMap<>();
 
         // 이메일 중복 검사
@@ -149,7 +149,6 @@ public class MemberController{
         tokenService.saveLogoutToken(accessToken);
         res.put("isSuccess", true);
         return new ResponseEntity<>(res, HttpStatus.OK);
-
     }
 
     @PostMapping()
@@ -158,10 +157,11 @@ public class MemberController{
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패")
     })
-    public ResponseEntity<Map<String, Object>> memberInfo(@RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken) {
+    public ResponseEntity<Map<String, Object>> memberInfo(
+            @Authorization @ApiIgnore Long id
+    ) {
         Map<String, Object> res = new HashMap<>();
-        id = tokenService.getIdByToken(accessToken);
-        MemberInfoResponse memberInfoResponse = memberService.memberInfoResponse(Long.parseLong(id));
+        MemberInfoResponse memberInfoResponse = memberService.memberInfoResponse(id);
         res.put("isSuccess", true);
         res.put("data", memberInfoResponse);
         return new ResponseEntity<>(res, HttpStatus.OK);
@@ -173,9 +173,11 @@ public class MemberController{
             @ApiResponse(code = 200, message = "수정 성공"),
             @ApiResponse(code = 404, message = "수정 실패")
     })
-    public ResponseEntity<Map<String, Object>> memberUpdate(@RequestBody MemberRequest memberRequest, @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken) {
+    public ResponseEntity<Map<String, Object>> memberUpdate(
+            @RequestBody MemberRequest memberRequest,
+            @Authorization @ApiIgnore Long id
+    ) {
         Map<String, Object> res = new HashMap<>();
-        id = tokenService.getIdByToken(accessToken);
         memberService.memberUpdate(memberRequest, id);
         res.put("isSuccess", true);
         return new ResponseEntity<>(res, HttpStatus.OK);
@@ -188,9 +190,10 @@ public class MemberController{
             @ApiResponse(code = 200, message = "탈퇴 성공"),
             @ApiResponse(code = 404, message = "탈퇴 실패")
     })
-    public ResponseEntity<Map<String, Object>> memberDelete(@RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken) {
+    public ResponseEntity<Map<String, Object>> memberDelete(
+            @Authorization @ApiIgnore Long id
+    ) {
         Map<String, Object> res = new HashMap<>();
-        id = tokenService.getIdByToken(accessToken);
         memberService.memberDelete(id);
         res.put("isSuccess", true);
         return new ResponseEntity<>(res, HttpStatus.OK);
@@ -241,11 +244,10 @@ public class MemberController{
             @ApiResponse(code = 404, message = "access token 불일치")
     })
     public ResponseEntity<Map<String, String>> confrimPassword(
-            @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken,
+            @Authorization @ApiIgnore Long id,
             @RequestBody @ApiParam(value = "기존 비밀번호") MemberRequest request
     ) {
         Map<String, String> res = new HashMap<>();
-        id = tokenService.getIdByToken(accessToken);
 
         memberService.confirmPassword(id, request.getPassword());
         res.put("isSuccess", "true");
