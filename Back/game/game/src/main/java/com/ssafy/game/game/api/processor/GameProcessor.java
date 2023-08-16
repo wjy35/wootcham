@@ -47,9 +47,9 @@ public class GameProcessor implements Runnable{
 
             // ToDo gameMemberRepo 에서 조회하도록 변경
             if(gameSession.getGameMembers().get(gameSession.getOrderList().get(0)).isConnected()){
-                preparePresent(i);
+                preparePresent();
                 countDown();
-                present(i);
+                present();
             }
 
             changePresentOrder();
@@ -120,10 +120,10 @@ public class GameProcessor implements Runnable{
         }
     }
 
-    private void preparePresent(int order){
+    private void preparePresent(){
         int second = GameSessionSetting.MAX_PREPARE_PRESENT_SECOND;
 
-        String teller = gameSession.getOrderList().get(order);
+        String teller = gameSession.getOrderList().get(0);
         PreparePresentResponse preparePresentResponse = new PreparePresentResponse(teller,second);
         gameSession.setCheckedSkipPreparedPresent(false);
 
@@ -158,10 +158,10 @@ public class GameProcessor implements Runnable{
         }
     }
 
-    private void present(int order){
+    private void present(){
         int second = GameSessionSetting.MAX_PRESENT_SECOND;
 
-        String teller = gameSession.getOrderList().get(order);
+        String teller = gameSession.getOrderList().get(0);
         gameSession.setCheckedSkipPresent(false);
         PresentResponse presentResponse = new PresentResponse(teller,second,gameSession.getTopics().get(teller).toString());
 
