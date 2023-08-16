@@ -1,5 +1,6 @@
 package com.ssafy.wcc.domain.collection.presentation;
 
+import com.ssafy.wcc.common.aop.auth.Authorization;
 import com.ssafy.wcc.domain.collection.application.dto.response.CollectionResponse;
 import com.ssafy.wcc.domain.collection.application.service.CollectionItemService;
 import com.ssafy.wcc.domain.collection.db.entity.CollectionItem;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -35,8 +37,6 @@ public class CollectionController {
 
     Logger logger = LoggerFactory.getLogger(NoticeController.class);
 
-    private final TokenService tokenService;
-
     private final CollectionItemService collectionItemService;
 
     private String id;
@@ -47,11 +47,12 @@ public class CollectionController {
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 404, message = "조회 실패"),
     })
-    public ResponseEntity<Map<String, Object>> collectionList(@RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken) {
+    public ResponseEntity<Map<String, Object>> collectionList(
+            @Authorization @ApiIgnore Long id
+    ) {
         Map<String, Object> res = new HashMap<>();
-        id = tokenService.getIdByToken(accessToken);
 
-        List<CollectionResponse> list = collectionItemService.getCollectionList(Long.parseLong(id));
+        List<CollectionResponse> list = collectionItemService.getCollectionList(id);
 
         res.put("isSuccess", true);
         res.put("data", list);
@@ -65,12 +66,13 @@ public class CollectionController {
             @ApiResponse(code = 400, message = "구매하지 않은 아이템"),
             @ApiResponse(code = 404, message = "구매 실패"),
     })
-    public ResponseEntity<Map<String, Object>> buy(@RequestBody Map<String, Integer> collectionId, @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken) {
+    public ResponseEntity<Map<String, Object>> buy(
+            @RequestBody Map<String, Integer> collectionId,
+            @Authorization @ApiIgnore Long id
+    ) {
         Map<String, Object> res = new HashMap<>();
 
-        id = tokenService.getIdByToken(accessToken);
-
-        collectionItemService.buy(Long.parseLong(id), collectionId.get("collection_id"));
+        collectionItemService.buy(id, collectionId.get("collection_id"));
         res.put("isSuccess", true);
         return new ResponseEntity<>(res, HttpStatus.OK);
 
@@ -82,12 +84,13 @@ public class CollectionController {
             @ApiResponse(code = 200, message = "착용 성공"),
             @ApiResponse(code = 404, message = "착용 실패"),
     })
-    public ResponseEntity<Map<String, Object>> wear(@RequestBody Map<String, Integer> collectionId, @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken) {
+    public ResponseEntity<Map<String, Object>> wear(
+            @RequestBody Map<String, Integer> collectionId,
+            @Authorization @ApiIgnore Long id
+    ) {
         Map<String, Object> res = new HashMap<>();
 
-        id = tokenService.getIdByToken(accessToken);
-
-        collectionItemService.wear(Long.parseLong(id), collectionId.get("collection_id"));
+        collectionItemService.wear(id, collectionId.get("collection_id"));
         res.put("isSuccess", true);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
