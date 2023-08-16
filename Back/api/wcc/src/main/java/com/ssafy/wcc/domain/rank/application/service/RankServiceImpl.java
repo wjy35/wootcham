@@ -39,8 +39,10 @@ public class RankServiceImpl implements RankService{
                 // 멤버 정보 가져오기
                 Member member = rankList.get(i);
 
-                // 멤버 프로필 이미지 가져오기
+                // 착용 중인 아이템 가져오기
                 String url = collectionItemRepository.getCurrentItemImage(rankList.get(i).getId(), 1);
+                String badge = collectionItemRepository.getCurrentItemImage(rankList.get(i).getId(), 2);
+                String border = collectionItemRepository.getCurrentItemImage(rankList.get(i).getId(), 3);
 
                 MemberInfoResponse memberInfoResponse = MemberInfoResponse.builder()
                         .email(member.getEmail())
@@ -48,6 +50,8 @@ public class RankServiceImpl implements RankService{
                         .point(member.getPoint())
                         .money(member.getMoney())
                         .profileImg(url)
+                        .badge(badge)
+                        .border(border)
                         .build();
 
                 result.add(memberInfoResponse);

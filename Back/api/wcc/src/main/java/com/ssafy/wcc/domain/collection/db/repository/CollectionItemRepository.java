@@ -17,7 +17,7 @@ public interface CollectionItemRepository extends JpaRepository<CollectionItem, 
     @Query(
             value = "select url \n" +
                     "from collection_item \n" +
-                    "where `type` = :type and id = (select collection_id \n" +
+                    "where `type` = :type and id in (select collection_id \n" +
                     "from member_item \n" +
                     "where member_id = :memberId and wear = 1)",
             nativeQuery = true)
