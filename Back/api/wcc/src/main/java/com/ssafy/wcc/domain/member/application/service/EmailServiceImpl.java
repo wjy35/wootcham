@@ -36,15 +36,15 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     // type: 1-회원 가입 시 이메일 인증, 2-비밀번호 찾기
-    public String sendMessage(String email, int type) throws MessagingException, UnsupportedEncodingException {
+    public String sendMessage(String email, int type) {
         String code = "";
         if (type == 1) code = createCode();
         else if (type == 2) code = createPassword();
-        MimeMessage message = createMessage(email, code, type);
         try {
+            MimeMessage message = createMessage(email, code, type);
             emailRedisRepository.setDataExpire(code, email, 60 * 5L); // 인증 코드 유효시간: 5분
             javaMailSender.send(message);
-        } catch (MailException e) {
+        } catch (MailException | MessagingException | UnsupportedEncodingException e) {
             throw new WCCException(Error.EMAIL_SEND_FAILURE);
         }
         return code;
