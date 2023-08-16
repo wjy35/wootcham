@@ -69,7 +69,7 @@ import RankingWindow from './components/RankingWindow.vue';
 import InfoWindow from './components/InfoWindow.vue';
 import * as Stomp from "webstomp-client";
 import { MatchStatus } from '@/match-status';
-import { mapMutations } from "vuex";
+import {mapMutations, mapState} from "vuex";
 import api from "@/api"
 
 export default {
@@ -217,14 +217,15 @@ export default {
       document.getElementById("test").disabled = "disabled";
       this.acceptStatus = true;
 
-      this.client.send(`/enter/${this.groupId}/${this.memberId}`);
+      this.client.send(`/enter/${this.groupId}/${this.memberId}`,this.userNickname);
     },
     ...mapMutations(["setClient"])
   },
   computed: {
     MatchStatus() {
       return MatchStatus
-    }
+    },
+    ...mapState(["userNickname"])
   }
 };
 </script>
