@@ -18,7 +18,7 @@ export default createStore({
     keywords: {},
     notices: [],
     userList: [],
-
+    ready: false,
   },
   mutations: {
     setClient(state, payload) {
@@ -47,6 +47,9 @@ export default createStore({
     },
     setKeywords(state, payload){
       state.keywords = payload;
+    },
+    setReady(state) {
+      state.ready = !state.ready;
     }
   },
   getters: {

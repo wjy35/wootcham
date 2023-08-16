@@ -134,10 +134,7 @@ export default {
 /* ------- 프로필 카드 --------- */
 .card {
   width: 31em;
-  height: 31em;
-  background: #FFCDAD;
   transition: 1s ease-in-out;
-  clip-path: polygon(30px 0%, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0% 30px);
   border-top-right-radius: 20px;
   border-bottom-left-radius: 20px;
   display: flex;
@@ -147,6 +144,84 @@ export default {
 .card span {
   font-weight: 200;
   color: white;
+  text-align: center;
+  display: block;
+  font-size: 2em;
+}
+
+.card .info {
+  font-weight: 400;
+  color: white;
+  display: block;
+  text-align: center;
+  font-size: 1.3em;
+}
+
+.card .img {
+  width: 8em;
+  height: 8em;
+  background: url(@/assets/images/profile.jpg);
+  background-size: cover;
+  border-radius: 15px;
+  margin: auto;
+
+  border: 5px inset gold;
+}
+
+.card a {
+  color: white;
+  transition: .4s ease-in-out;
+}
+
+.card a:hover {
+  color: red;
+}
+
+.profile-btns {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.card button {
+  width: 200px;
+  padding: 10px;
+  display: block;
+  border-radius: 20px;
+  border: none;
+  font-weight: bold;
+  background: #ffffff;
+  color: rgb(0, 0, 0);
+  transition: .2s ease-in-out;
+}
+
+.card button:hover {
+  background: #FF7B27;
+  color: white;
+  cursor: pointer;
+}
+
+/* ------- 나의 전적 화면 ----------- */
+.profile-record-card {
+  border: 2px solid transparent;
+}
+
+.banner img {
+  width: 340px;
+  margin-top: -80px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  border-radius: 1px;
+  padding: 10px;
   text-align: center;
   display: block;
   font-size: 2em;
