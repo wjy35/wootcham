@@ -75,6 +75,14 @@ export default {
                 }
                 // 1이면 일반 사용자 -> 홈 화면으로 이동
                 else {
+                    api.defaults.headers["Authorization"] = localStorage.getItem('accessToken');
+                    api.get("/topic")
+                    .then(({data}) => {
+                        store.commit('setKeywords', data.data);
+                    })
+                    .catch((error)=>{
+                        console.log(error)
+                    });
                     router.push({ name: 'homeview' })
                 }
             }).catch((error) => {
