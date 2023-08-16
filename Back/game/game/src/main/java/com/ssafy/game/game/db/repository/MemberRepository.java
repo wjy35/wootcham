@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MemberRepository extends JpaRepository<Member,Integer> {
     @Query(value = "CALL pointProc(:nickname_input, :point_change);", nativeQuery = true)
-    int updateRankPoint(@Param("nickname_input") String nickname,@Param("point_change") Integer point);
+    void updateRankPoint(@Param("nickname_input") String nickname,@Param("point_change") Integer point);
 }
