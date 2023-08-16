@@ -60,36 +60,6 @@ export default {
   background-color: transparent;
 }
 
-.season {
-  position: absolute;
-  overflow: hidden;
-  width: 200px;
-  height: 200px;
-  top: -10px;
-  left: -10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.season::before {
-  position: absolute;
-  width: 150%;
-  height: 40px;
-  background-image: linear-gradient(45deg, #ff6547 0%, #ffb144 51%, #ff7053 100%);
-  transform: rotate(-45deg) translateY(-20px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  content: 'SEASON1';
-  font-family: Luckiest Guy;
-  color: #fff;
-  font-weight: 300;
-  letter-spacing: 0.1em;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.23);
-}
-
 /* 메인 콘텐츠 */
 .one {
   background-color: #ece8e1;
@@ -154,5 +124,13 @@ export default {
 
 .scroll-snap-card .slide .item .notice-content:hover {
   transform: scale(1.1);
+}
+
+.scroll img {
+  position: absolute;
+  left: 470px;
+  bottom: 15px;
+  width: 50px;
+  height: 50px;
 }
 </style>
