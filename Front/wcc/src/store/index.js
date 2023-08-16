@@ -15,7 +15,11 @@ export default createStore({
     isValidToken: false,
     mainStreamManager: "",
     client: "",
+<<<<<<< HEAD
 
+=======
+    keywords: {},
+>>>>>>> 99a3308e3436434ca03c148dbcd1a863d2e2ad27
     notices: [],
     userList: [],
 
@@ -36,9 +40,12 @@ export default createStore({
     setUserNickname(state, payload) {
       state.userNickname = payload;
     },
+<<<<<<< HEAD
     setUserPoint(state, payload){
       state.userInfo.point = payload;
     },
+=======
+>>>>>>> 99a3308e3436434ca03c148dbcd1a863d2e2ad27
     setNotices(state, notices) {
       state.notices = notices;
     },
@@ -47,6 +54,9 @@ export default createStore({
     },
     setProfileImg(state, payload){
       state.profileImg = payload;
+    },
+    setKeywords(state, payload){
+      state.keywords = payload;
     }
   },
   getters: {
@@ -62,6 +72,9 @@ export default createStore({
     },
     getProfileImg(state){
       return state.profileImg;
+    },
+    getKeywords(state){
+      return state.keywords;
     }
   },
 });

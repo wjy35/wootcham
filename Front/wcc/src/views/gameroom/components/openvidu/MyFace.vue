@@ -1,5 +1,5 @@
 <template>
-	<video id="myFace" autoplay />
+  <video id="myFace" autoplay/>
 </template>
 
 
@@ -8,88 +8,95 @@ import * as faceapi from 'face-api.js';
 import {mapState} from "vuex";
 
 let cam;
-
+let interval;
 export default {
-	name: 'MyFace',
+  name: 'MyFace',
 
-	props: {
-		streamManager: Object,
-	},
+  props: {
+    streamManager: Object,
+  },
   data() {
     return {
       isChecked: false,
+      sessionId: localStorage.getItem("sessionId"),
+      memberToken: localStorage.getItem("memberToken"),
     }
   },
   computed: {
     ...mapState(["client"])
   },
-	mounted() {
-		cam = document.getElementById("myFace");
-		Promise.all([
-			faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
-			faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
-			faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
-			faceapi.nets.faceExpressionNet.loadFromUri('/models')
-		]).then(navigator.mediaDevices
-			.getUserMedia({ video: true })
-			.then(function (stream) {
-				cam.srcObject = stream;
-			})
-			.catch(function (err) {
-				console.log(err);
-			})
-		)
-		this.streamManager.addVideoElement(cam);
-		this.startDetect();
-	},
+  unmounted() {
+    clearInterval(interval);
+  },
+  mounted() {
+    console.log("mounted!!");
+    cam = document.getElementById("myFace");
+    Promise.all([
+      faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+      faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
+      faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
+      faceapi.nets.faceExpressionNet.loadFromUri('/models')
+    ]).then(navigator.mediaDevices
+        .getUserMedia({video: true})
+        .then(function (stream) {
+          cam.srcObject = stream;
+        })
+        .catch(function (err) {
+          console.log(err);
+        })
+    )
+    this.streamManager.addVideoElement(cam);
+    this.startDetect();
+  },
+  methods: {
+    async detectSmile(cam) {
+      if(this.isChecked) return;
 
-	updated() {
-		cam = document.getElementById("myFace");
-		Promise.all([
-			faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
-			faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
-			faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
-			faceapi.nets.faceExpressionNet.loadFromUri('/models')
-		]).then(navigator.mediaDevices
-			.getUserMedia({ video: true })
-			.then(function (stream) {
-				cam.srcObject = stream;
-			})
-			.catch(function (err) {
-				console.log(err);
-			})
-		)
-		this.streamManager.addVideoElement(cam);
-		this.startDetect();
-	},
-	methods: {
-		async detectSmile(cam) {
-			const detections = await faceapi.detectSingleFace(cam, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
-			if(!this.isChecked){
-        if (detections === undefined || detections.expressions.happy > 0.75) {
+      const detections = await Promise.race([
+        new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(undefined);
+          }, 1500);
+        }),
+        new Promise((resolve) => {
+          resolve(faceapi.detectSingleFace(cam, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions());
+        })
+      ]);
 
-          this.client.send("/up",JSON.stringify({
-            sessionId: localStorage.getItem("sessionId"),
-            memberToken: localStorage.getItem("memberToken")
-          }));
 
-          this.isChecked = true;
-          setTimeout(() => this.isChecked=false, 5000);
-        }
+      let result = await this.check(detections);
+      if(result) {
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        this.isChecked = false;
       }
-		},
-		startDetect() {
-			setInterval(() => {
-				this.detectSmile(cam);
-			}, 1000);
-		}
-	}
+    },
+    async check(detections){
+      if (detections===undefined || detections.expressions.happy > 0.8) {
+        this.isChecked = true;
+        console.log("check")
+        this.client.send("/up", JSON.stringify({
+          sessionId: this.sessionId,
+          memberToken: this.memberToken
+        }));
+
+        return true;
+      }
+
+      return false;
+    },
+    startDetect() {
+      // this.detectSmile(cam);
+      interval = setInterval(async () => {
+        await this.detectSmile(cam);
+      }, 1500);
+    },
+  }
 };
 </script>
 
 <style scoped>
 video {
-	width: 100%;
-	height: auto;
+  width: 100%;
+  height: auto;
 }
 </style>
