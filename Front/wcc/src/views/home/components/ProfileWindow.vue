@@ -3,9 +3,9 @@
     <div class="content">
 
       <!-- 프로파일 화면 -->
-      <div class="card">
+      <div class="card shadow">
         <!-- 프로필 이미지 -->
-        <div class="img"><img :src="this.profile_img" style="width:100%"></div>
+        <div class="img"><img :src="this.profile_img" style="width:100%; border-radius: 10px;"></div>
 
         <!-- 유저네임 -->
         <span class="text-shadow">{{ this.nickname }}</span>
@@ -30,13 +30,13 @@
 
         <table>
           <thead>
-            <tr>
-              <th>등수</th>
-              <th>시작 시간</th>
-              <th>종료 시간</th>
-              <th>웃은 횟수</th>
-              <th>포인트 변경</th>
-              <th>머니 획득</th>
+              <tr>
+                <th>등수</th>
+                <th>시작 시간</th>
+                <th>종료 시간</th>
+                <th>웃은 횟수</th>
+                <th>포인트 변경</th>
+                <th>머니 획득</th>
               </tr>
             </thead>
             <tbody>
@@ -264,16 +264,27 @@ th, td {
   display: block;
   border-radius: 20px;
   border: none;
-  font-weight: bold;
-  background: #ffffff;
-  color: rgb(0, 0, 0);
+  font-weight: 200;
+  background: #FF7B27;
+  color: #FFCDAD;
   transition: .2s ease-in-out;
 }
-
 .card button:hover {
-  background: #FF7B27;
-  color: white;
+  background: #ffffff;
+  color: #FF7B27;
   cursor: pointer;
+}
+
+.profile-btns div {
+  font-size: 1.2em;
+  cursor: pointer;
+  margin: 10px 0 20px;
+
+  color: #FF7B27;
+  text-decoration: underline;
+  text-decoration-color: #FF7B27;
+  text-decoration-style: dashed; /* 라인 종류 변경: solid, dotted, dashed, double 등 */
+  text-decoration-thickness: 2px;
 }
 
 /* ------- 나의 전적 화면 ----------- */
