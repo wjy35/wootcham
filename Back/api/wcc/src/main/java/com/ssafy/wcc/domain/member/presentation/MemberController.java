@@ -34,8 +34,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MemberController{
 
-    Logger logger = LoggerFactory.getLogger(MemberController.class);
-
     private final TokenService tokenService;
 
     private final MemberService memberService;
@@ -150,10 +148,10 @@ public class MemberController{
             @ApiResponse(code = 404, message = "조회 실패")
     })
     public ResponseEntity<Map<String, Object>> memberInfo(
-            @Authorization @ApiIgnore Long accessToken
+            @Authorization @ApiIgnore Long id
     ) {
         Map<String, Object> res = new HashMap<>();
-        MemberInfoResponse memberInfoResponse = memberService.memberInfoResponse(accessToken);
+        MemberInfoResponse memberInfoResponse = memberService.memberInfoResponse(id);
         res.put("isSuccess", true);
         res.put("data", memberInfoResponse);
         return new ResponseEntity<>(res, HttpStatus.OK);
@@ -167,10 +165,10 @@ public class MemberController{
     })
     public ResponseEntity<Map<String, Object>> memberUpdate(
             @RequestBody MemberRequest memberRequest,
-            @Authorization @ApiIgnore Long accessToken
+            @Authorization @ApiIgnore Long id
     ) {
         Map<String, Object> res = new HashMap<>();
-        memberService.memberUpdate(memberRequest, accessToken);
+        memberService.memberUpdate(memberRequest, id);
         res.put("isSuccess", true);
         return new ResponseEntity<>(res, HttpStatus.OK);
 
@@ -183,10 +181,10 @@ public class MemberController{
             @ApiResponse(code = 404, message = "탈퇴 실패")
     })
     public ResponseEntity<Map<String, Object>> memberDelete(
-            @Authorization @ApiIgnore Long accessToken
+            @Authorization @ApiIgnore Long id
     ) {
         Map<String, Object> res = new HashMap<>();
-        memberService.memberDelete(accessToken);
+        memberService.memberDelete(id);
         res.put("isSuccess", true);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
@@ -236,12 +234,12 @@ public class MemberController{
             @ApiResponse(code = 404, message = "access token 불일치")
     })
     public ResponseEntity<Map<String, String>> confrimPassword(
-            @Authorization @ApiIgnore Long accessToken,
+            @Authorization @ApiIgnore Long id,
             @RequestBody @ApiParam(value = "기존 비밀번호") MemberRequest request
     ) {
         Map<String, String> res = new HashMap<>();
 
-        memberService.confirmPassword(accessToken, request.getPassword());
+        memberService.confirmPassword(id, request.getPassword());
         res.put("isSuccess", "true");
         return new ResponseEntity<>(res, HttpStatus.OK);
     }

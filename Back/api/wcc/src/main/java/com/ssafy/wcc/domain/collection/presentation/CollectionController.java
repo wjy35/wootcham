@@ -37,8 +37,6 @@ public class CollectionController {
 
     Logger logger = LoggerFactory.getLogger(NoticeController.class);
 
-    private final TokenService tokenService;
-
     private final CollectionItemService collectionItemService;
 
     private String id;
@@ -50,11 +48,11 @@ public class CollectionController {
             @ApiResponse(code = 404, message = "조회 실패"),
     })
     public ResponseEntity<Map<String, Object>> collectionList(
-            @Authorization @ApiIgnore Long accessToken
+            @Authorization @ApiIgnore Long id
     ) {
         Map<String, Object> res = new HashMap<>();
 
-        List<CollectionResponse> list = collectionItemService.getCollectionList(accessToken);
+        List<CollectionResponse> list = collectionItemService.getCollectionList(id);
 
         res.put("isSuccess", true);
         res.put("data", list);
@@ -70,11 +68,11 @@ public class CollectionController {
     })
     public ResponseEntity<Map<String, Object>> buy(
             @RequestBody Map<String, Integer> collectionId,
-            @Authorization @ApiIgnore Long accessToken
+            @Authorization @ApiIgnore Long id
     ) {
         Map<String, Object> res = new HashMap<>();
 
-        collectionItemService.buy(accessToken, collectionId.get("collection_id"));
+        collectionItemService.buy(id, collectionId.get("collection_id"));
         res.put("isSuccess", true);
         return new ResponseEntity<>(res, HttpStatus.OK);
 
@@ -88,11 +86,11 @@ public class CollectionController {
     })
     public ResponseEntity<Map<String, Object>> wear(
             @RequestBody Map<String, Integer> collectionId,
-            @Authorization @ApiIgnore Long accessToken
+            @Authorization @ApiIgnore Long id
     ) {
         Map<String, Object> res = new HashMap<>();
 
-        collectionItemService.wear(accessToken, collectionId.get("collection_id"));
+        collectionItemService.wear(id, collectionId.get("collection_id"));
         res.put("isSuccess", true);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }

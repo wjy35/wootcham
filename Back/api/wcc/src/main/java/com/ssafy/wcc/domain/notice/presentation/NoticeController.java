@@ -29,7 +29,6 @@ public class NoticeController {
 
     Logger logger = LoggerFactory.getLogger(NoticeController.class);
 
-    private final TokenService tokenService;
     private final NoticeService noticeService;
 
     @GetMapping
@@ -39,12 +38,12 @@ public class NoticeController {
             @ApiResponse(code = 404, message = "공지사항 조회 실패"),
     })
     public ResponseEntity<?> listNoticeForUsers(
-            @Authorization @ApiIgnore Long accessToken
+            @Authorization @ApiIgnore Long id
     ) {
         logger.info("listNoticeForUsers controller 진입");
         Map<String, Object> res = new HashMap<>();
 
-        List<NoticeResponse> list = noticeService.getNoticeListForUsers(accessToken);
+        List<NoticeResponse> list = noticeService.getNoticeListForUsers(id);
         res.put("isSuccess", true);
         res.put("data", list);
         return new ResponseEntity<>(res, HttpStatus.OK);
@@ -58,12 +57,12 @@ public class NoticeController {
             @ApiResponse(code = 404, message = "공지사항 조회 실패"),
     })
     public ResponseEntity<?> listNoticeForAdmin(
-            @Authorization @ApiIgnore Long accessToken
+            @Authorization @ApiIgnore Long id
     ) {
         log.info("listNoticeForAdmin controller 진입");
         Map<String, Object> res = new HashMap<>();
 
-        List<NoticeForAdminResponse> list = noticeService.getNoticeListForAdmin(accessToken);
+        List<NoticeForAdminResponse> list = noticeService.getNoticeListForAdmin(id);
         res.put("isSuccess", true);
         res.put("data", list);
         return new ResponseEntity<>(res, HttpStatus.OK);
@@ -77,12 +76,12 @@ public class NoticeController {
             @ApiResponse(code = 404, message = "공지사항 상세보기 실패"),
     })
     public ResponseEntity<?> noticeDetail(
-            @Authorization @ApiIgnore Long accessToken,
+            @Authorization @ApiIgnore Long id,
             @RequestBody @ApiParam(value = "글 아이디", required = true) NoticeRequest request
     ) {
         Map<String, Object> res = new HashMap<>();
 
-        NoticeResponse notice = noticeService.getNoticeDetail(accessToken, request.getId());
+        NoticeResponse notice = noticeService.getNoticeDetail(id, request.getId());
         res.put("isSuccess", true);
         res.put("data", notice);
         return new ResponseEntity<>(res, HttpStatus.OK);
@@ -96,12 +95,12 @@ public class NoticeController {
             @ApiResponse(code = 404, message = "공지사항 상세보기 실패"),
     })
     public ResponseEntity<?> registerNotice(
-            @Authorization @ApiIgnore Long accessToken,
+            @Authorization @ApiIgnore Long id,
             @RequestBody @ApiParam(value = "글 정보", required = true) NoticeRequest request
     ) {
         Map<String, Object> res = new HashMap<>();
 
-        noticeService.registerNotice(accessToken, request);
+        noticeService.registerNotice(id, request);
         res.put("isSuccess", true);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
@@ -114,12 +113,12 @@ public class NoticeController {
             @ApiResponse(code = 404, message = "공지사항 수정 실패"),
     })
     public ResponseEntity<?> updateNotice(
-            @Authorization @ApiIgnore Long accessToken,
+            @Authorization @ApiIgnore Long id,
             @RequestBody @ApiParam(value = "글 정보", required = true) NoticeRequest request
     ) {
         Map<String, Object> res = new HashMap<>();
 
-        noticeService.updateNotice(accessToken, request);
+        noticeService.updateNotice(id, request);
         res.put("isSuccess", true);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
