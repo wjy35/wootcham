@@ -27,8 +27,8 @@
         </div>
 
         <div class="table-container">
-            <table class="styled-table">
 
+            <table class="styled-table">
               <thead>
                 <tr>
                   <th>등수</th>
@@ -50,8 +50,8 @@
                   <td>{{ match.changeMoney }}</td>
                 </tr>
               </tbody>
-
             </table>
+
         </div>
 
         </div>
@@ -127,9 +127,8 @@ export default {
   height: 100%;
   width: 80%;
 
-  gap: 80px;
+  gap: 40px;
 }
-
 
 /* ------- 프로필 카드 --------- */
 .card {
@@ -218,42 +217,6 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
-  border: 1px solid #ddd;
-  border-radius: 1px;
-  padding: 10px;
-  text-align: center;
-  display: block;
-  font-size: 2em;
-}
-
-.card .info {
-  font-weight: 400;
-  color: white;
-  display: block;
-  text-align: center;
-  font-size: 1.3em;
-}
-
-.card .img {
-  width: 8em;
-  height: 8em;
-  background-size: cover;
-  border-radius: 15px;
-  margin: auto;
-
-  border: 5px inset gold;
-}
-
-.card a {
-  color: white;
-  transition: .4s ease-in-out;
-}
-
-.card a:hover {
-  color: red;
-}
-
 .profile-btns {
   display: flex;
   flex-direction: column;
@@ -301,17 +264,11 @@ th, td {
   margin: -80px 0 0 100px;
 }
 
-.table-container {
-  position: absolute;
-  background-color: transparent;
-  height: 80%; 
-  width: 60%;
-}
+.table-container
 
 .styled-table {
   border-collapse: collapse;
-  width: 100%;
-  overflow-y: hidden;
+  width: 130%;
 }
 
 .styled-table th,
