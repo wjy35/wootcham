@@ -71,8 +71,6 @@ public class GameProcessor implements Runnable{
     }
 
     private void updateRankTable(RankPointChange rankPointChange){
-        System.out.println("gameSession.getGameMembers().get(rankPointChange.getMemberToken()).getNickname() = " + gameSession.getGameMembers().get(rankPointChange.getMemberToken()).getNickname());
-        System.out.println("rankPointChange.getRankPoint() = " + rankPointChange.getRankPoint());
         memberRepository.updateRankPoint(gameSession.getGameMembers().get(rankPointChange.getMemberToken()).getNickname(),rankPointChange.getRankPoint());
     }
 
@@ -101,7 +99,7 @@ public class GameProcessor implements Runnable{
             rankPointChangeList.add(
                     new RankPointChange(
                             smileCountEntryList.get(rank-1).getKey(),
-                            smileCountEntryList.get(rank-1).getValue()-smileAvg+(10-rank))
+                            smileAvg-smileCountEntryList.get(rank-1).getValue()+(10-rank))
             );
         }
 
