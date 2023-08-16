@@ -95,10 +95,10 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public LocalDate getCurrentTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Calendar c = Calendar.getInstance();
         String today = sdf.format(c.getTime());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
         LocalDate date = LocalDate.parse(today, formatter);
         return date;
     }
@@ -122,7 +122,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void setTmpPassword(String email) {
-        logger.info("임시 비밀번호를 발급하는 email 주소: {}", email);
         // 이메일 조회
         Optional<Member> findMember = memberRepository.findByEmail(email);
         if (findMember.isEmpty()) {

@@ -11,6 +11,7 @@ public enum Error {
     NOT_ADMIN("관리자가 아닙니다.", HttpStatus.FORBIDDEN),
     PASSWORD_NOT_MATCH("비밀번호가 일치하지 않습니다", HttpStatus.BAD_REQUEST),
     SUSPENDED_USER("정지된 유저입니다.", HttpStatus.FORBIDDEN),
+    VALIDATION_FAILED("유효성 검증 실패.", HttpStatus.BAD_REQUEST),
 
     // 공지 사항
     NO_SUCH_NOTICE("해당 아이디를 가진 공지사항이 없습니다.", HttpStatus.NOT_FOUND),

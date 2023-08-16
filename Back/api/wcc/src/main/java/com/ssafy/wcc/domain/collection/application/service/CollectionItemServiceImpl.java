@@ -97,11 +97,7 @@ public class CollectionItemServiceImpl implements CollectionItemService {
     @Override
     public boolean wear(Long memberId, int collectionId) {
         Optional<MemberItem> memberItem = memberItemRepository.findByMemberIdAndCollectionId(memberId, (long) collectionId);
-        logger.info("------");
-        logger.info("{}, {}",memberId, collectionId);
-        logger.info(String.valueOf(memberItem.isPresent()));
         if (memberItem.isPresent()) {
-            logger.info("");
             if(!memberItem.get().isBuy()) throw new WCCException(Error.ITEM_NOT_PURCHASED);
 
             this.takeOffItem(this.getType(collectionId), memberId);

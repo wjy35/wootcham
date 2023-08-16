@@ -1,6 +1,8 @@
 package com.ssafy.wcc.domain.member.presentation;
 
 
+import com.ssafy.wcc.common.exception.Error;
+import com.ssafy.wcc.common.exception.WCCException;
 import com.ssafy.wcc.domain.member.application.dto.request.EmailVerifyRequest;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberloginRequest;
@@ -15,12 +17,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,9 +55,14 @@ public class MemberController{
             @ApiResponse(code = 409, message = "중복체크 실패"),
     })
     public ResponseEntity<?> signUp (
-            @RequestBody @ApiParam(value = "회원가입 정보", required = true) MemberRequest signupInfo
+            @Valid @RequestBody @ApiParam(value = "회원가입 정보", required = true) MemberRequest signupInfo, BindingResult bindingResult
     ) {
         Map<String, Object> resultMap = new HashMap<>();
+
+        if (bindingResult.hasErrors()) {
+            throw new WCCException(Error.VALIDATION_FAILED);
+        }
+
         memberService.memberSignUp(signupInfo);
         resultMap.put("isSuccess", true);
 

@@ -83,6 +83,7 @@ public class CollectionController {
             @ApiResponse(code = 404, message = "착용 실패"),
     })
     public ResponseEntity<Map<String, Object>> wear(@RequestBody Map<String, Integer> collectionId, @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken) {
+
         Map<String, Object> res = new HashMap<>();
 
         id = tokenService.getIdByToken(accessToken);
