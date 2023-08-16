@@ -47,7 +47,7 @@
 
 /* 메인 콘텐츠 */
 .one {
-  background: url(@/assets/images/introduction_one.png);
+  background: url(@/assets/images/info1.png);
   background-size: contain;
   background-repeat: no-repeat;
 }
