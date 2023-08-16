@@ -130,28 +130,23 @@
         <div class="banner">
           <img src="@/assets/images/game_result_banner.png" alt="explain_banner">
         </div>
-            <div class="my-result">
-              <img class='game-result-icon' src="@/assets/images/profile.jpg" alt="">
-              <div class='gauge'>
-                <div class="plus-point">+1000</div>
-                <div class='gauge-back'>
-                  <div class='gauge-data' :style="{ width: pointResult + '%'}"></div>
-                  <div class="result-info">2500/5000<br><span class="level">골드1</span></div>
-                </div>
-              </div>
-            </div>
-
+        <!-- 내 프사 -->
+        <img class='game-result-icon' src="@/assets/images/profile.jpg" alt="">
+        <p class="nickname">yaonggod<span class="nim">님,</span></p>
         <div class="coin-result">
           <p>축하합니다! 아래 보상을 획득했습니다.</p>
           <div class="plus-coin">
             <img class='coin' src="@/assets/images/coin.png">
             <span class="coin-count">+150</span>
           </div>
+          <div class="plus-point">
+            <img class='point' src="@/assets/images/crown.png">
+            <span class="point-count">+150</span>
+          </div>
         </div>
 
         <!-- 버튼 -->
         <div class="gameend-option-btn">
-          <div class="gameend-option-one">한 판 더하기</div>
           <di class="gameend-option-two">홈으로 나가기</di>
         </div>
 
@@ -697,34 +692,8 @@ header {
 
 .game-result-icon {
   width: 25%;
-  height: 100%;
+  height: auto;
   border-radius: 50%;
-}
-
-.gauge {
-  width: 70%;
-  margin-left: 5%;
-  height: 100%;
-}
-
-.gauge-back {
-  background-color: #FFCDAD;
-  height: 40px;
-  position: relative;
-  border-radius: 10px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.gauge-data {
-  background-color: #F27059;
-  height: 30px;
-  position: absolute;
-  left: 0;
-  top: 5px;
-  border-radius: 10px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
 }
 
 .result-info {
@@ -741,27 +710,22 @@ header {
   transform: rotate(90deg);
 }
 
-.plus-point {
-  color: #F27059;
-  text-align: left;
-  font-size: 2rem;
-  padding: 0;
-}
-
-
-
 .coin-result {
-  margin-top: 3rem;
+  margin-top: 0.5rem;
   font-size: 1.5rem;
   color: #714538;
 }
 
-.plus-coin {
+.plus-coin, .plus-point {
   display: flex;
   justify-content: center;
   margin-left: auto;
   margin-right: auto;
   align-items: center;
+}
+
+.plus-coin:hover, .plus-point:hover {
+  transform: scale(0.9);
 }
 
 .coin {
@@ -775,9 +739,29 @@ header {
   font-size: 2rem;
 }
 
+.point {
+  width: auto;
+  height: 4rem;
+}
+
+.point-count {
+  color:#F27059; 
+  font-size: 2rem;
+}
+
 .level {
   color: #714538;
   font-size: 1.5rem;
   margin: 0;
+}
+
+.nickname {
+  font-size: 2rem;
+  margin: 0;
+  color: #F27059; 
+}
+
+.nim {
+  color: #714538;
 }
 </style>
