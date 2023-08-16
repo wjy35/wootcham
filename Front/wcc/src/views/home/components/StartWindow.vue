@@ -47,11 +47,11 @@ export default {
       realtimeData: 50, // 실시간 데이터를 저장할 변수 (초기값 0)
       warning: '프레임에서 벗어났습니다.',
       showWarning: false,
-      laughing: false,
+      hits: false,
     };
   },
   computed: {
-    ...mapState('gameStore', ['ready'])
+    ...mapState(['ready'])
   },
   created() {
     // 실시간 데이터를 받는 로직 (예: WebSocket 등)
@@ -64,7 +64,6 @@ export default {
   },
   methods: {
     toggleCamera() {
-      console.log(this.ready)
       this.$store.commit('gameStore/SET_READY');
       let video = document.getElementById('video');
 
@@ -95,6 +94,10 @@ export default {
           } else {
             // this.showWarning = false;
             this.realtimeData = detections.expressions.happy * 100;
+            if (this.realtimeData > 70 && !this.hits) {
+              this.hits = true;
+              this.$store.commit('setReady');
+            }
           }
         } catch (err) {
           console.log(err);
