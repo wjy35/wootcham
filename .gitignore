@@ -129,3 +129,4 @@ gradle-app.setting
 .gradletasknamecache
 .project
 .classpath
+package-lock.json
