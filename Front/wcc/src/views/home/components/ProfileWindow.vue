@@ -231,24 +231,26 @@ export default {
   background-color: transparent;
   height: 80%; 
   width: 60%;
-  
 }
 
 .styled-table {
   border-collapse: collapse;
   width: 100%;
+  overflow-y: hidden;
 }
 
 .styled-table th,
 .styled-table td {
   border: 3px solid white;
   padding: 8px;
-  text-align: left;
+  text-align: center;
   border-radius: 10px;
 }
 
 .styled-table th {
   background-color: #FF7B27;
+  color: white;
+  font-size: 1.2em;
 }
 
 .styled-table tr:nth-child(even) {
