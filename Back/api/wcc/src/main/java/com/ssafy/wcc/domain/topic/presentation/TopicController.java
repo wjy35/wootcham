@@ -33,7 +33,7 @@ public class TopicController {
             @ApiResponse(code = 404, message = "조회 실패"),
     })
     public ResponseEntity<?> getListTopic(
-            @Authorization @ApiIgnore Long accessToken
+            @Authorization @ApiIgnore Long id
     ) {
         Map<String, Object> res = new HashMap<>();
 
