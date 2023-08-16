@@ -31,7 +31,7 @@ public class CollectionResponse {
     private String getStringType (int type) {
         if (type == 1) return "프로필";
         if (type == 2) return "휘장";
-        if (type == 3) return "테투리";
+        if (type == 3) return "테두리";
 
         throw new WCCException(Error.NO_SUCH_ITEM);
     }
