@@ -71,6 +71,8 @@ public class GameProcessor implements Runnable{
     }
 
     private void updateRankTable(RankPointChange rankPointChange){
+        System.out.println("gameSession.getGameMembers().get(rankPointChange.getMemberToken()).getNickname() = " + gameSession.getGameMembers().get(rankPointChange.getMemberToken()).getNickname());
+        System.out.println("rankPointChange.getRankPoint() = " + rankPointChange.getRankPoint());
         memberRepository.updateRankPoint(gameSession.getGameMembers().get(rankPointChange.getMemberToken()).getNickname(),rankPointChange.getRankPoint());
     }
 
