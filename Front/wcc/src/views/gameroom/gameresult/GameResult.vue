@@ -130,31 +130,6 @@
         <div class="banner">
           <img src="@/assets/images/game_result_banner.png" alt="explain_banner">
         </div>
-
-        <!-- <div class="confetti">
-                <div class="confetti-piece"></div>
-                <div class="confetti-piece"></div>
-                <div class="confetti-piece"></div>
-                <div class="confetti-piece"></div>
-                <div class="confetti-piece"></div>
-                <div class="confetti-piece"></div>
-                <div class="confetti-piece"></div>
-                <div class="confetti-piece"></div>
-                <div class="confetti-piece"></div>
-                <div class="confetti-piece"></div>
-                <div class="confetti-piece"></div>
-                <div class="confetti-piece"></div>
-                <div class="confetti-piece"></div>
-                <div class="confetti-piece"></div>
-                <div class="confetti-piece"></div>
-                <div class="confetti-piece"></div>
-                <div class="confetti-piece"></div>
-                <div class="confetti-piece"></div>
-                <div class="confetti-piece"></div>
-              </div> -->
-
-
-
             <div class="my-result">
               <img class='game-result-icon' src="@/assets/images/profile.jpg" alt="">
               <div class='gauge'>
