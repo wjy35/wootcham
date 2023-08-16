@@ -20,8 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -131,11 +129,7 @@ public class MemberServiceImpl implements MemberService {
 
         // 임시 비밀번호 생성 및 메일 전송
         String code;
-        try {
-            code = emailService.sendMessage(email, 2);
-        } catch (MessagingException | UnsupportedEncodingException e) {
-            throw new WCCException(Error.EMAIL_SEND_FAILURE);
-        }
+        code = emailService.sendMessage(email, 2);
 
         // DB에 임시 비밀번호 저장
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
