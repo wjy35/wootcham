@@ -19,8 +19,7 @@
 
         
         <p class="info text-shadow"> 
-          <img src="@/assets/images/coin.png" style="width: 20px; height: 20px">
-          {{ this.point }} 
+          {{ this.point }} p
         </p>
         <p class="info text-shadow">{{ this.ranking }}위 (상위 {{ this.top }}%)</p>
 

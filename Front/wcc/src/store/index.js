@@ -48,8 +48,8 @@ export default createStore({
     setKeywords(state, payload){
       state.keywords = payload;
     },
-    setReady(state) {
-      state.ready = !state.ready;
+    setReady(state, ready) {
+      state.ready = ready;
     }
   },
   getters: {
