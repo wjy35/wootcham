@@ -253,7 +253,7 @@ export default {
     ...mapState(["userNickname", "ready"])
   },
   beforeUnmount() {
-    this.$store.commit('setReady');
+    this.$store.commit('setReady', false);
   }
 };
 </script>
