@@ -161,7 +161,7 @@
       <div class="modal-card" v-if="selectedItem.buy && !selectedItem.wear">
         <div class="header">
           <span class="title"><span class="title-name">{{ selectedItem.name }} {{ selectedItem.type }}</span>착용하시겠습니까?</span>
-          <p class="message">상품 설명: {{ selectedItem.description }}</p>
+          <p class="message">{{ selectedItem.description }}</p>
           <div class="actions">
             <button class="proceed" type="button" @click="wearItem">착용하기</button>
             <button class="cancel" type="button" @click="toggleBuy(selectedItem)">취소하기</button>
@@ -172,7 +172,7 @@
         <div class="header">
           <img src="@/assets/images/shopping-cart.png" alt="">
           <span class="title"><span class="title-name">{{ selectedItem.name }}</span>구매하시겠습니까?</span>
-          <p class="message">상품 설명: {{ selectedItem.description }}</p>
+          <p class="message">{{ selectedItem.description }}</p>
           <div class="actions">
             <button class="proceed" type="button" @click="buyItem">구매하기</button>
             <button class="cancel" type="button" @click="toggleBuy(selectedItem)">취소하기</button>
@@ -181,6 +181,7 @@
       </div>
       <div class="modal-card" v-if="!selectedItem.buy && selectedItem.price > myMoney">
         <div class="header">
+          <p class="message">{{ selectedItem.description }}</p>
           <img src="@/assets/images/coin.png" alt="">
           <span class="title">잔액이 부족합니다.</span>
           <div class="actions">
@@ -582,7 +583,8 @@ export default {
   text-align: center;
   border: 2px outset #FFCDAD;
   border-radius: 2em;
-  height: 350px;
+  height: auto;
+  width: auto;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
