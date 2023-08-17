@@ -704,10 +704,4 @@ export default {
   margin-left: auto;
   margin-right: auto;
 }
-
-/* WEBKIT 스크롤바 무효화 */
-::-webkit-scrollbar {
-    width: 0;
-    height: 5px;
-}
 </style>
