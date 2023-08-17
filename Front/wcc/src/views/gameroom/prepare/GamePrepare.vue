@@ -23,18 +23,14 @@
             <span class="mission_subject_title">분류</span>
             <!-- <b-form-select class="w-25" v-model="selected" :options="options"></b-form-select> -->
             <div class="mission_subject_option">
-              <select class="form-select form-select-lg shadow" style="font-size: 0.5em;
-																			color:#714538; 
-																			width:12em; 
-																			text-align: center;
-																			border: none;
-																			border-radius: 15px;" aria-label="Default select example"
-                v-model="selectedType"
+              <select class="form-select form-select-lg shadow" 
+                      style="font-size: 0.5em; color:#714538; width:12em; text-align: center; border: none; border-radius: 15px;" 
+                      aria-label="Default select example"
+                      v-model="selectedType"
               >
-                <option selected>분류 선택</option>
+                <option value="3">삼행시</option>
                 <option value="1">넌센스</option>
                 <option value="2">막춤</option>
-                <option value="3">삼행시</option>
               </select>
             </div>
           </div>
