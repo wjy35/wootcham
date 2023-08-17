@@ -1,5 +1,6 @@
 <template>
   <div class="content-window shadow">
+    <span class="season"></span>
     <div class="banner">
       <img src="@/assets/images/ranking_banner.png" alt="explain_banner">
     </div>

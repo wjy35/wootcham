@@ -5,10 +5,13 @@
       <!-- 프로파일 화면 -->
       <div class="card">
         <!-- 프로필 이미지 -->
-        <div class="img"><img :src="this.profile_img" style="width:100%; border-radius: 10px;"></div>
+        <div class="img"><img v-if="this.border != ''" class='frameImg' :src='this.profile_img' :style="{ width: '100%', border: '10px outset ' + this.border }"> 
+          <img v-else :src="this.profile_img" :style="{ width: '100%' }" alt=""></div>
 
         <!-- 유저네임 -->
-        <span class="text-shadow">{{ this.nickname }}</span>
+        <div v-if="this.badge" class="username"><span class='badge-nickname' :style="{ border: '7px inset ' + this.badge }">{{ this.nickname }}</span></div>
+        <div v-else class="username" v-text="this.nickname"></div>
+
 
         <p class="info text-shadow"> {{ this.point }} p</p>
         <p class="info text-shadow">32위 (상위 15%)</p>
@@ -27,8 +30,8 @@
         </div>
 
         <div class="table-container">
-            <table class="styled-table">
 
+            <table class="styled-table">
               <thead>
                 <tr>
                   <th>등수</th>
@@ -50,8 +53,8 @@
                   <td>{{ match.changeMoney }}</td>
                 </tr>
               </tbody>
-
             </table>
+
         </div>
 
         </div>
@@ -67,6 +70,8 @@ export default {
       nickname: "",
       point: "",
       profile_img: "",
+      border: "",
+      badge: "",
       records:{}
     };
   },
@@ -77,6 +82,8 @@ export default {
       this.point = data.data.point;
       this.nickname = data.data.nickname;
       this.profile_img = data.data.profile_img;
+      this.border = data.data.border;
+      this.badge = data.data.badge;
     })
     .catch(error => {
       console.log(error.message)
@@ -127,9 +134,8 @@ export default {
   height: 100%;
   width: 80%;
 
-  gap: 80px;
+  gap: 40px;
 }
-
 
 /* ------- 프로필 카드 --------- */
 .card {
@@ -139,6 +145,7 @@ export default {
   border-bottom-left-radius: 20px;
   display: flex;
   flex-direction: column;
+  background-color: #FFCDAD;
 }
 
 .card span {
@@ -218,42 +225,6 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
-  border: 1px solid #ddd;
-  border-radius: 1px;
-  padding: 10px;
-  text-align: center;
-  display: block;
-  font-size: 2em;
-}
-
-.card .info {
-  font-weight: 400;
-  color: white;
-  display: block;
-  text-align: center;
-  font-size: 1.3em;
-}
-
-.card .img {
-  width: 8em;
-  height: 8em;
-  background-size: cover;
-  border-radius: 15px;
-  margin: auto;
-
-  border: 5px inset gold;
-}
-
-.card a {
-  color: white;
-  transition: .4s ease-in-out;
-}
-
-.card a:hover {
-  color: red;
-}
-
 .profile-btns {
   display: flex;
   flex-direction: column;
@@ -270,7 +241,7 @@ th, td {
   border: none;
   font-weight: 200;
   background: #FF7B27;
-  color: #FFCDAD;
+  color: #FFFFFF;
   transition: .2s ease-in-out;
 }
 .card button:hover {
@@ -301,17 +272,11 @@ th, td {
   margin: -80px 0 0 100px;
 }
 
-.table-container {
-  position: absolute;
-  background-color: transparent;
-  height: 80%; 
-  width: 60%;
-}
+.table-container
 
 .styled-table {
   border-collapse: collapse;
-  width: 100%;
-  overflow-y: hidden;
+  width: 130%;
 }
 
 .styled-table th,

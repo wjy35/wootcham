@@ -1,107 +1,27 @@
 <template>
   <div class="inner">
-      <!-- HEADER -->
-      <header>
-          <div class="header-center">게임이 종료되었습니다.</div>
-      </header>
-      
-      <div class="main-container">
-          <div class="ranking-modal shadow">
-            <div class="rank-card">
-                <div class="rank-card-image">
-                  <img src="@/assets/images/profile.jpg" alt="">
-                  <span class="report-icon" @click="toggleReport">
-                    <img src="@/assets/images/report.png" alt="">
-                  </span>
-                </div>
-                <div class="rank-card-detail">
-                  <div class="rank-heading">#1</div>
-                  <div class="rank-info">
-                    <div class="rank-username">verylonglongbigbigusername</div>
-                    <div class="rank-pts-earned">+ 250</div>
-                  </div>
-                </div>
-              </div>
+    <!-- HEADER -->
+    <header>
+      <div class="header-center">게임이 종료되었습니다.</div>
+    </header>
 
-              <div class="rank-card">
-                <div class="rank-card-image">
-                  <img src="@/assets/images/profile.jpg" alt="">
-                  <span class="report-icon" @click="toggleReport">
+    <div class="main-container">
+      <div class="ranking-modal shadow">
+        <div v-for="(gamerResult,index) in gameResultList" class="rank-card">
+          <div class="rank-card-image">
+            <img src="@/assets/images/profile.jpg" alt="">
+            <span class="report-icon" @click="toggleReport">
                     <img src="@/assets/images/report.png" alt="">
                   </span>
-                </div>
-                <div class="rank-card-detail">
-                  <div class="rank-heading">#2</div>
-                  <div class="rank-info">
-                    <div class="rank-username">verylonglongbigbigusername</div>
-                    <div class="rank-pts-earned">+ 250</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="rank-card">
-                <div class="rank-card-image">
-                  <img src="@/assets/images/profile.jpg" alt="">
-                  <span class="report-icon" @click="toggleReport">
-                    <img src="@/assets/images/report.png" alt="">
-                  </span>
-                </div>
-                <div class="rank-card-detail">
-                  <div class="rank-heading">#3</div>
-                  <div class="rank-info">
-                    <div class="rank-username">verylonglongbigbigusername</div>
-                    <div class="rank-pts-earned">+ 250</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="rank-card">
-                <div class="rank-card-image">
-                  <img src="@/assets/images/profile.jpg" alt="">
-                  <span class="report-icon" @click="toggleReport">
-                    <img src="@/assets/images/report.png" alt="">
-                  </span>
-                </div>
-                <div class="rank-card-detail">
-                  <div class="rank-heading">#4</div>
-                  <div class="rank-info">
-                    <div class="rank-username">verylonglongbigbigusername</div>
-                    <div class="rank-pts-earned">+ 250</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="rank-card">
-                <div class="rank-card-image">
-                  <img src="@/assets/images/profile.jpg" alt="">
-                  <span class="report-icon" @click="toggleReport">
-                    <img src="@/assets/images/report.png" alt="">
-                  </span>
-                </div>
-                <div class="rank-card-detail">
-                  <div class="rank-heading">#5</div>
-                  <div class="rank-info">
-                    <div class="rank-username">verylonglongbigbigusername</div>
-                    <div class="rank-pts-earned">+ 250</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="rank-card">
-                <div class="rank-card-image">
-                  <img src="@/assets/images/profile.jpg" alt="">
-                  <span class="report-icon" @click="toggleReport">
-                    <img src="@/assets/images/report.png" alt="">
-                  </span>
-                </div>
-                <div class="rank-card-detail">
-                  <div class="rank-heading">#6</div>
-                  <div class="rank-info">
-                    <div class="rank-username">verylonglongbigbigusername</div>
-                    <div class="rank-pts-earned">+ 250</div>
-                  </div>
-                </div>
-              </div>
+          </div>
+          <div class="rank-card-detail">
+            <div class="rank-heading">#{{index+1}}</div>
+            <div class="rank-info">
+              <div class="rank-username">{{ gamerResult.nickname }}</div>
+              <div class="rank-pts-earned">{{ gamerResult.point}}</div>
+            </div>
+          </div>
+        </div>
 
         <!-- 유저 신고 모달창 -->
         <div v-if="showModal" class="modal">
@@ -132,12 +52,16 @@
         </div>
         <!-- 내 프사 -->
         <img class='game-result-icon' src="@/assets/images/profile.jpg" alt="">
-        <p class="nickname">yaonggod<span class="nim">님,</span></p>
+        <p class="nickname">{{ myGameMemberChange.nickname }}<span class="nim">님,</span></p>
         <div class="coin-result">
           <p>축하합니다! 아래 보상을 획득했습니다.</p>
           <div class="plus-coin">
             <img class='coin' src="@/assets/images/coin.png">
-            <span class="coin-count">+150</span>
+            <span class="coin-count">{{ myGameMemberChange.money }}</span>
+          </div>
+          <div class="plus-point">
+            <img class='point' src="@/assets/images/crown.png">
+            <span class="point-count"> {{myGameMemberChange.point}}</span>
           </div>
           <div class="plus-point">
             <img class='point' src="@/assets/images/crown.png">
@@ -147,7 +71,7 @@
 
         <!-- 버튼 -->
         <div class="gameend-option-btn">
-          <di class="gameend-option-two">홈으로 나가기</di>
+          <di class="gameend-option-two" @click="mvHome">홈으로 나가기</di>
         </div>
 
       </div>
@@ -159,15 +83,26 @@
 
 <script>
 
+import {mapState} from "vuex";
+
 export default {
   name: "GameResult",
-  components: {
-
-  },
+  components: {},
   data() {
     return {
       showModal: false,
-      pointResult: 95,
+      gameResultList: JSON.parse(localStorage.getItem("gameResultList")),
+    }
+  },
+  computed: {
+    ...mapState(["userNickname"]),
+    myGameMemberChange() {
+      for(let gameMemberChange of this.gameResultList){
+        if(gameMemberChange.nickname === this.userNickname){
+          return gameMemberChange;
+        }
+      }
+      return undefined;
     }
   },
   methods: {
@@ -176,7 +111,10 @@ export default {
     },
     report() {
       // 신고 로직
-    }
+    },
+    mvHome(){
+      this.$router.push({ name: "homeview" });
+    },
   }
 }
 </script>
@@ -745,7 +683,7 @@ header {
 }
 
 .point-count {
-  color:#F27059; 
+  color: #F27059;
   font-size: 2rem;
 }
 
@@ -758,7 +696,7 @@ header {
 .nickname {
   font-size: 2rem;
   margin: 0;
-  color: #F27059; 
+  color: #F27059;
 }
 
 .nim {

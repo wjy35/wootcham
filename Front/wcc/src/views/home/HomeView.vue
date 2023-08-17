@@ -6,8 +6,8 @@
 
       <div class="header-center">
         <!-- <span @click="handleStartGame">{{ headerText }}</span> -->
-        <span v-if="!ready">카메라를 키고 활짝 웃어주세요!</span>
-        <span v-if="ready && matchStatus === MatchStatus.READY" @click="handleStartGame"> 시작하기 </span>
+<!--        <span v-if="!ready">카메라를 키고 활짝 웃어주세요!</span>-->
+        <span v-if="matchStatus === MatchStatus.READY" @click="handleStartGame"> 시작하기 </span>
 
 
         <button v-if="matchStatus === MatchStatus.MATCHING" @click="cancel" class="text-shadow">

@@ -2,33 +2,33 @@
   <div class="mission-select">
     <p class="heading">
       당신의 미션은 <span>{{ keyword }}</span> 키워드로 <br>
-      <span>{{ mission }}</span> 하기 입니다.
+      <span>{{ type }}</span> 하기 입니다.
     </p>
 
     <div class="radio-input-container">
         <div class="radio-inputs use-mission">
           <label class="radio">
-            <input type="radio" v-model="useMission" value="yes">
+            <input type="radio" v-model="useTopic" value="true">
             <span class="name">미션 사용하기</span>
           </label>
           <label class="radio">
-            <input type="radio" v-model="useMission" value="no">
+            <input type="radio" v-model="useTopic" value="false">
             <span class="name">미션 사용하지 않기</span>
           </label>
         </div>
 
         <div class="radio-inputs display-mission">
           <label class="radio">
-            <input type="radio" v-model="displayMission" value="yes">
+            <input type="radio" v-model="displayTopic" value="true">
             <span class="name">미션 표시하기</span>
           </label>
           <label class="radio">
-            <input type="radio" v-model="displayMission" value="no">
+            <input type="radio" v-model="displayTopic" value="false">
             <span class="name">미션 표시하지 않기</span>
           </label>
         </div>
 
-        <button @click="goMainGame" class="shadow">
+        <button @click="topicCommit" class="shadow">
           준비 완료!
         </button>
     </div>
@@ -40,13 +40,19 @@
 export default {
   data() {
     return {
-      mission: "삼행시",
-      keyword: "노트북",
-
-      useMission: "yes",
-      displayMission: "yes"
+      useTopic: true,
+      displayTopic: true
     };
-  }
+  },
+  props: {
+    type: Number,
+    keyword: String,
+  },
+  methods: {
+    topicCommit() {
+
+    }
+  },
 };
 </script>
 

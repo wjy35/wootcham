@@ -399,7 +399,9 @@ export default {
                 this.tellerToken = gameResponse.tellerToken;
                 this.topic = gameResponse.topic;
               } else if (this.gameStatus === GameStatus.REFLECT_RANK){
-                this.$router.push({ name: "gameresult" });
+                console.log("rank point", gameResponse.gameMemberChangeList);
+                localStorage.setItem("gameResultList",JSON.stringify(gameResponse.gameMemberChangeList));
+                this.$router.push({ name: "gameresult"});
               }
             },
             (error) => {
