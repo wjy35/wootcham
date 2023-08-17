@@ -28,15 +28,15 @@
                       aria-label="Default select example"
                       v-model="selectedType"
               >
-                <option value="3">삼행시</option>
-                <option value="1">넌센스</option>
-                <option value="2">막춤</option>
+                <option selected disabled>분류 선택</option>
+                <option v-for="(topic,index) in topicsInfo" :value="topic.type" :key="index">{{topic.name}}</option>
               </select>
             </div>
           </div>
 
+
           <!-- 미션 키워드 정하기 -->
-          <div class="mission_keyword">
+          <div v-if="topicsInfo[selectedType].subKeyword>0" class="mission_keyword">
             <span class="mission_keyword_title">키워드</span>
             <input type="text" class="mission_keyword_content shadow" :value="selectedKeyword" readonly
               style="border-radius: 15px;">
@@ -88,26 +88,25 @@ export default {
     sessionId: String,
   },
   data() {
+    let topicResponse =  JSON.parse(localStorage.getItem("topics"));
     return {
-      topics:{
-        "1" : ['노트북', '싸진남', '마우스', '에어컨', '강아지', '고양이'],
-        "2" : ['노트북', '싸진남', '마우스', '에어컨', '강아지', '고양이'],
-        "3" : ['노트북', '싸진남', '마우스', '에어컨', '강아지', '고양이']
-      },
+      topics: topicResponse[0],
+      topicsInfo: topicResponse[1],
       selectedType:"1",
       selectedKeyword: "",
     }
   },
   methods: {
     pick() {
-      //ToDo storage 에서 selectedType 에 따른 keyword 가져오기
-      console.log("selectedType",this.selectedType);
       this.selectedKeyword = this.topics[this.selectedType][Math.floor(Math.random() * this.topics[this.selectedType].length)];
       this.client.send(`/pick/shuffle/${this.sessionId}`,JSON.stringify({
         memberToken: this.memberToken,
         type: this.selectedType,
         keyword: this.selectedKeyword
       }));
+
+      sessionStorage.setItem("type",this.selectedType);
+      sessionStorage.setItem("keyword",this.selectedKeyword);
     },
     skip() {
       this.client.send(`/skip/pick`,JSON.stringify({

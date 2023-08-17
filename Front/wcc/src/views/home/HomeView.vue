@@ -95,9 +95,23 @@ export default {
       second: "",
       matchStatus: MatchStatus.READY,
       sessionId: "",
+      screenToken:"",
       memberToken: "",
       acceptStatus: false,
     };
+  },
+  created() {
+    console.log("get keyword called......")
+    // keyowrds 저장
+    api.defaults.headers["Authorization"] = localStorage.getItem('accessToken');
+    api.get("/topic")
+      .then(({ data }) => {
+        localStorage.setItem("topics", JSON.stringify(data.data));
+      })
+      .catch((error) => {
+        console.log("keywords err")
+        console.log(error)
+      });
   },
   methods: {
     // 카메라가 켜졌을 때 실행되는 로직 (카메라 사용 가능 여부 감지)
@@ -138,6 +152,7 @@ export default {
                   localStorage.setItem("memberToken", this.memberToken);
                   localStorage.setItem("sessionId", this.sessionId);
                   localStorage.setItem("memberId", this.memberId);
+                  localStorage.setItem("screenToken", response.screenToken);
                   this.$router.push({ name: "gameroom" });
 
                 } else if (response.matchStatus === MatchStatus.DESTROYED) {
