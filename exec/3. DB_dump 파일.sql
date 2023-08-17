@@ -259,6 +259,7 @@ on schedule
 do
     CALL reportProc();
 
+
 -- point procedure
 DELIMITER &&
 
@@ -284,3 +285,24 @@ BEGIN
 END &&
 
 DELIMITER ;
+
+CALL pointProc('왕준영', 2, 50);
+
+-- record procedure 생성
+
+DELIMITER $$
+
+CREATE PROCEDURE recordProc(IN input_nickname varchar(255), get_money INT, IN get_point INT, IN end_time datetime(6), IN input_rank INT, IN input_cnt INT, IN start_time datetime(6))
+BEGIN
+    DECLARE get_id bigint;
+    
+    SELECT id INTO get_id FROM member WHERE nickname = input_nickname;
+
+    INSERT into record(change_money, change_point, end, `rank`, smile_count, start, member_id) 
+    values (get_money, get_point, end_time, input_rank, input_cnt, start_time, get_id);
+    
+END $$
+
+DELIMITER ;
+
+CALL recordProc('id로 얻은 닉네임', '입력받은 돈', '입력받은 점수', '끝 시간', '이 판 등숫', '이 판 웃은 횟수', '시작 시간');
