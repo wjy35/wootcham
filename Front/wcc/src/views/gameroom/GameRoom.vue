@@ -50,7 +50,7 @@
 
           <!-- 2, 3, 6, 7번 박스 === Main Content -->
           <div class="main-content shadow">
-            <div class="main-content-username">username</div>
+            <div class="main-content-username">화면을 종료 중...</div>
             <div id="main-content-video">
 
 
@@ -58,7 +58,7 @@
               <div v-if="memberToken===tellerToken">
 
                 <!-- 주제 선택 화면 -->
-                <mission-select v-if="gameStatus===GameStatus.PREPARE_PRESENT"></mission-select>
+                <mission-select v-if="gameStatus===GameStatus.PREPARE_PRESENT" :topic="topic"></mission-select>
 
               </div>
 
@@ -66,7 +66,7 @@
                 <stand-by v-if="gameStatus===GameStatus.PREPARE_PRESENT"></stand-by>
               </div>
 
-              <count-down v-if="gameStatus===GameStatus.COUNT_DOWN" :second="second"></count-down>
+              <count-down v-if="gameStatus===GameStatus.COUNT_DOWN" :topic="topic" :second="second"></count-down>
               <UserVideo
                   v-if="gameStatus===GameStatus.PRESENT && gameMembersMap.has(gameMembersOrderList[0]) && !sharedScreen"
                   :stream-manager="gameMembersMap.get(gameMembersOrderList[0]).streamManager"
@@ -78,18 +78,18 @@
                 <div></div>
               </div>
 
-              <div class="share-btn screenshare">
+              <div v-if="gameStatus===GameStatus.PRESENT && memberToken===tellerToken" class="share-btn screenshare">
                 <div class="sign">
                   <img src="@/assets/images/stream.png" alt="">
                 </div>
                 <div class="text" @click="shareScreen">화면 공유</div>
               </div>
 
-              <div class="share-btn endterm">
+              <div v-if="gameStatus===GameStatus.PRESENT && memberToken===tellerToken" class="share-btn endterm">
                 <div class="sign">
                   <img src="@/assets/images/the-end.png" alt="">
                 </div>
-                <div class="text" @click="myFace">턴 종료</div>
+                <div class="text" @click="skipPresent">턴 종료</div>
               </div>
             </div>
           </div>
@@ -395,7 +395,15 @@ export default {
                     this.publisher.publishAudio(false);
                   }
                 }
+                this.topic = gameResponse.topic;
               } else if (this.gameStatus === GameStatus.PRESENT) {
+                if(this.publisher.accessAllowed){
+                  if(this.memberToken === this.tellerToken){
+                    this.publisher.publishAudio(true);
+                  }else{
+                    this.publisher.publishAudio(false);
+                  }
+                }
                 this.tellerToken = gameResponse.tellerToken;
                 this.topic = gameResponse.topic;
               } else if (this.gameStatus === GameStatus.REFLECT_RANK){
@@ -436,7 +444,9 @@ export default {
       });
     },
     async shareScreen(){},
-    async myFace(){}
+    skipPresent(){
+      this.client.send(`/skip/present/${this.sessionId}`,this.memberToken);
+    }
   },
   unmounted() {
     this.client.disconnect();

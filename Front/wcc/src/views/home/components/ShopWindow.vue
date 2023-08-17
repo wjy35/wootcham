@@ -450,6 +450,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 0 10px 0 0;
 }
 
 .scroll-snap-card .slide p {
@@ -466,7 +467,7 @@ export default {
 
 .coin-amount {
   position: absolute;
-  right: 32px;
+  right: 45px;
 
   background-color: #FF7B27;
   border-radius: 15px;
@@ -579,6 +580,7 @@ export default {
   position: relative;
   background-color: #ffffff;
   text-align: center;
+  border: 2px outset #FFCDAD;
   border-radius: 2em;
   height: 350px;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -591,7 +593,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 20px;
+  margin: 10px;
 }
 
 .modal-card .header img {
@@ -611,7 +613,7 @@ export default {
 .message {
   margin-top: 1rem;
   color: #6B7280;
-  font-size: 1rem;
+  font-size: 1.5rem;
   line-height: 1.25rem;
 }
 
@@ -701,11 +703,5 @@ export default {
   margin-left: -15px;
   margin-left: auto;
   margin-right: auto;
-}
-
-/* WEBKIT 스크롤바 무효화 */
-::-webkit-scrollbar {
-    width: 0;
-    height: 5px;
 }
 </style>

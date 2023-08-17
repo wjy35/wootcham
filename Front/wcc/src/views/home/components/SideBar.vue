@@ -17,7 +17,9 @@
           <span v-text="this.point"></span>
         </div>
       </div>
-      <div v-if="this.badge" class="username"><span class='badge-nickname' :style="{ border: '7px inset ' + this.badge }">{{ this.nickname }}</span></div>
+      <div v-if="this.badge" class="username">
+        <span class='badge-nickname shadow' :style="{ border: '5px inset' + this.badge, 'border-radius': '5px', 'padding': '5px' }">{{ this.nickname }}</span>
+      </div>
       <div v-else class="username" v-text="this.nickname"></div>
     </div>
 

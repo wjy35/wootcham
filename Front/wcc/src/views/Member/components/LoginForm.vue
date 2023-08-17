@@ -78,10 +78,9 @@ export default {
                     api.defaults.headers["Authorization"] = localStorage.getItem('accessToken');
                     api.get("/topic")
                         .then(({ data }) => {
-                            console.log("topic request data:", data.data)
-                            store.commit('setKeywords', data);
-
-                            // console.log("store.keyword: ", store.getters['getKeywords'].data[0][1][21])
+                            // console.log("topic request data:", data.data)
+                            localStorage.setItem("topics",JSON.stringify(data.data));
+                            // console.log("store.keyword: ", store.getters['getKeywords'].data[0][1][21]);
                             // => 자전거
                             // console.log("store.keyword: ", store.getters['getKeywords'].data[0][2][1])
                             // => J 영어이름
