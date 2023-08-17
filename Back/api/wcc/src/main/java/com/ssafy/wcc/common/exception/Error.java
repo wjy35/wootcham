@@ -9,7 +9,7 @@ public enum Error {
     // 사용자
     USER_NOT_FOUND("해당 정보를 가진 사용자가 없습니다.", HttpStatus.NOT_FOUND),
     NOT_ADMIN("관리자가 아닙니다.", HttpStatus.FORBIDDEN),
-    DUPLICATION_USER("이미 접속한 유저입니다", HttpStatus.FORBIDDEN),
+    DUPLICATION_USER("이미 접속한 유저입니다", HttpStatus.CONFLICT),
     PASSWORD_NOT_MATCH("비밀번호가 일치하지 않습니다", HttpStatus.BAD_REQUEST),
     SUSPENDED_USER("정지된 유저입니다.", HttpStatus.FORBIDDEN),
     VALIDATION_FAILED("유효성 검증 실패.", HttpStatus.BAD_REQUEST),
