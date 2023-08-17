@@ -4,6 +4,7 @@ import com.ssafy.game.common.GameSessionSetting;
 import com.ssafy.game.game.api.dto.GameMemberChange;
 import com.ssafy.game.game.api.response.*;
 import com.ssafy.game.game.db.entity.GameSession;
+import com.ssafy.game.game.db.entity.Topic;
 import com.ssafy.game.game.db.repository.MemberRepository;
 import com.ssafy.game.match.common.GameSetting;
 import com.ssafy.game.util.MessageSender;
@@ -157,8 +158,14 @@ public class GameProcessor implements Runnable{
     }
 
     private void countDown(){
-        int second = GameSessionSetting.COUNT_DOWN_SECOND;
-        GameStatusResponse gameStatusResponse = new GameStatusResponse(GameStatus.COUNT_DOWN,second);
+        Topic topic = gameSession.getTopics().get(gameSession.getOrderList().get(0));
+        if(!topic.getUseTopic()) {
+            topic.setType(0);
+            topic.setKeyword("");
+        }
+        GameStatusResponse gameStatusResponse = new CountDownResponse(topic);
+        int second = gameStatusResponse.getSecond();
+        
         try{
             while(second-->0){
                 gameStatusResponse.setSecond(second);
