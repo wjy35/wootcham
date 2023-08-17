@@ -1,8 +1,10 @@
 package com.ssafy.game.game.db.entity;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class GameMember {
     private String sessionId;
     private String screenToken;

@@ -56,4 +56,5 @@ public class GameController {
     void skipPrepare(@DestinationVariable String sessionId,@Payload String memberToken){
         gameService.skipPresent(sessionId,memberToken);
     }
+
 }

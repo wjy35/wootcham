@@ -1,5 +1,6 @@
 package com.ssafy.game.match.common;
 
+import com.ssafy.game.game.api.service.GameService;
 import com.ssafy.game.match.api.service.MatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -11,6 +12,7 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 @RequiredArgsConstructor
 public class WebSocketEventListener {
     private final MatchService matchService;
+    private final GameService gameService;
 
     @EventListener
     void disconnectSession(SessionDisconnectEvent event){
