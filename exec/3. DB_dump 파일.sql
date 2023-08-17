@@ -264,21 +264,25 @@ do
 -- point procedure
 DELIMITER &&
 
-CREATE PROCEDURE pointProc(IN nickname_input VARCHAR(255), IN point_change INT)
+CREATE PROCEDURE pointProc(IN nickname_input VARCHAR(255), IN point_change INT, In money_change INT)
 BEGIN
     DECLARE current_point INT;
+    DECLARE current_money Int;
     
     SELECT point INTO current_point FROM member WHERE nickname = nickname_input;
-
+    SELECT money INTO current_money FROM member WHERE nickname = nickname_input;
+     
     SET current_point = current_point + point_change;
+    SET current_money = current_money + money_change;
 
     IF current_point < 0 THEN
         SET current_point = 0;
     END IF;
 
     UPDATE member SET point = current_point WHERE nickname = nickname_input;
+    UPDATE member SET money = current_money WHERE nickname = nickname_input;
+    
+    commit;
 END &&
 
 DELIMITER ;
-
-CALL pointProc('nickname_input', point_change);
