@@ -35,6 +35,9 @@ public class GameService {
 
     public void skipPreparePresent(String sessionId, SkipPrepareRequest skipPrepareRequest) {
         GameSession gameSession = gameSessionRepository.findBySessionId(sessionId);
+
+        System.out.println("skipPrepareRequest = " + skipPrepareRequest);
+        System.out.println("gameSession.getOrderList().get(0) = " + gameSession.getOrderList().get(0));
         if(!gameSession.getOrderList().get(0).equals(skipPrepareRequest.getMemberToken())) return;
 
         gameSession.setCheckedSkipPreparedPresent(true);
