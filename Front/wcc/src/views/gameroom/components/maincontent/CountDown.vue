@@ -1,7 +1,19 @@
 <template>
   <div class="countdown">
-
-    <p class="heading text-shadow">다음 발표가 곧 시작됩니다</p>
+    <div v-if="topic.useTopic && topic.displayTopic">
+      <p class="heading text-shadow">주제 : {{type}}</p>
+      <p class="heading text-shadow">단어 : {{topic.keyword}}</p>
+    </div>
+    <div v-else-if="!topic.useTopic && topic.displayTopic">
+      <p class="heading text-shadow">주제 : 자유주제 </p>
+    </div>
+    <div v-else-if="topic.useTopic && !topic.displayTopic">
+      <p class="heading text-shadow">비공개</p>
+    </div>
+    <div v-else-if="!topic.useTopic && !topic.displayTopic">
+      <p class="heading text-shadow">비공개</p>
+    </div>
+    <p class="heading text-shadow">로 발표 시작합니다!.</p>
 
     <div class="flex">
       <div class="loader"></div>
@@ -16,8 +28,13 @@ export default{
   name:"CountDown",
   props: {
     second: Number,
-    type: Number,
-    keyword : String,
+    topic: Object,
+  },
+  data() {
+    let topicResponse =  JSON.parse(localStorage.getItem("topics"));
+    return {
+      type:topicResponse[1][`${this.topic.type}`].name,
+    }
   },
 };
 </script>
