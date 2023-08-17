@@ -208,7 +208,7 @@ public class MatchService {
                         "/queue/match",
                         new GameCreatedResponse(
                                 gameMember.getSessionId(),
-                                gameMember.getScreenSessionId(),
+                                gameMember.getScreenToken(),
                                 gameMember.getMemberId(),
                                 gameMember.getMemberToken()
                         )
