@@ -2,18 +2,18 @@ import axios from "axios";
 import store from "@/store";
 import router from "@/router";
 
-let isRefreshing = false; // flag to check if we are already refreshing the token
+let isRefreshing = 0; // flag to check if we are already refreshing the token
 
 const errorHandler = async (error) => {
   console.log("error: ", error)
   if (error.response.status === 401) {
-      if (isRefreshing) {
+      if (isRefreshing > 3) {
           // We already tried to refresh the token, redirect to login
           redirectToLogin();
           return;
       }
 
-      isRefreshing = true;
+      isRefreshing += 1;
 
       // ... existing code ...
       // accessToken 과 refreshToken으로 사용자 토큰값 검증 요청 API
@@ -30,14 +30,13 @@ const errorHandler = async (error) => {
         store.commit("setAccessToken", res.data.accessToken);
         error.config.headers.Authorization = localStorage.getItem("accessToken");
         console.log("error.config: ", error.config.headers);
-        isRefreshing = false; // reset the flag
+        isRefreshing = 0; // reset the flag
 
         return _axios(error.config);
       } else {
         redirectToLogin();
       }
   }
-  return Promise.reject(error);
 }
 
 const redirectToLogin = () => {
@@ -47,7 +46,6 @@ const redirectToLogin = () => {
     localStorage.removeItem("refreshToken");
     delete _axios.defaults.headers.Authorization;
     router.push({name: "login"});
-    return;
 }
 
 
