@@ -5,17 +5,26 @@
       <!-- 프로파일 화면 -->
       <div class="card">
         <!-- 프로필 이미지 -->
-        <div class="img"><img v-if="this.border != ''" class='frameImg' :src='this.profile_img' :style="{ width: '100%', border: '10px outset ' + this.border }"> 
-          <img v-else :src="this.profile_img" :style="{ width: '100%' }" alt=""></div>
+        <div class="img">
+          <img v-if="this.border" class='frameImg' :src='this.profile_img' :style="{ width: '100%', border: '10px outset ' + this.border }"> 
+          <img v-else :src="this.profile_img" :style="{ width: '100%', 'border-radius': '15px'}" alt="">
+        </div>
 
         <!-- 유저네임 -->
-        <div v-if="this.badge" class="username"><span class='badge-nickname' :style="{ border: '7px inset ' + this.badge }">{{ this.nickname }}</span></div>
-        <div v-else class="username" v-text="this.nickname"></div>
+        <!-- <div v-if="this.badge" class="username badge-nickname" :style="{ border: '7px inset ' + this.badge }" v-text = "this.nickname"></div> -->
+        <div class="nickname">
+          <div v-if="this.badge" :style="{ border: '7px inset ' + this.badge, 'border-radius': '5px', 'padding': '1px 5px 1px 5px'}"><span>{{ this.nickname }}</span></div>
+          <div v-else class="username"><span>{{ this.nickname }}</span></div>
+        </div>
 
+        
+        <p class="info text-shadow"> 
+          <img src="@/assets/images/coin.png" style="width: 20px; height: 20px">
+          {{ this.point }} 
+        </p>
+        <p class="info text-shadow">{{ this.ranking }}위 (상위 {{ this.top }}%)</p>
 
-        <p class="info text-shadow"> {{ this.point }} p</p>
-        <p class="info text-shadow">32위 (상위 15%)</p>
-
+        <!-- 프로파일 버튼들 -->
         <div class="profile-btns">
           <button @click.prevent="changeNickname" class="shadow">닉네임 수정하기</button>
           <button @click.prevent="changePw" class="shadow">비밀번호 변경하기</button>
@@ -72,6 +81,8 @@ export default {
       profile_img: "",
       border: "",
       badge: "",
+      ranking: "",
+      top: "",
       records:{}
     };
   },
@@ -84,6 +95,8 @@ export default {
       this.profile_img = data.data.profile_img;
       this.border = data.data.border;
       this.badge = data.data.badge;
+      this.ranking = data.data.ranking;
+      this.top = data.data.top;
     })
     .catch(error => {
       console.log(error.message)
@@ -133,13 +146,17 @@ export default {
   display: flex;
   height: 100%;
   width: 80%;
-
   gap: 40px;
+}
+
+.banner img {
+  width: 340px;
+  margin-top: -80px;
 }
 
 /* ------- 프로필 카드 --------- */
 .card {
-  width: 31em;
+  width: 35em;
   transition: 1s ease-in-out;
   border-top-right-radius: 20px;
   border-bottom-left-radius: 20px;
@@ -159,9 +176,8 @@ export default {
 .card .info {
   font-weight: 400;
   color: white;
-  display: block;
   text-align: center;
-  font-size: 1.3em;
+  font-size: 1.2em;
 }
 
 .card .img {
@@ -170,67 +186,17 @@ export default {
   background: url(@/assets/images/profile.jpg);
   background-size: cover;
   border-radius: 15px;
-  margin: auto;
-
-  border: 5px inset gold;
+  margin: 20px auto;
 }
 
-.card a {
-  color: white;
-  transition: .4s ease-in-out;
-}
-
-.card a:hover {
-  color: red;
-}
-
-.profile-btns {
+.card .nickname {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
 }
 
-.card button {
-  width: 200px;
-  padding: 10px;
-  display: block;
-  border-radius: 20px;
-  border: none;
-  font-weight: bold;
-  background: #ffffff;
-  color: rgb(0, 0, 0);
-  transition: .2s ease-in-out;
-}
-
-.card button:hover {
-  background: #FF7B27;
-  color: white;
-  cursor: pointer;
-}
-
-/* ------- 나의 전적 화면 ----------- */
-.profile-record-card {
-  border: 2px solid transparent;
-}
-
-.banner img {
-  width: 340px;
-  margin-top: -80px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.profile-btns {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
+.card .nickname div {
+  display: inline-block;
 }
 
 .card button {
@@ -250,11 +216,18 @@ table {
   cursor: pointer;
 }
 
+.profile-btns {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
 .profile-btns div {
-  font-size: 1.2em;
+  font-size: 1em;
   cursor: pointer;
-  margin: 10px 0 20px;
-
+  margin: 10px 0 10px;
+  
   color: #FF7B27;
   text-decoration: underline;
   text-decoration-color: #FF7B27;
@@ -273,7 +246,6 @@ table {
 }
 
 .table-container
-
 .styled-table {
   border-collapse: collapse;
   width: 130%;
