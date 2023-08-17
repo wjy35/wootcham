@@ -29,7 +29,7 @@
                       v-model="selectedType"
               >
                 <option selected disabled>분류 선택</option>
-                <option v-for="topic in topicsInfo" :value="topic.type">{{topic.name}}</option>
+                <option v-for="(topic,index) in topicsInfo" :value="topic.type" :key="index">{{topic.name}}</option>
               </select>
             </div>
           </div>

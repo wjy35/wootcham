@@ -268,4 +268,14 @@ export default {
 .styled-table tr:nth-child(even) {
   background-color: #FF7B27;
 }
+
+.username{
+  font-size: 1.2em;
+  width: auto;
+  height: auto;
+}
+
+.nickname{
+  width: auto;
+}
 </style>
