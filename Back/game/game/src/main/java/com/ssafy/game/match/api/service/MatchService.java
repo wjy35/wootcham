@@ -88,11 +88,14 @@ public class MatchService {
                 if(group.getMembers().size() == GameSetting.MAX_GAMEMEMBER_COUNT){
                     SessionProperties gameSessionProperties = new SessionProperties.Builder().build();
                     Session openviduSession = openvidu.createSession(gameSessionProperties);
-                    String gameSessionId = openviduSession.getSessionId();
+                    Session screenSession = openvidu.createSession(gameSessionProperties);
 
-                    GameSession gameSession = new GameSession(gameSessionId);
+                    String gameSessionId = openviduSession.getSessionId();
+                    String screenSessionId = screenSession.getSessionId();
+
+                    GameSession gameSession = new GameSession(gameSessionId,screenSessionId);
                     gameSessionRepository.insertGameSession(gameSession);
-                    sendGameLoadRequestToAll(groupMemberList,openviduSession);
+                    sendGameLoadRequestToAll(groupMemberList,openviduSession,screenSession);
 
                     GameProcessor gameProcessor = new GameProcessor(gameSession, this.messageSender, this.memberRepository);
                     Thread thread = new Thread(gameProcessor);
@@ -180,20 +183,23 @@ public class MatchService {
         }
     }
 
-    private void sendGameLoadRequestToAll(Collection<Member> groupMemberList,Session openviduSession){
+    private void sendGameLoadRequestToAll(Collection<Member> groupMemberList,Session openviduSession,Session screenSession){
         try {
             for(Member groupMember : groupMemberList){
                 ConnectionProperties connectionProperties = new ConnectionProperties.Builder()
                         .role(OpenViduRole.PUBLISHER)
                         .build();
+
                 Connection connection = openviduSession.createConnection(connectionProperties);
+                Connection screenConnection = screenSession.createConnection(connectionProperties);
 
                 GameMember gameMember =
                         new GameMember(
                                 openviduSession.getSessionId(),
                                 groupMember.getMemberId(),
                                 connection.getToken(),
-                                groupMember.getNickname()
+                                groupMember.getNickname(),
+                                screenConnection.getToken()
                         );
                 gameMemberRepository.save(gameMember);
 
@@ -202,6 +208,7 @@ public class MatchService {
                         "/queue/match",
                         new GameCreatedResponse(
                                 gameMember.getSessionId(),
+                                gameMember.getScreenSessionId(),
                                 gameMember.getMemberId(),
                                 gameMember.getMemberToken()
                         )

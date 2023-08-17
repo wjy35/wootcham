@@ -15,7 +15,7 @@ import java.util.*;
 @Setter
 public class GameSession {
     private String sessionId;
-
+    private String screenSessionId;
     /**
      * key: memberToken
      * value: GameMember
@@ -34,8 +34,9 @@ public class GameSession {
     private Map<String,Integer> smileCount;
     private Map<String, LocalDateTime> disconnectTime;
 
-    public GameSession(String sessionId) {
+    public GameSession(String sessionId,String screenSessionId) {
         this.sessionId = sessionId;
+        this.screenSessionId = screenSessionId;
         this.gameMembers = new HashMap<>();
         this.topics = new HashMap<>();
         this.checkedSkipPreparedPresent = false;
@@ -80,7 +81,7 @@ public class GameSession {
     public void commitTopic(String memberToken, Integer type, String keyword, Boolean useTopic, Boolean displayTopic){
         topics.get(memberToken).setTopic(type,keyword,useTopic,displayTopic);
     }
-    
+
     public void disconnect(String memberToken){
         disconnectTime.put(memberToken,LocalDateTime.now());
     }
