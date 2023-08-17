@@ -77,12 +77,22 @@ export default {
                 else {
                     api.defaults.headers["Authorization"] = localStorage.getItem('accessToken');
                     api.get("/topic")
-                    .then(({data}) => {
-                        store.commit('setKeywords', data.data);
-                    })
-                    .catch((error)=>{
-                        console.log(error)
-                    });
+                        .then(({ data }) => {
+                            console.log("topic request data:", data.data)
+                            store.commit('setKeywords', data);
+
+                            // console.log("store.keyword: ", store.getters['getKeywords'].data[0][1][21])
+                            // => 자전거
+                            // console.log("store.keyword: ", store.getters['getKeywords'].data[0][2][1])
+                            // => J 영어이름
+                            // console.log("store.keyword: ", store.getters['getKeywords'].data[1][1].name)
+                            // => 삼행시
+
+                        })
+                        .catch((error) => {
+                            console.log("keywords err")
+                            console.log(error)
+                        });
                     router.push({ name: 'homeview' })
                 }
             }).catch((error) => {

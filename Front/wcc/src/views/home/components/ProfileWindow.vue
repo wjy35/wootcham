@@ -5,10 +5,13 @@
       <!-- 프로파일 화면 -->
       <div class="card">
         <!-- 프로필 이미지 -->
-        <div class="img"><img :src="this.profile_img" style="width:100%; border-radius: 10px;"></div>
+        <div class="img"><img v-if="this.border != ''" class='frameImg' :src='this.profile_img' :style="{ width: '100%', border: '10px outset ' + this.border }"> 
+          <img v-else :src="this.profile_img" :style="{ width: '100%' }" alt=""></div>
 
         <!-- 유저네임 -->
-        <span class="text-shadow">{{ this.nickname }}</span>
+        <div v-if="this.badge" class="username"><span class='badge-nickname' :style="{ border: '7px inset ' + this.badge }">{{ this.nickname }}</span></div>
+        <div v-else class="username" v-text="this.nickname"></div>
+
 
         <p class="info text-shadow"> {{ this.point }} p</p>
         <p class="info text-shadow">32위 (상위 15%)</p>
@@ -67,6 +70,8 @@ export default {
       nickname: "",
       point: "",
       profile_img: "",
+      border: "",
+      badge: "",
       records:{}
     };
   },
@@ -77,6 +82,8 @@ export default {
       this.point = data.data.point;
       this.nickname = data.data.nickname;
       this.profile_img = data.data.profile_img;
+      this.border = data.data.border;
+      this.badge = data.data.badge;
     })
     .catch(error => {
       console.log(error.message)
@@ -138,6 +145,7 @@ export default {
   border-bottom-left-radius: 20px;
   display: flex;
   flex-direction: column;
+  background-color: #FFCDAD;
 }
 
 .card span {
@@ -233,7 +241,7 @@ table {
   border: none;
   font-weight: 200;
   background: #FF7B27;
-  color: #FFCDAD;
+  color: #FFFFFF;
   transition: .2s ease-in-out;
 }
 .card button:hover {
