@@ -25,6 +25,17 @@ export default {
         SubmitButton
     },
 
+    mounted(){
+        console.log(localStorage.getItem("accessToken"));
+        if(localStorage.getItem("accessToken")){    // accessToken을 보유하고 있으면
+            api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");  // 요청을 보내 토큰 유효성 검증
+            api.post("/member")
+            .then(()=>{
+                this.$router.push({name: "homeview"})   // 유효한 토큰이면 홈으로 리다이렉트
+            }).catch()
+        }
+    },
+
     setup() {
 
         const store = useStore();       // store 등록
@@ -75,32 +86,15 @@ export default {
                 }
                 // 1이면 일반 사용자 -> 홈 화면으로 이동
                 else {
-                    api.defaults.headers["Authorization"] = localStorage.getItem('accessToken');
-                    api.get("/topic")
-                        .then(({ data }) => {
-                            // console.log("topic request data:", data.data)
-                            localStorage.setItem("topics",JSON.stringify(data.data));
-                            // console.log("store.keyword: ", store.getters['getKeywords'].data[0][1][21]);
-                            // => 자전거
-                            // console.log("store.keyword: ", store.getters['getKeywords'].data[0][2][1])
-                            // => J 영어이름
-                            // console.log("store.keyword: ", store.getters['getKeywords'].data[1][1].name)
-                            // => 삼행시
-
-                        })
-                        .catch((error) => {
-                            console.log("keywords err")
-                            console.log(error)
-                        });
                     router.push({ name: 'homeview' })
                 }
             }).catch((error) => {
                 console.log("error: ", error)
-                if (error.status === 400) {   // 비밀번호 틀림
+                if (error.response.status === 400) {   // 비밀번호 틀림
                     alert("비밀번호를 다시 확인해주세요.")
-                } else if (error.status === 403) { // 정지된 사용자
+                } else if (error.response.status === 403) { // 정지된 사용자
                     alert("정지된 사용자입니다.")
-                } else if (error.status === 404) { // 존재하지 않는 사용자
+                } else if (error.response.status === 404) { // 존재하지 않는 사용자
                     alert("이메일을 다시 확인해주세요.")
                 } else {
                     alert("일시적 오류입니다. 잠시 후 다시 시도해주세요.")
