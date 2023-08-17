@@ -51,7 +51,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         }
         
         if (token == null) logger.info("유효하지 않은 접근");
-        logger.info("dofilter 접근");
+        logger.debug("dofilter 접근");
         chain.doFilter(request, response);
     }
 }
