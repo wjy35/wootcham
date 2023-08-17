@@ -12,11 +12,9 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 @RequiredArgsConstructor
 public class WebSocketEventListener {
     private final MatchService matchService;
-    private final GameService gameService;
 
     @EventListener
     void disconnectSession(SessionDisconnectEvent event){
-        gameService.disconnect(event.getSessionId());
         matchService.deleteMatchMemberByMemberId(event.getSessionId());
     }
 }
