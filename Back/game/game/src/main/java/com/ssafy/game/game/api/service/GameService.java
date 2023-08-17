@@ -64,9 +64,10 @@ public class GameService {
                 .addPickedGameMembers(skipPickTopicRequest.getMemberToken());
     }
 
-    public void disconnect(String memberId){
-        GameMember disconnectedGameMember = gameMemberRepository.findByMemberId(memberId);
-        disconnectedGameMember.setConnected(false);
-        gameSessionRepository.findBySessionId(disconnectedGameMember.getSessionId()).disconnect(disconnectedGameMember.getMemberToken());
+    public void disconnect(String memberId) {
+        System.out.println("memberId = " + memberId);
+//        GameMember disconnectedGameMember = gameMemberRepository.findByMemberId(memberId);
+//        disconnectedGameMember.setConnected(false);
+//        gameSessionRepository.findBySessionId(disconnectedGameMember.getSessionId()).disconnect(disconnectedGameMember.getMemberToken());
     }
 }
