@@ -52,5 +52,8 @@ public class GameController {
         );
     }
 
-    //ToDo Game skip present 추가
+    @MessageMapping("/skip/present/{sessionId}")
+    void skipPrepare(@DestinationVariable String sessionId,@Payload String memberToken){
+        gameService.skipPresent(sessionId,memberToken);
+    }
 }

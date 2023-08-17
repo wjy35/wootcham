@@ -37,6 +37,7 @@ public class GameService {
         GameSession gameSession = gameSessionRepository.findBySessionId(sessionId);
         if(!gameSession.getOrderList().get(0).equals(skipPrepareRequest.getMemberToken())) return;
 
+        gameSession.setCheckedSkipPreparedPresent(true);
         gameSession.commitTopic(
                 skipPrepareRequest.getMemberToken(),
                 skipPrepareRequest.getType(),
@@ -44,6 +45,14 @@ public class GameService {
                 skipPrepareRequest.getUseTopic(),
                 skipPrepareRequest.getDisplayTopic()
         );
+    }
+
+    public void skipPresent(String sessionId, String memberToken) {
+        GameSession gameSession = gameSessionRepository.findBySessionId(sessionId);
+        if(!gameSession.getOrderList().get(0).equals(memberToken)) return;
+
+        gameSession.setCheckedSkipPresent(true);
+
     }
 
     public void skipPickTopic(SkipPickTopicRequest skipPickTopicRequest){
