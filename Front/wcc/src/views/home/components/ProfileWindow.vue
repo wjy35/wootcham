@@ -5,16 +5,19 @@
       <!-- 프로파일 화면 -->
       <div class="card">
         <!-- 프로필 이미지 -->
-        <div class="img"><img v-if="this.border != ''" class='frameImg' :src='this.profile_img' :style="{ width: '100%', border: '10px outset ' + this.border }"> 
-          <img v-else :src="this.profile_img" :style="{ width: '100%' }" alt=""></div>
+        <div class="img">
+          <img v-if="this.border" class='frameImg' :src='this.profile_img' :style="{ width: '100%', border: '10px outset ' + this.border }"> 
+          <img v-else :src="this.profile_img" :style="{ width: '100%', 'border-radius': '15px'}" alt="">
+        </div>
 
         <!-- 유저네임 -->
-        <div v-if="this.badge" class="username"><span class='badge-nickname' :style="{ border: '7px inset ' + this.badge }">{{ this.nickname }}</span></div>
-        <div v-else class="username" v-text="this.nickname"></div>
+        <!-- <div v-if="this.badge" class="username badge-nickname" :style="{ border: '7px inset ' + this.badge }" v-text = "this.nickname"></div> -->
+        <div v-if="this.badge"><span class="nickname" :style="{ border: '7px inset ' + this.badge }">{{ this.nickname }}</span></div>
+        <div v-else class="username"><span>{{ this.nickname }}</span></div>
 
 
         <p class="info text-shadow"> {{ this.point }} p</p>
-        <p class="info text-shadow">32위 (상위 15%)</p>
+        <p class="info text-shadow">{{ this.ranking }}위 (상위 {{ this.top }}%)</p>
 
         <div class="profile-btns">
           <button @click.prevent="changeNickname" class="shadow">닉네임 수정하기</button>
@@ -72,6 +75,8 @@ export default {
       profile_img: "",
       border: "",
       badge: "",
+      ranking: "",
+      top: "",
       records:{}
     };
   },
@@ -84,6 +89,8 @@ export default {
       this.profile_img = data.data.profile_img;
       this.border = data.data.border;
       this.badge = data.data.badge;
+      this.ranking = data.data.ranking;
+      this.top = data.data.top;
     })
     .catch(error => {
       console.log(error.message)
@@ -171,8 +178,6 @@ export default {
   background-size: cover;
   border-radius: 15px;
   margin: auto;
-
-  border: 5px inset gold;
 }
 
 .card a {
@@ -295,5 +300,15 @@ table {
 
 .styled-table tr:nth-child(even) {
   background-color: #FF7B27;
+}
+
+.username{
+  font-size: 1.2em;
+  width: auto;
+  height: auto;
+}
+
+.nickname{
+  width: auto;
 }
 </style>
