@@ -7,7 +7,8 @@
       <!-- 프로필 이미지 & 게임 포인트 -->
       <div class="profile-image-container">
         <div class="profile-image">
-          <img :src="this.profile_img" :style="{ width: '100%' }" alt="">
+          <img v-if="this.border != ''" class='frameImg' :src='this.profile_img' :style="{ border: '10px outset ' + this.border }"> 
+          <img v-else :src="this.profile_img" :style="{ width: '100%' }" alt="">
         </div>
         <div class="point-button">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
@@ -16,9 +17,8 @@
           <span v-text="this.point"></span>
         </div>
       </div>
-
-      <div class="username" v-text="this.nickname">
-      </div>
+      <div v-if="this.badge" class="username"><span class='badge-nickname' :style="{ border: '7px inset ' + this.badge }">{{ this.nickname }}</span></div>
+      <div v-else class="username" v-text="this.nickname"></div>
     </div>
 
     <div class="sidebar-menus">
@@ -47,6 +47,8 @@ export default {
       point: '',
       nickname: '',
       profile_img: '',
+      badge: '',
+      border: '',
       activeMenuItem: 'start',
     };
   },
@@ -87,6 +89,8 @@ export default {
         this.point = data.data.point;
         this.nickname = data.data.nickname;
         this.profile_img = data.data.profile_img;
+        this.badge = data.data.badge;
+        this.border = data.data.border;
         // store 저장
         this.$store.commit('setUserNickname', this.nickname)
         this.$store.commit('setProfileImg', this.profile_img)
@@ -172,7 +176,7 @@ export default {
 
 /* --------------- PROFILE POINT ------------- */
 .username {
-  margin-top: 20px;
+  margin-top: 2em;
   color: #FF7B27;
   text-shadow: 2px 2px 4px #FFCDAD;
   font-size: 20px;
