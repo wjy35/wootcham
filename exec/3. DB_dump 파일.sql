@@ -1,3 +1,5 @@
+
+
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
@@ -200,17 +202,11 @@ values (1, "기본 프로필", 0, "기본 프로필", "https://wcc-ssafy.s3.ap-n
 insert into wcc.notice (subject, content, hit, date)
 values ("웃참클럽 개장 기념 이벤트 공지", "웃참클럽의 개장을 축하하기 위해 웃참클럽이 생일 아이콘을 쏩니다! 더불어 저녁 9시부터 11시까지 게임 시 포인트 50% 추가 증정 등 다양한 혜택을 즐기세요!", 0, "2023-08-16 00:00:00");
 
+-- topic type detail
+insert into wcc.topic_type_detail (type, name, sub_keyword)
+values (1, "삼행시", 1), (2, "이름 짓기", 1), (3, "아재 개그", 0), (4, "슬랩스틱", 0), (5, "성대모사", 0), (6, "자유", 0);
 
 -- topic type DB dump 파일
--- ===============================
--- type
--- 1 삼행시
--- 2 이름 짓기
--- 3 아재 개그
--- 4 슬랩스틱
--- 5 성대모사
--- 6 자유
--- ===============================
 insert into wcc.topic (type, keyword)
 values
 (1, "노트북"), (1, "디지털"), (1, "물고기"), (1, "별자리"), (1, "빗소리"),
@@ -218,9 +214,6 @@ values
 (2, "노씨 자식"), (2, "방씨 자식"), (2, "설씨 자식"), (2, "유씨 애인"), (2, "옥씨 애인"), 
 (2, "정씨 애인"), (2, "조선시대 식"), (2, "르네상스 식"), (2, "동물 식"), (2, "민씨 조카");
 
-
-insert into wcc.topic_type_detail (type, name, sub_keyword)
-values (1, "삼행시", 1), (2, "이름 짓기", 1), (3, "아재 개그", 0), (4, "슬랩스틱", 0), (5, "성대모사", 0), (6, "자유", 0);
 
 -- report procedure
 DELIMITER $$
