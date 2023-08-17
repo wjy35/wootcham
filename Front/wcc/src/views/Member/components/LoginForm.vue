@@ -12,7 +12,7 @@
     </div>
 </template>
 <script>
-import { reactive, watch } from 'vue'
+import { onErrorCaptured, reactive, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import SubmitButton from './UI/SubmitButton.vue';
@@ -28,6 +28,7 @@ export default {
     mounted(){
         console.log(localStorage.getItem("accessToken"));
         if(localStorage.getItem("accessToken")){    // accessToken을 보유하고 있으면
+            console.log("accessToken 보유 중.... 유효성 검사 시작")
             api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");  // 요청을 보내 토큰 유효성 검증
             api.post("/member")
             .then(()=>{
@@ -89,13 +90,15 @@ export default {
                     router.push({ name: 'homeview' })
                 }
             }).catch((error) => {
-                console.log("error: ", error)
+                console.log("loginform error: ", error)
                 if (error.response.status === 400) {   // 비밀번호 틀림
                     alert("비밀번호를 다시 확인해주세요.")
                 } else if (error.response.status === 403) { // 정지된 사용자
                     alert("정지된 사용자입니다.")
                 } else if (error.response.status === 404) { // 존재하지 않는 사용자
                     alert("이메일을 다시 확인해주세요.")
+                } else if(error.response.status === 409){
+                    alert("중복 로그인 오류입니다. 접속 중인 계정을 로그아웃 후 다시 시도해주세요.")
                 } else {
                     alert("일시적 오류입니다. 잠시 후 다시 시도해주세요.")
                 }

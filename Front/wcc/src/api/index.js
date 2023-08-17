@@ -70,9 +70,16 @@ _axios.interceptors.request.use(
 
 _axios.interceptors.response.use(
   (response) => {
-      return response;
+    return response;
   },
-  error => errorHandler({...error})
+  (error) => {
+    if(error.response.status === 401){
+      errorHandler({ ...error });
+    }
+    else{
+      throw error;
+    }
+  }
 );
 
 export default _axios;
