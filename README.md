@@ -1,5 +1,6 @@
 # 😄Woot Cham Club
-![login](/uploads/c70f17272232da993bcbbe738910bddd/login.png)
+<img src="Docs/image/login.png" width="80%">
+
 ## 🖥️ 1. 프로젝트 소개
 OpenVidu와 faceAPI를 이용하여 화상채팅을 통해 게임을 진행하고, 웃은 횟수에 따라 점수를 부여해 서로 경쟁하는 게임 플랫폼입니다.
 <br>
@@ -7,7 +8,6 @@ OpenVidu와 faceAPI를 이용하여 화상채팅을 통해 게임을 진행하�
 
 ## 🕰️ 2. 개발 기간
 * 23.07.10일 - 23.08.18일
- 
 
 ## ⚙️ 3. 개발 환경
 
@@ -51,24 +51,46 @@ OpenVidu와 faceAPI를 이용하여 화상채팅을 통해 게임을 진행하�
 ## 📐**4. 설계**
 
 ### 4-1. ERD
-![ERD](/uploads/e17f3b17517ee28902cd6a07e19530a7/ERD.png)
+<img src="Docs/image/ERD.png" width="80%">
 
 ### 4-2. 시스템 아키텍처
- ![System_Architecture](/uploads/70c56bb692484b38372a034b3567d5a3/System_Architecture.png)
+<img src="Docs/image/System Architecture.png" width="80%">
 
-## 📌 주요 기능
+## 📌 5. 주요 기능
 
-### 내용
+### **5-1. 기본 UI**
+#### 회원가입
+![signup_1](/Docs/gif/signup_email.gif)
+![email](/Docs/gif/signup_email_check.gif)
+![signup_2](/Docs/gif/signup_password.gif)
+![signpu_nickname_check](/Docs/gif/signup_nickname_check.gif)
 
 #### 로그인
-![signup_1](/uploads/71eb64eeb5f6de559af40eb33bcfedeb/signup_1.gif)
-#### 로그아웃
+![login](/Docs/gif/login.gif)
 
+#### 로그아웃
+![logout](/Docs/gif/logout.gif)
+
+#### 홈
+
+#### 공지
+![notice](/Docs/gif/notice_user.gif)
+
+#### 도감
+![collection](/Docs/gif/collection_no_money.gif)
+![collection_list](/Docs/gif/collection_image.gif)
+![collection_list](/Docs/gif/collection_fream.gif)
+
+#### 랭크
+![rank](/Docs/gif/rank.gif)
+
+### **5-2. 게임 UI**
+#### 게임 실행
 
 ## 🧑‍🤝‍🧑 5. 멤버 구성
- - 팀장  : 임휘진 - 
- - 팀원1 : 김석주 - 
- - 팀원2 : 박예한 - 
- - 팀원3 : 옥수빈 - 
- - 팀원4 : 왕준영 - 
- - 팀원5 : 이주용 -
+|                                김석주                                 |                                박예한                                 |                                옥수빈                                 |                                왕준영                                 |                                이주용                                 |                                              임휘진                                              |
+|:------------------------------------------------------------------:|:------------------------------------------------------------------:|:------------------------------------------------------------------:|:------------------------------------------------------------------:|:------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------:|
+| <img src="Docs/image/김석주.jpg" width="80px;" height="80px" alt=""/> | <img src="Docs/image/박예한.jpg" width="80px;" height="80px" alt=""/> | <img src="Docs/image/옥수빈.jpg" width="80px;" height="80px" alt=""/> | <img src="Docs/image/왕준영.jpg" width="80px;" height="80px" alt=""/> | <img src="Docs/image/이주용.jpg" width="80px;" height="80px" alt=""/> | <img src="Docs/image/임휘진.png" width="80px;" height="80px" alt=""/> |
+|                      Back-end<br/>Api Server                       |                   Back-end<br/>Infra<br/>Api 서버                    |                           Front-end<br/>                           |                      Back-end<br/>Game Sever                       |                       Front-end<br/>                     |                                    Front-end<br/>                                  |
+
+<br/>
