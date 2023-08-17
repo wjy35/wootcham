@@ -63,6 +63,10 @@
             <img class='point' src="@/assets/images/crown.png">
             <span class="point-count"> {{myGameMemberChange.point}}</span>
           </div>
+          <div class="plus-point">
+            <img class='point' src="@/assets/images/crown.png">
+            <span class="point-count">+150</span>
+          </div>
         </div>
 
         <!-- 버튼 -->
