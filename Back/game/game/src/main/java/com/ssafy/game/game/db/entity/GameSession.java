@@ -77,6 +77,10 @@ public class GameSession {
         orderList.remove(0);
     }
 
+    public void commitTopic(String memberToken, Integer type, String keyword, Boolean useTopic, Boolean displayTopic){
+        topics.get(memberToken).setTopic(type,keyword,useTopic,displayTopic);
+    }
+    
     public void disconnect(String memberToken){
         disconnectTime.put(memberToken,LocalDateTime.now());
     }

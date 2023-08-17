@@ -1,9 +1,6 @@
 package com.ssafy.game.game.api.service;
 
-import com.ssafy.game.game.api.request.LoadRequest;
-import com.ssafy.game.game.api.request.SkipPickTopicRequest;
-import com.ssafy.game.game.api.request.TopicRequest;
-import com.ssafy.game.game.api.request.UpSmileCountRequest;
+import com.ssafy.game.game.api.request.*;
 import com.ssafy.game.game.db.entity.GameMember;
 import com.ssafy.game.game.db.entity.GameSession;
 import com.ssafy.game.game.db.repository.GameMemberRepository;
@@ -36,8 +33,17 @@ public class GameService {
         gameSessionRepository.findBySessionId(upSmileCountRequest.getSessionId()).upSmileCount(upSmileCountRequest.getMemberToken());
     }
 
-    public void skipPreparePresent(String sessionId){
-        gameSessionRepository.findBySessionId(sessionId).setCheckedSkipPreparedPresent(true);
+    public void skipPreparePresent(String sessionId, SkipPrepareRequest skipPrepareRequest) {
+        GameSession gameSession = gameSessionRepository.findBySessionId(sessionId);
+        if(!gameSession.getOrderList().get(0).equals(skipPrepareRequest.getMemberToken())) return;
+
+        gameSession.commitTopic(
+                skipPrepareRequest.getMemberToken(),
+                skipPrepareRequest.getType(),
+                skipPrepareRequest.getKeyword(),
+                skipPrepareRequest.getUseTopic(),
+                skipPrepareRequest.getDisplayTopic()
+        );
     }
 
     public void skipPickTopic(SkipPickTopicRequest skipPickTopicRequest){

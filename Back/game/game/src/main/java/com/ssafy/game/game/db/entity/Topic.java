@@ -6,19 +6,32 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 
-@Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@IdClass(TopicPK.class)
 public class Topic {
-    @Id Integer type;
-    @Id String keyword;
+    private Integer type;
+    private String keyword;
+    private Boolean useTopic;
+    private Boolean displayTopic;
+
+    public Topic(Integer type, String keyword) {
+        this.type = type;
+        this.keyword = keyword;
+        this.useTopic = true;
+        this.displayTopic = true;
+    }
 
     void setTopic(Integer type, String keyword){
         this.type = type;
         this.keyword = keyword;
+    }
+
+    void setTopic(Integer type, String keyword, Boolean useTopic, Boolean displayTopic){
+        this.displayTopic = displayTopic;
+        this.useTopic = useTopic;
+        this.keyword = keyword;
+        this.type = type;
     }
 
     public void setType(Integer type) {

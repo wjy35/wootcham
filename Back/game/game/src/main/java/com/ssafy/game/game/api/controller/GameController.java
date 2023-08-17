@@ -1,10 +1,9 @@
 package com.ssafy.game.game.api.controller;
 
 import com.ssafy.game.game.api.request.SkipPickTopicRequest;
+import com.ssafy.game.game.api.request.SkipPrepareRequest;
 import com.ssafy.game.game.api.request.TopicRequest;
 import com.ssafy.game.game.api.request.UpSmileCountRequest;
-import com.ssafy.game.game.api.response.GameStatus;
-import com.ssafy.game.game.api.response.GameStatusResponse;
 import com.ssafy.game.game.api.response.SmileResponse;
 import com.ssafy.game.game.api.service.GameService;
 import com.ssafy.game.util.MessageSender;
@@ -40,8 +39,8 @@ public class GameController {
         gameService.skipPickTopic(skipPickTopicRequest);
     }
     @MessageMapping("/skip/prepare/{sessionId}")
-    void skipPrepare(@DestinationVariable String sessionId){
-        gameService.skipPreparePresent(sessionId);
+    void skipPrepare(@DestinationVariable String sessionId, @Payload SkipPrepareRequest skipPrepareRequest){
+        gameService.skipPreparePresent(sessionId,skipPrepareRequest);
     }
 
     @MessageMapping("/up")
