@@ -33,16 +33,16 @@
   
    /* 스크롤바 스타일링 */
   ::-webkit-scrollbar {
-    width: 0.1px;
-    height: 7px;
+    width: 4px;
+    height: 5px;
   }
   /* Track */
   ::-webkit-scrollbar-track {
-    background: black;
+    background: #FFCDAD;
   }
   /* 핸들 */
   ::-webkit-scrollbar-thumb {
-    background: #FFCDAD; 
+    background: #F27059;
     border-radius: 5px;
   }
   ::-webkit-scrollbar-thumb:hover {
@@ -178,4 +178,38 @@
 
   .stop {
     border: 5px solid white;
+
+  }
+
+  /* 시즌 */
+  .season {
+    position: absolute;
+    overflow: hidden;
+    width: 200px;
+    height: 200px;
+    top: -10px;
+    left: -10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 99;
+  }
+  
+  .season::before {
+    position: absolute;
+    width: 150%;
+    height: 40px;
+    background-image: linear-gradient(45deg, #ff6547 0%, #ffb144 51%, #ff7053 100%);
+    transform: rotate(-45deg) translateY(-20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    content: 'SEASON1';
+    font-family: Luckiest Guy;
+    color: #fff;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.23);
   }
