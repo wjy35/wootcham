@@ -99,6 +99,19 @@ export default {
       acceptStatus: false,
     };
   },
+  created() {
+    console.log("get keyword called......")
+    // keyowrds 저장
+    api.defaults.headers["Authorization"] = localStorage.getItem('accessToken');
+    api.get("/topic")
+      .then(({ data }) => {
+        localStorage.setItem("topics", JSON.stringify(data.data));
+      })
+      .catch((error) => {
+        console.log("keywords err")
+        console.log(error)
+      });
+  },
   methods: {
     // 카메라가 켜졌을 때 실행되는 로직 (카메라 사용 가능 여부 감지)
     handleCameraOn() {
