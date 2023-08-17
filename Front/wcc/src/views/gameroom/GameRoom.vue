@@ -73,6 +73,12 @@
                   :key="componentKey"
               />
 
+              <UserVideo
+                  v-if="sharedScreen"
+                  :stream-manager="screenManager"
+                  :key="componentKey"
+              />
+
               <!-- Progress Bar -->
               <div class="loader">
                 <div></div>
@@ -209,11 +215,17 @@ import StandBy from '@/views/gameroom/components/maincontent/StandBy.vue';
 import MissionSelect from '@/views/gameroom/components/maincontent/MissionSelect.vue';
 import CountDown from '@/views/gameroom/components/maincontent/CountDown.vue';
 class GameMember {
+  memberToken;
+  streamManager;
+  screenManager;
+  isSmile;
+  isConnected;
+
   constructor(memberToken, streamManager, isSmile, isConnected) {
     this.memberToken = memberToken;
     this.streamManager = streamManager;
     this.isSmile = isSmile;
-    this.isConnected = isConnected
+    this.isConnected = isConnected;
   }
 
   get memberToken(){
@@ -246,6 +258,13 @@ class GameMember {
     this._isConnected = isConnected;
   }
 
+  get screenManager(){
+    return this._screenManager;
+  }
+
+  set screenManager(screenManager){
+    this._screenManager = screenManager;
+  }
 }
 
 
@@ -270,6 +289,7 @@ export default {
       second: "",
       memberId: localStorage.getItem("memberId"),
       sessionId: localStorage.getItem("sessionId"),
+      screenToken: localStorage.getItem("screenToken"),
       memberToken: localStorage.getItem("memberToken"),
       OV: undefined,
       session: undefined,
@@ -280,12 +300,16 @@ export default {
       tellerToken: "",
       topic:"",
       publisher:Object,
+      screenPublisher:Object,
       gameMembersMap:new Map(),
       gameMembersOrderList:[],
       messageList:[],
       message:"",
+      screenSession:undefined,
+      screenManager:undefined,
       sharedScreen:false,
       myFaceTrack:undefined,
+      screenTokenMap:new Map(),
     }
   },
   mounted() {
@@ -295,6 +319,9 @@ export default {
     joinSession() {
       this.OV = new OpenVidu();
       this.session = this.OV.initSession();
+
+      let screenOV = new OpenVidu();
+      this.screenSession = screenOV.initSession();
 
       this.session.on("streamCreated", ({stream}) => {
         let subscribeStreamManager = this.session.subscribe(stream);
@@ -311,10 +338,7 @@ export default {
       });
 
       this.session.on("streamDestroyed", ({stream}) => {
-        const index = this.subscribers.indexOf(stream.streamManager, 0);
-        if (index >= 0) {
-          this.subscribers.splice(index, 1);
-        }
+
       });
 
       this.session.on("exception", ({exception}) => {
@@ -326,9 +350,51 @@ export default {
         this.messageList.push(message);
       });
 
+      this.screenSession.on("streamCreated", ({stream}) => {
+        let subscribeStreamManager = this.session.subscribe(stream);
+        let subscribeStreamData = JSON.parse(subscribeStreamManager.stream.connection.data);
+        let subscribeMemberToken = subscribeStreamData.clientData;
+
+        this.screenTokenMap.set(subscribeMemberToken,subscribeStreamManager);
+      });
+
+      this.screenSession.on("streamDestroyed", ({stream}) => {
+
+      });
+
+      this.screenSession.on('signal:screen',(event) =>{
+        if(this.sharedScreen) {
+          this.sharedScreen = false;
+        } else{
+          let tellerScreenToken = event.data;
+          this.sharedScreen = true;
+          this.screenManager = this.screenTokenMap.get(tellerScreenToken);
+        }
+      });
+
+      this.screenSession.on("exception", ({exception}) => {
+        console.warn(exception);
+      });
+
+      this.screenSession.connect(this.screenToken, {
+        clientData: this.screenToken
+      }).then(() => {
+        let publisherStreamManager = screenOV.initPublisher(undefined, {
+          videoSource: 'screen'
+        });
+
+        this.screenTokenMap.set(this.screenToken,publisherStreamManager);
+        this.screenPublisher = publisherStreamManager;
+        this.screenSession.publish(publisherStreamManager);
+
+      }).catch((error) => {
+        console.log("There was an error connecting to the session:", error.code, error.message);
+      });
+
       this.session.connect(this.memberToken, {
         clientData: this.memberToken
-      }).then(() => {
+      }).then(() =>
+      {
         let publisherStreamManager = this.OV.initPublisher(undefined, {
           audioSource: undefined, // The source of audio. If undefined default microphone
           videoSource: undefined, // The source of video. If undefined default webcam
@@ -375,6 +441,7 @@ export default {
                 this.round = gameResponse.round;
                 this.componentKey += 1;
               }else if(this.gameStatus === GameStatus.PRESENT_SETTING){
+                this.sharedScreen = false;
                 this.gameMembersOrderList = gameResponse.order;
                 console.log("order list",this.gameMembersOrderList);
                 this.componentKey += 1;
@@ -443,7 +510,15 @@ export default {
             console.error(error);
       });
     },
-    async shareScreen(){},
+    shareScreen(){
+        this.screenSession.signal({
+          data:this.screenToken,
+          to:[],
+          type:'screen'
+        }).then(
+            ()=>{}
+        );
+    },
     skipPresent(){
       this.client.send(`/skip/present/${this.sessionId}`,this.memberToken);
     }

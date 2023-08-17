@@ -95,6 +95,7 @@ export default {
       second: "",
       matchStatus: MatchStatus.READY,
       sessionId: "",
+      screenToken:"",
       memberToken: "",
       acceptStatus: false,
     };
@@ -151,6 +152,7 @@ export default {
                   localStorage.setItem("memberToken", this.memberToken);
                   localStorage.setItem("sessionId", this.sessionId);
                   localStorage.setItem("memberId", this.memberId);
+                  localStorage.setItem("screenToken", response.screenToken);
                   this.$router.push({ name: "gameroom" });
 
                 } else if (response.matchStatus === MatchStatus.DESTROYED) {
