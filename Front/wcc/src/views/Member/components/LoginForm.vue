@@ -25,6 +25,17 @@ export default {
         SubmitButton
     },
 
+    mounted(){
+        console.log(localStorage.getItem("accessToken"));
+        if(localStorage.getItem("accessToken")){    // accessToken을 보유하고 있으면
+            api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");  // 요청을 보내 토큰 유효성 검증
+            api.post("/member")
+            .then(()=>{
+                this.$router.push({name: "homeview"})   // 유효한 토큰이면 홈으로 리다이렉트
+            }).catch()
+        }
+    },
+
     setup() {
 
         const store = useStore();       // store 등록
@@ -75,23 +86,6 @@ export default {
                 }
                 // 1이면 일반 사용자 -> 홈 화면으로 이동
                 else {
-                    api.defaults.headers["Authorization"] = localStorage.getItem('accessToken');
-                    api.get("/topic")
-                        .then(({ data }) => {
-                            // console.log("topic request data:", data.data)
-                            localStorage.setItem("topics",JSON.stringify(data.data));
-                            // console.log("store.keyword: ", store.getters['getKeywords'].data[0][1][21]);
-                            // => 자전거
-                            // console.log("store.keyword: ", store.getters['getKeywords'].data[0][2][1])
-                            // => J 영어이름
-                            // console.log("store.keyword: ", store.getters['getKeywords'].data[1][1].name)
-                            // => 삼행시
-
-                        })
-                        .catch((error) => {
-                            console.log("keywords err")
-                            console.log(error)
-                        });
                     router.push({ name: 'homeview' })
                 }
             }).catch((error) => {
