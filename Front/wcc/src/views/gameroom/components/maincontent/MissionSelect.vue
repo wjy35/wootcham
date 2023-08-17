@@ -1,8 +1,8 @@
 <template>
   <div class="mission-select">
     <p class="heading">
-      당신의 미션은 <span>{{ keyword }}</span> 키워드로 <br>
-      <span>{{ type }}</span> 하기 입니다.
+      당신의 미션은 <span>{{ topicInfo[`${type}`].name }}</span> 키워드로 <br>
+      <span>{{ keyword }}</span> 하기 입니다.
     </p>
 
     <div class="radio-input-container">
@@ -37,20 +37,36 @@
 </template>
 
 <script>
+
+import {mapState, Store} from "vuex";
+
 export default {
   data() {
+    let topicResponse =  JSON.parse(localStorage.getItem("topics"));
     return {
+      sessionId: localStorage.getItem("sessionId"),
+      memberToken: localStorage.getItem("memberToken"),
+      type: sessionStorage.getItem("type"),
+      keyword: sessionStorage.getItem("keyword"),
       useTopic: true,
-      displayTopic: true
+      displayTopic: true,
+      topicInfo : topicResponse[1]
     };
   },
-  props: {
-    type: Number,
-    keyword: String,
+  computed: {
+    ...mapState(["client"])
   },
   methods: {
     topicCommit() {
-
+      let topic = {
+        type : this.type,
+        keyword : this.keyword,
+        memberToken : this.memberToken,
+        useTopic : this.useTopic,
+        displayTopic: this.displayTopic
+      }
+      console.log("topic Commit",topic);
+      this.client.send(`/skip/prepare/${this.sessionId}`,JSON.stringify(topic));
     }
   },
 };
