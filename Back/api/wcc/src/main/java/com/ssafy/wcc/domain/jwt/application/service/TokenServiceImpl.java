@@ -38,19 +38,20 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public String createAccessToken(String id) {
         String accessToken = create("accessToken", id, expireMin);
+//        tokenRedisRepository.saveToken(accessToken, id, expireMin * 5);
         return accessToken;
     }
 
     @Override
     public String createRefreshToken(String id) {
         String refreshToken = create("refreshToken", id, expireMin * 5);
-        tokenRedisRepository.saveToken(refreshToken, id, expireMin * 5);
         return refreshToken;
     }
 
     @Override
-    public void saveLogoutToken(String accessToken) {
+    public void saveLogoutToken(String id,String accessToken) {
         tokenRedisRepository.saveToken(accessToken, "logout", this.getExpire(accessToken));
+        tokenRedisRepository.deleteId(id);
     }
 
 
@@ -79,8 +80,8 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public String getToken(String token) {
-        return tokenRedisRepository.getTokenValue(token);
+    public String getValue(String value) {
+        return tokenRedisRepository.getTokenValue(value);
     }
 
 
@@ -119,8 +120,9 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public MemberLoginResponse makeMemberLoginResponse(String id) {
+    public MemberLoginResponse makeMemberLoginResponse(String id, String nickName) {
         MemberLoginResponse response = new MemberLoginResponse( this.createAccessToken(id), this.createRefreshToken(id));
+        tokenRedisRepository.saveId(id, nickName, expireMin * 5);
         return response;
     }
 

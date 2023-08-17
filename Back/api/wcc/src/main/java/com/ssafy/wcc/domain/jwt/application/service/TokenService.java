@@ -5,7 +5,6 @@ import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 public interface TokenService {
     public String createAccessToken(String id);
@@ -13,7 +12,7 @@ public interface TokenService {
 
     public String create(String subject, String id, long expireMin);
 
-    public void saveLogoutToken(String accessToken);
+    public void saveLogoutToken(String id, String accessToken);
 
     public Long getExpire(String accessToken);
 
@@ -23,13 +22,13 @@ public interface TokenService {
 
     public boolean checkToken(String jwt) throws ExpiredJwtException;
 
-    public MemberLoginResponse makeMemberLoginResponse(String id);
+    public MemberLoginResponse makeMemberLoginResponse(String id, String nickName);
 
     public String resolveToken(HttpServletRequest request);
 
     public Authentication getAuthentication(String token);
 
-    public String getToken(String token);
+    public String getValue(String token);
 
     public String getEmailData(String token);
 }

@@ -13,10 +13,10 @@ public class TokenRedisRepository {
 
     private final RedisTemplate<String, String> redisTokenTemplate;
 
-    public void saveToken(String blackListToken, String value, Long timeout) {
+    public void saveToken(String token, String value, Long timeout) {
         ValueOperations<String, String> valueOperations = redisTokenTemplate.opsForValue();
-        valueOperations.set(blackListToken, value);
-        redisTokenTemplate.expire(blackListToken, timeout, TimeUnit.MILLISECONDS);
+        valueOperations.set(token, value);
+        redisTokenTemplate.expire(token, timeout, TimeUnit.MILLISECONDS);
     }
 
     public String getTokenValue(String key) {
@@ -24,7 +24,13 @@ public class TokenRedisRepository {
         return valueOperations.get(key);
     }
 
-    public void deleteToken(String blackListToken) {
-        redisTokenTemplate.delete(blackListToken);
+    public void deleteId(String id) {
+        redisTokenTemplate.delete(id);
+    }
+
+    public void saveId(String id, String nickname, Long timeout) {
+        ValueOperations<String, String> valueOperations = redisTokenTemplate.opsForValue();
+        valueOperations.set(id, nickname);
+        redisTokenTemplate.expire(id, timeout, TimeUnit.MILLISECONDS);
     }
 }

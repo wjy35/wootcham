@@ -125,7 +125,7 @@ public class MemberController{
         Map<String, Object> res = new HashMap<>();
 
         Member member = memberService.memberLogin(loginInfo);
-        MemberLoginResponse memberLoginResponse = tokenService.makeMemberLoginResponse(String.valueOf(member.getId()));
+        MemberLoginResponse memberLoginResponse = tokenService.makeMemberLoginResponse(String.valueOf(member.getId()), member.getNickname());
         res.put("isSuccess", true);
         res.put("admin",member.getAdmin());
         res.put("accessToken", memberLoginResponse.getAccessToken());
@@ -143,10 +143,11 @@ public class MemberController{
     })
     public ResponseEntity<Map<String, Object>> logout(
             @RequestHeader("Authorization") @ApiParam(value = "Authorization", required = true) String accessToken
+
     ) {
         id = tokenService.getIdByToken(accessToken);
         Map<String, Object> res = new HashMap<>();
-        tokenService.saveLogoutToken(accessToken);
+        tokenService.saveLogoutToken(id, accessToken);
         res.put("isSuccess", true);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }

@@ -1,9 +1,7 @@
 package com.ssafy.wcc.common.filter;
 
-import com.ssafy.wcc.common.exception.Error;
 import com.ssafy.wcc.domain.jwt.application.service.TokenService;
 import com.ssafy.wcc.domain.member.application.service.MemberServiceImpl;
-import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -19,7 +17,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Enumeration;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -41,7 +38,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
         // 유효한 토큰인지 확인합니다.
         if (token != null && tokenService.checkToken(token)) {
-            String s = tokenService.getToken(token);
+            String s = tokenService.getValue(token);
             if (s == null) {
                 // 토큰이 유효하면 토큰으로부터 유저 정보를 받아옵니다.
                 Authentication authentication = tokenService.getAuthentication(token);

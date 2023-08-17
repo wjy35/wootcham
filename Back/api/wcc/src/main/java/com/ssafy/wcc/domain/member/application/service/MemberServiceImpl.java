@@ -4,6 +4,7 @@ import com.ssafy.wcc.common.exception.Error;
 import com.ssafy.wcc.common.exception.WCCException;
 import com.ssafy.wcc.domain.collection.db.entity.CollectionItem;
 import com.ssafy.wcc.domain.collection.db.repository.CollectionItemRepository;
+import com.ssafy.wcc.domain.jwt.application.service.TokenService;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberRequest;
 import com.ssafy.wcc.domain.member.application.dto.request.MemberloginRequest;
 import com.ssafy.wcc.domain.member.application.dto.response.MemberInfoResponse;
@@ -44,6 +45,8 @@ public class MemberServiceImpl implements MemberService {
 
     private final EmailService emailService;
 
+    private final TokenService tokenService;
+
     @Override
     public void memberSignUp(MemberRequest signupInfo) throws WCCException {
         // 비밀번호에 암호 적용
@@ -74,6 +77,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member memberLogin(MemberloginRequest loginInfo) throws WCCException {
+
+
         Optional<Member> findMember = memberRepository.findByEmail(loginInfo.getEmail());
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if (!findMember.isPresent()) {
@@ -85,6 +90,10 @@ public class MemberServiceImpl implements MemberService {
         if (findMember.get().getSuspensionDay() != null) {
             this.checkSuspendedMember(findMember);
         }
+
+        if(tokenService.getValue(String.valueOf(findMember.get().getId())) != null){
+            throw new WCCException(Error.DUPLICATION_USER);
+        };
 
         this.updateCurrentLogin(findMember);
 
