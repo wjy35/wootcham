@@ -23,13 +23,13 @@ public class LogAspect {
     public void beforeParameterLog(JoinPoint joinPoint) {
         // 메서드 정보 받아오기
         Method method = getMethod(joinPoint);
-        log.info("------> method name = {} 진입", method.getName());
+        log.debug("------> method name = {} 진입", method.getName());
         // 파라미터 받아오기
         Object[] args = joinPoint.getArgs();
-        if (args.length <= 0) log.info("no parameter");
+        if (args.length <= 0) log.debug("no parameter");
         for (Object arg : args) {
-            log.info("parameter type = {}", arg.getClass().getSimpleName());
-            log.info("parameter value = {}", arg.toString());
+            log.debug("parameter type = {}", arg.getClass().getSimpleName());
+            log.debug("parameter value = {}", arg.toString());
         }
     }
 
@@ -40,9 +40,9 @@ public class LogAspect {
 
         if(returnObj == null) return;
 
-        log.info("------> method name = {} 종료", method.getName());
-        log.info("return type = {}", returnObj.getClass().getSimpleName());
-        log.info("return value = {}", returnObj.toString());
+        log.debug("------> method name = {} 종료", method.getName());
+        log.debug("return type = {}", returnObj.getClass().getSimpleName());
+        log.debug("return value = {}", returnObj.toString());
     }
 
     private Method getMethod(JoinPoint joinPoint) {
