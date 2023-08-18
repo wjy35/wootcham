@@ -42,7 +42,7 @@ public class CollectionItemServiceImpl implements CollectionItemService {
 
         for (int i = 0; i < collectionItemList.size(); ++i) {
             CollectionItem collectionItem = collectionItemList.get(i);
-            if (collectionItem.getId() == 6) continue; // 관리자 프로필은 건너띄기
+            if (collectionItem.getId() == 54) continue; // 관리자 프로필은 건너띄기
 
             // 착용, 구매 여부 확인
             boolean wear = false;
