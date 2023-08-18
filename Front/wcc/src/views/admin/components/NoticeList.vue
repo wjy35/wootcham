@@ -7,9 +7,9 @@
                 <div class='title center'>제목</div>
                 <div class='date center'>작성일</div>
             </div>
-            <ul v-for='n in selectedNotice' :key=n.id>
+            <ul v-for='(n, index) in selectedNotice' :key=n.id>
                 <li class='notice'>
-                    <div class='index'>{{ n.id }}</div>
+                    <div class='index'>{{ index + 1 }}</div>
                     <div class='title' @click='noticeDetail(n.id)'>{{ n.subject }}</div>
                     <div class='date'>{{ n.date }}</div>
                 </li>
