@@ -12,11 +12,11 @@
     </div>
 </template>
 <script>
-import { onErrorCaptured, reactive, watch } from 'vue'
+import { reactive, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import SubmitButton from './UI/SubmitButton.vue';
-import api from '@/api/index'
+import api from '@/api/login'
 
 export default {
     name: 'LoginForm',
