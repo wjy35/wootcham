@@ -7,7 +7,7 @@
 
     <div class="main-container">
       <div class="ranking-modal shadow">
-        <div v-for="(gamerResult,index) in gameResultList" class="rank-card">
+        <div v-for="(gamerResult,index) in gameResultList" :key='index' class="rank-card">
           <div class="rank-card-image">
             <img src="@/assets/images/profile.jpg" alt="">
             <span class="report-icon" @click="toggleReport">
@@ -62,10 +62,6 @@
           <div class="plus-point">
             <img class='point' src="@/assets/images/crown.png">
             <span class="point-count"> {{myGameMemberChange.point}}</span>
-          </div>
-          <div class="plus-point">
-            <img class='point' src="@/assets/images/crown.png">
-            <span class="point-count">+150</span>
           </div>
         </div>
 
