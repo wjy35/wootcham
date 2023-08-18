@@ -1,0 +1,37 @@
+version: "3.7"
+
+services:
+
+  user_cache:
+    container_name: wcc_game_user_cache
+    image: redis:alpine
+    ports:
+      - 6389:6389
+    volumes:
+      - /var/game_user_cache/:/data
+    networks:
+      - deploy
+
+  game_cache:
+    container_name: wcc_game_game_cache
+    image: redis:alpine
+    ports:
+      - 6399:6399
+    volumes:
+      - /var/game_game_cache/:/data
+    networks:
+      - deploy
+
+  app:
+    container_name: wcc_game
+    image: wcc_game_server
+    ports:
+       - 8090:8080
+    depends_on:
+      - user_cache
+      - game_cache
+    networks:
+      - deploy
+networks:
+  deploy:
+    external: true
