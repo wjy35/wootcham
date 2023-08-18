@@ -12,8 +12,8 @@
             <div class="report center">리폿</div>
             <div class="susp center">정지 종료일</div>
         </div>
-        <div v-for='u in selectedUser' :key='u.id' class="user">
-            <div class="index">{{ u.id }}</div>
+        <div v-for='(u, index) in selectedUser' :key='u.id' class="user">
+            <div class="index">{{ index + 1 }}</div>
             <div class="type">{{ u.admin === 1 ? '' : '관리자' }}</div>
             <div class="nickname">{{ u.nickname }}</div>
             <div class="email">{{ u.email }}</div>
