@@ -1,0 +1,215 @@
+#app {
+    font-family: 'Black Han Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100vh;
+  }
+  
+  #inner {
+    position: relative;
+    min-width: 1500px; 
+    margin: 0 auto;
+  }
+  
+  
+  /* 버튼 (공통 컴포넌트) */
+  #submitButton {
+    width: 100%;
+    color: white;
+    font-size: 2rem; 
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 5px 5px 5px gray;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+  }
+  
+  #submitButton:hover {
+    box-shadow: 5px 5px 5px black;
+    cursor: pointer;
+  }
+  
+  
+   /* 스크롤바 스타일링 */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 5px;
+  }
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #FFCDAD;
+  }
+  /* 핸들 */
+  ::-webkit-scrollbar-thumb {
+    background: #F27059;
+    border-radius: 5px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #FFCDAD; 
+  }
+  
+  /* 홈 컨텐츠 화면*/
+  .content-window {
+    position: relative;
+  
+    height: calc(100vh - 150px);
+    width: 1000px;
+    margin: 70px 30px 0;
+    border-radius: 25px;
+    border: 3px solid #FFCDAD;
+    padding: 30px;
+  }
+  
+  /* 박스에 그림자 효과를 줍니다 */
+  .shadow {
+    box-shadow: inset 0 -3em 3em rgba(0,0,0,0.1),
+                0 0  0 2px rgb(190, 190, 190),
+                0.3em 0.3em 1em rgba(0,0,0,0.3);
+   }
+
+   /* 빠른 flex */
+   .flex {
+    display: flex;
+   }
+
+   .cursor-pointer {
+    cursor: pointer;
+   }
+
+   .material-icons {
+    color: #fff;
+    font-size: 30px;
+   }
+
+   .text-shadow {
+    text-shadow: 2px 2px 4px #FF432A;
+   }
+
+   /* -------- 비디오 VIDEO -------- */
+  /* .video {
+    border: 1px solid #FFF2EA;
+    border-radius: 15px;
+
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  } */
+
+  /* 비디오 영역 내 들어가는 username */
+  .video-username {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    z-index: 99;
+
+    color: white;
+    /* font-size: 1em; */
+  }
+
+  /* 비디오 영역 내 들어가는 웃참 로고 이미지 */
+  .video img {
+    width: 150px;
+  }
+
+  /* 비디오 영역 */
+  .video {
+    border: 1px solid #FFF2EA;
+    border-radius: 20px;
+
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+   .video::before {
+    content: '';
+    position: absolute;
+    width: 100px;
+    background-image: linear-gradient(180deg, rgb(0, 183, 255), rgb(255, 48, 255));
+    height: 200%;
+    animation: rotBGimg 3s linear infinite;
+    transition: all 0.2s linear;
+   }
+
+   @keyframes rotBGimg {
+    from {
+      transform: rotate(0deg);
+    }
+  
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .video::after {
+    content: '';
+    position: absolute;
+    background: #07182E;
+    inset: 5px;
+    border-radius: 15px;
+  }  
+
+  .video-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+
+    border: 5px solid transparent;
+    border-radius: 20px;
+
+    z-index: 99;
+  }
+
+  .stop {
+    border: 5px solid white;
+
+  }
+
+  /* 시즌 */
+  .season {
+    position: absolute;
+    overflow: hidden;
+    width: 200px;
+    height: 200px;
+    top: -10px;
+    left: -10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 99;
+  }
+  
+  .season::before {
+    position: absolute;
+    width: 150%;
+    height: 40px;
+    background-image: linear-gradient(45deg, #ff6547 0%, #ffb144 51%, #ff7053 100%);
+    transform: rotate(-45deg) translateY(-20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    content: 'SEASON1';
+    font-family: Luckiest Guy;
+    color: #fff;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.23);
+  }
