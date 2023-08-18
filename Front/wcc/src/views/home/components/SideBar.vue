@@ -87,6 +87,7 @@ export default {
       api.defaults.headers["Authorization"] = localStorage.getItem("accessToken")
       api.post(`/member`, {headers: {'Authorization': localStorage.getItem("accessToken")}})
       .then(({ data }) => {
+        console.log("sidebar data: ", data.data)
         // 데이터 조회
         this.point = data.data.point;
         this.nickname = data.data.nickname;
