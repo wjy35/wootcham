@@ -129,4 +129,8 @@ gradle-app.setting
 .gradletasknamecache
 .project
 .classpath
+<<<<<<< HEAD
+package-lock.json
+=======
 env.properties
+>>>>>>> 977a8ad3358f5eb2a59745aeed4efbb2bfb75967

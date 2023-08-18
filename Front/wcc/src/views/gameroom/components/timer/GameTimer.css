@@ -1,0 +1,60 @@
+.base-timer {
+  position: absolute;
+  width: 15vw;
+  height: 15vh;
+  top: 100px;
+  right: 30px;
+  display: flex;
+  justify-content: center;
+  float: right;
+}
+
+.base-timer__svg {
+  transform: scaleX(-1);
+}
+
+.base-timer__circle {
+  fill: none;
+  stroke: none;
+}
+
+.base-timer__path-elapsed {
+  stroke-width: 10px;
+  stroke: white;
+}
+
+.base-timer__path-remaining {
+  stroke-width: 10px;
+  stroke-linecap: round;
+  transform: rotate(90deg);
+  transform-origin: center;
+  transition: 1s linear all;
+  fill-rule: nonzero;
+  stroke: currentColor;
+}
+
+.base-timer__path-remaining.green {
+  color: #FF7B27;
+}
+
+.base-timer__path-remaining.orange {
+  color: orange;
+}
+
+.base-timer__path-remaining.red {
+  color: #F27059;
+}
+
+.base-timer__label {
+  position: absolute;
+  color: #F27059;
+  font-family: "Luckiest Guy";
+  width: 15vw;
+  height: 15vh;
+  top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4em;
+  z-index: 999;
+}
