@@ -1,0 +1,62 @@
+.game-room-webcam-container {
+	background: #FFCDAD;
+	position: relative;
+	/* margin: auto;
+	z-index: 1;
+	width: 95vw;
+	height: 85vh;
+	border-radius: 15px;
+	border: 5px solid #FF7B27;  */
+}
+
+.player {
+	/* width:25%;
+	height:33%; */
+	border-radius: 8px;
+	border: 5px solid #FF7B27;
+	/* position:absolute; */
+	display: flex;
+	margin: 0 auto 0 auto;
+	background-color: gainsboro;
+}
+
+.player img {
+	width: 100%;
+	height: 100%;
+}
+
+.player video {
+	width: 100%;
+	height: 100%
+}
+
+.col1 {
+	position: relative;
+	width: 24%;
+	height: 64%;
+	/* display: flex; */
+	justify-content: flex-start;
+	margin-left: 0.5%;
+}
+
+.col1 .player {
+	width: 100%;
+	height: 50%;
+}
+
+.row1 {
+	position: relative;
+	width: 100%;
+	height: 32%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.row1 .player {
+	width: 24%;
+	height: 100%;
+}
+
+.player2 {
+	margin: 2% 0 2% 0;
+}
