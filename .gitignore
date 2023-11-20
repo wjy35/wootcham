@@ -130,3 +130,5 @@ gradle-app.setting
 .project
 .classpath
 env.properties
+package-lock.json
+env.properties
